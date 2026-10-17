@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Usurp: The Realm</title>
+<meta name="description" content="Usurp prototype. Climb the ranks by lifetime spend, hold your seat, and write decrees to the realm.">
+<meta name="theme-color" content="#0e0b0c">
+<meta property="og:title" content="Usurp: The Realm">
+<meta property="og:description" content="Climb the ranks by lifetime spend, hold your seat, and write decrees to the realm. Prototype, all purchases simulated.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230e0b0c'/%3E%3Cpath d='M12 46 L16 20 L26 32 L32 14 L38 32 L48 20 L52 46 Z' fill='%23c9a24b'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,800&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============ EDIT HERE: design tokens ============ */
+  :root {
+    --ink:#0e0b0c; --ink-2:#17110f; --ink-3:#201815;
+    --oxblood:#5b1423; --oxblood-hi:#7d1d31;
+    --gold:#c9a24b; --gold-hi:#e2c274;
+    --bone:#ebe2d1; --ash:#9a9087; --ok:#7fb08a; --bad:#e08a8a;
+    --line:rgba(201,162,75,.22);
+    --display:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;
+    --body:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;
+    color-scheme: dark;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+  html{scroll-padding-top:5rem}
+  body{margin:0;background:var(--ink);color:var(--bone);font-family:var(--body);font-size:1rem;line-height:1.55;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(60rem 30rem at 50% -10%,rgba(91,20,35,.5),transparent 60%);background-repeat:no-repeat}
+  .wrap{width:min(100% - 2rem,64rem);margin-inline:auto}
+  h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.08;margin:0;letter-spacing:-.01em}
+  h2{font-size:clamp(1.8rem,5vw,2.6rem)} h3{font-size:1.3rem}
+  p{margin:0} .muted{color:var(--ash)} .small{font-size:.9rem}
+  button,input,select,textarea{font:inherit;color:inherit}
+
+  .proto{background:var(--oxblood);color:var(--bone);font-size:.85rem;padding:.5rem 1rem;text-align:center}
+
+  /* status header */
+  .status{padding:1.5rem 0 1rem}
+  .status .top{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap}
+  .logo{font-family:var(--display);font-weight:800;font-size:2.2rem}
+  .me{display:grid;gap:1rem;margin-top:1rem}
+  @media(min-width:44rem){.me{grid-template-columns:1.4fr 1fr 1fr}}
+  .stat{border:1px solid var(--line);background:var(--ink-2);padding:1rem 1.1rem}
+  .stat .k{color:var(--ash);font-size:.85rem}
+  .stat .v{font-family:var(--display);font-weight:800;font-size:1.9rem;margin-top:.15rem}
+  .stat.rank{border-color:var(--gold);background:linear-gradient(90deg,rgba(91,20,35,.6),var(--ink-2))}
+  .stat.rank .v{color:var(--gold-hi)}
+  .badges{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.7rem}
+  .badge{font-size:.8rem;border:1px solid var(--gold);color:var(--gold);padding:.1rem .55rem}
+
+  /* tabs */
+  nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(14,11,12,.94);backdrop-filter:blur(6px);border-block:1px solid var(--line)}
+  nav.tabs .wrap{display:flex;gap:.25rem;overflow-x:auto;scrollbar-width:none}
+  nav.tabs button{background:none;border:0;border-bottom:3px solid transparent;padding:.9rem .9rem;cursor:pointer;color:var(--ash);white-space:nowrap}
+  nav.tabs button[aria-selected="true"]{color:var(--gold-hi);border-bottom-color:var(--gold)}
+  nav.tabs button:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+  .panel{display:none;padding:2rem 0 4rem} .panel.on{display:block}
+  .panel>.wrap>p.lead{color:var(--ash);max-width:56ch;margin:.7rem 0 1.5rem}
+
+  /* actions */
+  .btn{background:var(--gold);color:#1a1208;border:0;padding:.8rem 1.3rem;font-weight:600;letter-spacing:.03em;cursor:pointer;box-shadow:inset 0 -3px 0 rgba(0,0,0,.28);transition:transform .15s,background .2s,box-shadow .15s}
+  .btn:hover:not(:disabled){background:var(--gold-hi);transform:translateY(2px);box-shadow:inset 0 -1px 0 rgba(0,0,0,.28)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .btn:focus-visible,.ghost:focus-visible{outline:2px solid var(--bone);outline-offset:3px}
+  .ghost{background:transparent;border:1px solid var(--line);padding:.7rem 1.1rem;cursor:pointer;color:var(--bone)}
+  .ghost:hover{border-color:var(--gold)}
+  .actions{display:flex;gap:.6rem;flex-wrap:wrap;margin:1rem 0}
+  input[type=text],input[type=number],select,textarea{background:var(--ink-2);border:1px solid var(--line);padding:.75rem .9rem;border-radius:0;width:100%}
+  input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  label{display:grid;gap:.3rem;font-size:.85rem;color:var(--ash)}
+  .grid2{display:grid;gap:1rem}
+  @media(min-width:44rem){.grid2{grid-template-columns:1fr 1fr}}
+  .card{border:1px solid var(--line);background:var(--ink-2);padding:1.25rem}
+  .card+.card{margin-top:1rem}
+
+  /* leaderboard + ranks */
+  table{width:100%;border-collapse:collapse}
+  th,td{text-align:left;padding:.7rem .6rem;border-bottom:1px solid var(--line)}
+  th{color:var(--ash);font-weight:500;font-size:.85rem}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tr.you td{background:rgba(201,162,75,.1);color:var(--gold-hi)}
+  .tag{font-size:.75rem;border:1px solid var(--line);color:var(--ash);padding:0 .4rem;margin-left:.4rem}
+  .tablewrap{overflow-x:auto}
+  .fill{height:6px;background:#2a211d;margin-top:.35rem}
+  .fill i{display:block;height:100%;background:var(--oxblood-hi)}
+  .feed{list-style:none;padding:0;margin:0;display:grid;gap:.5rem}
+  .feed li{border-left:3px solid var(--oxblood-hi);padding:.4rem .8rem;background:var(--ink-2)}
+  .feed time{color:var(--ash);font-size:.8rem;margin-left:.5rem}
+  .lock{border:1px dashed var(--line);padding:1rem;color:var(--ash)}
+  .res{margin-top:.8rem;min-height:1.4em}
+  .win{color:var(--ok)} .lose{color:var(--bad)}
+  .rule{border-left:3px solid var(--gold);padding:.4rem 1rem;margin:.6rem 0;background:var(--ink-2)}
+  ol.road{padding-left:1.2rem;display:grid;gap:.6rem}
+
+  #toast{position:fixed;left:50%;bottom:calc(1.2rem + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--gold);color:#1a1208;padding:.8rem 1.2rem;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;max-width:92vw;text-align:center;z-index:20}
+  #toast.show{opacity:1;transform:translate(-50%,0)}
+  footer{border-top:1px solid var(--line);padding:2rem 0;color:var(--ash);font-size:.9rem}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="proto">Prototype. All purchases are simulated. No real money moves and the other Houses are fictional lore, not real users.</div>
+
+<header class="status">
+  <div class="wrap">
+    <div class="top">
+      <div class="logo">Usurp</div>
+      <button class="ghost small" id="reset">Reset prototype</button>
+    </div>
+    <div class="me" id="me"></div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Sections"><div class="wrap" role="tablist" id="tabs"></div></nav>
+
+<main>
+  <section class="panel" id="p-realm"><div class="wrap">
+    <h2>The Realm</h2>
+    <p class="lead">One ladder, sorted by lifetime spend. Titles are painted onto bands of the list. Pass the person above you and everyone between you shifts down.</p>
+    <div class="actions">
+      <button class="btn" id="b-next"></button>
+      <button class="ghost" id="b-usurp"></button>
+      <button class="ghost" id="b-rival">Simulate a rival's spend</button>
+    </div>
+    <div class="grid2" style="margin-bottom:1.5rem">
+      <label>Add a custom amount (USD, simulated)<input type="number" id="amt" min="1" step="1" placeholder="e.g. 50"></label>
+      <div style="align-self:end"><button class="ghost" id="b-add">Spend this amount</button></div>
+    </div>
+    <div class="card tablewrap"><table><thead><tr><th>#</th><th>Name</th><th>Rank</th><th class="num">Lifetime spend</th></tr></thead><tbody id="board"></tbody></table></div>
+    <h3 style="margin-top:2rem">Realm events</h3>
+    <ul class="feed" id="events" style="margin-top:.8rem"></ul>
+  </div></section>
+
+  <section class="panel" id="p-ranks"><div class="wrap">
+    <h2>The Rank Ladder</h2>
+    <p class="lead">The listed price is the floor to claim an open seat. When a band is full, you must out-spend its lowest holder, who then drops a band.</p>
+    <div class="grid2" style="margin-bottom:1rem">
+      <label>Title style<select id="style"><option value="0">King, Duke, Knight</option><option value="1">Queen, Duchess, Dame</option></select></label>
+      <label>Your name<input type="text" id="name" maxlength="24"></label>
+    </div>
+    <div class="card tablewrap"><table><thead><tr><th>Rank</th><th>Seats</th><th class="num">Entry price</th><th class="num">You need</th></tr></thead><tbody id="ladder"></tbody></table></div>
+    <p class="muted small" style="margin-top:.8rem">King or Queen has no fixed price. You must simply out-spend the current holder, ever.</p>
+  </div></section>
+
+  <section class="panel" id="p-houses"><div class="wrap">
+    <h2>Noble Houses</h2>
+    <p class="lead">The brand layer. Houses are paid placements, separate from personal rank. Sponsorships below are simulated.</p>
+    <div class="card tablewrap"><table><thead><tr><th>Tier</th><th class="num">Price</th><th>What they get</th></tr></thead><tbody>
+      <tr><td>Bannerman</td><td class="num">$199 / mo</td><td>Small crest and link on the notice board (footer)</td></tr>
+      <tr><td>Merchant House</td><td class="num">$999 / mo</td><td>Town Square banner, 1 sponsored Decree per month</td></tr>
+      <tr><td>Noble House</td><td class="num">$4,999 / mo or $49,999 / yr</td><td>Named house, crest realm-wide, can sponsor a season or tournament, can grant a "Sworn to House" badge</td></tr>
+      <tr><td>Season Sponsor</td><td class="num">Negotiated</td><td>Sole sponsor of one crowning cycle. The season is named after them.</td></tr>
+    </tbody></table></div>
+    <div class="grid2" style="margin-top:1rem">
+      <div class="card"><h3>Try a sponsorship</h3>
+        <div style="display:grid;gap:.8rem;margin-top:.8rem">
+          <label>Brand name<input type="text" id="h-brand" maxlength="30" placeholder="Your brand"></label>
+          <label>Tier<select id="h-tier"><option>Bannerman</option><option>Merchant House</option><option>Noble House</option></select></label>
+          <button class="btn" id="h-go">Sponsor (simulated)</button>
+        </div></div>
+      <div class="card"><h3>Notice board</h3><ul class="feed" id="notice" style="margin-top:.8rem"></ul></div>
+    </div>
+  </div></section>
+
+  <section class="panel" id="p-decrees"><div class="wrap">
+    <h2>Royal Decrees</h2>
+    <p class="lead">Broadcast a message to the realm. Free each week: King or Queen 3, Duke and above 1, everyone else 0. Any extra Decree is $2.</p>
+    <div class="card">
+      <div class="grid2">
+        <label>Message (max 140 characters)<textarea id="d-text" rows="3" maxlength="140" placeholder="Hear ye."></textarea></label>
+        <div style="display:grid;gap:.8rem;align-content:start">
+          <label>Send to<select id="d-scope"></select></label>
+          <p class="small muted" id="d-allow"></p>
+        </div>
+      </div>
+      <div class="actions"><button class="btn" id="d-send">Send Decree</button><button class="ghost" id="d-buy">Buy an extra Decree, $2</button></div>
+      <p class="small" id="d-msg"></p>
+    </div>
+    <h3 style="margin-top:2rem">Decrees</h3>
+    <ul class="feed" id="decrees" style="margin-top:.8rem"></ul>
+  </div></section>
+
+  <section class="panel" id="p-court"><div class="wrap">
+    <h2>Court Games</h2>
+    <p class="lead">Every reward is a cosmetic badge. No game ever pays out real money or returns more than you put in.</p>
+    <div class="grid2">
+      <div class="card"><h3>Dice with the Steward</h3><p class="muted small" style="margin-top:.4rem">Free. Best of three, higher total wins. Open to Peasants.</p>
+        <div class="actions"><button class="btn" id="g-dice">Roll</button></div><div class="res" id="r-dice"></div></div>
+      <div class="card"><h3>Court Trivia</h3><p class="muted small" style="margin-top:.4rem">Free. Three questions on noble titles. Open to Peasants.</p>
+        <div id="trivia" style="display:grid;gap:.7rem;margin-top:.8rem"></div>
+        <div class="actions"><button class="btn" id="g-trivia">Submit answers</button></div><div class="res" id="r-trivia"></div></div>
+    </div>
+    <div class="card" style="margin-top:1rem"><h3>The Joust</h3>
+      <p class="muted small" style="margin-top:.4rem">Knight and above. Eight-knight bracket, $1 entry fee (simulated, not counted toward standing). The winner earns a temporary badge.</p>
+      <div id="joust-body"></div></div>
+  </div></section>
+
+  <section class="panel" id="p-charter"><div class="wrap">
+    <h2>The Charter</h2>
+    <p class="lead">Why this stays a status product and not a wager.</p>
+    <div class="rule">No chance element in rank. Rank is set only by lifetime spend.</div>
+    <div class="rule">No cash payout, ever. Spend never returns as money, and no Court Game rewards cash.</div>
+    <div class="rule">Titles and any in-game currency have no cash value, are non-transferable, and are non-refundable except where law requires.</div>
+    <div class="rule">No fake users. The Founding Houses are labelled lore, not customers.</div>
+    <p class="muted small" style="margin-top:.8rem">The spec flags a real Terms of Service and legal review before meaningful money moves, including the US market and India's Online Gaming Act (2025). This page is not legal advice.</p>
+    <h3 style="margin-top:2rem">Roadmap</h3>
+    <ol class="road">
+      <li><b>Phase 0, lock the spec.</b> Finalize structure, pick the name, draft the Terms line on titles having no cash value.</li>
+      <li><b>Phase 1, MVP.</b> Leaderboard, Stripe checkout for rank purchases, basic profiles.</li>
+      <li><b>Phase 2, Founding Era.</b> Real beta cohort and 1 to 2 lore Houses, Peasant signup open, first real paying customers.</li>
+      <li><b>Phase 3, brand layer.</b> Open House sponsorships to real small businesses.</li>
+      <li><b>Phase 4, engagement.</b> Court Games, seasonal resets, referrals.</li>
+      <li><b>Phase 5, scale.</b> Streaming integrations, possible mobile app.</li>
+    </ol>
+  </div></section>
+</main>
+
+<footer><div class="wrap">Usurp prototype. Numbers are a starting proposal, not final.</div></footer>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  /* ============ EDIT HERE: game data ============ */
+  // Bands, top to bottom. names = [masculine, feminine]. floor = lifetime spend to claim a seat.
+  var BANDS=[
+    {id:'king',names:['King','Queen'],slots:1,floor:1},
+    {id:'grand',names:['Grand Duke','Archduchess'],slots:4,floor:14999},
+    {id:'duke',names:['Duke','Duchess'],slots:10,floor:4999},
+    {id:'marq',names:['Marquess','Marchioness'],slots:25,floor:1499},
+    {id:'earl',names:['Earl','Countess'],slots:60,floor:499},
+    {id:'visc',names:['Viscount','Viscountess'],slots:120,floor:199},
+    {id:'baron',names:['Baron','Baroness'],slots:250,floor:79},
+    {id:'knight',names:['Knight','Dame'],slots:500,floor:29},
+    {id:'free',names:['Freeman','Freewoman'],slots:Infinity,floor:9},
+    {id:'peas',names:['Peasant','Peasant'],slots:Infinity,floor:0}
+  ];
+  var KNIGHT_IDX=7;
+  // Founding Houses are clearly fictional lore, never real customers.
+  var LORE=[
+    {id:'vael',name:'House Vael',spend:21400},
+    {id:'morrow',name:'House Morrow',spend:16200},
+    {id:'ashgrave',name:'House Ashgrave',spend:5800},
+    {id:'thorne',name:'House Thorne',spend:620},
+    {id:'quill',name:'House Quill',spend:140}
+  ];
+  var TRIVIA=[
+    {q:'Which is the highest rank of hereditary nobility below the monarch in England?',o:['Duke','Earl','Baron'],a:0},
+    {q:'What is the wife of an Earl called?',o:['Baroness','Countess','Viscountess'],a:1},
+    {q:'What is the wife of a Marquess called?',o:['Marchioness','Duchess','Dame'],a:0}
+  ];
+  var KNIGHTS=['Ser Aldric','Dame Brisa','Ser Corwin','Dame Elowen','Ser Fenwick','Dame Gwyn','Ser Halric'];
+  var LORE_BANNERMEN=['Marrow and Sons Forge','The Gilded Quill'];
+  var LORE_DECREE={who:'House Vael',lore:true,text:'The throne is held. Come and take it.',scope:'Whole realm',t:Date.now()};
+
+  /* ============ state ============ */
+  var KEY='usurp-proto-v1';
+  function fresh(){return{name:'Wanderer',style:0,spend:0,lore:LORE.map(function(l){return{id:l.id,spend:l.spend}}),
+    log:[{t:Date.now(),text:'The realm opens. House Vael holds the throne.'}],decrees:[LORE_DECREE],weekStart:Date.now(),used:0,extra:0,
+    badges:[],houses:[],jousts:0}}
+  var S;
+  try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){S=null}
+  if(!S||!S.lore)S=fresh();
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+  /* ============ helpers ============ */
+  var $=function(id){return document.getElementById(id)};
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function usd(n){return '$'+Math.round(n).toLocaleString('en-US')}
+  function bname(i){return BANDS[i].names[S.style]}
+  function ago(t){var m=Math.round((Date.now()-t)/60000);return m<1?'just now':m<60?m+' min ago':Math.round(m/60)+' h ago'}
+  function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove('show')},3200)}
+  function addLog(text){S.log.unshift({t:Date.now(),text:text});S.log=S.log.slice(0,25)}
+
+  function people(){
+    var p=S.lore.map(function(l){var d=LORE.filter(function(x){return x.id===l.id})[0];return{id:l.id,name:d.name,spend:l.spend,lore:true,order:0}});
+    p.push({id:'you',name:S.name,spend:S.spend,lore:false,order:1});
+    return p.sort(function(a,b){return b.spend-a.spend||a.order-b.order});
+  }
+  // Highest band whose floor you meet and whose seats are not yet taken by people ranked above you.
+  function ranks(){
+    var count={},res={};
+    people().forEach(function(p){
+      for(var i=0;i<BANDS.length;i++){
+        var b=BANDS[i];
+        if(p.spend>=b.floor&&(count[b.id]||0)<b.slots){count[b.id]=(count[b.id]||0)+1;res[p.id]=i;return}
+      }
+      res[p.id]=BANDS.length-1;
+    });
+    return res;
+  }
+  function change(fn,youMsg){
+    var before=ranks(),pb=people().map(function(p){return p.id});
+    fn();
+    var after=ranks(),pa=people();
+    pa.forEach(function(p){
+      if(p.id!=='you'&&after[p.id]>before[p.id])addLog(p.name+' fell from '+bname(before[p.id])+' to '+bname(after[p.id])+'.');
+      if(p.id==='you'&&after.you<before.you){addLog(S.name+' rose to '+bname(after.you)+'.');toast('You are now '+bname(after.you)+'.')}
+    });
+    save();render();
+  }
+  function bandHolders(i){var r=ranks();return people().filter(function(p){return r[p.id]===i})}
+  // spend needed to enter band i
+  function entryPrice(i){
+    var b=BANDS[i];
+    if(i===0){var top=people().filter(function(p){return p.id!=='you'})[0];return top?top.spend+1:1}
+    var h=bandHolders(i).filter(function(p){return p.id!=='you'});
+    if(b.slots!==Infinity&&h.length>=b.slots){return Math.max(b.floor,h[h.length-1].spend+1)}
+    return b.floor;
+  }
+
+  /* ============ renders ============ */
+  function render(){
+    var r=ranks(),mine=r.you,ps=people(),pos=ps.map(function(p){return p.id}).indexOf('you')+1;
+    // status
+    var next=mine>0?mine-1:null,need=next!==null?Math.max(0,entryPrice(next)-S.spend):0;
+    $('me').innerHTML=
+      '<div class="stat rank"><div class="k">'+esc(S.name)+', your rank</div><div class="v">'+esc(bname(mine))+'</div>'+
+      '<div class="badges">'+S.badges.map(function(b){return'<span class="badge">'+esc(b)+'</span>'}).join('')+'</div></div>'+
+      '<div class="stat"><div class="k">Court Standing (lifetime spend)</div><div class="v">'+usd(S.spend)+'</div></div>'+
+      '<div class="stat"><div class="k">Position in the realm</div><div class="v">'+pos+' of '+ps.length+'</div></div>';
+    // realm buttons
+    var bn=$('b-next');
+    if(next===null){bn.textContent='You hold the throne';bn.disabled=true}
+    else{bn.disabled=false;bn.textContent='Rise to '+bname(next)+' for '+usd(need)}
+    var above=pos>1?ps[pos-2]:null,bu=$('b-usurp');
+    if(!above){bu.textContent='Nobody is above you';bu.disabled=true}
+    else{bu.disabled=false;bu.textContent='Usurp '+above.name+' for '+usd(above.spend-S.spend+1)}
+    // board
+    $('board').innerHTML=ps.map(function(p,i){
+      return'<tr class="'+(p.id==='you'?'you':'')+'"><td>'+(i+1)+'</td><td>'+esc(p.name)+(p.lore?'<span class="tag">lore</span>':'<span class="tag">you</span>')+'</td><td>'+esc(bname(r[p.id]))+'</td><td class="num">'+usd(p.spend)+'</td></tr>'}).join('');
+    $('events').innerHTML=S.log.map(function(e){return'<li>'+esc(e.text)+'<time>'+ago(e.t)+'</time></li>'}).join('');
+    // ladder
+    $('ladder').innerHTML=BANDS.map(function(b,i){
+      var h=bandHolders(i),full=b.slots!==Infinity&&h.length>=b.slots;
+      var pct=b.slots===Infinity?0:Math.round(h.length/b.slots*100);
+      var price=i===0?'Out-spend the holder':(b.floor===0?'Free':usd(b.floor));
+      var needTxt=i===mine?'You are here':(i>mine?'':usd(Math.max(0,entryPrice(i)-S.spend)));
+      var seats=b.slots===Infinity?'Unlimited':h.length+' of '+b.slots+(full?' (full)':'');
+      return'<tr class="'+(i===mine?'you':'')+'"><td>'+esc(bname(i))+'<div class="fill"><i style="width:'+pct+'%"></i></div></td><td>'+seats+'</td><td class="num">'+price+'</td><td class="num">'+needTxt+'</td></tr>'}).join('');
+    $('name').value=S.name;$('style').value=String(S.style);
+    // notice board
+    $('notice').innerHTML=LORE_BANNERMEN.map(function(n){return'<li>'+esc(n)+'<span class="tag">lore</span></li>'}).join('')+
+      S.houses.map(function(h){return'<li>'+esc(h.brand)+' <span class="tag">'+esc(h.tier)+', simulated</span></li>'}).join('');
+    renderDecrees(mine);
+    renderJoust(mine);
+  }
+
+  /* decrees */
+  function allowance(mine){return mine===0?3:(mine<=2?1:0)}
+  function renderDecrees(mine){
+    if(Date.now()-S.weekStart>7*864e5){S.weekStart=Date.now();S.used=0}
+    var free=Math.max(0,allowance(mine)-S.used);
+    $('d-allow').textContent='Free this week: '+free+' of '+allowance(mine)+'. Extra Decrees owned: '+S.extra+'.';
+    var sel=$('d-scope'),keep=sel.value;
+    sel.innerHTML='<option>Whole realm</option>'+BANDS.slice(0,KNIGHT_IDX+1).map(function(b,i){return'<option>'+esc(bname(i))+' and above</option>'}).join('');
+    if(keep)sel.value=keep;
+    $('decrees').innerHTML=S.decrees.map(function(d){
+      return'<li><b>'+esc(d.who)+'</b>'+(d.lore?'<span class="tag">lore</span>':'')+'<span class="tag">to '+esc(d.scope)+'</span><time>'+ago(d.t)+'</time><br>'+esc(d.text)+'</li>'}).join('');
+  }
+  $('d-buy').onclick=function(){S.extra++;save();render();toast('Extra Decree added for $2 (simulated).')};
+  $('d-send').onclick=function(){
+    var txt=$('d-text').value.trim(),m=$('d-msg'),mine=ranks().you;
+    if(!txt){m.textContent='Write a message first.';return}
+    var free=Math.max(0,allowance(mine)-S.used);
+    if(free>0)S.used++;else if(S.extra>0)S.extra--;
+    else{m.textContent='No Decrees left. Buy an extra one for $2.';return}
+    S.decrees.unshift({who:S.name+' ('+bname(mine)+')',text:txt,scope:$('d-scope').value,t:Date.now()});
+    S.decrees=S.decrees.slice(0,20);$('d-text').value='';m.textContent='';save();render();toast('Your Decree was sent to the realm.');
+  };
+
+  /* houses */
+  $('h-go').onclick=function(){
+    var b=$('h-brand').value.trim();if(!b){toast('Enter a brand name first.');return}
+    S.houses.push({brand:b,tier:$('h-tier').value});$('h-brand').value='';save();render();toast(b+' now appears on the notice board (simulated).');
+  };
+
+  /* court games */
+  function badge(b){if(S.badges.indexOf(b)<0){S.badges.push(b);toast('Badge earned: '+b)}}
+  $('g-dice').onclick=function(){
+    var me=0,st=0,out=[];
+    for(var i=1;i<=3;i++){var a=d()+d(),b=d();b+=d();out.push('Round '+i+': you '+a+', Steward '+b);if(a>b)me++;else if(b>a)st++}
+    function d(){return 1+Math.floor(Math.random()*6)}
+    var won=me>st;
+    $('r-dice').innerHTML=out.join('<br>')+'<br><b class="'+(won?'win':'lose')+'">'+(won?'You win the match.':'The Steward wins.')+'</b>';
+    if(won){badge('Dice Hand');save();render()}
+  };
+  $('trivia').innerHTML=TRIVIA.map(function(t,i){
+    return'<label>'+esc(t.q)+'<select data-q="'+i+'">'+t.o.map(function(o,j){return'<option value="'+j+'">'+esc(o)+'</option>'}).join('')+'</select></label>'}).join('');
+  $('g-trivia').onclick=function(){
+    var s=0;document.querySelectorAll('[data-q]').forEach(function(el){if(+el.value===TRIVIA[+el.dataset.q].a)s++});
+    var ok=s===TRIVIA.length;
+    $('r-trivia').innerHTML='<b class="'+(ok?'win':'lose')+'">'+s+' of '+TRIVIA.length+' correct.'+(ok?' Scholar of the Court earned.':' Try again.')+'</b>';
+    if(ok){badge('Scholar of the Court');save();render()}
+  };
+  function renderJoust(mine){
+    var el=$('joust-body');
+    if(mine>KNIGHT_IDX){el.innerHTML='<div class="lock" style="margin-top:.8rem">Locked. Reach '+esc(bname(KNIGHT_IDX))+' to enter. You need '+usd(Math.max(0,entryPrice(KNIGHT_IDX)-S.spend))+' more.</div>';return}
+    el.innerHTML='<div class="actions"><button class="btn" id="g-joust">Enter the Joust, $1</button></div><div class="res" id="r-joust"></div><p class="small muted">Tournaments entered: '+S.jousts+'</p>';
+    $('g-joust').onclick=function(){
+      S.jousts++;var names=['Quarterfinal','Semifinal','Final'],out=[],alive=true,foes=KNIGHTS.slice().sort(function(){return Math.random()-.5});
+      for(var i=0;i<3&&alive;i++){alive=Math.random()<.5;out.push(names[i]+' vs '+foes[i]+': '+(alive?'<span class="win">victory</span>':'<span class="lose">unhorsed</span>'))}
+      if(alive){out.push('<b class="win">Champion of the Joust.</b>');badge('Champion of the Joust');addLog(S.name+' won the Joust.')}
+      save();render();$('r-joust').innerHTML=out.join('<br>');
+    };
+  }
+
+  /* realm controls */
+  $('b-next').onclick=function(){var m=ranks().you;if(m===0)return;var n=Math.max(0,entryPrice(m-1)-S.spend);if(n>0)change(function(){S.spend+=n})};
+  $('b-usurp').onclick=function(){var ps=people(),pos=ps.map(function(p){return p.id}).indexOf('you');if(pos===0)return;var n=ps[pos-1].spend-S.spend+1;change(function(){S.spend+=n})};
+  $('b-add').onclick=function(){var n=Math.floor(+$('amt').value);if(!(n>0)){toast('Enter an amount above 0.');return}$('amt').value='';change(function(){S.spend+=n})};
+  $('b-rival').onclick=function(){
+    var l=S.lore[Math.floor(Math.random()*S.lore.length)],add=200+Math.floor(Math.random()*3800),nm=LORE.filter(function(x){return x.id===l.id})[0].name;
+    change(function(){l.spend+=add;addLog(nm+' spent '+usd(add)+' (simulated rival).')});
+  };
+  $('name').onchange=function(){S.name=($('name').value.trim()||'Wanderer').slice(0,24);save();render()};
+  $('style').onchange=function(){S.style=+$('style').value;save();render()};
+  $('reset').onclick=function(){if(confirm('Reset the whole prototype?')){S=fresh();save();render();toast('Realm reset.')}};
+
+  /* tabs */
+  var TABS=[['realm','The Realm'],['ranks','Ranks'],['houses','Houses'],['decrees','Decrees'],['court','Court Games'],['charter','Charter']];
+  $('tabs').innerHTML=TABS.map(function(t){return'<button role="tab" data-t="'+t[0]+'">'+t[1]+'</button>'}).join('');
+  function show(id){
+    TABS.forEach(function(t){$('p-'+t[0]).classList.toggle('on',t[0]===id)});
+    document.querySelectorAll('#tabs button').forEach(function(b){b.setAttribute('aria-selected',b.dataset.t===id)});
+  }
+  $('tabs').addEventListener('click',function(e){var b=e.target.closest('button');if(b)show(b.dataset.t)});
+  show('realm');render();
+})();
+</script>
+</body>
+</html>

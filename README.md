@@ -1,4 +1,4 @@
-# Usurp: The Realm (prototype)
+# Usurp: The Kingdom (prototype)
 
 A medieval status ladder. Rank is set only by lifetime spend, from Peasant up to King or Queen.
 
@@ -13,9 +13,15 @@ A medieval status ladder. Rank is set only by lifetime spend, from Peasant up to
 - **Court Games**: dice, trivia and a joust bracket, cosmetic badges only
 - **The Charter**: why this stays a status product and not a wager
 
+## Files
+
+- `app.js`, `home.js`, `styles.css`, `home.css`, `icon.svg`: the Kingdom art from usurp-kingdom (living map, Court cutaway, crests, banners, rank insignia), unchanged
+- `realm.js`, `realm.css`: the Realm game layer (ladder, leaderboard, decrees, houses, court games) built on that art
+- `index.html`: the single page that ties them together
+
 ## Running it
 
-It's a single static `index.html`. Open it in a browser, or deploy the folder to any static host. Progress is saved in the visitor's own browser (localStorage), so every visitor gets their own realm.
+It's a static site with no build step. Open it in a browser, or deploy the folder to any static host. Progress is saved in the visitor's own browser (localStorage), so every visitor gets their own realm.
 
 ## Not legal advice
 

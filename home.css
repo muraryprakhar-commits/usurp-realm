@@ -1,0 +1,71 @@
+.realm{position:relative;height:calc(100svh - var(--hh,60px));min-height:480px;background:#0f2429;overflow:hidden;border-bottom:2px solid var(--gold-deep)}
+.realm-map,.realm-svg{position:absolute;inset:0;width:100%;height:100%}
+.realm-svg{touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.realm-svg.dragging{cursor:grabbing}
+.realm-svg .lbl{font-family:'Cinzel',serif;font-weight:700;font-size:13px;text-anchor:middle;fill:#2a1a0e;paint-order:stroke;stroke:#e9d9b4;stroke-width:3.5px;letter-spacing:.06em;pointer-events:none}
+.realm-svg .region-lbl{font-family:'IM Fell English',serif;font-style:italic;font-size:22px;text-anchor:middle;fill:#3b2a18;opacity:.75;letter-spacing:.12em;pointer-events:none}
+.realm-svg .place{cursor:pointer;outline:none}
+.realm-svg .place:hover,.realm-svg .place:focus-visible,.realm-svg .place.sel{filter:drop-shadow(0 0 6px #ffd27a) drop-shadow(0 0 14px rgba(255,190,90,.6))}
+.royal-ring{animation:ring 3s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes ring{0%,100%{opacity:.25;transform:scale(.96)}50%{opacity:.8;transform:scale(1.03)}}
+.enter-tag{animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.realm-svg .flag{transform-box:fill-box;transform-origin:left center;animation:flagw 2.2s ease-in-out infinite alternate}
+@keyframes flagw{from{transform:skewY(-6deg) scaleX(.94)}to{transform:skewY(5deg) scaleX(1.04)}}
+.smoke circle{animation:smoke 4s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes smoke{0%{transform:translate(0,0) scale(.6);opacity:.7}100%{transform:translate(8px,-30px) scale(2.2);opacity:0}}
+.cloud{opacity:.13;animation:cloud linear infinite}
+@keyframes cloud{from{transform:translateX(-500px)}to{transform:translateX(600px)}}
+.realm-hud{position:absolute;left:0;right:0;bottom:0;padding:14px 16px calc(14px + env(safe-area-inset-bottom));display:flex;align-items:flex-end;justify-content:space-between;gap:12px;pointer-events:none;background:linear-gradient(transparent,rgba(8,6,4,.75))}
+.realm-hud>*{pointer-events:auto}
+.realm-hud .hud-copy{pointer-events:none}
+.hud-copy{max-width:520px;background:rgba(10,8,6,.72);border:1px solid rgba(138,106,36,.6);padding:14px 16px;backdrop-filter:blur(3px)}
+.hud-copy h1{font-size:clamp(24px,3vw,38px);margin:4px 0 4px}
+.hud-copy p{color:#e3d4b2;font-size:clamp(15px,2.2vw,18px);line-height:1.4;text-shadow:0 2px 6px #000}
+.hud-hint{display:inline-block;margin-top:8px;font-family:var(--serif);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-2);background:rgba(20,15,10,.8);border:1px solid var(--gold-deep);padding:6px 10px}
+.hud-cta{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.zoom{position:absolute;right:14px;top:14px;display:flex;flex-direction:column;gap:6px;z-index:3}
+.zoom button{width:42px;height:42px;font:700 20px/1 var(--serif);color:var(--gold-2);background:rgba(20,15,10,.85);border:1px solid var(--gold-deep);cursor:pointer}
+.zoom button:hover{background:#2a2014}
+.realm-info{position:absolute;left:16px;top:16px;width:min(380px,calc(100% - 80px));z-index:4;max-height:calc(100% - 32px);overflow:auto;padding:22px 20px 20px}
+.realm-info .x{position:absolute;right:8px;top:6px;background:none;border:0;font-size:28px;line-height:1;color:var(--ink);cursor:pointer;padding:4px 8px}
+.ri-top{display:flex;gap:14px;align-items:center;margin-bottom:10px}
+.ri-crest{width:70px;height:84px;flex:none}
+.ri-top h3{margin:2px 0}
+.ri-motto{font-style:italic}
+.ri-meta{margin-top:8px;font-size:16px}
+.ri-act{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.ri-act .btn{padding:12px 16px;font-size:12px}
+.ri-act .btn.ghost{color:var(--ink);border-color:var(--parch-edge)}
+.court-view{position:fixed;inset:0;z-index:60;background:radial-gradient(120% 80% at 50% 20%,#241c15,#0a0806);display:flex;flex-direction:column;opacity:0;transform:scale(1.04);transition:opacity .45s ease,transform .45s ease}
+.court-view.open{opacity:1;transform:none}
+.court-view[hidden],.realm-info[hidden]{display:none}
+body.court-open{overflow:hidden}
+.court-bar{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #3a2e1f;background:rgba(12,10,8,.92)}
+.court-bar h2{font-size:clamp(18px,3.6vw,28px);flex:1;min-width:0}
+.court-bar .btn{padding:10px 14px;font-size:12px}
+.court-stage{flex:1;min-height:0;position:relative;overflow:auto;background:#15110d;-webkit-overflow-scrolling:touch}
+.court-svg{width:100%;height:100%}
+.court-cap{padding:10px 16px calc(12px + env(safe-area-inset-bottom));border-top:1px solid #3a2e1f;background:rgba(12,10,8,.92);display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.court-cap [data-court-cap]{min-height:44px;display:flex;flex-direction:column;justify-content:center}
+.court-cap b{font-family:var(--serif);color:var(--gold-2);letter-spacing:.06em}
+.court-cap span{color:var(--muted);font-size:15px}
+.fig{cursor:pointer;outline:none}
+.fig.idle{animation:breathe 4s ease-in-out infinite;transform-box:fill-box;transform-origin:bottom center}
+@keyframes breathe{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.02)}}
+.fig:hover,.fig:focus-visible,.fig.sel{filter:drop-shadow(0 0 5px #ffd27a)}
+.flame{animation:flame 1.2s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:bottom center}
+@keyframes flame{from{transform:scale(1,1)}to{transform:scale(.85,1.15)}}
+@media(max-width:700px){
+.realm-info{left:10px;right:10px;top:auto;bottom:10px;width:auto;max-height:62%}
+.realm-hud{flex-direction:column;align-items:stretch}
+.hud-cta{flex-direction:row;align-items:stretch}
+.hud-cta .btn{flex:1;padding:14px 10px;font-size:12px;letter-spacing:.14em}
+.hud-copy{padding:10px 12px}.hud-copy .eyebrow{display:none}.hud-copy h1{font-size:24px}.hud-copy p:not(.eyebrow){display:none}.hud-hint{margin-top:4px}
+.zoom{top:10px;right:10px}
+.court-bar{flex-wrap:wrap;gap:8px}.court-bar h2{order:-1;flex-basis:100%;font-size:20px;text-align:center}
+.court-bar .btn{flex:1}
+.court-svg{width:780px;max-width:none;height:auto;display:block}
+.court-cap .notice{font-size:9px;padding:5px 8px}
+}
+@media (prefers-reduced-motion:reduce){.court-view{transition:none}}

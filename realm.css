@@ -123,6 +123,21 @@ section[id]{scroll-margin-top:72px}
 .ok{color:#9fd3a8}.no{color:#f0a3a3}
 .lock{border:1px dashed #6b5431;padding:14px;color:var(--muted);background:#150f0a;font-size:16px}
 
+/* founding member pass */
+.founder-card{display:grid;gap:26px;align-items:center;margin-top:34px;padding:30px 24px;border-color:var(--gold);background:radial-gradient(80% 120% at 0 0,rgba(212,175,90,.14),transparent 60%),linear-gradient(#1b1611,#120f0c)}
+@media(min-width:760px){.founder-card{grid-template-columns:200px 1fr;padding:36px 34px}}
+.founder-crest{justify-self:center}
+.founder-crest svg{width:150px;height:184px;filter:drop-shadow(0 12px 22px rgba(0,0,0,.7))}
+.founder-price{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+.founder-price b{font-family:var(--serif-d);font-size:clamp(40px,7vw,56px);color:var(--gold-2);line-height:1}
+.founder-price span{font-family:var(--serif);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.founder-perks{list-style:none;display:grid;gap:8px;margin:0 0 20px}
+.founder-perks li{padding-left:26px;position:relative;color:var(--text)}
+.founder-perks li::before{content:"⚜";position:absolute;left:0;color:var(--gold)}
+.founder-perks b{color:var(--gold-2);font-weight:400}
+.founder-fine{margin-top:4px;font-size:14px}
+.btn[aria-disabled=true]{opacity:.7;cursor:default}
+
 /* court relabels: highlight "you" */
 .fig.you-fig{filter:drop-shadow(0 0 6px #ffd27a) drop-shadow(0 0 12px rgba(255,190,90,.7))}
 

@@ -58,8 +58,13 @@ const LORE_BANNERMEN = ['Marrow and Sons Forge','The Gilded Quill'];
 const TIER_COL = { 'Bannerman':'#2f5a8a', 'Merchant House':'#2f6a4a', 'Noble House':'#7a1020' };
 const WAITLIST = 'https://usurp-alpha.vercel.app/';
 const CONTACT = 'hello@usurp.games';
-// EDIT HERE: paste the Dodo checkout link for the Founding Member Pass. Empty = "Checkout opens soon".
-const FOUNDER_CHECKOUT_URL = '';
+// EDIT HERE: Dodo checkout links for the Founding Member Pass.
+// LIVE: paste the live link once Dodo verifies the account. Empty = "Checkout opens soon" for the public.
+// TEST: Dodo Test Mode link, only used when the page is opened with ?checkout=test (no real money).
+const FOUNDER_CHECKOUT_LIVE = '';
+const FOUNDER_CHECKOUT_TEST = 'https://test.checkout.dodopayments.com/buy/pdt_0NpzeJkuCRyChxLnZPd3k?quantity=1&redirect_url=https://usurp.games%2Fthanks.html';
+const CHECKOUT_TEST_MODE = new URLSearchParams(location.search).get('checkout') === 'test';
+const FOUNDER_CHECKOUT_URL = CHECKOUT_TEST_MODE ? FOUNDER_CHECKOUT_TEST : FOUNDER_CHECKOUT_LIVE;
 const FOUNDER_PRICE = 29;
 
 /* ============ state ============ */
@@ -68,6 +73,7 @@ const fresh = () => ({
   name:'Wanderer', style:0, spend:0, house:null,
   lore: LORE.map(l => ({ id:l.id, spend:l.spend })),
   log: (typeof CHRONICLE !== 'undefined' ? CHRONICLE : []).map(([d, t]) => ({ day:d, text:t, t:0 })),
+  founderPayments: [],
   decrees: [{ who:'Queen Isolde Vire', house:'vire', lore:true, text:'The throne is held. Come and take it.', scope:'Whole realm', t:Date.now() }],
   weekStart: Date.now(), used:0, extra:0, badges:[], patrons:[], jousts:0,
 });
@@ -75,6 +81,21 @@ let S;
 try { S = JSON.parse(localStorage.getItem(KEY)); } catch (e) { S = null; }
 if (!S || !Array.isArray(S.lore)) S = fresh();
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+// Founding Member payments recorded by /thanks.html on this device. Each counts once.
+function applyFounderPayments() {
+  let F = null; try { F = JSON.parse(localStorage.getItem('usurp-founder-v1')); } catch (e) {}
+  if (!F || !Array.isArray(F.payments)) return false;
+  S.founderPayments = S.founderPayments || [];
+  let added = false;
+  F.payments.forEach(pid => {
+    if (S.founderPayments.includes(pid)) return;
+    S.founderPayments.push(pid); S.spend += FOUNDER_PRICE; added = true;
+    if (!S.badges.includes('Founding Member')) S.badges.push('Founding Member');
+    S.log.unshift({ t:Date.now(), text:`${S.name} became a Founding Member.` });
+  });
+  if (added) save();
+  return added;
+}
 
 /* ============ helpers ============ */
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
@@ -358,6 +379,12 @@ function wire() {
   if (fb && FOUNDER_CHECKOUT_URL) {
     fb.href = FOUNDER_CHECKOUT_URL; fb.textContent = `Become a Founding Member, ${usd(FOUNDER_PRICE)}`;
     fb.removeAttribute('aria-disabled'); fb.rel = 'noopener';
+    if (CHECKOUT_TEST_MODE) {
+      fb.textContent += ' (test)';
+      const note = document.createElement('p'); note.className = 'muted-s founder-fine';
+      note.textContent = 'Test mode: Dodo test checkout, no real money. Use Dodo’s test card from their docs.';
+      fb.closest('.actions').after(note);
+    }
   } else if (fb) {
     fb.addEventListener('click', e => { e.preventDefault(); toast('Checkout opens soon. Join the waitlist in the footer to hear first.'); });
   }
@@ -377,7 +404,9 @@ function wire() {
 
 document.addEventListener('DOMContentLoaded', () => {
   if (typeof H === 'undefined') return;
+  const founded = applyFounderPayments();
   chromeRealm(); wire(); render();
+  if (founded) toast('Welcome, Founder. Your badge and standing are updated.');
   const bar = q('.proto-bar');
   const setPB = () => document.documentElement.style.setProperty('--pbh', (bar ? bar.offsetHeight : 0) + 'px');
   setPB(); addEventListener('resize', setPB);

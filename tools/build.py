@@ -146,7 +146,7 @@ def footer():
     games = ''.join(f'<a href="/{g["slug"]}">{g["short"]}</a>' for g in GAMES)
     return f'''<footer class="site-foot"><nav class="foot-links" aria-label="Crest Studio pages">{links}</nav>
 <nav class="foot-links" aria-label="Games"><a href="/games/">Medieval games</a>{games}</nav>
-<p><a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/refunds.html">Refunds</a> · <a href="mailto:hello@usurp.games">hello@usurp.games</a></p>
+<p><a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/refunds.html">Refunds</a> · <a href="/advertise.html">Advertise</a> · <a href="mailto:hello@usurp.games">hello@usurp.games</a></p>
 <p>Crest Studio by Usurp · Operated by Prakhar Murary (Murary Studios), Jaipur, Rajasthan, India · <a href="/realm.html">Usurp, the game (prototype)</a></p></footer>'''
 
 
@@ -1090,6 +1090,33 @@ def games_pages():
         os.remove(path)
 
 
+def advertise():
+    """A plain page for selling the game ad slots directly, linked from every house banner."""
+    slug = 'advertise.html'
+    p = dict(slug=slug, h1='Advertise on Usurp', og='games', og_title='Advertise on Usurp: medieval games and Crest Studio',
+             title='Advertise on Usurp: Medieval Games and Crest Studio',
+             desc='Put your brand in front of players of free medieval games and people designing family crests and fantasy sigils. Banner and round-sponsor placements, family friendly, no pop-ups.',
+             no_related=True)
+    p['ld'] = ld_base(p)
+    rows = [('Game banner', 'Under each of the four games and on the games hub. Your 728 x 90 image and link, scaled to fit phones. It sits below the game, so it never catches a tap meant for the game.'),
+            ('Round sponsor', 'Your image and link on the intermission card between rounds, titled as today\'s tournament sponsor. Shown only at natural breaks, never during play, and players continue with one tap.'),
+            ('Custom sponsorship', 'For example a tournament named after your brand, or your arms carried by a challenger in the joust and the duel. Ask us.')]
+    table = ''.join(f'<div><b>{E(a)}</b>{E(b)}</div>' for a, b in rows)
+    body = hero('Advertising', 'Advertise on Usurp',
+                'Our free medieval games (archery, jousting, castle defense and sword duels) and Crest Studio, the coat of arms maker, reach fans of history, fantasy, tabletop games and family heritage.',
+                cta_href='mailto:hello@usurp.games?subject=Advertising%20on%20Usurp', cta='Email us')
+    body += f'''<section class="sec"><h2 class="gilt">Placements</h2><div class="gm-keys">{table}</div>
+<h2 class="gilt" style="margin-top:22px">What we accept</h2>
+<ul><li>A static image (PNG, JPG or WebP), a link and a line of alt text. No pop-ups, no auto-playing sound, no trackers.</li>
+<li>Products and services suitable for a general audience, including children. No gambling, adult content, alcohol, tobacco or weapons.</li>
+<li>Every placement is labelled as a sponsor.</li></ul>
+<h2 class="gilt" style="margin-top:22px">Price</h2>
+<p>A flat fee per week or per month, quoted on request. Before you pay, we show you the current visits to the pages your ad would run on, so you know what you are buying.</p>
+<p style="margin-top:16px"><a class="btn" href="mailto:hello@usurp.games?subject=Advertising%20on%20Usurp">hello@usurp.games</a></p></section>'''
+    p['head_extra'] = '<link rel="stylesheet" href="/games/games.css">'
+    write_page(p, body)
+
+
 def sitemap_and_llms():
     pages = [('index.html', '1.0'), ('crest.html', '0.9')] + [(s, '0.8') for s, _, _ in PAGES_INDEX if s != 'index.html'] + [('terms.html', '0.2'), ('privacy.html', '0.2'), ('refunds.html', '0.2')]
     def imgs(slug):
@@ -1117,7 +1144,7 @@ def sitemap_and_llms():
 
 
 if __name__ == '__main__':
-    for fn in (home, surname, quiz, ideas, family, dnd, wedding, clan, school, mottos, houses, meanings, templates, games_pages):
+    for fn in (home, surname, quiz, ideas, family, dnd, wedding, clan, school, mottos, houses, meanings, templates, games_pages, advertise):
         fn()
     for sp in SPECS:
         spec_page(sp)

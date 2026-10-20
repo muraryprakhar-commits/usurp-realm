@@ -181,7 +181,7 @@ UG.mountBanner = () => {
       slot.querySelector('a').addEventListener('click', () => UG.track('sponsor_click'));
       return;
     }
-    slot.innerHTML = crestCard('house-bn') + '<p class="ad-sell">Want your brand here? <a href="mailto:hello@usurp.games?subject=Advertising%20on%20Usurp%20games">Advertise on these games</a></p>';
+    slot.innerHTML = crestCard('house-bn') + '<p class="ad-sell">Want your brand here? <a href="/advertise.html">Advertise on these games</a></p>';
     fillHouseArt(slot);
     slot.querySelector('[data-house-ad]').addEventListener('click', () => UG.track('house_click'));
   });
@@ -272,6 +272,14 @@ UG.start = function (spec) {
     hide() { ov.hidden = true; root.classList.remove('ov-on'); try { cv.focus({ preventScroll: true }); } catch (e) {} },
     // An occasional break between rounds when no ad network is switched on: one tap to continue.
     houseBreak(done) {
+      const sp = ADS.sponsor;
+      if (sp && sp.href && sp.img) {                // a directly sold sponsor takes the round break
+        UG.track('sponsor_break');
+        this.screen({ kicker: 'Intermission', title: sp.title || 'Today\u2019s tournament sponsor', html: `<a class="sponsor-card" href="${sp.href}" rel="sponsored noopener" target="_blank"><img src="${sp.img}" alt="${String(sp.alt || 'Sponsor').replace(/"/g, '&quot;')}" width="728" height="90"></a>`,
+          primary: { label: 'Continue', on: () => { this.hide(); done(); } } });
+        const a = card.querySelector('.sponsor-card'); if (a) a.addEventListener('click', () => UG.track('sponsor_click'));
+        return;
+      }
       UG.track('house_break');
       this.screen({ kicker: 'Intermission', title: 'Fly your own colours', sub: 'Design your coat of arms and it rides with you in every game.', cta: true,
         primary: { label: 'Continue', on: () => { this.hide(); done(); } } });

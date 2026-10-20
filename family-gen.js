@@ -6,9 +6,9 @@ const data = JSON.parse(document.getElementById('fam-data').textContent);
 const $ = s => document.querySelector(s);
 const COLORS = ['#1f4e8a', '#1f5f3d', '#b3242f', '#7a1020', '#5a2a6e', '#1d1915'];
 const METALS = ['#d4af5a', '#e8e4d8'];
-const CHARGE_METALS = ['#f3dc92', '#e8e4d8', '#d4af5a'];
 const DIVS = ['chevron', 'perpale', 'fess', 'bend', 'quarterly', 'saltire', 'pale', 'plain'];
-const CHARGES = ['tower', 'key', 'rose', 'mullet', 'crescent', 'sword', 'crown'];
+const BEASTS = ['lion', 'eagle', 'stag', 'wolf', 'bear', 'griffin', 'boar', 'horse', 'owl', 'dragon', 'unicorn', 'raven'];
+const SYMBOLS = ['tower', 'tree', 'fleur', 'key', 'rose', 'mullet', 'crown', 'sword', 'swords', 'cross', 'anchor', 'heart', 'sun', 'acorn', 'thistle', 'shamrock', 'wheat', 'book'];
 let surname = 'Carter', page = 0;
 
 function hash(str) { let h = 2166136261; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
@@ -24,10 +24,11 @@ function designs(n, pg) {
   const r = rng(hash(n.toLowerCase() + ':' + pg));
   const pick = a => a[Math.floor(r() * a.length)];
   const name = houseName(n), out = [];
-  const divs = DIVS.slice().sort(() => r() - 0.5), charges = CHARGES.slice().sort(() => r() - 0.5);
+  const divs = DIVS.slice().sort(() => r() - 0.5), beasts = BEASTS.slice().sort(() => r() - 0.5), syms = SYMBOLS.slice().sort(() => r() - 0.5);
   for (let i = 0; i < 6; i++) {
-    out.push({ name, motto: pick(data.m), f: pick(COLORS), d: pick(METALS), c: pick(CHARGE_METALS),
-      div: divs[i % divs.length], ch: (pg === 0 && i === 0) ? 'initial' : charges[i % charges.length], bg: 'parch' });
+    const ch = (pg === 0 && i === 0) ? 'initial' : (i % 2 ? beasts[(i >> 1) % beasts.length] : syms[(i >> 1) % syms.length]);   // three beasts on every page
+    const dm = pick(METALS), c = dm === '#d4af5a' ? '#e8e4d8' : pick(['#f3dc92', '#d4af5a']);   // emblem metal differs from the division metal
+    out.push({ name, motto: pick(data.m), f: pick(COLORS), d: dm, c, div: divs[i % divs.length], ch, bg: 'parch' });
   }
   return out;
 }

@@ -7,10 +7,12 @@ const $ = s => document.querySelector(s);
 const pick = a => a[Math.floor(Math.random() * a.length)];
 const COLORS = ['#b3242f', '#7a1020', '#1f4e8a', '#1f5f3d', '#5a2a6e', '#1d1915'];   // gules, murrey, azure, vert, purpure, sable
 const METALS = ['#d4af5a', '#e8e4d8'];                                               // or, argent
-const CHARGE_METALS = ['#f3dc92', '#e8e4d8', '#d4af5a'];
 const DIVS = ['perpale', 'fess', 'bend', 'chevron', 'quarterly', 'saltire', 'pale', 'plain'];
-const CHARGES = ['tower', 'sword', 'crown', 'key', 'crescent', 'rose', 'mullet'];
-const NOUN = { tower:'Tower', sword:'Sword', crown:'Crown', key:'Key', crescent:'Crescent', rose:'Rose', mullet:'Star' };
+const CHARGES = ['lion', 'eagle', 'dragon', 'griffin', 'wolf', 'bear', 'stag', 'raven', 'owl', 'boar', 'phoenix', 'unicorn', 'horse',
+  'tower', 'sword', 'swords', 'crown', 'key', 'crescent', 'rose', 'mullet', 'sun', 'flame', 'tree', 'fleur', 'mountain', 'ship', 'axe'];
+const NOUN = { tower:'Tower', sword:'Sword', swords:'Blades', crown:'Crown', key:'Key', crescent:'Crescent', rose:'Rose', mullet:'Star',
+  lion:'Lion', eagle:'Eagle', dragon:'Dragon', griffin:'Griffin', wolf:'Wolf', bear:'Bear', stag:'Stag', raven:'Raven', owl:'Owl', boar:'Boar',
+  phoenix:'Phoenix', unicorn:'Unicorn', horse:'Horse', sun:'Sun', flame:'Flame', tree:'Oak', fleur:'Lily', mountain:'Peak', ship:'Ship', axe:'Axe' };
 const ADJ = { '#f3dc92':'Golden', '#d4af5a':'Golden', '#e8e4d8':'Silver' };
 let style = 'house', cur = null, n = 0;
 const base = () => pick(data.a) + pick(data.b);
@@ -25,7 +27,8 @@ function nameFor(st, d) {
   return `House ${base()}`;
 }
 function design() {
-  const d = { motto: pick(data.m), f: pick(COLORS), d: pick(METALS), c: pick(CHARGE_METALS), div: pick(DIVS), ch: Math.random() < 0.12 ? 'initial' : pick(CHARGES), bg: 'parch' };
+  const dm = pick(METALS);
+  const d = { motto: pick(data.m), f: pick(COLORS), d: dm, c: dm === '#d4af5a' ? '#e8e4d8' : pick(['#f3dc92', '#d4af5a']), div: pick(DIVS), ch: Math.random() < 0.08 ? 'initial' : pick(CHARGES), bg: 'parch' };
   d.name = nameFor(style, d);
   return d;
 }

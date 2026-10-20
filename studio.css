@@ -39,6 +39,19 @@
 .site-foot p+p{margin-top:6px}
 .stage{margin:0;padding:12px}
 @media(max-width:420px){.sw{width:36px;height:36px}.sws{gap:7px}}
+/* emblem picker */
+.fld.emb>span b{color:var(--gold-2);font-weight:700;letter-spacing:.12em}
+.emb-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 8px}
+.emb-tabs button{font:inherit;font-family:var(--serif);font-size:12px;letter-spacing:.08em;color:var(--muted);background:#120e0a;border:1px solid #3a2e1f;padding:6px 10px;min-height:36px;cursor:pointer}
+.emb-tabs button[aria-pressed="true"]{color:var(--gold-2);border-color:var(--gold)}
+.emb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(68px,1fr));gap:6px}
+.emb-b{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 3px 6px;min-height:84px;background:#17120d;border:1px solid #3a2e1f;color:var(--muted);font:inherit;font-size:12px;line-height:1.15;cursor:pointer}
+.emb-b svg{width:46px;height:54px;flex:none}
+.emb-b span{text-align:center;overflow-wrap:anywhere}
+.emb-b:hover{border-color:var(--gold-deep)}
+.emb-b[aria-checked="true"]{border-color:var(--gold-2);background:#2a2015;color:var(--gold-2);box-shadow:inset 0 0 0 1px var(--gold-2)}
+.emb-b:focus-visible,.emb-tabs button:focus-visible{outline:2px solid var(--gold-2);outline-offset:2px}
+@media(max-width:420px){.emb-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.emb-b svg{width:40px;height:48px}}
 .row2{display:flex;flex-wrap:wrap;gap:10px}.row2 .btn{flex:1 1 180px}
 /* blazon panel, gift, package thumbnails */
 .mk{font-family:var(--serif);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:0 0 6px}

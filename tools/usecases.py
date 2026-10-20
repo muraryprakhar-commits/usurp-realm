@@ -5,7 +5,11 @@ Rules every page must follow (the weekly autopilot reads this too):
 - Never claim a design is an official or inherited coat of arms. No trademarked or fictional-franchise names.
 - US spelling. No em dashes. Plain, warm, specific writing; at least ~500 words of body that is unique to the page.
 - examples: 3 to 6 crests using only the tinctures and emblems in data.py, following the rule of tincture
-  (a metal, Or or Argent, against a color). Charges available: tower, sword, crown, key, crescent, rose, mullet, initial, none.
+  (a metal, Or or Argent, against a color). Charges (emblems) available, from crest-core.js CHARGES:
+  beasts: lion, eagle, dragon, griffin, wolf, bear, stag, horse, unicorn, boar, owl, raven, phoenix, bee;
+  symbols: initial, tower, sword, swords, crown, key, crescent, mullet (star), sun, heart, flame, lightning, anchor, ship, compass;
+  crosses: cross, maltese, fleury, highcross, triquetra; nature: fleur, rose, tree, acorn, shamrock, thistle, wheat, mountain, laurel;
+  trades: book, hammer, axe, scales, dividers, caduceus; or none. Pick emblems that fit the page's audience.
   Divisions: plain, perpale, fess, bend, chevron, quarterly, saltire, pale. Names up to 40 characters, mottos up to 48.
 - body: HTML using <section class="sec">, <h2 class="gilt">, <h3>, <p>, <ul>/<ol>, <div class="callout"><b>..</b> ..</div>.
   Link to 2 or 3 related pages and end with a CTA button to /crest.html.
@@ -23,9 +27,9 @@ SPECS = [
         eyebrow='For Christmas, anniversaries, weddings and new homes',
         lede='A family crest is a gift with a story: their name, their colors, their motto, and a certificate explaining what it all means. You design it in a few minutes, it downloads instantly, and it prints at any size.',
         examples=[crest('The Okafor Family', 'Together We Rise', AZURE, OR, GOLD_LIGHT, 'chevron', 'mullet'),
-                  crest('Grandma and Grandpa Rossi', 'Root and Branch', VERT, OR, GOLD_LIGHT, 'perpale', 'rose'),
+                  crest('Grandma and Grandpa Rossi', 'Root and Branch', VERT, OR, GOLD_LIGHT, 'perpale', 'tree'),
                   crest('The Lees', 'Home Is Our Hearth', MURREY, OR, GOLD_LIGHT, 'fess', 'tower'),
-                  crest('House Kowalski', 'Ever Onward', SABLE, OR, OR, 'quarterly', 'key')],
+                  crest('House Kowalski', 'Ever Onward', SABLE, OR, OR, 'quarterly', 'eagle')],
         body='''<section class="sec"><h2 class="gilt">Why a family crest makes a good gift</h2>
 <p>Most gifts are things. A crest is a little piece of identity: it takes what a family cares about and turns it into one emblem they can hang on the wall, print on mugs or pass down. Because you choose every part of it, it says "I thought about you" in a way a gift card never does.</p>
 <ul><li><b>Personal.</b> Their family name, colors with meaning, an emblem that fits them and a motto they actually say.</li>
@@ -60,12 +64,12 @@ SPECS = [
         lede='A crest says "established" before anyone reads a word. Design yours in the free studio, then get the Crest Logo Kit: every file a small brand needs, in one ZIP.',
         cta='Design your crest logo',
         price_note='Designing is free with no account. The kit is a one-time $29. Only need the artwork? The $9 set has print files, an SVG and a certificate of arms.',
-        examples=[crest('Ironhold Brewing Co.', 'Brewed With Patience', SABLE, OR, GOLD_LIGHT, 'chevron', 'tower'),
-                  crest('Ravensgate FC', 'Ever Onward', GULES, OR, GOLD_LIGHT, 'quarterly', 'mullet'),
+        examples=[crest('Ironhold Brewing Co.', 'Brewed With Patience', SABLE, OR, GOLD_LIGHT, 'chevron', 'wheat'),
+                  crest('Ravensgate FC', 'Ever Onward', GULES, OR, GOLD_LIGHT, 'quarterly', 'raven'),
                   crest('Oakmere Coffee', 'First Light', VERT, OR, GOLD_LIGHT, 'fess', 'crescent'),
                   crest('The Copper Key Inn', 'All Are Welcome', MURREY, OR, GOLD_LIGHT, 'bend', 'key'),
                   crest('Briarwood Books', 'Sapere Aude', PURPURE, ARGENT, ARGENT, 'pale', 'rose'),
-                  crest('Fairhaven Barbers', 'Sharp Since Today', AZURE, ARGENT, ARGENT, 'saltire', 'sword')],
+                  crest('Fairhaven Barbers', 'Sharp Since Today', AZURE, ARGENT, ARGENT, 'plain', 'swords')],
         body='''<section class="sec"><h2 class="gilt">What is in the Crest Logo Kit ($29)</h2>
 <ul><li><b>Logo files:</b> the full crest as a transparent 4000 px PNG, on parchment for print, a web-size PNG and a scalable SVG vector.</li>
 <li><b>Shield-only mark:</b> a square transparent PNG and SVG of just the shield, for places where the full crest is too detailed.</li>
@@ -76,7 +80,7 @@ SPECS = [
 <p>Everything is generated from your design the moment payment goes through. A plain README in the ZIP explains each file and the license.</p></section>
 <section class="sec"><h2 class="gilt">Designing a crest logo that works</h2>
 <h3>Make it readable at 32 pixels</h3><p>A logo spends most of its life small: a browser tab, a map pin, a social avatar. Pick one bold emblem and two strongly contrasting colors. Heraldry's own rule helps here: put a metal (gold or silver) against a color (red, blue, green, purple or black). The kit's shield-only files exist for the smallest sizes.</p>
-<h3>Let the emblem hint at what you do</h3><p>A tower for a brewery or anything built to last, a key for an inn or a locksmith, a crescent for a coffee shop that opens early, a star for a team, a rose for a bookshop or florist, a sword for a barbershop. Or use your initial, which never goes out of date. The <a href="/heraldry-symbols-and-meanings.html">heraldry meanings guide</a> explains the traditional symbolism of each.</p>
+<h3>Let the emblem hint at what you do</h3><p>A sheaf of wheat for a brewery or bakery, a key for an inn or a locksmith, a crescent or sun for a coffee shop that opens early, a lion, eagle or raven for a team, an open book for a bookshop, crossed swords for a barbershop, scales for a law firm. There are 50 emblems in the studio. Or use your initial, which never goes out of date. The <a href="/heraldry-symbols-and-meanings.html">heraldry meanings guide</a> explains the traditional symbolism of each.</p>
 <h3>Keep the name short</h3><p>Two or three words sit at full size across the top of the crest. Put a longer tagline in the motto ribbon instead.</p>
 <div class="callout"><b>Before you print a thousand cups:</b> a tool-made design is not exclusive, because someone else can make something similar. If the logo matters to your business, search existing trademarks in your country and take local advice before you register it.</div></section>
 <section class="sec"><h2 class="gilt">Who uses crest logos</h2><ul>

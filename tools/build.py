@@ -26,6 +26,16 @@ def render(items):
 # ---------- crest images: real files so Google Images and Bing can index them ----------
 IMG_JOBS = {}   # filename -> design, rendered by tools/assets.py
 PLAIN_C = {GULES: 'red', MURREY: 'deep red', AZURE: 'blue', VERT: 'green', PURPURE: 'purple', SABLE: 'black', OR: 'gold', ARGENT: 'silver', GOLD_LIGHT: 'gold'}
+# plain-English names of every emblem in crest-core.js, for image alt text
+CH_PLAIN = {'tower': 'tower', 'sword': 'sword', 'crown': 'crown', 'key': 'key', 'crescent': 'crescent moon', 'rose': 'rose', 'mullet': 'star',
+            'lion': 'rampant lion', 'eagle': 'eagle with spread wings', 'dragon': 'dragon', 'griffin': 'griffin', 'wolf': "wolf's head",
+            'bear': 'standing bear', 'stag': "stag's head with antlers", 'horse': "horse's head", 'unicorn': "unicorn's head", 'boar': "boar's head",
+            'owl': 'owl', 'raven': 'raven', 'phoenix': 'phoenix rising from flames', 'bee': 'bee', 'swords': 'pair of crossed swords', 'sun': 'sun',
+            'heart': 'heart', 'flame': 'flame', 'lightning': 'lightning bolt', 'anchor': 'anchor', 'ship': 'sailing ship', 'compass': 'compass rose',
+            'cross': 'cross', 'maltese': 'Maltese cross', 'fleury': 'cross with lily-tipped arms', 'highcross': 'Celtic cross', 'triquetra': 'Celtic triquetra knot',
+            'fleur': 'fleur-de-lis', 'tree': 'oak tree', 'acorn': 'acorn', 'shamrock': 'shamrock', 'thistle': 'thistle', 'wheat': 'sheaf of wheat',
+            'mountain': 'mountain', 'laurel': 'laurel wreath', 'book': 'open book', 'hammer': 'hammer', 'axe': 'axe', 'scales': 'pair of scales',
+            'dividers': "pair of drafting compasses", 'caduceus': 'caduceus'}
 
 
 def slugify(t):
@@ -39,9 +49,8 @@ def describe(d):
            'fess': f'a {F} shield with a {D} horizontal band', 'bend': f'a {F} shield with a {D} diagonal band',
            'saltire': f'a {F} shield with a {D} X-shaped cross', 'pale': f'a {F} shield with a {D} vertical stripe'}[d['div']]
     nm = re.sub(r'^(house|clan|family|the)\s+', '', d['name'], flags=re.I).strip()
-    ch = {'initial': f'the letter {(nm[:1] or "?").upper()} in {C}', 'tower': f'a {C} tower', 'sword': f'a {C} sword',
-          'crown': f'a {C} crown', 'key': f'a {C} key', 'crescent': f'a {C} crescent moon', 'rose': f'a {C} rose',
-          'mullet': f'a {C} star', 'none': ''}[d['ch']]
+    k = d['ch']
+    ch = '' if k == 'none' else f'the letter {(nm[:1] or "?").upper()} in {C}' if k == 'initial' else f'a {C} {CH_PLAIN[k]}'
     who = f'Coat of arms of {d["name"]}' if d['name'] else 'Coat of arms example'
     out = f'{who}: {div}' + (f' and {ch}' if ch else '')
     return out + (f', motto "{d["motto"]}"' if d['motto'] else '')
@@ -457,10 +466,13 @@ def meanings():
         ('What is the rule of tincture?', 'Never put a metal on a metal or a color on a color. Gold and silver are metals; red, blue, green, purple and black are colors. Gold on blue is correct; red on blue breaks the rule and is hard to read at a distance.'),
         ('What does a crescent mean on a coat of arms?', 'It is often said to stand for hope of greater glory. In English heraldry a small crescent is also the cadency mark of a second son.'),
         ('What does a star (mullet) mean in heraldry?', 'A mullet is a five-pointed star, originally the rowel of a spur. It is often read as a sign of a person who shines or of divine favor, and in English cadency it marks a third son.'),
+        ('What does a lion mean on a coat of arms?', 'Courage and strength. The lion is the most common animal in heraldry. Rearing on its hind legs it is "rampant"; walking past with one forepaw raised it is "passant".'),
+        ('What does an eagle mean on a coat of arms?', 'Nobility, strength and a lofty spirit. An eagle with its wings spread is "displayed"; it has been the emblem of empires from Rome to Germany.'),
+        ('What does a wolf mean in heraldry?', 'Valor, perseverance and loyalty. Wolves often appear as a head "erased", torn off at the neck with a jagged edge.'),
     ]
-    p = dict(slug=slug, h1='Heraldry Symbols and Meanings', og='meanings', og_title='Heraldry Symbols and Meanings: colors, divisions and emblems',
-             title='Heraldry Symbols and Meanings: Coat of Arms Colors and Emblems Explained | Crest Studio',
-             desc='What the colors, divisions and emblems on a coat of arms mean: Or, Argent, Gules, Azure, Vert, Purpure, Sable, the rule of tincture, chevrons, towers, keys, roses and stars.')
+    p = dict(slug=slug, h1='Heraldry Symbols and Meanings', og='meanings', og_title='Heraldry Symbols and Meanings: colors, animals and emblems',
+             title='Heraldry Symbols and Meanings: Coat of Arms Colors, Animals and Emblems | Crest Studio',
+             desc='What the colors, animals and emblems on a coat of arms mean: lions, eagles, dragons, wolves, stags, the rule of tincture, chevrons, crosses, oak trees and more.')
     p['ld'] = ld_base(p, [faq_ld(faqs), {'@type': 'Article', 'headline': 'Heraldry Symbols and Meanings', 'author': {'@type': 'Organization', 'name': 'Crest Studio by Usurp'}, 'datePublished': TODAY, 'dateModified': TODAY, 'image': f'{SITE}/og/meanings.png'}])
     tinctures = [
         ('Or', 'Gold or yellow', 'Metal', OR, 'Generosity and elevation of mind'),
@@ -490,9 +502,40 @@ def meanings():
                ('mullet', 'Star (mullet)', 'A five-pointed star, originally a spur rowel. Read as a person who shines. In English cadency, a third son.', PURPURE, OR, GOLD_LIGHT, 'pale'),
                ('sword', 'Sword', 'Justice and military honor.', GULES, OR, ARGENT, 'chevron'),
                ('crown', 'Crown', 'Authority, victory, or loyalty to a sovereign.', AZURE, OR, OR, 'fess'),
-               ('initial', 'Initial', 'A modern touch: your family or house initial, monogram style.', MURREY, OR, GOLD_LIGHT, 'chevron')]
-    cv = render([(crest('', '', f, d, c, dv_, k), f'ch{i}', f'{n} emblem example') for i, (k, n, _, f, d, c, dv_) in enumerate(charges)])
-    ccards = ''.join(f'<figure class="card">{crest_img(crest('', '', f, d, c, dv_, k))}<figcaption class="cap">{n}</figcaption><p class="sub">{t}</p><a class="btn ghost" href="{r["url"]}">Use a {n.split(" (")[0].lower()}</a></figure>' for (k, n, t, f, d, c, dv_), r in zip(charges, cv))
+               ('initial', 'Initial', 'A modern touch: your family or house initial, monogram style.', MURREY, OR, GOLD_LIGHT, 'chevron'),
+               ('fleur', 'Fleur-de-lis', 'A stylized lily standing for purity and light, and the royal emblem of France.', AZURE, OR, GOLD_LIGHT, 'plain'),
+               ('cross', 'Cross', 'Faith and service. This flared form, the cross formy (or pattée), recalls the crusading orders.', GULES, ARGENT, ARGENT, 'plain'),
+               ('highcross', 'Celtic cross', 'A cross with a ring around its arms: the high cross of Ireland and Scotland.', VERT, OR, GOLD_LIGHT, 'plain'),
+               ('tree', 'Oak tree', 'Strength, endurance and deep family roots. Shown with its roots, heralds call it "eradicated".', VERT, OR, GOLD_LIGHT, 'plain'),
+               ('thistle', 'Thistle', 'The emblem of Scotland, standing for courage and defiance.', PURPURE, OR, GOLD_LIGHT, 'plain'),
+               ('shamrock', 'Shamrock', 'The emblem of Ireland, standing for faith and good fortune.', VERT, ARGENT, ARGENT, 'plain'),
+               ('anchor', 'Anchor', 'Hope and steadfastness, and a natural choice for seafaring families.', AZURE, OR, GOLD_LIGHT, 'plain'),
+               ('heart', 'Heart', 'Charity and sincerity.', GULES, OR, GOLD_LIGHT, 'plain'),
+               ('sun', 'Sun', 'Glory and splendor.', AZURE, OR, OR, 'plain'),
+               ('swords', 'Crossed swords', 'Honor and readiness to defend.', SABLE, ARGENT, ARGENT, 'plain'),
+               ('book', 'Book', 'Learning and knowledge, common in the arms of universities and schools.', GULES, ARGENT, ARGENT, 'plain'),
+               ('scales', 'Scales', 'Justice and fairness, a favorite for lawyers and judges.', AZURE, OR, GOLD_LIGHT, 'plain'),
+               ('ship', 'Ship (lymphad)', 'Voyages, trade and adventure across the sea.', AZURE, OR, GOLD_LIGHT, 'plain'),
+               ('laurel', 'Laurel wreath', 'Victory and achievement.', VERT, OR, GOLD_LIGHT, 'plain')]
+    beasts = [('lion', 'Lion', 'Courage and strength. The most common beast in heraldry; rampant (rearing on its hind legs) is its classic pose.', GULES, OR, GOLD_LIGHT, 'plain'),
+              ('eagle', 'Eagle', 'Nobility, strength and a lofty spirit. Shown displayed, wings spread, it is the emblem of empires and of anyone who aims high.', AZURE, OR, GOLD_LIGHT, 'plain'),
+              ('dragon', 'Dragon', 'A valiant defender of what it holds dear. The red dragon of Wales is the most famous.', SABLE, OR, GOLD_LIGHT, 'plain'),
+              ('griffin', 'Griffin', 'Half eagle and half lion: vigilance and courage, the legendary guardian of treasure.', PURPURE, OR, GOLD_LIGHT, 'plain'),
+              ('wolf', 'Wolf', 'Valor, perseverance and loyalty. Often shown as a head "erased", torn off at the neck, as here.', VERT, ARGENT, ARGENT, 'plain'),
+              ('bear', 'Bear', 'Strength and the protection of family. The bear is the emblem of both Berlin and Bern.', AZURE, ARGENT, ARGENT, 'plain'),
+              ('stag', 'Stag', 'Peace and harmony: one who will not fight unless provoked. A head shown facing out is "caboshed".', VERT, OR, GOLD_LIGHT, 'plain'),
+              ('boar', 'Boar', "Bravery: a fierce fighter that never retreats. The boar's head is common in Scottish and English arms.", GULES, ARGENT, ARGENT, 'plain'),
+              ('horse', 'Horse', 'Readiness to serve, speed and loyalty.', MURREY, ARGENT, ARGENT, 'plain'),
+              ('unicorn', 'Unicorn', 'Purity, strength and courage. The unicorn is the national animal of Scotland.', PURPURE, ARGENT, ARGENT, 'plain'),
+              ('owl', 'Owl', 'Wisdom and vigilance, a favorite for schools, libraries and scholars.', SABLE, ARGENT, ARGENT, 'plain'),
+              ('raven', 'Raven', 'Wisdom and foresight. In Norse stories, two ravens carried news to Odin.', AZURE, ARGENT, ARGENT, 'plain'),
+              ('phoenix', 'Phoenix', 'Renewal: rising again, stronger, from the flames.', GULES, OR, GOLD_LIGHT, 'plain'),
+              ('bee', 'Bee', 'Industry and hard work. Napoleon chose golden bees as an emblem of his empire.', SABLE, OR, GOLD_LIGHT, 'plain')]
+
+    def cards(items, pre):
+        rr = render([(crest('', '', f, d, c, dv_, k), f'{pre}{i}', f'{n} emblem example') for i, (k, n, _, f, d, c, dv_) in enumerate(items)])
+        return ''.join(f'<figure class="card" id="{k}">{crest_img(crest('', '', f, d, c, dv_, k))}<figcaption class="cap">{n}</figcaption><p class="sub">{t}</p><a class="btn ghost" href="{r["url"]}">Use this emblem</a></figure>' for (k, n, t, f, d, c, dv_), r in zip(items, rr))
+    ccards, bcards = cards(charges, 'ch'), cards(beasts, 'bs')
     body = hero('A plain-English guide', 'Heraldry Symbols and Meanings',
                 'What the colors, divisions and emblems on a coat of arms traditionally mean, and how to use them to design a crest that says something true about you.',
                 cta_href='#colors', cta='Read the guide', second=('/crest.html', 'Design a crest'))
@@ -502,7 +545,8 @@ def meanings():
 <div class="tblwrap"><table class="tbl"><thead><tr><th>Tincture</th><th>Plain English</th><th>Type</th><th>Traditional meaning</th></tr></thead><tbody>{trs}</tbody></table></div>
 <h3>The rule of tincture</h3><p>Never put a metal on a metal or a color on a color. Gold on blue reads from across a field; red on blue blurs. Every example on this site follows the rule, and following it is the single easiest way to make a crest look authentic.</p></section>'''
     body += f'<section class="sec" id="divisions"><h2 class="gilt">Divisions and ordinaries</h2><p>The broad shapes that divide or cross the shield. Heralds call bands like the chevron and fess "ordinaries" and splits like per pale "partitions".</p></section><div class="gallery">{dcards}</div>'
-    body += f'<section class="sec" id="emblems"><h2 class="gilt">Emblems (charges)</h2><p>Anything placed on the shield is a charge. These are the emblems available in Crest Studio. Cadency marks, mentioned below, were small symbols English heralds used to tell sons of the same father apart.</p></section><div class="gallery">{ccards}</div>'
+    body += f'<section class="sec" id="beasts"><h2 class="gilt">Heraldic animals and what they mean</h2><p>Beasts are the most loved charges in heraldry. Each has a traditional pose with its own name: a lion <i>rampant</i> rears up, an eagle <i>displayed</i> spreads its wings, a stag\'s head <i>caboshed</i> looks straight at you. All of these are in Crest Studio, drawn in the bold, flat style of real heraldic art.</p></section><div class="gallery">{bcards}</div>'
+    body += f'<section class="sec" id="emblems"><h2 class="gilt">Symbols and emblems (charges)</h2><p>Anything placed on the shield is a charge. These are some of the 50 emblems in Crest Studio. Cadency marks, mentioned below, were small symbols English heralds used to tell sons of the same father apart.</p></section><div class="gallery">{ccards}</div>'
     body += '''<section class="sec"><h2 class="gilt">Put it together</h2><ol>
 <li>Pick a metal and a color whose meanings fit you (say, Azure for loyalty and Or for generosity).</li>
 <li>Choose a division with a story (a chevron for a family home, per pale to join two families).</li>
@@ -600,27 +644,33 @@ def ideas():
     rnd = random.Random(1066)
     COLS, MET, CMET = [GULES, MURREY, AZURE, VERT, PURPURE, SABLE], [OR, ARGENT], [GOLD_LIGHT, ARGENT, OR]
     DIVS = ['chevron', 'perpale', 'fess', 'bend', 'quarterly', 'saltire', 'pale', 'plain']
-    CH = ['tower', 'key', 'rose', 'mullet', 'crescent', 'sword', 'crown', 'initial']
+    CH = ['lion', 'eagle', 'stag', 'wolf', 'bear', 'griffin', 'tower', 'key', 'rose', 'mullet', 'crown', 'fleur', 'tree', 'initial']
+    POOLS = {'family': ['lion', 'eagle', 'stag', 'bear', 'tree', 'fleur', 'tower', 'key', 'acorn', 'cross', 'thistle', 'shamrock', 'initial', 'boar', 'horse', 'heart'],
+             'fantasy': ['dragon', 'griffin', 'wolf', 'raven', 'phoenix', 'unicorn', 'boar', 'owl', 'swords', 'flame', 'crescent', 'mountain'],
+             'teams': ['lion', 'eagle', 'wolf', 'bear', 'griffin', 'lightning', 'swords', 'mullet', 'horse', 'phoenix'],
+             'wedding': ['heart', 'rose', 'fleur', 'tree', 'laurel', 'stag', 'triquetra', 'sun'],
+             'school': ['owl', 'book', 'lion', 'eagle', 'laurel', 'griffin', 'flame', 'tree'],
+             'gaming': ['wolf', 'dragon', 'raven', 'phoenix', 'lightning', 'swords', 'owl', 'griffin', 'flame']}
 
-    def mk(name, motto, ch=None, div=None):
-        return crest(name, motto, rnd.choice(COLS), rnd.choice(MET), rnd.choice(CMET), div or rnd.choice(DIVS), ch or rnd.choice(CH))
+    def mk(name, motto, ch=None, div=None, pool=None):
+        return crest(name, motto, rnd.choice(COLS), rnd.choice(MET), rnd.choice(CMET), div or rnd.choice(DIVS), ch or rnd.choice(POOLS.get(pool, CH)))
     fam_m = FAMILY_MOTTOS
     fantasy_m = HOUSE_MOTTOS
     themes = [
         ('family', 'Family crest ideas', 'Crests built around a family name, with mottos a family might actually say. Type your own surname into the <a href="/family-crest-generator.html">family crest generator</a> for six more.',
-         [mk(f'The {n} Family', rnd.choice(fam_m)) for n in ['Smith', 'Johnson', 'Williams', 'Brown', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez', 'Wilson', 'Anderson', 'Taylor', 'Thomas', 'Moore', 'Lee', 'Patel']]),
+         [mk(f'The {n} Family', rnd.choice(fam_m), pool='family') for n in ['Smith', 'Johnson', 'Williams', 'Brown', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez', 'Wilson', 'Anderson', 'Taylor', 'Thomas', 'Moore', 'Lee', 'Patel']]),
         ('fantasy', 'Fantasy noble house ideas', 'Sigils for the great houses of a campaign or novel. More in the <a href="/fantasy-house-name-generator.html">house name generator</a>.',
-         [mk(f'House {a}{b}', rnd.choice(fantasy_m)) for a, b in [('Thorn', 'wall'), ('Raven', 'mere'), ('Ash', 'ford'), ('Storm', 'hold'), ('Silver', 'vale'), ('Ember', 'wick'), ('Grey', 'combe'), ('Frost', 'gard'), ('Dusk', 'haven'), ('Iron', 'ridge'), ('Wren', 'bourne'), ('Oak', 'shaw')]]),
+         [mk(f'House {a}{b}', rnd.choice(fantasy_m), pool='fantasy') for a, b in [('Thorn', 'wall'), ('Raven', 'mere'), ('Ash', 'ford'), ('Storm', 'hold'), ('Silver', 'vale'), ('Ember', 'wick'), ('Grey', 'combe'), ('Frost', 'gard'), ('Dusk', 'haven'), ('Iron', 'ridge'), ('Wren', 'bourne'), ('Oak', 'shaw')]]),
         ('teams', 'Sports club and team crest ideas', 'Badges for amateur clubs, Sunday leagues and fantasy leagues. Clubs can get logo and banner files with the <a href="/crest-logo-maker.html">Crest Logo Kit</a>.',
-         [mk(n, m) for n, m in [('Ravensgate FC', 'Ever Onward'), ('Northvale Rovers', 'Run Together'), ('Oakmere Athletic', 'Strength in Unity'), ('Harbor Town Rowing', 'Pull as One'), ('Ironbridge RFC', 'Hold the Line'), ('Westbrook Wanderers', 'Far and Fast'), ('Saltmarsh Cricket Club', 'Steady Hands'), ('Highfield Harriers', 'Swift and True'), ('Kingsford Fantasy League', 'Glory Is Earned'), ('Millbrook Chess Club', 'Think Twice')]]),
+         [mk(n, m, pool='teams') for n, m in [('Ravensgate FC', 'Ever Onward'), ('Northvale Rovers', 'Run Together'), ('Oakmere Athletic', 'Strength in Unity'), ('Harbor Town Rowing', 'Pull as One'), ('Ironbridge RFC', 'Hold the Line'), ('Westbrook Wanderers', 'Far and Fast'), ('Saltmarsh Cricket Club', 'Steady Hands'), ('Highfield Harriers', 'Swift and True'), ('Kingsford Fantasy League', 'Glory Is Earned'), ('Millbrook Chess Club', 'Think Twice')]]),
         ('business', 'Business and brand crest ideas', 'Heritage-style marks for small businesses. See the <a href="/crest-logo-maker.html">crest logo maker</a> for the full brand kit.',
-         [mk(n, m) for n, m in [('Ironhold Brewing Co.', 'Brewed With Patience'), ('Oakmere Coffee', 'First Light'), ('The Copper Key Inn', 'All Are Welcome'), ('Briarwood Books', 'Sapere Aude'), ('Fairhaven Barbers', 'Sharp Since Today'), ('Stonegate Bakery', 'Daily Bread'), ('Ashford Leatherworks', 'Made to Last'), ('Thornfield Distillery', 'Slow and Steady'), ('Wrenbourne Florist', 'Grow Gently'), ('Hartwell Tailors', 'Measure Twice')]]),
+         [mk(n, m, ch=c) for n, m, c in [('Ironhold Brewing Co.', 'Brewed With Patience', 'wheat'), ('Oakmere Coffee', 'First Light', 'sun'), ('The Copper Key Inn', 'All Are Welcome', 'key'), ('Briarwood Books', 'Sapere Aude', 'book'), ('Fairhaven Barbers', 'Sharp Since Today', 'swords'), ('Stonegate Bakery', 'Daily Bread', 'wheat'), ('Ashford Leatherworks', 'Made to Last', 'hammer'), ('Thornfield Distillery', 'Slow and Steady', 'flame'), ('Wrenbourne Florist', 'Grow Gently', 'rose'), ('Hartwell Tailors', 'Measure Twice', 'dividers'), ('Northgate Law', 'Fiat Iustitia', 'scales'), ('Harborview Clinic', 'Care First', 'caduceus')]]),
         ('wedding', 'Wedding and couple crest ideas', 'Joint crests for invitations and wax seals, often split per pale to join two families. More in the <a href="/wedding-crest.html">wedding crest guide</a>.',
-         [mk(n, m, div='perpale') for n, m in [('Rossi & Chen', 'Omnia Vincit Amor'), ('Lena & Arjun', 'Ever Yours'), ('The Okafors', 'Two Hearts, One Home'), ('Kim & Alvarez', 'Together We Rise'), ('Maya & Sam', 'Always'), ('The Novaks', 'Root and Branch'), ('Priya & Daniel', 'Home Is Our Hearth'), ('Bell & Hart', 'Ubi Concordia, Ibi Victoria')]]),
+         [mk(n, m, div='perpale', pool='wedding') for n, m in [('Rossi & Chen', 'Omnia Vincit Amor'), ('Lena & Arjun', 'Ever Yours'), ('The Okafors', 'Two Hearts, One Home'), ('Kim & Alvarez', 'Together We Rise'), ('Maya & Sam', 'Always'), ('The Novaks', 'Root and Branch'), ('Priya & Daniel', 'Home Is Our Hearth'), ('Bell & Hart', 'Ubi Concordia, Ibi Victoria')]]),
         ('school', 'School house crest ideas', 'Crests for classroom and school house systems, named after virtues. See <a href="/school-house-crests.html">school house crests</a>.',
-         [mk(n, m) for n, m in [('House Fortis', 'Audentes Fortuna Iuvat'), ('House Sapientia', 'Sapere Aude'), ('House Caritas', 'Non Sibi Sed Omnibus'), ('House Constantia', 'Per Aspera ad Astra'), ('House Veritas', 'Veritas Vincit'), ('House Spes', 'Dum Spiro Spero'), ('House Honor', 'Facta Non Verba'), ('House Lux', 'Fiat Lux')]]),
+         [mk(n, m, pool='school') for n, m in [('House Fortis', 'Audentes Fortuna Iuvat'), ('House Sapientia', 'Sapere Aude'), ('House Caritas', 'Non Sibi Sed Omnibus'), ('House Constantia', 'Per Aspera ad Astra'), ('House Veritas', 'Veritas Vincit'), ('House Spes', 'Dum Spiro Spero'), ('House Honor', 'Facta Non Verba'), ('House Lux', 'Fiat Lux')]]),
         ('gaming', 'Gaming clan and guild crest ideas', 'Emblems that still read as a small server icon. See <a href="/clan-logo-maker.html">clan and guild logos</a>.',
-         [mk(n, m) for n, m in [('Iron Ravens', 'Swift and Unseen'), ('Night Owls Guild', 'We Rise by Night'), ('Crownbreakers', 'The Crown Is Earned'), ('Starfall', 'Ad Astra'), ('The Ember Pact', 'By Oath and Ember'), ('Wolfsbane Company', 'Steel Remembers'), ('Moonkeepers', 'Watch and Ward'), ('Last Light Guild', 'First Light, Last Stand')]]),
+         [mk(n, m, pool='gaming') for n, m in [('Iron Ravens', 'Swift and Unseen'), ('Night Owls Guild', 'We Rise by Night'), ('Crownbreakers', 'The Crown Is Earned'), ('Starfall', 'Ad Astra'), ('The Ember Pact', 'By Oath and Ember'), ('Wolfsbane Company', 'Steel Remembers'), ('Moonkeepers', 'Watch and Ward'), ('Last Light Guild', 'First Light, Last Stand')]]),
     ]
     total = sum(len(t[3]) for t in themes)
     faqs = [('Can I use one of these crests?', 'Yes. Click "Customize" to open any of them in Crest Studio, change anything you like, and design for free. Buying the files ($9, or $29 for the Logo Kit) gives you print-ready art you can use anywhere.'),
@@ -642,17 +692,22 @@ def ideas():
 
 QUIZ = [
     dict(q='When a friend is in trouble, you are the one who...', w={'wt': 1, 'wc': 2}, a=[
-        ('steps in and stands up for them', {'t': GULES, 'c': 'sword'}),
-        ('keeps their secret safe', {'t': AZURE, 'c': 'key'}),
-        ('makes them laugh until it is better', {'t': VERT, 'c': 'rose'}),
-        ('makes a plan to fix it', {'t': PURPURE, 'c': 'mullet'}),
-        ('stays calm and steady beside them', {'t': SABLE, 'c': 'tower'})]),
+        ('steps in and stands up for them', {'t': GULES, 'c': 'lion'}),
+        ('keeps their secret safe', {'t': AZURE, 'c': 'wolf'}),
+        ('makes them laugh until it is better', {'t': VERT, 'c': 'stag'}),
+        ('makes a plan to fix it', {'t': PURPURE, 'c': 'owl'}),
+        ('stays calm and steady beside them', {'t': SABLE, 'c': 'bear'})]),
     dict(q='Pick the place you would rule from.', w={'wc': 1, 'wd': 1}, a=[
-        ('A castle on a sea cliff', {'c': 'tower', 'd': 'pale'}),
-        ('A harbor town under the moon', {'c': 'crescent', 'd': 'fess'}),
-        ('The great hall of the capital', {'c': 'crown', 'd': 'quarterly'}),
-        ('A manor with a walled rose garden', {'c': 'rose', 'd': 'chevron'}),
-        ('A watchtower where four roads meet', {'c': 'key', 'd': 'saltire'})]),
+        ('A castle on a sea cliff', {'c': 'dragon', 'd': 'pale'}),
+        ('A harbor town under the moon', {'c': 'owl', 'd': 'fess'}),
+        ('The great hall of the capital', {'c': 'lion', 'd': 'quarterly'}),
+        ('A manor with a walled rose garden', {'c': 'stag', 'd': 'chevron'}),
+        ('A watchtower where four roads meet', {'c': 'eagle', 'd': 'saltire'})]),
+    dict(q='Which creature would guard your hall?', w={'wc': 3}, a=[
+        ('A lion, proud and fearless', {'c': 'lion'}), ('A wolf, loyal to its pack', {'c': 'wolf'}),
+        ('An eagle, watching from above', {'c': 'eagle'}), ('A dragon, fierce and rare', {'c': 'dragon'}),
+        ('A stag, calm and graceful', {'c': 'stag'}), ('A bear, strong and protective', {'c': 'bear'}),
+        ('An owl, wise and watchful', {'c': 'owl'})]),
     dict(q='Which matters most to you?', w={'wt': 2}, a=[
         ('Courage', {'t': GULES}), ('Truth and loyalty', {'t': AZURE}), ('Hope and joy', {'t': VERT}),
         ('Justice', {'t': PURPURE}), ('Patience', {'t': MURREY}), ('Staying the same when everything changes', {'t': SABLE})]),
@@ -665,23 +720,23 @@ QUIZ = [
     dict(q='Gold or silver?', w={'wm': 1}, a=[
         ('Gold: warm, generous, a little bold', {'m': OR}), ('Silver: calm, clear, quietly confident', {'m': ARGENT})]),
     dict(q='Pick a time of day.', w={'wc': 1, 'wth': 1}, a=[
-        ('Dawn, before anyone else is up', {'c': 'mullet', 'th': 'ambition'}),
-        ('High noon', {'c': 'sword', 'th': 'courage'}),
-        ('Golden hour at dusk', {'c': 'rose', 'th': 'love'}),
-        ('Midnight', {'c': 'crescent', 'th': 'perseverance'}),
-        ('A long dinner with everyone at the table', {'c': 'crown', 'th': 'family'})]),
+        ('Dawn, before anyone else is up', {'c': 'eagle', 'th': 'ambition'}),
+        ('High noon', {'c': 'lion', 'th': 'courage'}),
+        ('Golden hour at dusk', {'c': 'stag', 'th': 'love'}),
+        ('Midnight', {'c': 'owl', 'th': 'perseverance'}),
+        ('A long dinner with everyone at the table', {'c': 'wolf', 'th': 'family'})]),
     dict(q='What would you most like to be remembered for?', w={'wth': 2}, a=[
         ('Being brave', {'th': 'courage'}), ('Being kind', {'th': 'love'}), ('Being wise', {'th': 'wisdom'}),
         ('Being loyal', {'th': 'family'}), ('Building something great', {'th': 'ambition'}), ('Doing the right thing', {'th': 'honor'})]),
 ]
 ARCHETYPES = {
-    'tower': ('The Protector', 'You hold the line for the people you love. Steady and dependable, you are the one everyone leans on.'),
-    'key': ('The Keeper', 'Trusted with secrets and with people. You guard what matters and know which doors to open.'),
-    'rose': ('The Heart', 'Warm, hopeful and generous with joy. People feel better for having you around.'),
-    'mullet': ('The Dreamer', 'You aim high and pull others up with you: ambition with a sense of wonder.'),
-    'crescent': ('The Night Owl', 'Patient and quietly hopeful. Your best plans come together while others sleep.'),
-    'sword': ('The Champion', 'Brave, direct and fair. You are first to step in when something is wrong.'),
-    'crown': ('The Leader', 'Natural authority and a big table. You bring people together and take responsibility.'),
+    'lion': ('The Lionheart', 'Brave, warm and impossible to ignore. You lead from the front and protect your people.'),
+    'wolf': ('The Wolf', 'Loyal to your pack above everything. You are at your best with your people around you, and fierce when they need you.'),
+    'eagle': ('The Visionary', 'You see the whole picture from above and aim higher than anyone else dares.'),
+    'dragon': ('The Dragonheart', 'Fierce, rare and independent. You guard the people and things you love like treasure.'),
+    'stag': ('The Peacemaker', 'Calm, graceful and kind. You only fight when you have to, and then you do not lose.'),
+    'bear': ('The Guardian', 'Strong, steady and protective. Nobody messes with your family.'),
+    'owl': ('The Sage', 'Wise and watchful. You are the one everyone asks for advice.'),
 }
 
 
@@ -698,7 +753,7 @@ def quiz():
                                           'operatingSystem': 'Any (web browser)', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}}])
     data = {'themes': ['courage', 'perseverance', 'family', 'wisdom', 'ambition', 'honor', 'love'],
             'tinctures': [GULES, AZURE, VERT, PURPURE, SABLE, MURREY], 'divisions': ['chevron', 'bend', 'quarterly', 'fess', 'pale', 'saltire', 'perpale'],
-            'charges': ['tower', 'key', 'rose', 'mullet', 'crescent', 'sword', 'crown'],
+            'charges': ['lion', 'wolf', 'eagle', 'dragon', 'stag', 'bear', 'owl'],
             'archetypes': {k: {'title': t, 'desc': dsc} for k, (t, dsc) in ARCHETYPES.items()},
             'mottos': [{'la': la, 'en': en, 't': t} for la, en, t, _ in MOTTOS if t != 'faith']}
     p['scripts'] = (f'<script type="application/json" id="quiz-data">{json.dumps(data, ensure_ascii=False)}</script>'
@@ -711,9 +766,9 @@ def quiz():
     qs += ('<fieldset class="qstep" data-q><legend>Last one: what name should your house carry?</legend>'
            '<label class="fld"><span>Your name or family name</span><input type="text" maxlength="28" data-name autocomplete="family-name" placeholder="Ashford"></label>'
            '<button class="btn big" type="button" data-finish style="margin-top:14px;width:100%">Reveal my coat of arms</button></fieldset>')
-    arcs = ''.join(f'<li><b>{E(t)}</b> ({ {"mullet": "star"}.get(k, k)}): {E(dsc)}</li>' for k, (t, dsc) in ARCHETYPES.items())
+    arcs = ''.join(f'<li><b>{E(t)}</b> ({k}): {E(dsc)}</li>' for k, (t, dsc) in ARCHETYPES.items())
     body = hero('Free 2-minute quiz', 'What Would Your Coat of Arms Be?',
-                'Seven quick questions about how you live. We turn your answers into a real heraldic crest, with colors, an emblem and a Latin motto chosen for you, and tell you what it all means.',
+                'Eight quick questions about how you live. We turn your answers into a real heraldic crest, with colors, a heraldic beast and a Latin motto chosen for you, and tell you what it all means.',
                 cta_href='#quiz', cta='Start the quiz')
     body += f'''<section class="gen quiz" id="quiz" data-quiz aria-label="Heraldry quiz">
 <div class="friend" data-friend hidden><div class="f-art" data-f-art></div><p>A friend sent you their coat of arms: <b data-f-name></b>. Take the quiz to find yours.</p></div>
@@ -728,9 +783,9 @@ def quiz():
 <p class="center" style="margin-top:10px"><a data-r-buy href="/crest.html">Get it as print files, a certificate and a wallpaper ($9)</a> · <button class="linkish" type="button" data-again>Take it again</button></p>
 </div></section>'''
     body += f'''<section class="sec"><h2 class="gilt">How the quiz works</h2>
-<p>Each answer nudges one part of your crest. Your values choose the field color, using the traditional meanings from heraldry (red for courage, blue for truth and loyalty, green for hope, purple for justice, black for constancy, mulberry for patience). How you face a challenge sets the division, gold or silver sets the metal, and your other answers pick the emblem and the theme of your Latin motto. Your name goes across the top.</p>
+<p>Each answer nudges one part of your crest. Your values choose the field color, using the traditional meanings from heraldry (red for courage, blue for truth and loyalty, green for hope, purple for justice, black for constancy, mulberry for patience). How you face a challenge sets the division, gold or silver sets the metal, and your other answers choose your heraldic beast (lion, wolf, eagle, dragon, stag, bear or owl) and the theme of your Latin motto. Your name goes across the top.</p>
 <p>The meanings come from heraldic writers of the 1500s and 1600s rather than the medieval knights themselves, so treat your result as a bit of fun with real roots. More in the <a href="/heraldry-symbols-and-meanings.html">heraldry meanings guide</a>.</p>
-<h3>The seven archetypes</h3><ul>{arcs}</ul>
+<h3>The seven beasts</h3><ul>{arcs}</ul>
 <p class="center" style="margin-top:22px"><a class="btn big" href="#quiz">Take the quiz</a></p></section>'''
     body += faq_html(faqs)
     write_page(p, body)

@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
+Allow: /api/og
 Disallow: /api/
+Disallow: /press/
 
 Sitemap: https://usurp.games/sitemap.xml

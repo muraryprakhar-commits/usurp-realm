@@ -44,8 +44,8 @@ const initialOf = name => {
 const W = 1000, HT = 1250, SX = 200, SY = 175, SC = 6;
 const FONT_D = "'Cinzel Decorative', Georgia, serif", FONT = "'Cinzel', Georgia, serif";
 function fitSize(s, base, maxChars) { return s.length <= maxChars ? base : Math.max(22, Math.round(base * maxChars / s.length)); }
-function layout(d, uid) {
-  uid = uid || 'a';
+function layout(d, uid, opts) {
+  uid = uid || 'a'; opts = opts || {};
   const art = [];
   if (d.bg === 'parch') {
     art.push(`<rect width="${W}" height="${HT}" fill="#efe1bd"/>`,
@@ -64,16 +64,16 @@ function layout(d, uid) {
       <path d="${SHIELD}" fill="none" stroke="#d4af5a" stroke-width="4"/>
       <path d="${SHIELD}" fill="none" stroke="#5c4417" stroke-width="1" transform="translate(5 5) scale(.9)"/>
     </g>`);
-  art.push(`<g stroke="#5c4417" stroke-width="3">
+  if (!opts.noRibbon) art.push(`<g stroke="#5c4417" stroke-width="3">
     <path d="M120 1010L190 985L190 1085L120 1110L150 1060Z" fill="#c9b07a"/>
     <path d="M880 1010L810 985L810 1085L880 1110L850 1060Z" fill="#c9b07a"/>
     <path d="M180 975Q500 935 820 975V1075Q500 1035 180 1075Z" fill="#efe1bd"/></g>`);
   const ink = '#2a1a0e';
   const texts = [];
   const nm = String(d.name || '').trim();
-  if (nm) texts.push({ s:nm, x:W / 2, y:130, size:fitSize(nm, 64, 18), font:FONT_D, weight:900, fill:ink, stroke:null });
+  if (nm && !opts.noName) texts.push({ s:nm, x:W / 2, y:130, size:fitSize(nm, 64, 18), font:FONT_D, weight:900, fill:ink, stroke:null });
   const mt = String(d.motto || '').trim();
-  if (mt) texts.push({ s:mt, x:W / 2, y:1030, size:fitSize(mt, 40, 26), font:FONT, weight:700, fill:'#7a1020', stroke:null });
+  if (mt && !opts.noRibbon) texts.push({ s:mt, x:W / 2, y:1030, size:fitSize(mt, 40, 26), font:FONT, weight:700, fill:'#7a1020', stroke:null });
   if (d.ch === 'initial') texts.push({ s:initialOf(nm), x:SX + 50 * SC, y:SY + 80 * SC, size:46 * SC, font:FONT_D, weight:900, fill:d.c, stroke:{ c:STROKE, w:6 } });
   return { art:art.join(''), texts };
 }
@@ -103,7 +103,59 @@ function sanitize(d) {
     bg: d.bg === 'clear' ? 'clear' : 'parch',
   };
 }
-const api = { TINCTURES, DIVISIONS, CHARGES, DEFAULT, layout, textSvg, svg, enc, studioUrl, sanitize, xesc };
+/* ---------- blazon and meaning (traditional attributions from later heraldic writers, offered as inspiration) ---------- */
+const TNAME = { '#b3242f':'Gules', '#7a1020':'Murrey', '#1f4e8a':'Azure', '#1f5f3d':'Vert', '#5a2a6e':'Purpure', '#1d1915':'Sable', '#d4af5a':'Or', '#e8e4d8':'Argent', '#f3dc92':'Or' };
+const PLAIN = { Gules:'red', Murrey:'mulberry', Azure:'blue', Vert:'green', Purpure:'purple', Sable:'black', Or:'gold', Argent:'silver' };
+const METALS = ['Or', 'Argent'];
+const TMEAN = { Or:'generosity', Argent:'peace and sincerity', Gules:'courage and strength', Azure:'truth and loyalty', Vert:'hope and joy', Purpure:'majesty and justice', Sable:'constancy', Murrey:'patience in battle' };
+const DMEAN = {
+  chevron:'The chevron is often read as protection, or the roof of a home.',
+  fess:'The fess recalls a military belt: readiness to serve.',
+  pale:'The pale is often read as a palisade: strength and defense.',
+  bend:"The bend recalls a knight's sash.",
+  saltire:'The saltire is the cross of Saint Andrew, often said to stand for resolution.',
+  perpale:'Per pale sets two halves side by side, the old way of uniting two families.',
+  quarterly:'Quarterly divides the shield into four parts of one story.',
+  plain:'A single field is the simplest kind of arms, and among the oldest.',
+};
+const CMEAN = {
+  tower:'The tower stands for defense and the safety of a home.', sword:'The sword stands for justice and honor.',
+  crown:'The crown stands for authority and victory.', key:'The key stands for guardianship and trust.',
+  crescent:'The crescent stands for hope of greater glory.', rose:'The rose stands for hope and joy.',
+  mullet:'The star marks one who shines.', initial:'The initial makes the arms unmistakably yours.',
+};
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+const tn = hex => TNAME[String(hex).toLowerCase()] || 'Proper';
+function blazon(d0) {
+  const d = sanitize(d0), F = tn(d.f), D = tn(d.d), C = tn(d.c);
+  const ORD = { fess:'fess', bend:'bend', chevron:'chevron', saltire:'saltire', pale:'pale' };
+  let field = F;
+  if (d.div === 'perpale') field = `Per pale ${F} and ${D}`;
+  else if (d.div === 'quarterly') field = `Quarterly ${F} and ${D}`;
+  else if (ORD[d.div]) field = `${F}, a ${ORD[d.div]} ${D}`;
+  const ini = (String(d.name || '').replace(/^(house|clan|family|the)\s+/i, '').trim().match(/[A-Za-z0-9]/) || ['?'])[0].toUpperCase();
+  const CH = { tower:`a tower ${C}`, sword:`a sword erect ${C}`, crown:`a crown ${C}`, key:`a key ${C}`, crescent:`a decrescent ${C}`, rose:`a rose ${C} seeded Or`, mullet:`a mullet ${C}`, initial:`the letter ${ini} ${C}` };
+  if (!CH[d.ch]) return field + '.';
+  return `${field}, ${ORD[d.div] ? 'overall ' : ''}${CH[d.ch]}.`;
+}
+function meaning(d0) {
+  const d = sanitize(d0), F = tn(d.f), D = tn(d.d);
+  const parts = [];
+  if (d.div === 'plain' || F === D) parts.push(`${PLAIN[F] ? F + ' (' + PLAIN[F] + ')' : F} stands for ${TMEAN[F] || 'whatever you choose'}.`);
+  else parts.push(`${F} (${PLAIN[F] || F}) stands for ${TMEAN[F] || 'whatever you choose'}, and ${D} (${PLAIN[D] || D}) for ${TMEAN[D] || 'whatever you choose'}.`);
+  parts.push(DMEAN[d.div] || '');
+  if (CMEAN[d.ch]) parts.push(CMEAN[d.ch]);
+  return parts.filter(Boolean).join(' ');
+}
+// One line, only when the design breaks the rule of tincture (metal on metal, color on color).
+function tinctureNote(d0) {
+  const d = sanitize(d0), F = tn(d.f), D = tn(d.d), C = tn(d.c);
+  const isM = t => METALS.includes(t);
+  if (d.div !== 'plain' && F !== D && isM(F) === isM(D)) return `Heralds' rule: a metal (gold, silver) should sit against a color. ${cap(PLAIN[F] || F)} with ${PLAIN[D] || D} pairs two ${isM(F) ? 'metals' : 'colors'}, so it reads less clearly from a distance.`;
+  if (d.div === 'plain' && d.ch !== 'none' && isM(F) === isM(C)) return `Heralds' rule: a metal (gold, silver) should sit against a color. This emblem and field are both ${isM(F) ? 'metals' : 'colors'}, so it reads less clearly from a distance.`;
+  return '';
+}
+const api = { TINCTURES, DIVISIONS, CHARGES, DEFAULT, layout, textSvg, svg, enc, studioUrl, sanitize, xesc, blazon, meaning, tinctureNote };
 if (typeof module !== 'undefined' && module.exports) module.exports = api;
 else root.CrestCore = api;
 })(typeof window !== 'undefined' ? window : this);

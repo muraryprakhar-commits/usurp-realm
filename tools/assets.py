@@ -58,7 +58,11 @@ OG = {
     'houses': ('Fantasy House Name Generator', 'A name, motto and sigil in one click', crest('House Duskmere', 'We Rise by Night', PURPURE, ARGENT, ARGENT, 'perpale', 'crescent')),
     'meanings': ('Heraldry Symbols and Meanings', 'Colors, divisions and emblems explained', crest('House Valemont', 'Veritas Vincit', GULES, OR, GOLD_LIGHT, 'quarterly', 'crown')),
     'templates': ('Free Coat of Arms Templates', 'Printable shields and a family crest worksheet', None),
+    'surname': ('Family Crest Generator', 'Six crests for your last name in one click', crest('The Carter Family', 'Together We Rise', AZURE, OR, GOLD_LIGHT, 'chevron', 'initial')),
 }
+from usecases import SPECS
+for _sp in SPECS:
+    OG.setdefault(_sp['og'], (_sp['h1'], _sp['blurb'], _sp['examples'][0]))
 
 
 def og_html(title, sub, art):

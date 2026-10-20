@@ -7,6 +7,7 @@ from urllib.parse import quote
 
 sys.path.insert(0, os.path.dirname(__file__))
 from data import *  # noqa
+from usecases import SPECS
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = 'https://usurp.games'
@@ -22,7 +23,7 @@ def render(items):
     return json.loads(out)
 
 
-NAV = [('/crest.html', 'Studio'), ('/latin-motto-generator.html', 'Mottos'),
+NAV = [('/crest.html', 'Studio'), ('/family-crest-generator.html', 'By last name'), ('/family-crest-gift.html', 'Gifts'), ('/latin-motto-generator.html', 'Mottos'),
        ('/fantasy-house-name-generator.html', 'House names'),
        ('/heraldry-symbols-and-meanings.html', 'Meanings'), ('/coat-of-arms-template.html', 'Templates')]
 
@@ -52,14 +53,24 @@ def header(slug):
     return f'<header class="site-head"><div class="head-in"><a class="brand" href="/crest.html"><span class="gilt">CREST STUDIO</span></a><nav class="nav" aria-label="Site">{links}</nav></div></header>'
 
 
+# Every guide page: (slug, short title, one-line blurb). Spec pages from usecases.py are appended automatically.
+REGISTRY = [
+    ('family-crest-generator.html', 'Crest by last name', 'Six crests for your surname in one click'),
+    ('family-crest-gift.html', 'Family crest gift', 'A personal gift with a certificate'),
+    ('family-crest-maker.html', 'Family crest maker', 'A crest that tells your family story'),
+    ('dnd-coat-of-arms-generator.html', 'D&amp;D coat of arms', 'Noble houses, guilds and orders'),
+    ('wedding-crest.html', 'Wedding crest', 'A joint crest for invitations'),
+    ('clan-logo-maker.html', 'Clan and guild logos', 'Emblems for gaming groups'),
+    ('school-house-crests.html', 'School house crests', 'Four houses for your classroom'),
+    ('latin-motto-generator.html', 'Latin motto generator', '50+ mottos with translations'),
+    ('fantasy-house-name-generator.html', 'House name generator', 'A name, motto and sigil in one click'),
+    ('heraldry-symbols-and-meanings.html', 'Heraldry meanings', 'What colors and emblems stand for'),
+    ('coat-of-arms-template.html', 'Printable templates', 'Free blank shields and worksheets'),
+]
+
+
 def footer():
-    allp = [('/crest.html', 'Coat of arms maker'), ('/family-crest-maker.html', 'Family crest maker'),
-            ('/dnd-coat-of-arms-generator.html', 'D&amp;D coat of arms'), ('/wedding-crest.html', 'Wedding crest'),
-            ('/clan-logo-maker.html', 'Clan and guild logos'), ('/school-house-crests.html', 'School house crests'),
-            ('/latin-motto-generator.html', 'Latin motto generator'),
-            ('/fantasy-house-name-generator.html', 'House name generator'),
-            ('/heraldry-symbols-and-meanings.html', 'Heraldry meanings'),
-            ('/coat-of-arms-template.html', 'Free printable templates')]
+    allp = [('/crest.html', 'Coat of arms maker')] + [('/' + s, t) for s, t, _ in REGISTRY]
     links = ''.join(f'<a href="{h}">{t}</a>' for h, t in allp)
     return f'''<footer class="site-foot"><nav class="foot-links" aria-label="Crest Studio pages">{links}</nav>
 <p><a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/refunds.html">Refunds</a> · <a href="mailto:hello@usurp.games">hello@usurp.games</a></p>
@@ -88,16 +99,7 @@ def faq_ld(faqs):
 
 
 def related(exclude):
-    items = [('/family-crest-maker.html', 'Family crest maker', 'A crest that tells your family story'),
-             ('/dnd-coat-of-arms-generator.html', 'D&amp;D coat of arms', 'Noble houses, guilds and orders'),
-             ('/wedding-crest.html', 'Wedding crest', 'A joint crest for invitations'),
-             ('/clan-logo-maker.html', 'Clan and guild logos', 'Emblems for gaming groups'),
-             ('/school-house-crests.html', 'School house crests', 'Four houses for your classroom'),
-             ('/latin-motto-generator.html', 'Latin motto generator', '50+ mottos with translations'),
-             ('/fantasy-house-name-generator.html', 'House name generator', 'A name, motto and sigil in one click'),
-             ('/heraldry-symbols-and-meanings.html', 'Heraldry meanings', 'What colors and emblems stand for'),
-             ('/coat-of-arms-template.html', 'Printable templates', 'Free blank shields and worksheets')]
-    cells = ''.join(f'<a href="{h}"><b>{t}</b><span>{s}</span></a>' for h, t, s in items if h != '/' + exclude)
+    cells = ''.join(f'<a href="/{h}"><b>{t}</b><span>{s}</span></a>' for h, t, s in REGISTRY if h != exclude)
     return f'<section class="sec"><h2 class="gilt">More free heraldry tools</h2><div class="related">{cells}</div></section>'
 
 
@@ -120,7 +122,7 @@ def hero(eyebrow, h1, lede, cta_href='/crest.html', cta='Design yours free', sec
 <p class="lede">{lede}</p><div class="cta-row"><a class="btn big" href="{cta_href}">{cta}</a>{s}</div></section>'''
 
 
-PRICE_NOTE = 'Designing is free and needs no account. When you love it, $9 buys the print-ready files: a 4000 px PNG, a 1200 px PNG and an SVG vector, yours to use anywhere, personal or commercial.'
+PRICE_NOTE = 'Designing is free and needs no account. When you love it, $9 gets the whole set: print-ready art (4000 px PNG and SVG), a certificate of arms explaining its meaning, a profile picture and a phone wallpaper, yours to use anywhere.'
 
 
 def ld_base(p, extra=None):
@@ -505,6 +507,71 @@ def templates():
     write_page(p, body)
 
 
+FAMILY_MOTTOS = ['Together We Rise', 'Root and Branch', 'Faithful in All Things', 'Ever Onward', 'Home Is Our Hearth',
+                 'Hold Fast', 'Kindness Is Our Strength', 'Per Aspera ad Astra', 'Fortes Fortuna Adiuvat', 'Ex Unitate Vires',
+                 'Semper Fidelis', 'Ubi Concordia, Ibi Victoria', 'Labor Omnia Vincit', 'Dum Spiro Spero', 'Stand Together',
+                 'By Love and Labor', 'Steadfast and True', 'Faith Before Fear']
+
+
+def surname():
+    slug = 'family-crest-generator.html'
+    faqs = [
+        ('Is this the official coat of arms for my last name?', 'No. In English and Scottish heraldry, arms belong to one person and their descendants, not to everyone who shares a surname. These are original designs for your family, which you are free to use and change. <a href="/family-crest-maker.html">Read more about surname crests</a>.'),
+        ('Why do I get the same designs for the same name?', 'The generator is seeded by your last name, so "Okafor" always starts with the same six ideas and you can share the link. Click "Show six more" for new ones.'),
+        ('Can I change a design I like?', 'Yes. Click "Customize" to open it in Crest Studio and change any color, division, emblem or the motto. Designing is free.'),
+        ('What does the $9 include?', 'Print-ready art (a 4000 px PNG, a web PNG and an SVG vector), a certificate of arms with its blazon and meaning, a 1080 px profile picture and a phone wallpaper.'),
+    ]
+    p = dict(slug=slug, h1='Family Crest Generator by Last Name', og='surname', og_title='Family Crest Generator: six crests for your last name',
+             title='Family Crest Generator by Last Name: Free Coat of Arms Ideas | Crest Studio',
+             desc='Type your last name and get six original family crest designs in one click, each with its heraldic blazon. Free to customize; $9 for print-ready files and a certificate.')
+    tool_ld = {'@type': 'WebApplication', 'name': 'Family Crest Generator', 'url': f'{SITE}/{slug}', 'applicationCategory': 'DesignApplication',
+               'operatingSystem': 'Any (web browser)', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}}
+    p['ld'] = ld_base(p, [faq_ld(faqs), tool_ld])
+    p['scripts'] = (f'<script type="application/json" id="fam-data">{json.dumps({"m": FAMILY_MOTTOS})}</script>'
+                    '<script src="/crest-core.js" defer></script><script src="/family-gen.js" defer></script>')
+    ex = [crest('The Carter Family', 'Together We Rise', AZURE, OR, GOLD_LIGHT, 'chevron', 'initial'),
+          crest('The Carter Family', 'Root and Branch', VERT, ARGENT, GOLD_LIGHT, 'perpale', 'key'),
+          crest('The Carter Family', 'Hold Fast', SABLE, OR, OR, 'fess', 'tower'),
+          crest('The Carter Family', 'Per Aspera ad Astra', PURPURE, OR, GOLD_LIGHT, 'bend', 'mullet'),
+          crest('The Carter Family', 'Faithful in All Things', GULES, OR, ARGENT, 'quarterly', 'rose'),
+          crest('The Carter Family', 'Ever Onward', MURREY, ARGENT, ARGENT, 'saltire', 'crescent')]
+    body = hero('Free tool', 'Family Crest Generator by Last Name',
+                'Type your last name and get six original family crests in one click. Each one follows real heraldic rules, comes with its blazon, and opens in a free editor so you can make it yours.',
+                cta_href='#generator', cta='Try it with your name')
+    body += '''<section class="gen" id="generator" aria-label="Family crest generator">
+<form class="surname-form" data-form onsubmit="return false"><label class="fld"><span>Your last name</span><input type="text" maxlength="30" data-surname autocomplete="family-name" placeholder="Carter"></label>
+<button class="btn" type="submit" data-go>Show my crests</button></form>
+<p class="center muted-s" data-status>Showing ideas for "Carter". Type your own name above.</p></section>'''
+    body += '<div data-results>' + gallery(ex, 'sur', 'Customize') + '</div>'
+    body += '<p class="center"><button class="btn ghost" type="button" data-more>Show six more</button></p>'
+    body += '''<section class="sec"><h2 class="gilt">How it works</h2>
+<p>The generator combines the building blocks of real heraldry: a field color, a division in a contrasting metal (gold or silver), one emblem and a motto. It always follows the rule of tincture, so every design reads clearly from across a room, and it is seeded by your name, so the same name gives the same first six ideas and you can share the link with family.</p>
+<h3>Choosing between designs</h3><ul>
+<li><b>Go by color first.</b> Blue for loyalty, green for hope, red for courage, black for constancy, purple for justice. The <a href="/heraldry-symbols-and-meanings.html">meanings guide</a> has the full list.</li>
+<li><b>Then the emblem.</b> A tower for a family that built a home, a key for trust, a rose for love, a star for big ambitions, your initial for something unmistakably yours.</li>
+<li><b>Then make it personal.</b> Open your favorite in Crest Studio and swap in a motto your family actually says, or pick one from the <a href="/latin-motto-generator.html">Latin motto generator</a>.</li></ul>
+<div class="callout"><b>Why not just look up "our" crest?</b> Sites that sell a coat of arms for every surname are showing arms that belonged to one family line, which may have no connection to yours. Designing your own is honest, and it can say something true about your family today.</div>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html">Open the full studio</a></p></section>'''
+    body += faq_html(faqs)
+    write_page(p, body)
+
+
+def spec_page(sp):
+    p = dict(slug=sp['slug'], h1=sp['h1'], og=sp['og'], og_title=sp['og_title'], title=sp['title'], desc=sp['desc'])
+    p['ld'] = ld_base(p, [faq_ld(sp['faqs']), APP_LD])
+    body = hero(sp['eyebrow'], sp.get('h1_html', E(sp['h1'])), sp['lede'] + ' ' + PRICE_NOTE,
+                cta=sp.get('cta', 'Design yours free'), second=sp.get('second'))
+    body += gallery(sp['examples'], 'x' + sp['og'][:4])
+    body += sp['body']
+    body += faq_html(sp['faqs'])
+    write_page(p, body)
+
+
+for _sp in SPECS:
+    if not any(r[0] == _sp['slug'] for r in REGISTRY):
+        REGISTRY.append((_sp['slug'], _sp['short'], _sp['blurb']))
+
+
 def sitemap_and_llms():
     pages = [('crest.html', '1.0')] + [(s, '0.8') for s, _, _ in PAGES_INDEX] + [('', '0.5'), ('terms.html', '0.2'), ('privacy.html', '0.2'), ('refunds.html', '0.2')]
     urls = ''.join(f'<url><loc>{SITE}/{s}</loc><lastmod>{TODAY}</lastmod><priority>{pr}</priority></url>\n' for s, pr in pages)
@@ -522,7 +589,9 @@ def sitemap_and_llms():
 
 
 if __name__ == '__main__':
-    for fn in (family, dnd, wedding, clan, school, mottos, houses, meanings, templates):
+    for fn in (surname, family, dnd, wedding, clan, school, mottos, houses, meanings, templates):
         fn()
+    for sp in SPECS:
+        spec_page(sp)
     sitemap_and_llms()
     print('built', len(PAGES_INDEX), 'pages:', ', '.join(s for s, _, _ in PAGES_INDEX))

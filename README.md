@@ -36,6 +36,9 @@ Crest Studio (`crest.html`) is the only real paid product. These free pages exis
 - `crest-core.js` is a copy of the Studio's crest art for these pages. Keep it in step with `crest-studio.js`.
 - Studio links: `/crest.html?d=CODE` opens a design, `?motto=` and `?name=` fill just that field. `/crest` redirects to the Studio (`vercel.json`).
 - Studio "Save a free preview image" gives an 800 px watermarked PNG that credits usurp.games, so shared previews bring people back.
+- The $9 package (after payment): 4000 px PNG, 1200 px PNG, SVG, certificate of arms (US Letter 300 dpi, blazon + meaning + optional gift line), 1080 px profile picture, phone wallpaper. Blazon and meaning come from `crest-core.js` (`blazon`, `meaning`, `tinctureNote`), which `crest.html` also loads.
+- `family-crest-generator.html` (`family-gen.js`): six crests seeded by a last name, shareable as `?name=`.
+- New guide pages are specs in `tools/usecases.py` (rules at the top of that file). Topic ideas waiting to be built are in `tools/backlog.md`.
 
 Rebuild after editing content (`tools/` is not deployed, see `.vercelignore`):
 

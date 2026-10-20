@@ -55,7 +55,7 @@ const initialOf = name => {
    Text is returned separately so the PNG can draw it with real fonts on a canvas. */
 const W = 1000, HT = 1250, SX = 200, SY = 175, SC = 6;
 const FONT_D = "'Cinzel Decorative', Georgia, serif", FONT = "'Cinzel', Georgia, serif";
-function layout(d, uid = 'a') {
+function layout(d, uid = 'a', opts = {}) {
   const art = [];
   if (d.bg === 'parch') {
     art.push(`<rect width="${W}" height="${HT}" fill="#efe1bd"/>`,
@@ -76,16 +76,16 @@ function layout(d, uid = 'a') {
       <path d="${SHIELD}" fill="none" stroke="#5c4417" stroke-width="1" transform="translate(5 5) scale(.9)"/>
     </g>`);
   // motto ribbon
-  art.push(`<g stroke="#5c4417" stroke-width="3">
+  if (!opts.noRibbon) art.push(`<g stroke="#5c4417" stroke-width="3">
     <path d="M120 1010L190 985L190 1085L120 1110L150 1060Z" fill="#c9b07a"/>
     <path d="M880 1010L810 985L810 1085L880 1110L850 1060Z" fill="#c9b07a"/>
     <path d="M180 975Q500 935 820 975V1075Q500 1035 180 1075Z" fill="#efe1bd"/></g>`);
   const ink = '#2a1a0e';
   const texts = [];
   const nm = String(d.name || '').trim();
-  if (nm) texts.push({ s:nm, x:W / 2, y:130, size:fitSize(nm, 64, 18), font:FONT_D, weight:900, fill:ink, stroke:null });
+  if (nm && !opts.noName) texts.push({ s:nm, x:W / 2, y:130, size:fitSize(nm, 64, 18), font:FONT_D, weight:900, fill:ink, stroke:null });
   const mt = String(d.motto || '').trim();
-  if (mt) texts.push({ s:mt, x:W / 2, y:1030, size:fitSize(mt, 40, 26), font:FONT, weight:700, fill:'#7a1020', stroke:null });
+  if (mt && !opts.noRibbon) texts.push({ s:mt, x:W / 2, y:1030, size:fitSize(mt, 40, 26), font:FONT, weight:700, fill:'#7a1020', stroke:null });
   if (d.ch === 'initial') texts.push({ s:initialOf(nm), x:SX + 50 * SC, y:SY + 80 * SC, size:46 * SC, font:FONT_D, weight:900, fill:d.c, stroke:{ c:STROKE, w:6 } });
   return { art:art.join(''), texts };
 }
@@ -131,11 +131,33 @@ try { D = sanitize(JSON.parse(localStorage.getItem(KEY)) || DEFAULT); } catch (e
 { const q = new URLSearchParams(location.search), m = q.get('motto'), n = q.get('name');
   if (m) D.motto = m.slice(0, 48); if (n) D.name = n.slice(0, 40); }
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) {} };
+const GKEY = 'usurp-crest-gift';
+const gift = () => { try { const g = JSON.parse(localStorage.getItem(GKEY)) || {}; return { to:String(g.to || '').slice(0, 40), from:String(g.from || '').slice(0, 40) }; } catch (e) { return { to:'', from:'' }; } };
 
 function preview() {
   const L = layout(D, 'p');
   $('[data-preview]').innerHTML = `<svg viewBox="0 0 ${W} ${HT}" role="img" aria-label="Preview of your coat of arms">${L.art}${L.texts.map(textSvg).join('')}</svg>`;
   $('[data-price]').textContent = `$${PRICE}`;
+  extras();
+}
+// Live blazon, meaning and the thumbnails of everything in the $9 package.
+function extras() {
+  const CC = window.CrestCore;
+  const m = $('[data-meaning]');
+  if (m && CC) {
+    m.querySelector('[data-blazon]').textContent = CC.blazon(D);
+    m.querySelector('[data-mean]').textContent = CC.meaning(D);
+    const n = CC.tinctureNote(D), nn = m.querySelector('[data-tnote]'); nn.textContent = n; nn.hidden = !n;
+  }
+  const inc = $('[data-inc]');
+  if (!inc) return;
+  const full = (u, d, o) => { const L = layout(d, u, o); return `<svg viewBox="0 0 ${W} ${HT}" aria-hidden="true">${L.art}${L.texts.map(textSvg).join('')}</svg>`; };
+  const shield = (u, vb) => { const L = layout({ ...D, bg:'clear' }, u, { noName:true, noRibbon:true }); return `<svg viewBox="${vb}" aria-hidden="true">${L.art}${L.texts.map(textSvg).join('')}</svg>`; };
+  inc.querySelector('[data-t-print]').innerHTML = full('t1', D);
+  inc.querySelector('[data-t-cert]').innerHTML = `<div class="mini-cert"><span class="mc-k">The arms of</span><span class="mc-n"></span>${full('t2', { ...D, bg:'clear' }, { noName:true })}<span class="mc-l"></span><span class="mc-l"></span></div>`;
+  inc.querySelector('.mc-n').textContent = String(D.name).trim() || 'Your house';
+  inc.querySelector('[data-t-avatar]').innerHTML = shield('t3', '90 120 820 820');
+  inc.querySelector('[data-t-wall]').innerHTML = shield('t4', '60 150 880 880');
 }
 function swatches(el, key) {
   el.innerHTML = TINCTURES.map(([n, c]) => `<button type="button" class="sw" style="--sw:${c}" data-k="${key}" data-v="${c}" aria-label="${n}" title="${n}"></button>`).join('');
@@ -175,6 +197,12 @@ function wire() {
     } catch (e) { note(url); }
     if (window.clarity) try { window.clarity('event', 'crest_share'); } catch (e) {}
   };
+  const gt = $('[data-g-to]'), gf = $('[data-g-from]');
+  if (gt && gf) {
+    const G = gift(); gt.value = G.to; gf.value = G.from;
+    const sg = () => { try { localStorage.setItem(GKEY, JSON.stringify({ to:gt.value.slice(0, 40), from:gf.value.slice(0, 40) })); } catch (e) {} };
+    gt.oninput = sg; gf.oninput = sg;
+  }
   const free = $('[data-free]');
   if (free) free.onclick = async () => {
     try { await downloadPng({ ...D }, 800, true); note('Preview saved. Share it anywhere. The $9 download is full size with no watermark.'); }
@@ -243,6 +271,91 @@ async function downloadPng(d, size, preview = false) {
   saveBlob(blob, preview ? `${fileBase(d)}-crest-preview.png` : `${fileBase(d)}-coat-of-arms-${size}px.png`);
 }
 
+/* ============ the rest of the $9 package: certificate, profile picture, phone wallpaper ============ */
+const FONT_B = "'IM Fell English', Georgia, serif";
+async function fontsReady() {
+  const f = [`900 64px 'Cinzel Decorative'`, `700 40px 'Cinzel'`, `40px 'IM Fell English'`, `italic 40px 'IM Fell English'`];
+  for (const x of f) { try { await document.fonts.load(x); } catch (e) {} }
+}
+function canvasOf(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
+// Draws the crest at (x, y), scale k, in artwork units: shapes as an image, words as canvas text with the real fonts.
+async function drawCrest(ctx, d, x, y, k, opts = {}) {
+  const L = layout(d, 'z', opts);
+  const img = new Image();
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${HT}" width="${Math.round(W * k)}" height="${Math.round(HT * k)}">${L.art}</svg>`;
+  await new Promise((ok, bad) => { img.onload = ok; img.onerror = bad; img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); });
+  ctx.drawImage(img, x, y, W * k, HT * k);
+  ctx.save(); ctx.translate(x, y); ctx.scale(k, k); ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+  for (const t of L.texts) {
+    ctx.font = `${t.weight} ${t.size}px ${t.font}`;
+    if (t.stroke) { ctx.lineWidth = t.stroke.w * 2; ctx.strokeStyle = t.stroke.c; ctx.lineJoin = 'round'; ctx.strokeText(t.s, t.x, t.y); }
+    ctx.fillStyle = t.fill; ctx.fillText(t.s, t.x, t.y);
+  }
+  ctx.restore();
+}
+function wrapLines(ctx, text, maxW) {
+  const out = []; let cur = '';
+  for (const w of String(text).split(/\s+/)) { const t = cur ? cur + ' ' + w : w; if (cur && ctx.measureText(t).width > maxW) { out.push(cur); cur = w; } else cur = t; }
+  if (cur) out.push(cur); return out;
+}
+function fitText(ctx, text, fontAt, size, maxW, min) { let z = size; ctx.font = fontAt(z); while (z > min && ctx.measureText(text).width > maxW) { z -= 4; ctx.font = fontAt(z); } }
+function spaced(ctx, text, x, y, px) { if ('letterSpacing' in ctx) { ctx.letterSpacing = px + 'px'; ctx.fillText(text, x, y); ctx.letterSpacing = '0px'; } else ctx.fillText(text, x, y); }
+const toBlob = cv => new Promise(r => cv.toBlob(r, 'image/png'));
+
+async function downloadCertificate(d, g) {
+  await fontsReady();
+  const CC = window.CrestCore, CW = 2550, CHh = 3300, cv = canvasOf(CW, CHh), ctx = cv.getContext('2d');   // US Letter at 300 dpi
+  ctx.fillStyle = '#efe1bd'; ctx.fillRect(0, 0, CW, CHh);
+  ctx.strokeStyle = '#9c7a45'; ctx.lineWidth = 10; ctx.strokeRect(70, 70, CW - 140, CHh - 140);
+  ctx.lineWidth = 3; ctx.strokeRect(100, 100, CW - 200, CHh - 200);
+  ctx.strokeStyle = '#d4af5a'; ctx.lineWidth = 2; ctx.strokeRect(118, 118, CW - 236, CHh - 236);
+  ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+  ctx.fillStyle = '#7a1020'; ctx.font = `700 54px ${FONT}`; spaced(ctx, 'THE ARMS OF', CW / 2, 300, 14);
+  const nm = String(d.name).trim() || 'Your House';
+  ctx.fillStyle = '#2a1a0e'; fitText(ctx, nm, z => `900 ${z}px ${FONT_D}`, 140, 2100, 64); ctx.fillText(nm, CW / 2, 450);
+  ctx.strokeStyle = '#9c7a45'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(CW / 2 - 420, 520); ctx.lineTo(CW / 2 + 420, 520); ctx.stroke();
+  await drawCrest(ctx, { ...d, bg:'clear' }, (CW - W * 1.4) / 2, 345, 1.4, { noName:true });   // shield top near y 640, ribbon ends near y 1900
+  let y = 2040;
+  ctx.fillStyle = '#7a1020'; ctx.font = `700 40px ${FONT}`; spaced(ctx, 'BLAZON', CW / 2, y, 10); y += 86;
+  ctx.fillStyle = '#2a1a0e'; ctx.font = `italic 64px ${FONT_B}`;
+  for (const ln of wrapLines(ctx, CC ? CC.blazon(d) : '', 1950)) { ctx.fillText(ln, CW / 2, y); y += 78; }
+  y += 36; ctx.fillStyle = '#7a1020'; ctx.font = `700 40px ${FONT}`; spaced(ctx, 'WHAT IT MEANS', CW / 2, y, 10); y += 80;
+  ctx.fillStyle = '#4a3420'; ctx.font = `50px ${FONT_B}`;
+  for (const ln of wrapLines(ctx, CC ? CC.meaning(d) : '', 1950)) { ctx.fillText(ln, CW / 2, y); y += 64; }
+  const date = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+  const line = [g.to && `Presented to ${g.to}`, g.from && `by ${g.from}`].filter(Boolean).join(' ');
+  y = Math.max(y + 90, 2780);
+  ctx.fillStyle = '#2a1a0e';
+  if (line) { fitText(ctx, line, z => `700 ${z}px ${FONT}`, 52, 2100, 30); ctx.fillText(line, CW / 2, y); y += 70; ctx.font = `46px ${FONT_B}`; ctx.fillText(date, CW / 2, y); }
+  else { ctx.font = `48px ${FONT_B}`; ctx.fillText(`Designed ${date}`, CW / 2, y); }
+  ctx.fillStyle = '#8a6a3a'; ctx.font = `32px ${FONT_B}`;
+  ctx.fillText('Original heraldic artwork, not an official grant of arms. Designed at usurp.games', CW / 2, CHh - 150);
+  saveBlob(await toBlob(cv), `${fileBase(d)}-certificate-of-arms.png`);
+}
+async function downloadAvatar(d) {
+  await fontsReady();
+  const S = 1080, cv = canvasOf(S, S), ctx = cv.getContext('2d');
+  if (d.bg !== 'clear') { ctx.fillStyle = '#efe1bd'; ctx.fillRect(0, 0, S, S); }
+  const k = S / 820; await drawCrest(ctx, { ...d, bg:'clear' }, -90 * k, -120 * k, k, { noName:true, noRibbon:true });
+  saveBlob(await toBlob(cv), `${fileBase(d)}-profile-picture-1080.png`);
+}
+const rgba = (hex, a) => `rgba(${parseInt(hex.slice(1, 3), 16)},${parseInt(hex.slice(3, 5), 16)},${parseInt(hex.slice(5, 7), 16)},${a})`;
+async function downloadWallpaper(d) {
+  await fontsReady();
+  const WW = 1170, WH = 2532, cv = canvasOf(WW, WH), ctx = cv.getContext('2d');
+  const g = ctx.createLinearGradient(0, 0, 0, WH); g.addColorStop(0, '#0c0a08'); g.addColorStop(.55, '#1d1814'); g.addColorStop(1, '#0c0a08');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, WW, WH);
+  const rg = ctx.createRadialGradient(WW / 2, 1450, 40, WW / 2, 1450, 760); rg.addColorStop(0, rgba(d.f, .5)); rg.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = rg; ctx.fillRect(0, 0, WW, WH);
+  const k = 1.1; await drawCrest(ctx, { ...d, bg:'clear' }, (WW - W * k) / 2, 1450 - 541 * k, k, { noName:true, noRibbon:true });
+  ctx.textAlign = 'center';
+  const mt = String(d.motto).trim();
+  if (mt) { ctx.fillStyle = '#f3dc92'; fitText(ctx, mt, z => `700 ${z}px ${FONT}`, 62, 1000, 34); ctx.fillText(mt, WW / 2, 2090); }
+  const nm = String(d.name).trim();
+  if (nm) { ctx.fillStyle = '#a8997c'; fitText(ctx, nm, z => `900 ${z}px ${FONT_D}`, 46, 1000, 28); ctx.fillText(nm, WW / 2, mt ? 2170 : 2090); }
+  saveBlob(await toBlob(cv), `${fileBase(d)}-phone-wallpaper.png`);
+}
+
 /* ============ return from checkout ============ */
 async function handleReturn() {
   const p = new URLSearchParams(location.search);
@@ -277,6 +390,10 @@ async function handleReturn() {
   dl.querySelector('[data-dl-svg]').onclick = () => downloadSvg(d);
   dl.querySelector('[data-dl-png]').onclick = () => downloadPng(d, 4000);
   dl.querySelector('[data-dl-png-s]').onclick = () => downloadPng(d, 1200);
+  const on = (sel, fn) => { const el = dl.querySelector(sel); if (el) el.onclick = fn; };
+  on('[data-dl-cert]', () => downloadCertificate(d, gift()));
+  on('[data-dl-avatar]', () => downloadAvatar(d));
+  on('[data-dl-wall]', () => downloadWallpaper(d));
   box.scrollIntoView({ block:'start' });
   if (window.clarity) try { window.clarity('event', 'crest_purchase'); } catch (e) {}
 }
@@ -285,5 +402,5 @@ document.addEventListener('DOMContentLoaded', () => {
   wire(); syncControls(); preview(); handleReturn();
 });
 // exposed for tests
-window.__crest = { enc, dec, layout, svgString, sanitize };
+window.__crest = { enc, dec, layout, svgString, sanitize, downloadCertificate, downloadAvatar, downloadWallpaper, gift };
 })();

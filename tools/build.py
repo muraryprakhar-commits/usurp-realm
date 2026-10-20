@@ -551,7 +551,7 @@ def meanings():
 <div class="tblwrap"><table class="tbl"><thead><tr><th>Tincture</th><th>Plain English</th><th>Type</th><th>Traditional meaning</th></tr></thead><tbody>{trs}</tbody></table></div>
 <h3>The rule of tincture</h3><p>Never put a metal on a metal or a color on a color. Gold on blue reads from across a field; red on blue blurs. Every example on this site follows the rule, and following it is the single easiest way to make a crest look authentic.</p></section>'''
     body += f'<section class="sec" id="divisions"><h2 class="gilt">Divisions and ordinaries</h2><p>The broad shapes that divide or cross the shield. Heralds call bands like the chevron and fess "ordinaries" and splits like per pale "partitions".</p></section><div class="gallery">{dcards}</div>'
-    body += f'<section class="sec" id="beasts"><h2 class="gilt">Heraldic animals and what they mean</h2><p>Beasts are the most loved charges in heraldry. Each has a traditional pose with its own name: a lion <i>rampant</i> rears up, an eagle <i>displayed</i> spreads its wings, a stag\'s head <i>caboshed</i> looks straight at you. All of these are in Crest Studio, drawn in the bold, flat style of real heraldic art.</p></section><div class="gallery">{bcards}</div>'
+    body += f'<section class="sec" id="beasts"><h2 class="gilt">Heraldic animals and what they mean</h2><p>Beasts are the most loved charges in heraldry. Each has a traditional pose with its own name: a lion <i>rampant</i> rears up, an eagle <i>displayed</i> spreads its wings, a stag\'s head <i>caboshed</i> looks straight at you. All of these are in Crest Studio, drawn in the bold, flat style of real heraldic art. Deeper guides: <a href="/lion-coat-of-arms.html">lion</a>, <a href="/eagle-coat-of-arms.html">eagle</a>, <a href="/dragon-coat-of-arms.html">dragon</a> and <a href="/wolf-coat-of-arms.html">wolf</a> coats of arms.</p></section><div class="gallery">{bcards}</div>'
     body += f'<section class="sec" id="emblems"><h2 class="gilt">Symbols and emblems (charges)</h2><p>Anything placed on the shield is a charge. These are some of the 50 emblems in Crest Studio. Cadency marks, mentioned below, were small symbols English heralds used to tell sons of the same father apart.</p></section><div class="gallery">{ccards}</div>'
     body += '''<section class="sec"><h2 class="gilt">Put it together</h2><ol>
 <li>Pick a metal and a color whose meanings fit you (say, Azure for loyalty and Or for generosity).</li>
@@ -884,7 +884,7 @@ def spec_page(sp):
     p = dict(slug=sp['slug'], h1=sp['h1'], og=sp['og'], og_title=sp['og_title'], title=sp['title'], desc=sp['desc'], lang=sp.get('lang', 'en'))
     p['ld'] = ld_base(p, [faq_ld(sp['faqs']), APP_LD])
     body = hero(sp['eyebrow'], sp.get('h1_html', E(sp['h1'])), sp['lede'] + ' ' + sp.get('price_note', PRICE_NOTE),
-                cta=sp.get('cta', 'Design yours free'), second=sp.get('second'))
+                cta_href=sp.get('cta_href', '/crest.html'), cta=sp.get('cta', 'Design yours free'), second=sp.get('second'))
     body += gallery(sp['examples'], 'x' + sp['og'][:4])
     body += sp['body']
     body += faq_html(sp['faqs'])

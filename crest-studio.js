@@ -29,9 +29,9 @@ let D;
 try { D = sanitize(JSON.parse(localStorage.getItem(KEY)) || DEFAULT); } catch (e) { D = { ...DEFAULT }; }
 // A shared link (?d=...) opens that design.
 { const shared = new URLSearchParams(location.search).get('d'); const sd = shared && dec(shared); if (sd) D = sd; }
-// Links from the free tools (?motto=... or ?name=...) fill in just that field and keep the rest of the design.
-{ const q = new URLSearchParams(location.search), m = q.get('motto'), n = q.get('name');
-  if (m) D.motto = m.slice(0, 48); if (n) D.name = n.slice(0, 40); }
+// Links from the free tools (?motto=..., ?name=... or ?ch=emblem) fill in just that field and keep the rest of the design.
+{ const q = new URLSearchParams(location.search), m = q.get('motto'), n = q.get('name'), c = q.get('ch');
+  if (m) D.motto = m.slice(0, 48); if (n) D.name = n.slice(0, 40); if (c && CHARGES.some(x => x[0] === c)) D.ch = c; }
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) {} };
 const GKEY = 'usurp-crest-gift';
 const gift = () => { try { const g = JSON.parse(localStorage.getItem(GKEY)) || {}; return { to:String(g.to || '').slice(0, 40), from:String(g.from || '').slice(0, 40) }; } catch (e) { return { to:'', from:'' }; } };
@@ -177,6 +177,14 @@ function wire() {
     try { await downloadPng({ ...D }, 800, true); note('Preview saved. Share it anywhere. The $9 download is full size with no watermark.'); }
     catch (e) { note('Could not save the preview on this browser. Try "Copy link to my design" instead.'); }
     if (window.clarity) try { window.clarity('event', 'crest_free_preview'); } catch (err) {}
+  };
+  // Save for later: the visitor's own mail app opens with a link back to this exact design (no account, nothing stored by us).
+  const mail = $('[data-mail]');
+  if (mail) mail.onclick = e => {
+    const nm = String(D.name).trim() || 'My coat of arms';
+    const body = `${nm}: my coat of arms design, saved to finish later.\n\nOpen it again: https://usurp.games/crest.html?d=${enc(D)}\n\nDesigning is free. Print-ready files and a certificate of arms are $9.`;
+    e.currentTarget.href = `mailto:?subject=${encodeURIComponent(`${nm}: my coat of arms`)}&body=${encodeURIComponent(body)}`;
+    if (window.clarity) try { window.clarity('event', 'crest_email_self'); } catch (err) {}
   };
   const kitBtn = $('[data-buy-kit]');
   if (kitBtn) kitBtn.onclick = e => {

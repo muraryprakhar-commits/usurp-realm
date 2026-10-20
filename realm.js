@@ -167,7 +167,7 @@ function chromeRealm() {
     <p>Every House, ruler, name and event shown is illustrative lore, not a real user.</p>
     <p>Numbers are a starting proposal, not final.</p>
     <p style="margin-top:10px"><a href="${WAITLIST}">Join the waitlist</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/refunds.html">Refunds</a> · <a href="mailto:${CONTACT}">${CONTACT}</a></p>
-    <p>Operated by Prakhar Murary, Jaipur, Rajasthan, India.</p>`;
+    <p>Operated by Prakhar Murary (Murary Studios), Jaipur, Rajasthan, India.</p>`;
   const links = [...qa('.nav a')];
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(es => es.forEach(e => {

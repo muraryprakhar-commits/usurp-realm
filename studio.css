@@ -6,7 +6,11 @@
 @media(min-width:900px){.studio{grid-template-columns:1.05fr 1fr}.stage{position:sticky;top:84px}}
 .stage{position:relative;padding:14px;overflow:hidden}
 .stage .art svg{width:100%;height:auto;display:block}
-.stage .wm{position:absolute;inset:auto 0 46% 0;text-align:center;transform:rotate(-24deg);font-family:var(--serif);font-size:clamp(18px,4vw,30px);letter-spacing:.3em;text-transform:uppercase;color:rgba(122,16,32,.22);pointer-events:none;white-space:nowrap}
+/* The preview keeps its 4:5 shape before the crest is drawn, so nothing jumps while the page loads; the watermark
+   sits on the artwork itself (a pseudo-element survives every redraw of the preview). */
+.stage .art{position:relative;aspect-ratio:4/5}
+.stage .art::after{content:"Preview \00B7  usurp.games";position:absolute;inset:auto 0 46% 0;text-align:center;transform:rotate(-24deg);font-family:var(--serif);font-size:clamp(18px,4vw,30px);letter-spacing:.3em;text-transform:uppercase;color:rgba(122,16,32,.22);pointer-events:none;white-space:nowrap}
+.stage .wm{display:none}
 .panel{display:grid;gap:16px;min-width:0}
 .fld{display:block;margin:0}
 .fld>span{display:block;font-family:var(--serif);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}

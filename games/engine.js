@@ -348,9 +348,17 @@ UG.start = function (spec) {
     UG.track('fullscreen');
   };
 
-  // Main loop. Stops while the tab is hidden and when nothing moves on a static screen.
-  let last = 0, raf = 0;
+  // Main loop. It stops while the tab is hidden or the game is scrolled out of view, and slows to about 15 frames a
+  // second behind the start and results cards, which saves battery on phones.
+  let last = 0, raf = 0, lastDraw = 0, onScreen = true;
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => {
+    onScreen = es[0].isIntersecting;
+    if (onScreen && !raf && !document.hidden) { last = 0; raf = requestAnimationFrame(frame); }
+  }).observe(root);
   function frame(ts) {
+    if (!onScreen) { raf = 0; return; }
+    if (!ov.hidden && ts - lastDraw < 60) { raf = requestAnimationFrame(frame); return; }
+    lastDraw = ts;
     const dt = Math.min(0.05, last ? (ts - last) / 1000 : 0.016); last = ts;
     g.t += dt;
     const live = !window.__ugFreeze;   // tests and screenshots can freeze the action and still draw it

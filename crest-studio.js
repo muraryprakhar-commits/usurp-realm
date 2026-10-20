@@ -127,6 +127,9 @@ let D;
 try { D = sanitize(JSON.parse(localStorage.getItem(KEY)) || DEFAULT); } catch (e) { D = { ...DEFAULT }; }
 // A shared link (?d=...) opens that design.
 { const shared = new URLSearchParams(location.search).get('d'); const sd = shared && dec(shared); if (sd) D = sd; }
+// Links from the free tools (?motto=... or ?name=...) fill in just that field and keep the rest of the design.
+{ const q = new URLSearchParams(location.search), m = q.get('motto'), n = q.get('name');
+  if (m) D.motto = m.slice(0, 48); if (n) D.name = n.slice(0, 40); }
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) {} };
 
 function preview() {
@@ -172,6 +175,12 @@ function wire() {
     } catch (e) { note(url); }
     if (window.clarity) try { window.clarity('event', 'crest_share'); } catch (e) {}
   };
+  const free = $('[data-free]');
+  if (free) free.onclick = async () => {
+    try { await downloadPng({ ...D }, 800, true); note('Preview saved. Share it anywhere. The $9 download is full size with no watermark.'); }
+    catch (e) { note('Could not save the preview on this browser. Try "Copy link to my design" instead.'); }
+    if (window.clarity) try { window.clarity('event', 'crest_free_preview'); } catch (err) {}
+  };
   $('[data-buy]').onclick = e => {
     if (!String(D.name).trim()) { e.preventDefault(); note('Add a name for your house first.'); $('[data-f-name]').focus(); return; }
     save(); e.currentTarget.href = buyUrl();
@@ -206,9 +215,9 @@ function saveBlob(blob, name) {
   document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
 }
 async function downloadSvg(d) { saveBlob(new Blob([svgString(d, await fontCss())], { type:'image/svg+xml' }), `${fileBase(d)}-coat-of-arms.svg`); }
-async function downloadPng(d, size) {
+async function downloadPng(d, size, preview = false) {
   await document.fonts.load(`900 64px 'Cinzel Decorative'`); await document.fonts.load(`700 40px 'Cinzel'`);
-  const L = layout(d, 'x');
+  const L = layout(preview ? { ...d, bg:'parch' } : d, 'x');
   const k = size / W, cv = document.createElement('canvas');
   cv.width = Math.round(W * k); cv.height = Math.round(HT * k);
   const ctx = cv.getContext('2d');
@@ -222,8 +231,16 @@ async function downloadPng(d, size) {
     if (t.stroke) { ctx.lineWidth = t.stroke.w * 2; ctx.strokeStyle = t.stroke.c; ctx.lineJoin = 'round'; ctx.strokeText(t.s, t.x, t.y); }
     ctx.fillStyle = t.fill; ctx.fillText(t.s, t.x, t.y);
   }
+  if (preview) {
+    // Free preview: diagonal watermark across the shield plus a credit line, so it can be shared but not printed.
+    ctx.save(); ctx.translate(W / 2, HT * 0.46); ctx.rotate(-24 * Math.PI / 180);
+    ctx.font = `700 64px ${FONT}`; ctx.fillStyle = 'rgba(122,16,32,.30)';
+    ctx.fillText('PREVIEW · USURP.GAMES', 0, 0); ctx.fillText('PREVIEW · USURP.GAMES', 0, 150); ctx.restore();
+    ctx.font = `700 26px ${FONT}`; ctx.fillStyle = '#5c4417';
+    ctx.fillText('Design yours free at usurp.games/crest', W / 2, HT - 70);
+  }
   const blob = await new Promise(r => cv.toBlob(r, 'image/png'));
-  saveBlob(blob, `${fileBase(d)}-coat-of-arms-${size}px.png`);
+  saveBlob(blob, preview ? `${fileBase(d)}-crest-preview.png` : `${fileBase(d)}-coat-of-arms-${size}px.png`);
 }
 
 /* ============ return from checkout ============ */

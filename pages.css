@@ -1,0 +1,61 @@
+/* Crest Studio guide and free-tool pages. Builds on styles.css and studio.css. */
+.pg-hero{text-align:center;padding:44px 16px 8px;max-width:860px;margin:0 auto}
+.pg-hero h1{font-size:clamp(30px,6.4vw,52px);line-height:1.12;margin:8px 0 14px}
+.pg-hero .lede{max-width:680px;margin:0 auto 22px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.sec{max-width:900px;margin:0 auto;padding:34px 16px}
+.sec h2{font-size:clamp(24px,4.4vw,34px);margin-bottom:14px}
+.sec h3{font-family:var(--serif);color:var(--gold-2);font-size:19px;margin:22px 0 6px}
+.sec p+p{margin-top:12px}
+.sec ul,.sec ol{margin:10px 0 0 22px;display:grid;gap:8px}
+.sec li::marker{color:var(--gold)}
+.callout{border:1px solid var(--gold-deep);background:rgba(0,0,0,.28);padding:18px 20px;margin-top:18px}
+.callout b{color:var(--gold-2);font-weight:400;font-family:var(--serif)}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px;max-width:1100px;margin:0 auto;padding:10px 16px 34px}
+.card{border:1px solid #3a2e1f;background:rgba(0,0,0,.25);padding:12px;display:flex;flex-direction:column;gap:10px}
+.card svg{width:100%;height:auto}
+.card .cap{font-family:var(--serif);color:var(--gold-2);font-size:15px;text-align:center}
+.card .sub{font-size:15px;color:var(--muted);text-align:center;margin-top:-6px}
+.card .btn{justify-content:center;text-align:center;font-size:14px;padding:10px 12px;margin-top:auto}
+.tbl{width:100%;border-collapse:collapse;margin-top:12px;font-size:17px}
+.tbl th,.tbl td{border-bottom:1px solid #3a2e1f;padding:10px 8px;text-align:left;vertical-align:top}
+.tbl th{font-family:var(--serif);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.tbl td:first-child{white-space:nowrap}
+.tbl .la{font-family:var(--serif);color:var(--gold-2)}
+.tbl a{font-size:14px;white-space:nowrap}
+.sw-dot{display:inline-block;width:18px;height:18px;border:1px solid #5c4417;vertical-align:-3px;margin-right:8px}
+.tblwrap{overflow-x:auto}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:6px 0 16px}
+.chip{font:inherit;font-family:var(--serif);font-size:13px;letter-spacing:.08em;color:var(--muted);background:#120e0a;border:1px solid #3a2e1f;padding:8px 12px;cursor:pointer;min-height:40px}
+.chip[aria-pressed="true"]{color:var(--gold-2);border-color:var(--gold)}
+.gen{max-width:900px;margin:0 auto;padding:10px 16px 24px}
+.gen-out{display:grid;gap:14px}
+@media(min-width:760px){.gen-out.three{grid-template-columns:repeat(3,1fr)}}
+.motto-card{border:1px solid var(--gold-deep);background:rgba(0,0,0,.3);padding:18px;text-align:center;display:flex;flex-direction:column;gap:8px}
+.motto-card .la{font-family:var(--serif);font-weight:700;color:var(--gold-2);font-size:21px;line-height:1.25}
+.motto-card .en{color:var(--text);font-style:italic}
+.motto-card .src{font-size:14px;color:var(--muted)}
+.motto-card .btn{justify-content:center;font-size:14px;padding:10px 12px;margin-top:auto}
+.house{display:grid;gap:22px;align-items:center}
+@media(min-width:760px){.house{grid-template-columns:minmax(0,320px) 1fr}}
+.house .art{border:1px solid #3a2e1f;padding:10px;background:rgba(0,0,0,.25)}
+.house .art svg{width:100%;height:auto}
+.house h2{margin:0 0 6px}
+.house .alts{margin-top:12px;color:var(--muted);font-size:16px}
+.house .alts button{font:inherit;color:var(--gold-2);background:none;border:0;border-bottom:1px dotted var(--gold-deep);cursor:pointer;padding:0;margin:0 4px}
+.namelist{columns:2 180px;column-gap:24px;margin-top:12px;list-style:none;padding:0}
+.namelist li{break-inside:avoid;padding:4px 0;border-bottom:1px solid #2a231c}
+.dlrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.dlrow .btn{font-size:14px;padding:10px 14px}
+.tpl-grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin-top:16px}
+.tpl-grid figure{margin:0;border:1px solid #3a2e1f;background:rgba(0,0,0,.25);padding:12px;display:flex;flex-direction:column;gap:10px}
+.tpl-grid img{width:100%;height:auto;background:#fff}
+.tpl-grid figcaption{font-family:var(--serif);color:var(--gold-2);font-size:15px}
+.related{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));margin-top:14px}
+.related a{display:block;border:1px solid #3a2e1f;background:rgba(0,0,0,.25);padding:14px 16px;text-decoration:none}
+.related a b{display:block;font-family:var(--serif);color:var(--gold-2);font-weight:700;font-size:16px}
+.related a span{color:var(--muted);font-size:15px}
+.foot-links{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;margin-bottom:10px}
+.foot-links a{font-size:15px}
+.fine{font-size:14px;color:var(--muted);margin-top:16px}
+.center{text-align:center}

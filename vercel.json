@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/crest", "destination": "/crest.html", "permanent": false },
+    { "source": "/studio", "destination": "/crest.html", "permanent": false }
+  ]
+}

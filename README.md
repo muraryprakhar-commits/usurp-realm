@@ -26,3 +26,21 @@ It's a static site with no build step. Open it in a browser, or deploy the folde
 ## Not legal advice
 
 A real Terms of Service and legal review are needed before any real money moves, including for the US market and India's Online Gaming Act (2025).
+
+## Crest Studio traffic pages (added 20 Oct 2026)
+
+Crest Studio (`crest.html`) is the only real paid product. These free pages exist to bring search and AI-answer traffic to it:
+
+- Use-case pages: `family-crest-maker.html`, `dnd-coat-of-arms-generator.html`, `wedding-crest.html`, `clan-logo-maker.html`, `school-house-crests.html`
+- Free tools: `latin-motto-generator.html` (`motto-gen.js`), `fantasy-house-name-generator.html` (`house-gen.js`), `heraldry-symbols-and-meanings.html`, `coat-of-arms-template.html` (files in `templates/`)
+- `crest-core.js` is a copy of the Studio's crest art for these pages. Keep it in step with `crest-studio.js`.
+- Studio links: `/crest.html?d=CODE` opens a design, `?motto=` and `?name=` fill just that field. `/crest` redirects to the Studio (`vercel.json`).
+- Studio "Save a free preview image" gives an 800 px watermarked PNG that credits usurp.games, so shared previews bring people back.
+
+Rebuild after editing content (`tools/` is not deployed, see `.vercelignore`):
+
+```
+python3 tools/build.py     # pages, sitemap.xml, llms.txt
+python3 tools/assets.py    # templates/ and og/ share images (needs Playwright)
+python3 tools/indexnow.py  # after deploy: tell Bing, Yandex and others about every URL
+```

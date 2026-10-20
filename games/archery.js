@@ -89,8 +89,8 @@ function finish(g) {
   g.state = 'over'; S.phase = 'over';
   UG.track('finish', { score: tot }); UG.sfx.fanfare(); if (tot >= 60) UG.sfx.cheer(0.15);
   const ends = S.ends.map(e => e.reduce((a, b) => a + b, 0)).join(' · ');
-  g.screen({ kicker: S.daily ? `Daily contest #${dayNo()}` : 'Contest over', title: rank, big: tot, sub: 'points out of 90',
-    lines: [`Ends: ${ends}`, `${S.xs} bullseye${S.xs === 1 ? '' : 's'} in the X ring`, newBest ? 'A new personal best!' : `Your best: ${g.best}`],
+  g.screen({ kicker: S.daily ? `Daily contest #${dayNo()}` : 'Contest over', title: rank, big: tot, sub: `${tot === 1 ? 'point' : 'points'} out of 90`,
+    lines: [`Ends: ${ends}`, `${S.xs} bullseye${S.xs === 1 ? '' : 's'} in the X ring`, g.bestLine(newBest)],
     primary: { label: 'Shoot again', on: () => { g.hide(); UG.between(g, () => begin(g, S.daily)); } },
     secondary: { label: 'Challenge a friend', on: () => g.share(`I scored ${tot}/90 (${rank}) in the King's Archery Contest${S.daily ? `, daily #${dayNo()}` : ''}. Can you beat it?`) },
     cta: true });
@@ -265,7 +265,14 @@ UG.start({
     S.aim.x = clamp(S.aim.x, -W / 2 + 20, W / 2 - 20); S.aim.y = clamp(S.aim.y, -260, 300);
     if (S.phase === 'aim' && S.holding) { S.holdT += dt; S.draw = Math.min(1, S.draw + dt / 0.75); }
     if (S.phase === 'fly') { S.fly.t += dt / S.fly.dur; if (S.fly.t >= 1) land(g); }
-    if (S.phase === 'wait') { S.wait -= dt; if (S.wait <= 0 && S.then) { const f = S.then; S.then = null; f(); } }
+    if (S.phase === 'wait') {
+      S.wait -= dt;
+      if (S.wait <= 0 && S.then) {
+        const f = S.then; S.then = null; f();
+        // a finger already down (pressed during the pause) starts drawing as soon as the next arrow is ready
+        if (S.phase === 'aim' && g.ptr.down && !S.holding) { S.holding = true; S.holdT = 0; UG.sfx.draw(); }
+      }
+    }
   },
   draw(g, ctx) {
     const E = ENDS[S.end];

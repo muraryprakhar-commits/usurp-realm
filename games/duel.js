@@ -91,8 +91,8 @@ function gameOver(g) {
   UG.track('finish', { score: S.score, beaten: S.beaten });
   const bestRx = UG.store.get('ug-duel-rx', 0); if (S.bestRx && (!bestRx || S.bestRx < bestRx)) UG.store.set('ug-duel-rx', S.bestRx);
   const acc = S.parries + S.misses ? Math.round(100 * S.parries / (S.parries + S.misses)) : 0;
-  g.screen({ kicker: `Bested by ${opp.name}`, title, big: S.score, sub: 'points',
-    lines: [`Knights defeated: ${S.beaten}`, `Parries: ${S.parries} (${acc}%), perfect: ${S.perfects}`, S.bestRx ? `Fastest parry: ${S.bestRx} ms` : 'Parry faster to log a reaction time', newBest ? 'A new personal best!' : `Your best: ${g.best}`],
+  g.screen({ kicker: `Bested by ${opp.name}`, title, big: S.score, sub: S.score === 1 ? 'point' : 'points',
+    lines: [`Knights defeated: ${S.beaten}`, `Parries: ${S.parries} (${acc}%), perfect: ${S.perfects}`, S.bestRx ? `Fastest parry: ${S.bestRx} ms` : '', g.bestLine(newBest)],
     primary: { label: 'Duel again', on: () => { g.hide(); UG.between(g, () => newRun(g)); } },
     secondary: { label: 'Challenge a friend', on: () => g.share(`I beat ${S.beaten} knight${S.beaten === 1 ? '' : 's'} in the Duel${S.bestRx ? ` with a ${S.bestRx} ms parry` : ''}. Are your reflexes faster?`) },
     cta: true });

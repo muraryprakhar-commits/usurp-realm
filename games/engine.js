@@ -248,7 +248,7 @@ UG.start = function (spec) {
   function fit() {
     const r = cv.getBoundingClientRect(); dpr = Math.min(2, window.devicePixelRatio || 1);
     cv.width = Math.max(1, Math.round(r.width * dpr)); cv.height = Math.max(1, Math.round(r.height * dpr)); scale = cv.width / W;
-    root.classList.toggle('ug-small', r.height < 470);
+    root.classList.toggle('ug-small', r.height < 470); root.classList.toggle('ug-tiny', r.height < 380);
   }
   fit();
   if ('ResizeObserver' in window) new ResizeObserver(fit).observe(cv); else window.addEventListener('resize', fit);
@@ -265,7 +265,9 @@ UG.start = function (spec) {
       }
     },
     pop(text, x, y, o = {}) { this.pops.push({ text, x, y, life: 0, max: o.max || 1.1, c: o.c || '#f3dc92', size: o.size || 34, rise: o.rise !== undefined ? o.rise : 60 }); },
-    setBest(v) { if (v > this.best) { this.best = v; UG.store.set(`ug-best-${spec.id}`, v); showBest(); return true; } return false; },
+    // 0: not a best, 1: beat a previous best, 2: the first score ever logged on this device
+    setBest(v) { if (v > this.best) { const first = !this.best; this.best = v; UG.store.set(`ug-best-${spec.id}`, v); showBest(); return first ? 2 : 1; } return 0; },
+    bestLine(nb) { return nb === 1 ? 'A new personal best!' : nb === 2 ? '' : `Your best: ${this.best}`; },
     pauseAudio() { if (AU.ctx && AU.ctx.state === 'running') AU.ctx.suspend(); },
     resumeAudio() { if (AU.ctx && AU.ctx.state === 'suspended') AU.ctx.resume(); },
     // Overlay screens. o: { kicker, title, big, sub, lines[], html, primary:{label,on}, secondary:{label,on}, cta }
@@ -273,10 +275,11 @@ UG.start = function (spec) {
       const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
       card.innerHTML = (o.kicker ? `<p class="ug-k">${esc(o.kicker)}</p>` : '') + (o.title ? `<h2 class="ug-t">${esc(o.title)}</h2>` : '')
         + (o.big !== undefined ? `<p class="ug-big">${esc(o.big)}</p>` : '') + (o.sub ? `<p class="ug-sub">${esc(o.sub)}</p>` : '')
-        + (o.lines && o.lines.length ? `<ul class="ug-lines">${o.lines.map(l => `<li>${esc(l)}</li>`).join('')}</ul>` : '') + (o.html || '')
+        + (o.lines && o.lines.filter(Boolean).length ? `<ul class="ug-lines">${o.lines.filter(Boolean).map(l => `<li>${esc(l)}</li>`).join('')}</ul>` : '') + (o.html || '')
         + (o.choices ? `<div class="ug-choices">${o.choices.map((c, i) => `<button type="button" class="ug-choice" data-c="${i}"><b>${esc(c.label)}</b><span>${esc(c.sub || '')}</span></button>`).join('')}</div>` : '')
         + `<div class="ug-btns">${o.primary ? `<button type="button" class="btn big" data-p>${esc(o.primary.label)}</button>` : ''}${o.secondary ? `<button type="button" class="btn ghost" data-s>${esc(o.secondary.label)}</button>` : ''}</div>`
         + (o.cta ? crestCard('ug-crest') : '');
+      card.classList.toggle('ug-res', !!o.cta);
       if (o.cta) { fillHouseArt(card); const a = card.querySelector('[data-house-ad]'); a.addEventListener('click', () => UG.track('crest_click')); }
       if (o.choices) card.querySelectorAll('[data-c]').forEach(btn => { btn.onclick = () => { UG.sfx.click(); o.choices[+btn.dataset.c].on(); }; });
       const p = card.querySelector('[data-p]') || card.querySelector('[data-c]'), s = card.querySelector('[data-s]');

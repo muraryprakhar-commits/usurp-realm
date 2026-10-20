@@ -94,7 +94,12 @@
 /* small game boxes (phones held sideways, short windows): a compact card so the start button is always in view */
 .ug.ug-small .ug-ov{padding:8px}
 .ug.ug-small .ug-card{padding:10px 10px 12px}
-.ug.ug-small .ug-howto,.ug.ug-small .ug-crest{display:none}
+.ug.ug-small .ug-howto{display:none}
+.ug.ug-small .ug-crest{margin-top:8px;padding:6px 8px}
+.ug.ug-small .ug-crest .hb-t span{display:none}
+.ug.ug-small .ug-crest .hb-art{width:24px;height:30px}
+.ug.ug-small .ug-res .ug-lines li:nth-child(n+3){display:none}
+.ug.ug-tiny .ug-crest,.ug.ug-tiny .ug-res .ug-lines li:nth-child(n+2){display:none}
 .ug.ug-small .ug-t{font-size:19px;margin:2px 0}
 .ug.ug-small .ug-big{font-size:40px;margin:2px 0 0}
 .ug.ug-small .ug-sub,.ug.ug-small .ug-lines{font-size:14px}
@@ -104,3 +109,21 @@
 .ug.ug-small .ug-choice span{font-size:13px}
 .ug-rot{display:none;font-size:13px;color:var(--muted)}
 @media (orientation:landscape) and (max-height:540px){.ug-rot{display:inline}.ug-bestl{display:none}}
+/* results cards: compact on phones so the score, both buttons and the crest link all fit in the game */
+.ug-res{padding:14px 14px 12px}
+.ug-res .ug-t{font-size:clamp(20px,4.8vw,27px)}
+.ug-res .ug-big{font-size:clamp(42px,11vw,60px);margin-top:2px}
+.ug-res .ug-lines{margin-top:6px;font-size:15px;line-height:1.35}
+.ug-res .ug-btns{margin-top:12px;gap:8px;flex-wrap:nowrap}
+.ug-res .ug-btns .btn{min-width:0;flex:1 1 0;padding:12px 8px;font-size:12px;letter-spacing:.08em;line-height:1.2}
+.ug-res .ug-crest{margin-top:10px;padding:8px 10px;gap:10px}
+.ug-res .hb-art{width:30px;height:38px}
+@media (max-width:480px){.ug-res .ug-crest .hb-t span{display:none}}
+/* hub on phones: two games per row, so all four are on the first screen or two */
+@media (max-width:560px){
+  #games .gm-grid{grid-template-columns:1fr 1fr;gap:10px;padding:0 10px}
+  #games .gm-card .gc-t{padding:8px 10px 10px}
+  #games .gm-card b{font-size:16px}
+  #games .gm-card span{font-size:13px}
+  #games .gm-card em{margin-top:6px;font-size:11px}
+}

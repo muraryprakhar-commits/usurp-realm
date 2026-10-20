@@ -121,8 +121,8 @@ function gameOver(g) {
   UG.track('finish', { score: S.score, wave: S.wave });
   UG.sfx.boom(); UG.sfx.fail(); g.shake(14, 0.6);
   const rank = S.wave >= 12 ? 'Lord Protector' : S.wave >= 9 ? 'Castellan' : S.wave >= 6 ? 'Captain of the Guard' : S.wave >= 3 ? 'Sergeant-at-Arms' : 'Militia';
-  setTimeout(() => g.screen({ kicker: 'The wall is breached', title: rank, big: S.score, sub: `points · held ${S.wave - 1} wave${S.wave - 1 === 1 ? '' : 's'}`,
-    lines: [`Foes defeated: ${S.kills}`, newBest ? 'A new personal best!' : `Your best: ${g.best}`],
+  setTimeout(() => g.screen({ kicker: 'The wall is breached', title: rank, big: S.score, sub: `${S.score === 1 ? 'point' : 'points'} · held ${S.wave - 1} wave${S.wave - 1 === 1 ? '' : 's'}`,
+    lines: [`Foes defeated: ${S.kills}`, g.bestLine(newBest)],
     primary: { label: 'Defend again', on: () => { g.hide(); UG.between(g, () => newRun(g)); } },
     secondary: { label: 'Challenge a friend', on: () => g.share(`I held the castle for ${S.wave - 1} waves and scored ${S.score} in Hold the Castle. How long can you last?`) },
     cta: true }), 900);

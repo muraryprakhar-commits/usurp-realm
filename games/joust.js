@@ -107,8 +107,8 @@ function gameOver(g, champion) {
   g.state = 'over';
   const tot = S.score, newBest = g.setBest(tot), title = TITLES[S.wins];
   UG.track('finish', { score: tot, wins: S.wins });
-  g.screen({ kicker: champion ? 'The tournament is yours' : `Defeated by ${opp.name}`, title, big: tot, sub: 'tournament points',
-    lines: [`Bouts won: ${S.wins} of 5`, `Knights unhorsed: ${S.unhorses}`, newBest ? 'A new personal best!' : `Your best: ${g.best}`],
+  g.screen({ kicker: champion ? 'The tournament is yours' : `Defeated by ${opp.name}`, title, big: tot, sub: tot === 1 ? 'tournament point' : 'tournament points',
+    lines: [`Bouts won: ${S.wins} of 5`, `Knights unhorsed: ${S.unhorses}`, g.bestLine(newBest)],
     primary: { label: 'Enter the lists again', on: () => { g.hide(); UG.between(g, () => newRun(g)); } },
     secondary: { label: 'Challenge a friend', on: () => g.share(`I won ${S.wins} of 5 bouts and ${tot} points in the Joust (${title}). Can you unhorse more knights?`) },
     cta: true });

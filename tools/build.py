@@ -1071,8 +1071,8 @@ def games_hub():
     p['ld'] = ld_base(p, [faq_ld(faqs), items])
     p['scripts'] = f'<script>window.USURP_ADS={ads_json()}</script><script src="{ver("/games/engine.js")}" defer></script>'
     body = hero('Free to play · no download', 'Medieval Games',
-                'Four short games of skill for your phone or computer: an archery contest, a jousting tournament, a castle under siege and a sword duel. Each takes a minute to learn and a lot longer to master.',
-                cta_href='#games', cta='Pick a game', second=('/crest.html', 'Design your coat of arms'))
+                'Four short games of skill for your phone or computer. Each takes a minute to learn and a lot longer to master.',
+                cta_href='#games', cta='Play now', second=('/crest.html', 'Design your coat of arms'))
     body += f'<section id="games"><div class="gm-grid">{game_cards(eager=True)}</div></section>'
     body += ('<section class="gm-info"><h2 class="gilt">Your coat of arms, in every game</h2>'
              '<p>These games are made by Crest Studio, the free coat of arms maker. Design your arms there and they ride with you: on your shield in the joust and the duel, '

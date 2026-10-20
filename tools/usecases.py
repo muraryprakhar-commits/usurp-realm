@@ -27,7 +27,7 @@ SPECS = [
         eyebrow='For Christmas, anniversaries, weddings and new homes',
         lede='A family crest is a gift with a story: their name, their colors, their motto, and a certificate explaining what it all means. You design it in a few minutes, it downloads instantly, and it prints at any size.',
         examples=[crest('The Okafor Family', 'Together We Rise', AZURE, OR, GOLD_LIGHT, 'chevron', 'mullet'),
-                  crest('Grandma and Grandpa Rossi', 'Root and Branch', VERT, OR, GOLD_LIGHT, 'perpale', 'tree'),
+                  crest('Grandma and Grandpa Rossi', 'Root and Branch', VERT, OR, GOLD_LIGHT, 'plain', 'tree'),
                   crest('The Lees', 'Home Is Our Hearth', MURREY, OR, GOLD_LIGHT, 'fess', 'tower'),
                   crest('House Kowalski', 'Ever Onward', SABLE, OR, OR, 'quarterly', 'eagle')],
         body='''<section class="sec"><h2 class="gilt">Why a family crest makes a good gift</h2>

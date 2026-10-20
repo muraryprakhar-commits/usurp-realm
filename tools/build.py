@@ -71,13 +71,17 @@ NAV = [('/crest.html', 'Studio'), ('/coat-of-arms-quiz.html', 'Quiz'), ('/family
 PAGES_INDEX = []  # (slug, title, blurb) filled by page()
 
 
+def page_url(slug):
+    return f'{SITE}/' if slug == 'index.html' else f'{SITE}/{slug}'
+
+
 def head(p):
     ld = json.dumps(p['ld'], ensure_ascii=False).replace('</', '<\\/')
     return f'''<!doctype html><html lang="{p.get('lang', 'en')}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{E(p['title'])}</title>
 <meta name="description" content="{E(p['desc'])}">
-<link rel="canonical" href="{SITE}/{p['slug']}">
-<meta property="og:title" content="{E(p['og_title'])}"><meta property="og:description" content="{E(p['desc'])}"><meta property="og:url" content="{SITE}/{p['slug']}"><meta property="og:type" content="website"><meta property="og:site_name" content="Crest Studio by Usurp"><meta property="og:image" content="{SITE}/og/{p['og']}.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<link rel="canonical" href="{page_url(p['slug'])}">
+<meta property="og:title" content="{E(p['og_title'])}"><meta property="og:description" content="{E(p['desc'])}"><meta property="og:url" content="{page_url(p['slug'])}"><meta property="og:type" content="website"><meta property="og:site_name" content="Crest Studio by Usurp"><meta property="og:image" content="{SITE}/og/{p['og']}.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{E(p['og_title'])}"><meta name="twitter:description" content="{E(p['desc'])}"><meta name="twitter:image" content="{SITE}/og/{p['og']}.png">
 <script type="application/ld+json">{ld}</script>
 <script type="text/javascript">(function(c,l,a,r,i,t,y){{c[a]=c[a]||function(){{(c[a].q=c[a].q||[]).push(arguments)}};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);}})(window,document,"clarity","script","yzjmha008x");</script>
@@ -91,7 +95,7 @@ def head(p):
 def header(slug):
     cur = ' aria-current="page"'
     links = ''.join(f'<a href="{h}"{cur if h == "/" + slug else ""}>{t}</a>' for h, t in NAV)
-    return f'<header class="site-head"><div class="head-in"><a class="brand" href="/crest.html"><span class="gilt">CREST STUDIO</span></a><nav class="nav" aria-label="Site">{links}</nav></div></header>'
+    return f'<header class="site-head"><div class="head-in"><a class="brand" href="/"><span class="gilt">CREST STUDIO</span></a><nav class="nav" aria-label="Site">{links}</nav></div></header>'
 
 
 # Every guide page: (slug, short title, one-line blurb). Spec pages from usecases.py are appended automatically.
@@ -118,7 +122,7 @@ def footer():
     links = ''.join(f'<a href="{h}">{t}</a>' for h, t in allp)
     return f'''<footer class="site-foot"><nav class="foot-links" aria-label="Crest Studio pages">{links}</nav>
 <p><a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/refunds.html">Refunds</a> · <a href="mailto:hello@usurp.games">hello@usurp.games</a></p>
-<p>Crest Studio by Usurp · Operated by Prakhar Murary (Murary Studios), Jaipur, Rajasthan, India</p></footer>'''
+<p>Crest Studio by Usurp · Operated by Prakhar Murary (Murary Studios), Jaipur, Rajasthan, India · <a href="/realm.html">Usurp, the game (prototype)</a></p></footer>'''
 
 
 def gallery(designs, prefix, btn='Customize this crest'):
@@ -149,13 +153,14 @@ def related(exclude):
 
 def crumbs(slug, name):
     return {'@type': 'BreadcrumbList', 'itemListElement': [
-        {'@type': 'ListItem', 'position': 1, 'name': 'Crest Studio', 'item': f'{SITE}/crest.html'},
+        {'@type': 'ListItem', 'position': 1, 'name': 'Crest Studio', 'item': f'{SITE}/'},
         {'@type': 'ListItem', 'position': 2, 'name': name, 'item': f'{SITE}/{slug}'}]}
 
 
 def write_page(p, body):
     PAGES_INDEX.append((p['slug'], p['h1'], p['desc']))
-    doc = head(p) + '<body>' + header(p['slug']) + '<main>' + body + related(p['slug']) + '</main>' + footer() + p.get('scripts', '') + '</body></html>'
+    rel = '' if p.get('no_related') else related(p['slug'])
+    doc = head(p) + '<body>' + header(p['slug']) + '<main>' + body + rel + '</main>' + footer() + p.get('scripts', '') + '</body></html>'
     os.makedirs(os.path.dirname(os.path.join(ROOT, p['slug'])), exist_ok=True)   # allows es/... pages
     with open(os.path.join(ROOT, p['slug']), 'w', encoding='utf-8') as f:
         f.write(doc)
@@ -171,9 +176,10 @@ PRICE_NOTE = 'Designing is free and needs no account. When you love it, $9 gets 
 
 
 def ld_base(p, extra=None):
-    g = [{'@type': 'WebPage', 'name': p['h1'], 'url': f"{SITE}/{p['slug']}", 'description': p['desc'],
-          'isPartOf': {'@type': 'WebSite', 'name': 'Crest Studio by Usurp', 'url': f'{SITE}/crest.html'}},
-         crumbs(p['slug'], p['h1'])]
+    g = [{'@type': 'WebPage', 'name': p['h1'], 'url': page_url(p['slug']), 'description': p['desc'],
+          'isPartOf': {'@type': 'WebSite', 'name': 'Crest Studio by Usurp', 'url': f'{SITE}/'}}]
+    if p['slug'] != 'index.html':
+        g.append(crumbs(p['slug'], p['h1']))
     if extra:
         g += extra
     return {'@context': 'https://schema.org', '@graph': g}
@@ -610,12 +616,12 @@ def surname():
     p['ld'] = ld_base(p, [faq_ld(faqs), tool_ld])
     p['scripts'] = (f'<script type="application/json" id="fam-data">{json.dumps({"m": FAMILY_MOTTOS})}</script>'
                     '<script src="/crest-core.js" defer></script><script src="/family-gen.js" defer></script>')
-    ex = [crest('The Carter Family', 'Together We Rise', AZURE, OR, GOLD_LIGHT, 'chevron', 'initial'),
-          crest('The Carter Family', 'Root and Branch', VERT, ARGENT, GOLD_LIGHT, 'perpale', 'key'),
-          crest('The Carter Family', 'Hold Fast', SABLE, OR, OR, 'fess', 'tower'),
-          crest('The Carter Family', 'Per Aspera ad Astra', PURPURE, OR, GOLD_LIGHT, 'bend', 'mullet'),
-          crest('The Carter Family', 'Faithful in All Things', GULES, OR, ARGENT, 'quarterly', 'rose'),
-          crest('The Carter Family', 'Ever Onward', MURREY, ARGENT, ARGENT, 'saltire', 'crescent')]
+    ex = [crest('The Carter Family', 'Together We Rise', AZURE, OR, ARGENT, 'chevron', 'initial'),
+          crest('The Carter Family', 'Fortis et Fidelis', GULES, OR, GOLD_LIGHT, 'plain', 'lion'),
+          crest('The Carter Family', 'Root and Branch', VERT, OR, GOLD_LIGHT, 'plain', 'tree'),
+          crest('The Carter Family', 'Ever Onward', SABLE, OR, GOLD_LIGHT, 'plain', 'eagle'),
+          crest('The Carter Family', 'Hold Fast', PURPURE, ARGENT, GOLD_LIGHT, 'fess', 'tower'),
+          crest('The Carter Family', 'Peace Through Strength', MURREY, ARGENT, ARGENT, 'plain', 'stag')]
     body = hero('Free tool', 'Family Crest Generator by Last Name',
                 'Type your last name and get six original family crests in one click. Each one follows real heraldic rules, comes with its blazon, and opens in a free editor so you can make it yours.',
                 cta_href='#generator', cta='Try it with your name')
@@ -629,11 +635,94 @@ def surname():
 <p>The generator combines the building blocks of real heraldry: a field color, a division in a contrasting metal (gold or silver), one emblem and a motto. It always follows the rule of tincture, so every design reads clearly from across a room, and it is seeded by your name, so the same name gives the same first six ideas and you can share the link with family.</p>
 <h3>Choosing between designs</h3><ul>
 <li><b>Go by color first.</b> Blue for loyalty, green for hope, red for courage, black for constancy, purple for justice. The <a href="/heraldry-symbols-and-meanings.html">meanings guide</a> has the full list.</li>
-<li><b>Then the emblem.</b> A tower for a family that built a home, a key for trust, a rose for love, a star for big ambitions, your initial for something unmistakably yours.</li>
+<li><b>Then the emblem.</b> A lion for courage, a stag for a peaceful family, an oak tree for deep roots, a tower for a family that built a home, a key for trust, or your initial for something unmistakably yours. There are 50 to choose from.</li>
 <li><b>Then make it personal.</b> Open your favorite in Crest Studio and swap in a motto your family actually says, or pick one from the <a href="/latin-motto-generator.html">Latin motto generator</a>.</li></ul>
 <div class="callout"><b>Why not just look up "our" crest?</b> Sites that sell a coat of arms for every surname are showing arms that belonged to one family line, which may have no connection to yours. Designing your own is honest, and it can say something true about your family today.</div>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html">Open the full studio</a></p></section>'''
     body += faq_html(faqs)
+    write_page(p, body)
+
+
+HOME_HERO = crest('The Carter Family', 'Fortis et Fidelis', AZURE, OR, GOLD_LIGHT, 'plain', 'lion')
+
+
+def home():
+    """The homepage: what Crest Studio is, six crests for the visitor's last name, what $9 buys, and the way into the Studio."""
+    slug = 'index.html'
+    faqs = [
+        ("Is this my family's real coat of arms?", 'No, and be wary of sites that say otherwise. In English and Scottish heraldry, arms belong to one person and their descendants, not to everyone who shares a surname. Crest Studio helps you design an original coat of arms for your family as it is today, using real heraldic colors, rules and symbols, and tells you what every part means.'),
+        ('What do I get for $9?', 'Print-ready art (a 4000 x 5000 px PNG, a web-size PNG and an SVG vector that scales to any size), a printable certificate of arms with your blazon and its meaning, a 1080 px profile picture and a phone wallpaper. The files download the moment payment goes through.'),
+        ('Do I need an account?', 'No. Designing is free in your browser with no sign-up, and your design is saved on your device. You only give an email and billing details at checkout, for the receipt.'),
+        ('Can I print it on mugs, shirts or canvas?', 'Yes. The files are yours to use for any lawful purpose, with any print shop or print-on-demand service. The 4000 px file prints sharply at about 13 by 16 inches, and the SVG scales to any size.'),
+        ('What if I am not happy with it?', 'Email hello@usurp.games within 14 days of purchase for a full refund.'),
+        ('Who makes Crest Studio?', 'Crest Studio is made by Murary Studios in Jaipur, India. Payments are handled by Dodo Payments, the merchant of record, on their secure checkout page, so card details never touch this site.'),
+    ]
+    p = dict(slug=slug, h1='Your Family Coat of Arms, Designed in Minutes', og='home', og_title='Design your family coat of arms free | Crest Studio',
+             title='Coat of Arms Maker: Design Your Family Crest Free | Crest Studio',
+             desc='Design your own family coat of arms free: 50 heraldic emblems including lions, eagles, dragons and stags, real heraldic colors and the meaning of every part. Print-ready files and a certificate of arms for $9.',
+             no_related=True)
+    org = {'@type': 'Organization', 'name': 'Crest Studio by Usurp', 'url': f'{SITE}/', 'logo': f'{SITE}/icon.svg', 'email': 'hello@usurp.games',
+           'address': {'@type': 'PostalAddress', 'addressLocality': 'Jaipur', 'addressRegion': 'Rajasthan', 'addressCountry': 'IN'}}
+    p['ld'] = ld_base(p, [faq_ld(faqs), org, APP_LD])
+    p['scripts'] = (f'<script type="application/json" id="fam-data">{json.dumps({"m": FAMILY_MOTTOS})}</script>'
+                    '<script src="/crest-core.js" defer></script><script src="/family-gen.js" defer></script>'
+                    "<script>document.addEventListener('DOMContentLoaded',function(){var f=document.querySelector('[data-form]');if(f)f.addEventListener('submit',function(){"
+                    "setTimeout(function(){var r=document.querySelector('[data-status]');if(r)r.scrollIntoView({behavior:'smooth',block:'start'})},60)})});</script>")
+    hero_svg = render([(HOME_HERO, 'home', 'Coat of arms of the Carter Family: a gold lion rampant on blue, motto Fortis et Fidelis')])[0]['svg']
+    ex = [crest('The Carter Family', 'Together We Rise', VERT, OR, ARGENT, 'chevron', 'initial'),
+          crest('The Carter Family', 'Ever Onward', SABLE, OR, GOLD_LIGHT, 'plain', 'eagle'),
+          crest('The Carter Family', 'Peace Through Strength', GULES, OR, GOLD_LIGHT, 'plain', 'stag'),
+          crest('The Carter Family', 'Root and Branch', VERT, OR, GOLD_LIGHT, 'plain', 'tree'),
+          crest('The Carter Family', 'Lux in Tenebris', AZURE, OR, GOLD_LIGHT, 'plain', 'fleur'),
+          crest('The Carter Family', 'Loyal to the End', PURPURE, ARGENT, ARGENT, 'plain', 'wolf')]
+    emblems = [('lion', 'Lion', 'Courage', GULES, OR), ('eagle', 'Eagle', 'Vision', AZURE, OR), ('dragon', 'Dragon', 'Valor', SABLE, OR),
+               ('wolf', 'Wolf', 'Loyalty', VERT, ARGENT), ('stag', 'Stag', 'Peace', MURREY, OR), ('bear', 'Bear', 'Strength', AZURE, ARGENT),
+               ('griffin', 'Griffin', 'Vigilance', PURPURE, OR), ('unicorn', 'Unicorn', 'Purity', GULES, ARGENT), ('phoenix', 'Phoenix', 'Renewal', SABLE, OR),
+               ('fleur', 'Fleur-de-lis', 'Light', AZURE, OR), ('tree', 'Oak tree', 'Roots', VERT, OR), ('highcross', 'Celtic cross', 'Faith', VERT, ARGENT)]
+    eds = [crest('', m, f, c, c, 'plain', k) for k, _, m, f, c in emblems]
+    eurls = render([(d, f'em{i}', f'{n} coat of arms') for i, (d, (_, n, _, _, _)) in enumerate(zip(eds, emblems))])
+    estrip = ''.join(f'<a href="{r["url"]}">{crest_img(d)}<span>{n}</span></a>' for d, (_, n, _, _, _), r in zip(eds, emblems, eurls))
+    tools = ''.join(f'<a href="/{h}"><b>{t}</b><span>{s_}</span></a>' for h, t, s_ in REGISTRY)
+    body = f'''<section class="home-hero">
+<div class="hh-copy"><p class="eyebrow">Free coat of arms maker</p>
+<h1 class="gilt">Your Family Coat of Arms, Designed in Minutes</h1>
+<p class="lede">Type your last name and see six crests made for your family. Choose from 50 heraldic emblems, from lions and eagles to oak trees and Celtic crosses, and learn what every color and symbol means.</p>
+<form class="surname-form" data-form onsubmit="return false"><label class="fld"><span>Your last name</span><input type="text" maxlength="30" data-surname autocomplete="family-name" placeholder="Carter"></label>
+<button class="btn big" type="submit" data-go>Show my crests</button></form>
+<p class="hh-alt">or <a href="/crest.html">start from scratch in the studio</a> · <a href="/coat-of-arms-quiz.html">take the 2-minute quiz</a></p></div>
+<div class="hh-art">{hero_svg}</div></section>
+<ul class="trust"><li>Free to design</li><li>No account</li><li>Instant download</li><li>Print anywhere</li><li>14-day refunds</li></ul>
+<section class="gen" aria-label="Crests for your last name"><p class="center muted-s" data-status>Six ideas for "Carter". Type your own last name above.</p></section>
+<div data-results>{gallery(ex, 'hm', 'Customize')}</div>
+<p class="center"><button class="btn ghost" type="button" data-more>Show six more</button></p>
+<section class="sec" id="what-you-get"><h2 class="gilt center">Everything you get for $9</h2>
+<p class="center">One payment, no subscription. Every file is generated from your design the moment you pay.</p>
+<div class="pack">
+<figure>{crest_img(HOME_HERO)}<figcaption>Print-ready art<br><small>4000 px PNG and SVG vector</small></figcaption></figure>
+<figure><img src="/img/home/certificate-of-arms-sample.jpg" width="900" height="1165" loading="lazy" decoding="async" alt="Sample certificate of arms for the Carter Family, with the blazon Azure, a lion rampant Or, and what it means"><figcaption>Certificate of arms<br><small>Its blazon and meaning, ready to frame</small></figcaption></figure>
+<figure><img src="/img/home/phone-wallpaper-sample.jpg" width="600" height="1298" loading="lazy" decoding="async" alt="Sample phone wallpaper with the Carter Family coat of arms"><figcaption>Phone wallpaper<br><small>Sized for modern phones</small></figcaption></figure>
+<figure><img src="/img/home/profile-picture-sample.jpg" width="600" height="600" loading="lazy" decoding="async" alt="Sample profile picture with the Carter Family shield"><figcaption>Profile picture<br><small>1080 px, for any social app</small></figcaption></figure>
+</div>
+<p class="center" style="margin-top:20px"><a class="btn big" href="/crest.html">Design yours free</a></p></section>
+<section class="sec"><h2 class="gilt center">How it works</h2><ol class="steps3">
+<li><b>Design it</b><span>Pick colors, a division, one of 50 emblems and a motto. See the heraldic blazon and what it means as you go. Free, no account.</span></li>
+<li><b>Download it</b><span>Love it? Pay $9 once and download every file instantly. Checkout is handled securely by Dodo Payments.</span></li>
+<li><b>Print or share it</b><span>Frame it, put it on mugs and shirts, use it as a profile picture or send it to the family. It is yours to use.</span></li></ol></section>
+<section class="sec" id="emblems"><h2 class="gilt center">50 emblems with real meaning</h2>
+<p class="center">Every emblem is drawn in the bold, flat style of real heraldry. Tap one to start a crest with it, or read <a href="/heraldry-symbols-and-meanings.html">what each one means</a>.</p></section>
+<div class="emb-strip">{estrip}</div>
+<section class="sec"><div class="split"><div><p class="eyebrow">For Christmas, anniversaries and new homes</p><h2 class="gilt">A gift with a story</h2>
+<p>Give a family their own coat of arms: their name, their colors, their motto, and a certificate explaining what it all means, with a "presented to" line from you. It downloads instantly, so it even works the night before.</p>
+<p>Short on time? Send it as a free e-card first and print a framed copy later.</p>
+<p style="margin-top:16px"><a class="btn" href="/family-crest-gift.html">Family crest gift ideas</a></p></div>
+<div>{crest_img(crest('Grandma and Grandpa Rossi', 'Root and Branch', VERT, OR, GOLD_LIGHT, 'plain', 'tree'))}</div></div></section>
+<section class="sec"><div class="split"><div><img src="/img/home/logo-kit-banner-sample.jpg" width="1200" height="400" loading="lazy" decoding="async" alt="Sample social banner from the Crest Logo Kit for Ironhold Brewing Co., with a sheaf of wheat crest"></div>
+<div><p class="eyebrow">For clubs, teams and businesses</p><h2 class="gilt">The $29 Crest Logo Kit</h2>
+<p>Everything a small brand needs in one ZIP: transparent logo files, a shield-only mark, favicons and app icons, banners for X, LinkedIn and YouTube, a Discord icon and a brand sheet, plus the full $9 set. Commercial use included.</p>
+<p style="margin-top:16px"><a class="btn" href="/crest-logo-maker.html">See the Logo Kit</a></p></div></div></section>
+<section class="sec"><h2 class="gilt">Free heraldry tools</h2><div class="related">{tools}</div></section>'''
+    body += faq_html(faqs)
+    body += '<section class="sec center"><h2 class="gilt">Ready to make yours?</h2><p>It takes a few minutes and costs nothing to design.</p><p style="margin-top:16px"><a class="btn big" href="/crest.html">Design your coat of arms</a></p></section>'
     write_page(p, body)
 
 
@@ -808,24 +897,25 @@ for _sp in SPECS:
 
 
 def sitemap_and_llms():
-    pages = [('crest.html', '1.0')] + [(s, '0.8') for s, _, _ in PAGES_INDEX] + [('', '0.5'), ('terms.html', '0.2'), ('privacy.html', '0.2'), ('refunds.html', '0.2')]
+    pages = [('index.html', '1.0'), ('crest.html', '0.9')] + [(s, '0.8') for s, _, _ in PAGES_INDEX if s != 'index.html'] + [('terms.html', '0.2'), ('privacy.html', '0.2'), ('refunds.html', '0.2')]
     def imgs(slug):
         try:
             body = open(os.path.join(ROOT, slug), encoding='utf-8').read() if slug else ''
         except FileNotFoundError:
             return ''
-        found = list(dict.fromkeys(re.findall(r'src="(/img/crests/[^"]+)"', body)))
+        found = list(dict.fromkeys(re.findall(r'src="(/img/(?:crests|home)/[^"]+)"', body)))
         return ''.join(f'<image:image><image:loc>{SITE}{u}</image:loc></image:image>' for u in found[:1000])
-    urls = ''.join(f'<url><loc>{SITE}/{s}</loc><lastmod>{TODAY}</lastmod><priority>{pr}</priority>{imgs(s)}</url>\n' for s, pr in pages)
+    urls = ''.join(f'<url><loc>{page_url(s)}</loc><lastmod>{TODAY}</lastmod><priority>{pr}</priority>{imgs(s)}</url>\n' for s, pr in pages)
     with open(os.path.join(ROOT, 'sitemap.xml'), 'w') as f:
         f.write(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n{urls}</urlset>\n')
     with open(os.path.join(ROOT, 'tools', 'img-jobs.json'), 'w') as f:
         json.dump(IMG_JOBS, f)
     lines = ['# Crest Studio by Usurp', '',
              '> Free online coat of arms and family crest maker. Anyone can design a heraldic crest (name, motto, colors, division, emblem) in the browser for free with no account. A one-time $9 purchase downloads print-ready files (4000 px PNG, 1200 px PNG, SVG vector), a certificate of arms with its blazon and meaning, a profile picture and a phone wallpaper. A $29 Crest Logo Kit adds transparent logo files, favicons and app icons, social banners and a brand sheet for clubs, teams and businesses. All files are usable for any lawful purpose, personal or commercial. Original decorative artwork, not an official grant of arms. Payments by Dodo Payments; 14-day refunds.', '',
-             '## Main tool', f'- [Crest Studio: design your own coat of arms]({SITE}/crest.html): the free designer and $9 download', '',
+             '## Main tool', f'- [Crest Studio home]({SITE}/): what Crest Studio is, sample files, and six crests for any last name',
+             f'- [Crest Studio: design your own coat of arms]({SITE}/crest.html): the free designer with 50 heraldic emblems, and the $9 download', '',
              '## Free tools and guides']
-    lines += [f'- [{h}]({SITE}/{s}): {d}' for s, h, d in PAGES_INDEX]
+    lines += [f'- [{h}]({SITE}/{s}): {d}' for s, h, d in PAGES_INDEX if s != 'index.html']
     lines += ['', '## Policies', f'- [Terms]({SITE}/terms.html)', f'- [Refunds]({SITE}/refunds.html)', f'- [Privacy]({SITE}/privacy.html)', '',
               'Contact: hello@usurp.games. Operated by Prakhar Murary (Murary Studios), Jaipur, India.', '']
     with open(os.path.join(ROOT, 'llms.txt'), 'w') as f:
@@ -833,7 +923,7 @@ def sitemap_and_llms():
 
 
 if __name__ == '__main__':
-    for fn in (surname, quiz, ideas, family, dnd, wedding, clan, school, mottos, houses, meanings, templates):
+    for fn in (home, surname, quiz, ideas, family, dnd, wedding, clan, school, mottos, houses, meanings, templates):
         fn()
     for sp in SPECS:
         spec_page(sp)

@@ -49,18 +49,19 @@ def render_crests(items):
 
 
 OG = {
-    'family': ('Family Crest Maker', 'Design a family crest with meaning', crest('The Okafor Family', 'Together We Rise', AZURE, OR, GOLD_LIGHT, 'chevron', 'mullet')),
-    'dnd': ('D&D Coat of Arms Generator', 'Sigils for houses, guilds and orders', crest('House Thornwall', 'The Root Holds', SABLE, OR, GOLD_LIGHT, 'chevron', 'tower')),
-    'wedding': ('Wedding Crest Maker', 'One crest for your two names', crest('Rossi & Chen', 'Omnia Vincit Amor', AZURE, OR, ARGENT, 'perpale', 'rose')),
-    'clan': ('Clan and Guild Logo Maker', 'Heraldic emblems for gaming groups', crest('Iron Ravens', 'Swift and Unseen', SABLE, OR, GOLD_LIGHT, 'bend', 'sword')),
-    'school': ('School House Crests', 'Four houses for your classroom', crest('House Sapientia', 'Sapere Aude', AZURE, ARGENT, ARGENT, 'bend', 'key')),
-    'mottos': ('Latin Motto Generator', '50+ mottos with translations', crest('House Ashford', 'Per Aspera ad Astra', MURREY, OR, GOLD_LIGHT, 'chevron', 'mullet')),
-    'houses': ('Fantasy House Name Generator', 'A name, motto and sigil in one click', crest('House Duskmere', 'We Rise by Night', PURPURE, ARGENT, ARGENT, 'perpale', 'crescent')),
-    'meanings': ('Heraldry Symbols and Meanings', 'Colors, divisions and emblems explained', crest('House Valemont', 'Veritas Vincit', GULES, OR, GOLD_LIGHT, 'quarterly', 'crown')),
+    'home': ('Design Your Family Coat of Arms', 'Free to design · 50 heraldic emblems', crest('The Carter Family', 'Fortis et Fidelis', AZURE, OR, GOLD_LIGHT, 'plain', 'lion')),
+    'family': ('Family Crest Maker', 'Design a family crest with meaning', crest('The Okafor Family', 'Together We Rise', AZURE, OR, GOLD_LIGHT, 'plain', 'eagle')),
+    'dnd': ('D&D Coat of Arms Generator', 'Sigils for houses, guilds and orders', crest('House Thornwall', 'The Root Holds', SABLE, OR, GOLD_LIGHT, 'plain', 'dragon')),
+    'wedding': ('Wedding Crest Maker', 'One crest for your two names', crest('Rossi & Chen', 'Omnia Vincit Amor', AZURE, OR, ARGENT, 'perpale', 'heart')),
+    'clan': ('Clan and Guild Logo Maker', 'Heraldic emblems for gaming groups', crest('Iron Wolves', 'Swift and Unseen', SABLE, OR, GOLD_LIGHT, 'plain', 'wolf')),
+    'school': ('School House Crests', 'Four houses for your classroom', crest('House Sapientia', 'Sapere Aude', AZURE, ARGENT, ARGENT, 'plain', 'owl')),
+    'mottos': ('Latin Motto Generator', '50+ mottos with translations', crest('House Ashford', 'Per Aspera ad Astra', MURREY, OR, GOLD_LIGHT, 'plain', 'lion')),
+    'houses': ('Fantasy House Name Generator', 'A name, motto and sigil in one click', crest('House Duskmere', 'We Rise by Night', PURPURE, ARGENT, GOLD_LIGHT, 'plain', 'griffin')),
+    'meanings': ('Heraldry Symbols and Meanings', 'Colors, animals and emblems explained', crest('House Valemont', 'Veritas Vincit', VERT, OR, GOLD_LIGHT, 'plain', 'stag')),
     'templates': ('Free Coat of Arms Templates', 'Printable shields and a family crest worksheet', None),
-    'surname': ('Family Crest Generator', 'Six crests for your last name in one click', crest('The Carter Family', 'Together We Rise', AZURE, OR, GOLD_LIGHT, 'chevron', 'initial')),
-    'quiz': ('What Would Your Coat of Arms Be?', 'A free 2-minute heraldry quiz', crest('House Ashford', 'Per Aspera Ad Astra', AZURE, OR, GOLD_LIGHT, 'chevron', 'tower')),
-    'ideas': ('80 Coat of Arms Ideas', 'Original crests you can customize free', crest('House Ravenmere', 'We Rise by Night', PURPURE, OR, GOLD_LIGHT, 'chevron', 'crescent')),
+    'surname': ('Family Crest Generator', 'Six crests for your last name in one click', crest('The Carter Family', 'Together We Rise', GULES, OR, GOLD_LIGHT, 'plain', 'lion')),
+    'quiz': ('What Would Your Coat of Arms Be?', 'A free 2-minute heraldry quiz', crest('House Ashford', 'Per Aspera Ad Astra', AZURE, OR, ARGENT, 'plain', 'wolf')),
+    'ideas': ('70+ Coat of Arms Ideas', 'Original crests you can customize free', crest('House Ravenmere', 'We Rise by Night', SABLE, OR, GOLD_LIGHT, 'plain', 'phoenix')),
 }
 from usecases import SPECS
 for _sp in SPECS:

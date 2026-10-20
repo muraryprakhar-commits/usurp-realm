@@ -1,0 +1,155 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Usurp: The Kingdom (prototype)</title>
+<link rel="canonical" href="https://usurp.games/realm.html"><meta name="robots" content="noindex,follow"><meta property="og:url" content="https://usurp.games/realm.html">
+<meta name="description" content="Everyone starts as nothing. Climb from Peasant to the throne by lifetime spend, hold your seat, and rule the Kingdom of Usurp. Prototype: ladder purchases are simulated.">
+<meta property="og:title" content="Usurp: The Kingdom"><meta property="og:description" content="Everyone starts as nothing. Climb from Peasant to the throne by lifetime spend. Prototype: ladder purchases are simulated."><meta property="og:type" content="website">
+<script type="text/javascript">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","yzjmha008x");</script>
+<meta name="theme-color" content="#14110e"><link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/home.css"><link rel="stylesheet" href="/realm.css">
+<script src="/app.js" defer></script><script src="/home.js" defer></script><script src="/realm.js" defer></script></head>
+<body data-page="/"><canvas id="embers" aria-hidden="true"></canvas>
+<div class="proto-bar">Prototype. Ladder purchases are simulated and the other Houses are fictional lore. The only real purchase on this site is <a href="/crest.html">Crest Studio</a> artwork, a separate product.</div>
+<header class="site-head" data-head></header>
+<main>
+
+<section class="realm" id="map" data-realm aria-label="The Kingdom of Usurp">
+<div class="realm-map" data-realm-map></div>
+<div class="zoom"><button data-zoom-in aria-label="Zoom in">+</button><button data-zoom-out aria-label="Zoom out">&minus;</button><button data-zoom-home aria-label="Show the whole kingdom">&#8962;</button></div>
+<aside class="realm-info parchment" data-realm-info hidden aria-live="polite"></aside>
+<div class="realm-hud">
+<div class="hud-copy"><p class="eyebrow">The Kingdom of Usurp · Prototype</p><h1 class="gilt">Everyone starts as nothing.</h1><p>Pay your way to the throne, or lose everything to someone who will.</p><span class="hud-hint">Drag to explore · Tap a castle · Enter the Court</span></div>
+<div class="hud-cta"><a class="btn" href="#throne">Claim Your Place</a><a class="btn ghost" href="#court">Enter the Court</a></div>
+</div>
+</section>
+<div class="court-view" data-court-view hidden role="dialog" aria-modal="true" aria-label="The Court of Usurp">
+<div class="court-bar"><button class="btn ghost" data-court-back>&larr; Kingdom</button><h2 class="gilt" data-court-title>The Court of Queen Isolde</h2><a class="btn" href="#throne" data-court-claim>Claim Your Place</a></div>
+<div class="court-stage" data-court-stage></div>
+<div class="court-cap"><div data-court-cap><b>The Court</b><span>Tap anyone to see who they are. The higher the step, the more they have spent.</span></div><span class="notice">Illustrative court · Purchases simulated</span></div>
+</div>
+
+<section class="standing" id="standing" aria-label="Your standing"><div class="wrap">
+<div class="me" data-me></div>
+</div></section>
+
+<section class="section" id="throne"><div class="wrap">
+<div class="center"><p class="eyebrow reveal">Hear ye, hear ye</p><h2 class="gilt reveal">The Throne Room</h2>
+<p class="lede reveal">One ladder, sorted by lifetime spend. Titles are painted onto bands of the list. Pass the person above you and everyone between you shifts down.</p></div>
+<div class="throne-grid">
+<div class="throne-side reveal">
+<div data-throne-art></div>
+<p class="eyebrow" style="margin-top:14px">Upon the throne</p><h3 class="gilt holder" data-holder></h3><p class="muted-s" data-holder-sub></p>
+</div>
+<div class="reveal">
+<div class="actions">
+<button class="btn" data-act="next"></button>
+<button class="btn ghost" data-act="usurp"></button>
+<button class="btn ghost" data-act="rival">Simulate a rival's spend</button>
+</div>
+<form class="spend-row" data-spend><label class="fld"><span>Add a custom amount (USD, simulated)</span><input type="number" min="1" step="1" inputmode="numeric" placeholder="e.g. 50" data-amt></label><button class="btn ghost" type="submit">Spend this amount</button></form>
+<div class="frame tbl"><table><thead><tr><th>#</th><th>Name</th><th>Rank</th><th class="num">Lifetime spend</th></tr></thead><tbody data-board></tbody></table></div>
+</div>
+</div>
+<div class="scroll reveal" style="margin-top:56px"><div class="parchment"><p class="eyebrow">The Chronicle</p><h3 style="margin:6px 0 10px">Realm events</h3><ol class="chron" data-chron-live></ol></div></div>
+</div></section>
+
+<section class="section" id="studio"><div class="wrap" style="max-width:980px">
+<div class="center"><p class="eyebrow reveal">Crest Studio</p><h2 class="gilt reveal">Design Your Own Coat of Arms</h2>
+<p class="lede reveal">Pick your colours, emblem and motto in a minute. Designing is free. Download print-ready artwork for $9 and use it anywhere.</p></div>
+<div class="founder-card frame reveal">
+<div class="founder-crest" data-founder-crest></div>
+<div class="founder-body">
+<div class="founder-price"><b>$9</b><span>one time, USD</span></div>
+<ul class="founder-perks">
+<li>A <b>4000 px PNG</b> for print and a <b>1200 px PNG</b> for the web</li>
+<li>An <b>SVG vector</b> file you can scale to any size</li>
+<li>No watermark. Use it for family crests, gifts, D&amp;D, clan logos, stationery</li>
+<li>Instant download after payment</li>
+</ul>
+<div class="actions"><a class="btn" href="/crest.html">Open the Crest Studio</a></div>
+<p class="muted-s founder-fine">Crest Studio is a separate digital product. Buying artwork gives no rank, title or advantage in the Usurp game. Secure checkout by Dodo Payments, refundable within 14 days. See the <a href="/terms.html">Terms</a>, <a href="/refunds.html">Refund policy</a> and <a href="/privacy.html">Privacy policy</a>.</p>
+</div>
+</div>
+</div></section>
+
+<section class="section" id="ranks"><div class="wrap" style="max-width:980px">
+<div class="center"><p class="eyebrow reveal">By Order of the Crown</p><h2 class="gilt reveal">The Hall of Ranks</h2>
+<p class="lede reveal">The listed price is the floor to claim an open seat. When a band is full, you must out-spend its lowest holder, who then drops a band.</p></div>
+<div class="who-row reveal">
+<label class="fld"><span>Your name</span><input type="text" maxlength="24" data-name></label>
+<label class="fld"><span>Title style</span><select data-style><option value="0">King, Duke, Knight</option><option value="1">Queen, Duchess, Dame</option></select></label>
+</div>
+<div class="ranks" style="margin-top:30px" data-ladder></div>
+<p class="center muted-s" style="margin-top:18px">King or Queen has no fixed price. You must simply out-spend the current holder, ever.</p>
+</div></section>
+
+<section class="section" id="houses"><div class="wrap">
+<div class="center"><p class="eyebrow reveal">Heraldry of the Realm</p><h2 class="gilt reveal">The Great Houses</h2>
+<p class="lede reveal">Swear to a House from the map or below. Houses are lore, and the brand layer sits on top: paid placements, separate from personal rank. Sponsorships here are simulated.</p></div>
+<div class="banners reveal" data-banners style="margin-top:28px"></div>
+<div class="grid g3 house-grid" style="margin-top:40px;gap:34px" data-houses-live></div>
+<div class="center" style="margin-top:64px"><p class="eyebrow reveal">The Brand Layer</p><h3 class="reveal" style="color:var(--gold-2);margin-top:6px">Patron Houses</h3></div>
+<div class="frame tbl reveal" style="margin-top:24px"><table><thead><tr><th>Tier</th><th class="num">Price</th><th>What they get</th></tr></thead><tbody>
+<tr><td>Bannerman</td><td class="num">$199 / mo</td><td>Small crest and link on the notice board (footer)</td></tr>
+<tr><td>Merchant House</td><td class="num">$999 / mo</td><td>Town Square banner, 1 sponsored Decree per month</td></tr>
+<tr><td>Noble House</td><td class="num">$4,999 / mo or $49,999 / yr</td><td>Named house, crest realm-wide, can sponsor a season or tournament, can grant a "Sworn to House" badge</td></tr>
+<tr><td>Season Sponsor</td><td class="num">Negotiated</td><td>Sole sponsor of one crowning cycle. The season is named after them.</td></tr>
+</tbody></table></div>
+<div class="grid g2" style="margin-top:34px">
+<div class="scroll reveal"><div class="parchment"><p class="eyebrow">Try a sponsorship</p><h3 style="margin:6px 0 4px">Raise a patron banner</h3>
+<form class="spons" data-spons><label class="fld ink"><span>Brand name</span><input type="text" maxlength="30" placeholder="Your brand" data-brand></label>
+<label class="fld ink"><span>Tier</span><select data-tier><option>Bannerman</option><option>Merchant House</option><option>Noble House</option></select></label>
+<button class="btn" type="submit">Sponsor (simulated)</button></form></div></div>
+<div class="frame reveal"><p class="eyebrow">Notice board</p><ul class="notice-list" data-notice></ul></div>
+</div>
+</div></section>
+
+<section class="section" id="decrees"><div class="wrap" style="max-width:980px">
+<div class="center"><p class="eyebrow reveal">By Royal Command</p><h2 class="gilt reveal">Royal Decrees</h2>
+<p class="lede reveal">Broadcast a message to the realm. Free each week: King or Queen 3, Duke and above 1, everyone else 0. Any extra Decree is $2.</p></div>
+<div class="scroll reveal" style="margin-top:34px"><div class="parchment">
+<form class="decree-form" data-decree>
+<label class="fld ink"><span>Message (max 140 characters)</span><textarea rows="3" maxlength="140" placeholder="Hear ye." data-dtext></textarea></label>
+<div class="decree-side"><label class="fld ink"><span>Send to</span><select data-dscope></select></label><p class="allow" data-dallow></p></div>
+<div class="actions"><button class="btn" type="submit">Send Decree</button><button class="btn ghost ink-ghost" type="button" data-dbuy>Buy an extra Decree, $2</button></div>
+<p class="dmsg" data-dmsg></p>
+</form></div></div>
+<ul class="decrees" data-decrees></ul>
+</div></section>
+
+<section class="section" id="games"><div class="wrap">
+<div class="center"><p class="eyebrow reveal">Sport for the Court</p><h2 class="gilt reveal">Court Games</h2>
+<p class="lede reveal">Every reward is a cosmetic badge. No game ever pays out real money or returns more than you put in.</p></div>
+<div class="grid g3" style="margin-top:40px">
+<div class="frame game reveal"><div class="game-ico" data-ico="dice"></div><h3>Dice with the Steward</h3><p class="muted-s">Free. Best of three, higher total wins. Open to Peasants.</p><button class="btn" data-g="dice">Roll</button><div class="res" data-r="dice"></div></div>
+<div class="frame game reveal"><div class="game-ico" data-ico="trivia"></div><h3>Court Trivia</h3><p class="muted-s">Free. Three questions on noble titles. Open to Peasants.</p><div class="trivia" data-trivia></div><button class="btn" data-g="trivia">Submit answers</button><div class="res" data-r="trivia"></div></div>
+<div class="frame game reveal"><div class="game-ico" data-ico="joust"></div><h3>The Joust</h3><p class="muted-s">Knight and above. Free to enter. Eight-knight bracket, and the winner earns a temporary cosmetic badge.</p><div data-joust></div></div>
+</div>
+</div></section>
+
+<section class="section" id="charter"><div class="wrap">
+<div class="center"><p class="eyebrow reveal">The Law of the Realm</p><h2 class="gilt reveal">The Charter</h2><p class="lede reveal">Why this stays a status product and not a wager.</p></div>
+<div class="flourish"><span>⚜</span></div>
+<div class="grid g4" style="margin-top:34px">
+<div class="step frame reveal"><div class="num">I</div><h3>No chance in rank</h3><p>Rank is set only by lifetime spend.</p></div>
+<div class="step frame reveal"><div class="num">II</div><h3>No cash payout</h3><p>Spend never returns as money, and no Court Game rewards cash.</p></div>
+<div class="step frame reveal"><div class="num">III</div><h3>No cash value</h3><p>Titles and badges cannot be sold, traded or turned into money. Nothing in the game is for sale with real money.</p></div>
+<div class="step frame reveal"><div class="num">IV</div><h3>No fake users</h3><p>The Founding Houses are labelled lore, not customers.</p></div>
+</div>
+<p class="center muted-s reveal" style="margin:26px auto 0;max-width:720px">The spec flags a real Terms of Service and legal review before meaningful money moves, including the US market and India's Online Gaming Act (2025). This page is not legal advice.</p>
+<div class="scroll reveal" style="margin:64px auto 0;max-width:820px"><div class="parchment"><p class="eyebrow">The Roadmap</p><h3 style="margin:6px 0 10px">From spec to crown</h3>
+<ol class="chron road">
+<li><time>Phase 0</time><span><b>Lock the spec.</b> Finalize structure, pick the name, draft the Terms line on titles having no cash value.</span></li>
+<li><time>Phase 1</time><span><b>MVP.</b> Leaderboard prototype, plus Crest Studio artwork sold through Dodo Payments.</span></li>
+<li><time>Phase 2</time><span><b>Founding Era.</b> Real beta cohort and 1 to 2 lore Houses, Peasant signup open, first real paying customers.</span></li>
+<li><time>Phase 3</time><span><b>Brand layer.</b> Open House sponsorships to real small businesses.</span></li>
+<li><time>Phase 4</time><span><b>Engagement.</b> Court Games, seasonal resets, referrals.</span></li>
+<li><time>Phase 5</time><span><b>Scale.</b> Streaming integrations, possible mobile app.</span></li>
+</ol></div></div>
+<div class="center" style="margin-top:40px"><button class="btn ghost" data-reset>Reset prototype</button></div>
+</div></section>
+
+</main><footer class="site-foot" data-foot></footer>
+<div class="toast" data-toast role="status" aria-live="polite"></div>
+</body></html>

@@ -41,6 +41,27 @@ function preview() {
   $('[data-preview]').innerHTML = `<svg viewBox="0 0 ${W} ${HT}" role="img" aria-label="Preview of your coat of arms">${L.art}${L.texts.map(textSvg).join('')}</svg>`;
   $('[data-price]').textContent = `$${PRICE}`;
   extras();
+  const bb = $('[data-bb-art]');
+  if (bb) {
+    const S = layout({ ...D, bg:'clear' }, 'bb', { noName:true, noRibbon:true });
+    bb.innerHTML = `<svg viewBox="90 120 820 820" aria-hidden="true">${S.art}${S.texts.map(textSvg).join('')}</svg>`;
+    $('[data-bb-name]').textContent = String(D.name).trim() || 'Your coat of arms';
+  }
+}
+/* Phone-width sticky bar: a live mini crest and the buy button, shown while neither the preview nor the buy box is on screen. */
+function buyBar() {
+  const bar = $('[data-buybar]'), stage = $('.stage'), buy = $('.buy');
+  if (!bar || !stage || !buy || !('IntersectionObserver' in window)) return;
+  const seen = new Map([[stage, true], [buy, false]]);
+  const set = () => bar.classList.toggle('on', !seen.get(stage) && !seen.get(buy) && $('[data-paid]').hidden);
+  const io = new IntersectionObserver(es => { es.forEach(e => seen.set(e.target, e.isIntersecting)); set(); });
+  io.observe(stage); io.observe(buy); document.body.classList.add('has-buybar');
+  bar.querySelector('[data-bb-buy]').onclick = e => {
+    e.preventDefault();
+    if (window.clarity) try { window.clarity('event', 'buybar_click'); } catch (err) {}
+    $('[data-buy]').click();
+  };
+  bar.querySelector('[data-bb-art]').onclick = () => stage.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 // Live blazon, meaning and the thumbnails of everything in the $9 package.
 function extras() {
@@ -518,7 +539,7 @@ async function handleReturn() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  wire(); syncControls(); preview(); handleReturn();
+  wire(); syncControls(); preview(); handleReturn(); buyBar();
 });
 // exposed for tests
 window.__crest = { enc, dec, layout, sanitize };

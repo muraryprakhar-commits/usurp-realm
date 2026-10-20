@@ -114,3 +114,8 @@
 @media(min-width:760px){.split{grid-template-columns:1fr 1fr;gap:36px}}
 .split img{display:block;width:100%;height:auto;border:1px solid #3a2e1f}
 .split h2{margin:6px 0 10px}
+
+.gm-mini{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.gm-mini a{display:block;text-decoration:none;color:var(--gold-2);font-family:var(--serif);font-size:12px;letter-spacing:.08em;text-align:center}
+.gm-mini img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;border:1px solid #3a2e1f;margin-bottom:4px}
+.gm-mini a:hover img{border-color:var(--gold-deep)}

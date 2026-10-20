@@ -53,3 +53,18 @@ python3 tools/build.py     # pages, sitemap.xml, llms.txt
 python3 tools/assets.py    # templates/ and og/ share images (needs Playwright)
 python3 tools/indexnow.py  # after deploy: tell Bing, Yandex and others about every URL
 ```
+
+## Medieval games and ad slots (21 Oct 2026)
+- `/games/` hub plus four games: `games/archery.html`, `games/joust.html`, `games/castle-defense.html`, `games/sword-duel.html`.
+  Pages come from `tools/build.py` (GAMES list). Each game is one canvas drawn in code, no image files:
+  `games/engine.js` (shared: canvas, input, synthesized sound, overlays, best scores, sharing, the player's
+  Crest Studio arms, ad slots, play tracking) and one script per game.
+- Thumbnails and share images: `python3 tools/game_shots.py` after the build (plays each game and photographs it).
+- Ads are off until configured: set `ADS` at the top of `tools/build.py` (AdSense publisher ID and a display ad
+  unit ID), rebuild, deploy. That also writes `ads.txt` and the `google-adsense-account` meta tag. Set `h5: True`
+  only after Google approves the account for H5 Games Ads (between-round interstitials via `adBreak`).
+  Until then the banner slot shows a Crest Studio house ad, and every third round break (at most every two
+  minutes) shows a skippable Crest Studio card. A directly sold banner goes in `ADS['sponsor']`.
+- Play tracking: Microsoft Clarity custom events `play_<game>`, `round_<game>`, `finish_<game>`, `share_<game>`,
+  `crest_click_<game>`, plus the session tag `game`. Optional GA4 events if `ADS['ga']` is set.
+- Local test hook: on localhost each game exposes `window.__ug.st()` (its state) and `window.__ugFreeze`.

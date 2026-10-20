@@ -11,6 +11,12 @@ from usecases import SPECS
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = 'https://usurp.games'
+# Advertising on the free games (and nowhere near checkout). Leave 'client' empty until Google AdSense approves
+# usurp.games; then set client to the publisher ID ('ca-pub-...') and slot to a responsive display ad unit ID.
+# Set h5 to True only once Google has approved the account for H5 Games Ads (between-round ads); test=True shows
+# Google's test ads while checking it. ga is an optional Google Analytics 4 measurement ID for play events.
+# sponsor: a directly sold banner, e.g. {'href': 'https://...', 'img': '/img/sponsors/x.png', 'alt': 'Sponsor name'}.
+ADS = {'client': '', 'slot': '', 'h5': False, 'test': False, 'ga': '', 'sponsor': None}
 TODAY = datetime.date.today().isoformat()
 E = html.escape
 
@@ -77,7 +83,7 @@ def crest_img(d, cls=''):
     return f'<img src="/img/crests/{fn}" width="600" height="750" loading="lazy" decoding="async" alt="{E(describe(d))}"{c}>'
 
 
-NAV = [('/crest.html', 'Studio'), ('/coat-of-arms-quiz.html', 'Quiz'), ('/family-crest-generator.html', 'By last name'), ('/family-crest-gift.html', 'Gifts'), ('/latin-motto-generator.html', 'Mottos'),
+NAV = [('/crest.html', 'Studio'), ('/games/', 'Games'), ('/coat-of-arms-quiz.html', 'Quiz'), ('/family-crest-generator.html', 'By last name'), ('/family-crest-gift.html', 'Gifts'), ('/latin-motto-generator.html', 'Mottos'),
        ('/fantasy-house-name-generator.html', 'House names'),
        ('/heraldry-symbols-and-meanings.html', 'Meanings'), ('/coat-of-arms-template.html', 'Templates')]
 
@@ -85,7 +91,9 @@ PAGES_INDEX = []  # (slug, title, blurb) filled by page()
 
 
 def page_url(slug):
-    return f'{SITE}/' if slug == 'index.html' else f'{SITE}/{slug}'
+    if slug == 'index.html':
+        return f'{SITE}/'
+    return f'{SITE}/{slug[:-10]}' if slug.endswith('/index.html') else f'{SITE}/{slug}'
 
 
 def head(p):
@@ -98,7 +106,7 @@ def head(p):
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{E(p['og_title'])}"><meta name="twitter:description" content="{E(p['desc'])}"><meta name="twitter:image" content="{SITE}/og/{p['og']}.png">
 <script type="application/ld+json">{ld}</script>
 <script type="text/javascript">(function(c,l,a,r,i,t,y){{c[a]=c[a]||function(){{(c[a].q=c[a].q||[]).push(arguments)}};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);}})(window,document,"clarity","script","yzjmha008x");</script>
-<meta name="theme-color" content="#14110e"><link rel="icon" href="/icon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#14110e"><link rel="icon" href="/icon.svg" type="image/svg+xml">{f'<meta name="google-adsense-account" content="{ADS["client"]}">' if ADS['client'] else ''}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/studio.css"><link rel="stylesheet" href="/pages.css">{p.get('head_extra', '')}
@@ -107,7 +115,8 @@ def head(p):
 
 def header(slug):
     cur = ' aria-current="page"'
-    links = ''.join(f'<a href="{h}"{cur if h == "/" + slug else ""}>{t}</a>' for h, t in NAV)
+    on = lambda h: h == '/' + slug or (h == '/games/' and slug.startswith('games/'))
+    links = ''.join(f'<a href="{h}"{cur if on(h) else ""}>{t}</a>' for h, t in NAV)
     return f'<header class="site-head"><div class="head-in"><a class="brand" href="/"><span class="gilt">CREST STUDIO</span></a><nav class="nav" aria-label="Site">{links}</nav></div></header>'
 
 
@@ -127,13 +136,16 @@ REGISTRY = [
     ('fantasy-house-name-generator.html', 'House name generator', 'A name, motto and sigil in one click'),
     ('heraldry-symbols-and-meanings.html', 'Heraldry meanings', 'What colors and emblems stand for'),
     ('coat-of-arms-template.html', 'Printable templates', 'Free blank shields and worksheets'),
+    ('games/', 'Medieval games', 'Archery, jousting, castle defense and duels'),
 ]
 
 
 def footer():
     allp = [('/crest.html', 'Coat of arms maker')] + [('/' + s, t) for s, t, _ in REGISTRY]
     links = ''.join(f'<a href="{h}">{t}</a>' for h, t in allp)
+    games = ''.join(f'<a href="/{g["slug"]}">{g["short"]}</a>' for g in GAMES)
     return f'''<footer class="site-foot"><nav class="foot-links" aria-label="Crest Studio pages">{links}</nav>
+<nav class="foot-links" aria-label="Games"><a href="/games/">Medieval games</a>{games}</nav>
 <p><a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/refunds.html">Refunds</a> · <a href="mailto:hello@usurp.games">hello@usurp.games</a></p>
 <p>Crest Studio by Usurp · Operated by Prakhar Murary (Murary Studios), Jaipur, Rajasthan, India · <a href="/realm.html">Usurp, the game (prototype)</a></p></footer>'''
 
@@ -733,6 +745,10 @@ def home():
 <div><p class="eyebrow">For clubs, teams and businesses</p><h2 class="gilt">The $29 Crest Logo Kit</h2>
 <p>Everything a small brand needs in one ZIP: transparent logo files, a shield-only mark, favicons and app icons, banners for X, LinkedIn and YouTube, a Discord icon and a brand sheet, plus the full $9 set. Commercial use included.</p>
 <p style="margin-top:16px"><a class="btn" href="/crest-logo-maker.html">See the Logo Kit</a></p></div></div></section>
+<section class="sec"><div class="split"><div><p class="eyebrow">Free to play on your phone</p><h2 class="gilt">Medieval games</h2>
+<p>An archery contest, a jousting tournament, a castle under siege and a sword duel. Short, replayable and free, and the coat of arms you design here rides with you in every game.</p>
+<p style="margin-top:16px"><a class="btn" href="/games/">Play the games</a></p></div>
+<div class="gm-mini">{''.join(f'<a href="/{g["slug"]}"><img src="/img/games/{g["id"]}.webp" width="600" height="800" loading="lazy" decoding="async" alt="{E(g["name"])}"><span>{E(g["short"])}</span></a>' for g in GAMES)}</div></div></section>
 <section class="sec"><h2 class="gilt">Free heraldry tools</h2><div class="related">{tools}</div></section>'''
     body += faq_html(faqs)
     body += '<section class="sec center"><h2 class="gilt">Ready to make yours?</h2><p>It takes a few minutes and costs nothing to design.</p><p style="margin-top:16px"><a class="btn big" href="/crest.html">Design your coat of arms</a></p></section>'
@@ -909,6 +925,171 @@ for _sp in SPECS:
         REGISTRY.append((_sp['slug'], _sp['short'], _sp['blurb']))
 
 
+# ------------------------------------------------------------------ games
+# Four short medieval games. Each is one canvas drawn in code (no image files), with a shared engine in games/engine.js.
+# Thumbnails and share images come from tools/game_shots.py, which plays each game and photographs it.
+GAMES = [
+    dict(id='archery', slug='games/archery.html', js='archery', short='Archery', name="The King's Archery Contest",
+         h1="Archery Game: The King's Archery Contest", og_title="Archery game: can you win the King's Archery Contest?",
+         title="Archery Game: The King's Archery Contest (Free, No Download) | Usurp Games",
+         desc='Free medieval archery game for phone and computer. Hold to draw, aim into the wind and loose nine arrows at 20, 40 and 60 metres. A new daily contest every day. No download.',
+         tagline='Nine arrows, three distances, one champion. Mind the wind.', genre=['Sports', 'Skill', 'Archery'],
+         card='Hold to draw, aim into the wind, hit the gold.',
+         how=['Press and hold anywhere on the field to draw your bow. The ring around your sight fills as you draw.',
+              'While you hold, drag to move your aim. The sight steadies at full draw, but hold too long and your arm starts to shake.',
+              'Let go to loose the arrow. The wind, shown top right, pushes it sideways, more at longer range, so aim into the wind.',
+              'Three ends of three arrows, at 20, 40 and 60 metres. Gold scores 9 and 10, and the small X in the middle is a perfect ten.'],
+         touch='Hold anywhere to draw, drag to aim, lift your finger to shoot.',
+         keys='Hold Space to draw, aim with the arrow keys or WASD, release Space to shoot. Or hold, drag and release with the mouse.',
+         tips=['Draw fully before you loose: a half-drawn bow drops the arrow low.',
+               'Shoot in the first second or two at full draw, while your sight is steadiest.',
+               'Watch the pennants and the wind arrow. At 60 metres a strong wind moves an arrow by most of the target.',
+               'The daily contest gives everyone the same winds today, so you can compare scores fairly with friends.'],
+         faqs=[('Is the archery game free?', 'Yes. It runs in your browser on phones, tablets and computers, with no download and no account.'),
+               ('How is the target scored?', 'Like a real archery target: gold scores 10 and 9, red 8 and 7, blue 6 and 5, black 4 and 3, and white 2 and 1. The small X ring in the centre counts as 10 and breaks ties. The best possible score is 90.'),
+               ('What is the daily contest?', 'A contest with the same winds for everyone that day, so you can share your score and compare it fairly. It changes at midnight UTC.'),
+               ('Can I put my own coat of arms in the game?', 'Yes. Design your coat of arms free in <a href="/crest.html">Crest Studio</a> on this device and it appears in every game, on your shield and your banners.')]),
+    dict(id='joust', slug='games/joust.html', js='joust', short='Jousting', name='The Joust',
+         h1='Jousting Game: The Joust', og_title='Jousting game: unhorse five knights and win the tournament',
+         title='Jousting Game: Ride in a Medieval Tournament (Free, No Download) | Usurp Games',
+         desc='Free medieval jousting game. Spur your horse, aim your lance at the shield and strike as the ring closes. Unhorse five knights to win the tournament. Plays on phone and computer.',
+         tagline='Three taps a pass. Five challengers. Unhorse them all.', genre=['Sports', 'Action', 'Timing'],
+         card='Spur, aim, strike. Unhorse five knights.',
+         how=['Spur: tap when the needle crosses the gold, to gallop at full speed.',
+              "Aim: your lance tip sweeps across your opponent's shield. Tap to lock it on the centre.",
+              'Strike: time slows as you meet. Tap the moment the shrinking ring touches the shield.',
+              'A clean hit scores 1, a shattered lance 2, and unhorsing your opponent wins the bout at once. Otherwise the most points after three passes wins.'],
+         touch='Tap anywhere on the screen for each step.', keys='Space or Enter for each step, or click.',
+         tips=['Speed, aim and timing all count, but a lance on the centre of the shield counts most.',
+               'Each challenger rides faster and sweeps your aim quicker than the last.',
+               "A well-timed strike also braces you against your opponent's lance.",
+               'Every challenger rides under their own coat of arms, drawn fresh for each tournament.'],
+         faqs=[('How do you win a joust?', 'Score more points over three passes, or unhorse your opponent to win the bout at once. Win five bouts to become Champion of the Realm.'),
+               ('Were real jousts scored with points?', 'Yes. In the 1500s heralds kept score on jousting cheques: vellum score sheets that tallied hits to the head and body, lances broken and faults. This game keeps the spirit with simpler rules.'),
+               ('Is it suitable for kids?', 'Yes. It is free, needs no account or download, and has no blood: knights are knocked from the saddle, not hurt.'),
+               ('Can my knight carry my own coat of arms?', "Yes. Design one free in <a href=\"/crest.html\">Crest Studio</a> and it appears on your shield, your lance and your horse's cloth.")]),
+    dict(id='castle', slug='games/castle-defense.html', js='castle', short='Castle defense', name='Hold the Castle',
+         h1='Castle Defense Game: Hold the Castle', og_title='Castle defense game: how many waves can you hold?',
+         title='Castle Defense Game: Hold the Castle (Free, No Download) | Usurp Games',
+         desc='Free castle defense game for phone and computer. Loose arrows from your towers, stop rams, ladders and catapults, and choose a reward after every wave. How many waves can you hold?',
+         tagline="The Usurper's host is at the gates. Hold the wall.", genre=['Strategy', 'Tower defense', 'Action'],
+         card='Loose arrows, stop the rams, hold the wall.',
+         how=['Tap or click the field to loose an arrow from the nearest tower. Arrows take a moment to fly, so aim ahead of moving foes.',
+              'Your quiver refills on its own: watch the arrows in the bottom corner.',
+              'Foes that reach the wall hack at it. Rams batter the gate, ladders climb, and catapults lob stones from out of reach.',
+              'After each wave, choose one reward: faster reloads, fire arrows, an archer for hire, boiling oil and more.'],
+         touch='Tap the field to shoot. Tap OIL or VOLLEY when you have them.', keys='Click to shoot. A pours boiling oil, D looses a volley.',
+         tips=['Shoot the foes at the wall first: they are doing the damage right now.', 'Rams are slow but hit hard, so start on them early.',
+               'Catapults never come close. Long shots fly for longer, so lead them a little more.', 'Fire arrows burn everything near where they land: ideal for crowds.'],
+         faqs=[('Is there an end?', 'No. The waves keep coming and grow stronger. Your score counts every foe defeated and every wave held.'),
+               ('What do the rewards do?', "Swifter hands reload faster, a bigger quiver holds more arrows, bodkin points hit harder and fire arrows burn nearby foes. A hired archer shoots on his own. Mason's repair and Stone on stone mend and strengthen the wall. Boiling oil and Volley are special attacks that recharge."),
+               ('Does it work on phones?', 'Yes. It is built for touch first and runs in any modern browser with no download.'),
+               ('Whose banner flies on the wall?', 'Yours, if you have designed a coat of arms in <a href="/crest.html">Crest Studio</a> on this device. Until then a golden lion on blue flies there.')]),
+    dict(id='duel', slug='games/sword-duel.html', js='duel', short='Sword duel', name='Duel',
+         h1='Sword Fighting Game: Duel', og_title='Sword fighting reflex game: how fast is your parry?',
+         title='Sword Fighting Game: Duel, a Free Reflex Test (No Download) | Usurp Games',
+         desc="Free medieval sword fighting game that tests your reflexes. Read the knight's blade, parry left, high or right, beware the feints and riposte. See your parry speed in milliseconds.",
+         tagline='Read the blade. Parry. Riposte. How fast are your hands?', genre=['Action', 'Reflex', 'Fighting'],
+         card='Read the blade, parry, riposte. Test your reflexes.',
+         how=['Your opponent raises their sword to your left, overhead or to your right, then strikes.',
+              'Parry the same way before the blade lands: tap the left, high or right button, swipe, or use the arrow keys.',
+              'Watch for feints: some knights start one way and strike another. Guess early and you will be fooled.',
+              'Parry just before the blow lands for a perfect parry, then tap the glowing mark to riposte. Land enough ripostes and the knight yields.'],
+         touch='Tap the three buttons, or swipe left, up or right. Tap the glowing mark to riposte.', keys='Arrow keys or A, W and D to parry. Space to riposte.',
+         tips=['Do not guess. Wait until the blade has clearly moved, then parry.', 'Perfect parries come from patience: block in the last instant before the strike.',
+               'Every fourth parry in a row also opens a riposte.', 'Beating a knight wins back a lost heart.'],
+         faqs=[('Is this a reaction time test?', 'Partly. It times how long you take to parry once the blade shows where it is going, so it rewards quick reading as well as quick hands. Feints keep it fair: guessing does not work.'),
+               ('Is it violent?', 'No blood. Knights clash, parry and yield.'),
+               ('Does it work on a phone?', 'Yes, with big buttons and swipes, in any modern browser.'),
+               ('Can I use my own coat of arms?', 'Yes. Design one free in <a href="/crest.html">Crest Studio</a>: your arms appear beside your hearts and your sword grip takes your colours.')]),
+]
+GAMES_LD_PUB = {'@type': 'Organization', 'name': 'Usurp (Murary Studios)', 'url': f'{SITE}/'}
+
+
+def game_cards(exclude=None, small=False):
+    out = []
+    for g in GAMES:
+        if g['id'] == exclude:
+            continue
+        play = '' if small else '<em>Play free</em>'
+        out.append(f'<a class="gm-card" href="/{g["slug"]}"><img src="/img/games/{g["id"]}.webp" width="600" height="800" loading="lazy" decoding="async" '
+                   f'alt="{E(g["name"])}: screenshot of the game"><span class="gc-t"><b>{E(g["name"])}</b><span>{E(g["card"])}</span>{play}</span></a>')
+    return ''.join(out)
+
+
+def ads_json():
+    keys = ('client', 'slot', 'h5', 'test', 'ga', 'sponsor')
+    return json.dumps({k: ADS[k] for k in keys if ADS.get(k)}, separators=(',', ':'))
+
+
+def game_page(G):
+    p = dict(slug=G['slug'], h1=G['h1'], og='game-' + G['id'], og_title=G['og_title'], title=G['title'], desc=G['desc'], no_related=True,
+             head_extra='<link rel="stylesheet" href="/games/games.css">')
+    vg = {'@type': 'VideoGame', 'name': G['name'], 'url': page_url(G['slug']), 'description': G['desc'], 'genre': G['genre'],
+          'gamePlatform': ['Web browser', 'Mobile web browser'], 'applicationCategory': 'Game', 'operatingSystem': 'Any', 'playMode': 'SinglePlayer',
+          'inLanguage': 'en', 'isAccessibleForFree': True, 'image': f'{SITE}/img/games/{G["id"]}.webp', 'publisher': GAMES_LD_PUB,
+          'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}}
+    crumbs3 = {'@type': 'BreadcrumbList', 'itemListElement': [
+        {'@type': 'ListItem', 'position': 1, 'name': 'Crest Studio', 'item': f'{SITE}/'},
+        {'@type': 'ListItem', 'position': 2, 'name': 'Medieval games', 'item': f'{SITE}/games/'},
+        {'@type': 'ListItem', 'position': 3, 'name': G['name'], 'item': page_url(G['slug'])}]}
+    p['ld'] = {'@context': 'https://schema.org', '@graph': [{'@type': 'WebPage', 'name': G['h1'], 'url': page_url(G['slug']), 'description': G['desc']}, crumbs3, vg, faq_ld(G['faqs'])]}
+    p['scripts'] = f'<script>window.USURP_ADS={ads_json()}</script><script src="/games/engine.js" defer></script><script src="/games/{G["js"]}.js" defer></script>'
+    how = ''.join(f'<li>{E(x)}</li>' for x in G['how'])
+    tips = ''.join(f'<li>{E(x)}</li>' for x in G['tips'])
+    body = (f'<div class="gm-top"><h1 class="gilt">{E(G["h1"])}</h1><p>{E(G["tagline"])}</p></div>'
+            f'<div class="ug-wrap"><div class="ug" data-game="{G["id"]}"><noscript><p style="padding:24px;text-align:center">This game needs JavaScript turned on.</p></noscript></div></div>'
+            f'<section class="gm-info" id="how-to-play"><h2 class="gilt">How to play</h2><ol>{how}</ol>'
+            f'<div class="gm-keys"><div><b>Phone and tablet</b>{E(G["touch"])}</div><div><b>Computer</b>{E(G["keys"])}</div></div>'
+            f'<h2 class="gilt" style="margin-top:22px">Tips</h2><ul>{tips}</ul>'
+            '<div class="callout"><b>Ride under your own banner.</b> Design your coat of arms free in <a href="/crest.html">Crest Studio</a> and it appears in every game on this site: on your shield, your banners and your lance.</div></section>'
+            '<div class="ad-slot" data-ad-slot></div>'
+            f'<section class="gm-more"><h2 class="gilt">More medieval games</h2><div class="gm-grid">{game_cards(G["id"], small=True)}</div>'
+            '<p class="center" style="margin-top:14px"><a href="/games/">All games</a> · <a href="/crest.html">Design your coat of arms</a></p></section>')
+    body += faq_html(G['faqs'])
+    write_page(p, body)
+
+
+def games_hub():
+    slug = 'games/index.html'
+    faqs = [('Are the games free?', 'Yes. All four games are free to play in your browser, with no download, no account and no purchase needed.'),
+            ('Do they work on phones?', 'Yes. Every game is designed for touch first and also plays with a mouse and keyboard. Use the full-screen button under a game for the best view on a phone.'),
+            ('Are the games suitable for children?', 'Yes. There is no blood or gore: arrows hit targets, lances shatter, knights yield and walls crumble.'),
+            ('Do you save anything about me?', 'Only your best scores and sound setting, kept in your own browser. There are no accounts. See the <a href="/privacy.html">privacy policy</a>.'),
+            ('What does my coat of arms have to do with it?', 'Design a coat of arms in <a href="/crest.html">Crest Studio</a> and every game uses it: on your shield in the duel and the joust, on the banners of your castle and beside your score in the archery contest.')]
+    p = dict(slug=slug, h1='Medieval Games', og='games', og_title='Free medieval games: archery, jousting, castle defense and sword duels',
+             title='Free Medieval Games: Archery, Jousting, Castle Defense and Sword Duels | Usurp',
+             desc='Four free medieval games to play in your browser on phone or computer: an archery contest, a jousting tournament, a castle defense and a sword duel. No download, no account.',
+             no_related=True, head_extra='<link rel="stylesheet" href="/games/games.css">')
+    items = {'@type': 'ItemList', 'name': 'Medieval games', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'url': page_url(g['slug']), 'name': g['name']} for i, g in enumerate(GAMES)]}
+    p['ld'] = ld_base(p, [faq_ld(faqs), items])
+    p['scripts'] = f'<script>window.USURP_ADS={ads_json()}</script><script src="/games/engine.js" defer></script>'
+    body = hero('Free to play · no download', 'Medieval Games',
+                'Four short games of skill for your phone or computer: an archery contest, a jousting tournament, a castle under siege and a sword duel. Each takes a minute to learn and a lot longer to master.',
+                cta_href='#games', cta='Pick a game', second=('/crest.html', 'Design your coat of arms'))
+    body += f'<section id="games"><div class="gm-grid">{game_cards()}</div></section>'
+    body += ('<section class="gm-info"><h2 class="gilt">Your coat of arms, in every game</h2>'
+             '<p>These games are made by Crest Studio, the free coat of arms maker. Design your arms there and they ride with you: on your shield in the joust and the duel, '
+             'on the banners of your castle, and beside your score at the archery butts. Your design is saved on your device, so there is nothing to sign up for.</p>'
+             '<p style="margin-top:14px"><a class="btn" href="/crest.html">Design my coat of arms</a></p></section>'
+             '<div class="ad-slot" data-ad-slot></div>')
+    body += faq_html(faqs)
+    write_page(p, body)
+
+
+def games_pages():
+    for G in GAMES:
+        game_page(G)
+    games_hub()
+    # ads.txt tells ad buyers which sellers may sell this site's ad space. Written only once AdSense is configured.
+    path = os.path.join(ROOT, 'ads.txt')
+    if ADS['client']:
+        with open(path, 'w') as f:
+            f.write(f"google.com, {ADS['client'].replace('ca-', '')}, DIRECT, f08c47fec0942fa0\n")
+    elif os.path.exists(path):
+        os.remove(path)
+
+
 def sitemap_and_llms():
     pages = [('index.html', '1.0'), ('crest.html', '0.9')] + [(s, '0.8') for s, _, _ in PAGES_INDEX if s != 'index.html'] + [('terms.html', '0.2'), ('privacy.html', '0.2'), ('refunds.html', '0.2')]
     def imgs(slug):
@@ -916,7 +1097,7 @@ def sitemap_and_llms():
             body = open(os.path.join(ROOT, slug), encoding='utf-8').read() if slug else ''
         except FileNotFoundError:
             return ''
-        found = list(dict.fromkeys(re.findall(r'src="(/img/(?:crests|home)/[^"]+)"', body)))
+        found = list(dict.fromkeys(re.findall(r'src="(/img/(?:crests|home|games)/[^"]+)"', body)))
         return ''.join(f'<image:image><image:loc>{SITE}{u}</image:loc></image:image>' for u in found[:1000])
     urls = ''.join(f'<url><loc>{page_url(s)}</loc><lastmod>{TODAY}</lastmod><priority>{pr}</priority>{imgs(s)}</url>\n' for s, pr in pages)
     with open(os.path.join(ROOT, 'sitemap.xml'), 'w') as f:
@@ -936,7 +1117,7 @@ def sitemap_and_llms():
 
 
 if __name__ == '__main__':
-    for fn in (home, surname, quiz, ideas, family, dnd, wedding, clan, school, mottos, houses, meanings, templates):
+    for fn in (home, surname, quiz, ideas, family, dnd, wedding, clan, school, mottos, houses, meanings, templates, games_pages):
         fn()
     for sp in SPECS:
         spec_page(sp)

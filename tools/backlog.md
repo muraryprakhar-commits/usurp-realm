@@ -7,7 +7,7 @@ Pick the angle a real searcher has; keep every claim checkable (see the rules in
 - [ ] Signet ring crest design (keyword: signet ring crest): simple bold emblem, why engravers want vector art, initial and single-charge designs
 - [ ] Wax seal crest design (keyword: wax seal design): stamp makers need vector art, keep it simple at small sizes
 - [ ] Pet coat of arms (keyword: pet coat of arms / dog crest): playful, gift angle, "House of Biscuit" style names
-- [ ] Business crest logo maker (keyword: crest logo maker): heraldic logos for breweries, barbershops, coffee shops, schools; note trademark search advice
+- [x] Business crest logo maker (built 20 Oct as crest-logo-maker.html) (keyword: crest logo maker): heraldic logos for breweries, barbershops, coffee shops, schools; note trademark search advice
 - [ ] Sports club crest maker (keyword: soccer club crest maker / football club badge maker): amateur and Sunday league clubs, fantasy leagues; avoid real club names
 - [ ] Book club and society crest (keyword: club crest maker): societies, book clubs, alumni groups
 - [ ] Graduation and class crest (keyword: class crest): class of 2027 crests for yearbooks and shirts

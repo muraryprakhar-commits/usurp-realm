@@ -50,4 +50,46 @@ SPECS = [
               ('Can I add a personal message?', 'Yes. Under "Giving it as a gift?" in the studio, add who it is presented to and who it is from. It prints on the certificate of arms along with the date.'),
               ('Is it their real, historical family coat of arms?', 'No. It is original artwork you design for them in the style of heraldry, not an official grant of arms or a claim about their ancestors. Many people find that more meaningful, because it describes the family as it is today.')],
     ),
+    dict(
+        slug='crest-logo-maker.html', short='Crest logo maker', blurb='A logo kit for clubs and businesses', og='logo',
+        h1='Crest Logo Maker', h1_html='Crest Logo Maker for Clubs and Businesses',
+        title='Crest Logo Maker: Heraldic Logo Kit for Clubs, Teams and Businesses | Crest Studio',
+        og_title='Crest Logo Maker: a heraldic logo kit for clubs and businesses',
+        desc='Design a crest logo for your brewery, barbershop, club, team or channel, then get a full logo kit: transparent PNG and SVG, favicons, social banners and a brand sheet. $29.',
+        eyebrow='For breweries, barbershops, clubs, teams and creators',
+        lede='A crest says "established" before anyone reads a word. Design yours in the free studio, then get the Crest Logo Kit: every file a small brand needs, in one ZIP.',
+        cta='Design your crest logo',
+        price_note='Designing is free with no account. The kit is a one-time $29. Only need the artwork? The $9 set has print files, an SVG and a certificate of arms.',
+        examples=[crest('Ironhold Brewing Co.', 'Brewed With Patience', SABLE, OR, GOLD_LIGHT, 'chevron', 'tower'),
+                  crest('Ravensgate FC', 'Ever Onward', GULES, OR, GOLD_LIGHT, 'quarterly', 'mullet'),
+                  crest('Oakmere Coffee', 'First Light', VERT, OR, GOLD_LIGHT, 'fess', 'crescent'),
+                  crest('The Copper Key Inn', 'All Are Welcome', MURREY, OR, GOLD_LIGHT, 'bend', 'key'),
+                  crest('Briarwood Books', 'Sapere Aude', PURPURE, ARGENT, ARGENT, 'pale', 'rose'),
+                  crest('Fairhaven Barbers', 'Sharp Since Today', AZURE, ARGENT, ARGENT, 'saltire', 'sword')],
+        body='''<section class="sec"><h2 class="gilt">What is in the Crest Logo Kit ($29)</h2>
+<ul><li><b>Logo files:</b> the full crest as a transparent 4000 px PNG, on parchment for print, a web-size PNG and a scalable SVG vector.</li>
+<li><b>Shield-only mark:</b> a square transparent PNG and SVG of just the shield, for places where the full crest is too detailed.</li>
+<li><b>Icons:</b> favicons (32 and 48 px), app icons (192 and 512 px) and an Apple touch icon.</li>
+<li><b>Social:</b> a 1080 px profile picture, a 512 px Discord server icon, and banners sized for X (1500 by 500), LinkedIn (1584 by 396) and YouTube (2560 by 1440, with the artwork inside the safe area that shows on every device).</li>
+<li><b>Brand sheet:</b> your exact colors in HEX and RGB, the typefaces (all free Google Fonts) and simple usage rules.</li>
+<li><b>Everything in the $9 set too:</b> a printable certificate of arms with the heraldic blazon and its meaning, and a phone wallpaper.</li></ul>
+<p>Everything is generated from your design the moment payment goes through. A plain README in the ZIP explains each file and the license.</p></section>
+<section class="sec"><h2 class="gilt">Designing a crest logo that works</h2>
+<h3>Make it readable at 32 pixels</h3><p>A logo spends most of its life small: a browser tab, a map pin, a social avatar. Pick one bold emblem and two strongly contrasting colors. Heraldry's own rule helps here: put a metal (gold or silver) against a color (red, blue, green, purple or black). The kit's shield-only files exist for the smallest sizes.</p>
+<h3>Let the emblem hint at what you do</h3><p>A tower for a brewery or anything built to last, a key for an inn or a locksmith, a crescent for a coffee shop that opens early, a star for a team, a rose for a bookshop or florist, a sword for a barbershop. Or use your initial, which never goes out of date. The <a href="/heraldry-symbols-and-meanings.html">heraldry meanings guide</a> explains the traditional symbolism of each.</p>
+<h3>Keep the name short</h3><p>Two or three words sit at full size across the top of the crest. Put a longer tagline in the motto ribbon instead.</p>
+<div class="callout"><b>Before you print a thousand cups:</b> a tool-made design is not exclusive, because someone else can make something similar. If the logo matters to your business, search existing trademarks in your country and take local advice before you register it.</div></section>
+<section class="sec"><h2 class="gilt">Who uses crest logos</h2><ul>
+<li>Breweries, distilleries, coffee roasters and bakeries that want a heritage feel</li>
+<li>Barbershops, tailors and leather workers</li>
+<li>Amateur and Sunday league sports clubs, fantasy leagues and esports teams (see <a href="/clan-logo-maker.html">clan and guild logos</a>)</li>
+<li>Streamers, podcasters and tabletop creators building a recognizable channel</li>
+<li>Family businesses, societies and alumni groups</li></ul>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html">Design your crest logo</a></p></section>''',
+        faqs=[('Can I use the logo commercially?', 'Yes. Once bought, you can use the files for any lawful purpose, including your business logo, signage, packaging and merchandise.'),
+              ('Is the design exclusive to my business?', 'No. Other people can make similar designs with the same free tool, so we cannot grant exclusivity. If you need a registrable trademark, check for conflicts first and take local advice.'),
+              ('What is the difference between the $9 set and the $29 Logo Kit?', 'The $9 set covers personal use: print art, an SVG, a certificate of arms, a profile picture and a wallpaper. The $29 kit adds everything a brand needs: transparent logo files, a shield-only mark, favicons and app icons, social banners for X, LinkedIn and YouTube, a Discord icon and a brand sheet, in one ZIP.'),
+              ('Can I edit the files afterwards?', 'Yes. The SVG files open in any vector editor such as Illustrator, Affinity Designer, Inkscape or Figma.'),
+              ('What if it is not right for us?', 'Email hello@usurp.games within 14 days of purchase for a full refund.')],
+    ),
 ]

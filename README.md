@@ -37,6 +37,7 @@ Crest Studio (`crest.html`) is the only real paid product. These free pages exis
 - Studio links: `/crest.html?d=CODE` opens a design, `?motto=` and `?name=` fill just that field. `/crest` redirects to the Studio (`vercel.json`).
 - Studio "Save a free preview image" gives an 800 px watermarked PNG that credits usurp.games, so shared previews bring people back.
 - The $9 package (after payment): 4000 px PNG, 1200 px PNG, SVG, certificate of arms (US Letter 300 dpi, blazon + meaning + optional gift line), 1080 px profile picture, phone wallpaper. Blazon and meaning come from `crest-core.js` (`blazon`, `meaning`, `tinctureNote`), which `crest.html` also loads.
+- $29 Crest Logo Kit (Dodo product `pdt_0Nq8R4zhafrgCTZA1HYkj`): everything in the $9 set plus transparent logos, shield-only mark, favicons, app icons, Discord icon, X/LinkedIn/YouTube banners and a brand sheet, zipped in the browser with JSZip. `api/verify.js` returns `plan: kit|crest` from Dodo's own product cart, so a $9 payment never unlocks the kit. Landing page: `crest-logo-maker.html`.
 - `family-crest-generator.html` (`family-gen.js`): six crests seeded by a last name, shareable as `?name=`.
 - New guide pages are specs in `tools/usecases.py` (rules at the top of that file). Topic ideas waiting to be built are in `tools/backlog.md`.
 

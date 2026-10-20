@@ -64,3 +64,12 @@
 .mc-k{font-family:var(--serif);font-size:6px;letter-spacing:.2em;color:#7a1020;text-transform:uppercase}
 .mc-n{font-family:var(--serif-d);font-size:8px;font-weight:900;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .mc-l{display:block;width:66%;height:2px;background:#c9b07a;margin-top:3px}
+/* Crest Logo Kit card */
+.kit{border-top:1px solid #3a2e1f;margin-top:8px;padding-top:16px;display:grid;gap:10px}
+.kit-prev{display:flex;align-items:center;gap:14px;padding:14px 18px;background:linear-gradient(120deg,#0c0a08,#2a231c 55%,#0c0a08);border:1px solid #3a2e1f;min-height:96px}
+.kit-prev svg{width:74px;height:74px;flex:none}
+.bn-t{display:grid;min-width:0}
+.bn-t b{font-family:var(--serif-d);font-weight:900;color:var(--gold-2);font-size:clamp(16px,3.4vw,22px);line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bn-t i{font-family:var(--serif);font-style:normal;color:var(--gold);font-size:13px;letter-spacing:.08em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kit-copy{font-size:16px;color:var(--text)}
+.kit-copy b{color:var(--gold-2);font-weight:400;font-family:var(--serif)}

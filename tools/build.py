@@ -57,6 +57,7 @@ def header(slug):
 REGISTRY = [
     ('family-crest-generator.html', 'Crest by last name', 'Six crests for your surname in one click'),
     ('family-crest-gift.html', 'Family crest gift', 'A personal gift with a certificate'),
+    ('crest-logo-maker.html', 'Crest logo maker', 'A logo kit for clubs and businesses'),
     ('family-crest-maker.html', 'Family crest maker', 'A crest that tells your family story'),
     ('dnd-coat-of-arms-generator.html', 'D&amp;D coat of arms', 'Noble houses, guilds and orders'),
     ('wedding-crest.html', 'Wedding crest', 'A joint crest for invitations'),
@@ -122,7 +123,7 @@ def hero(eyebrow, h1, lede, cta_href='/crest.html', cta='Design yours free', sec
 <p class="lede">{lede}</p><div class="cta-row"><a class="btn big" href="{cta_href}">{cta}</a>{s}</div></section>'''
 
 
-PRICE_NOTE = 'Designing is free and needs no account. When you love it, $9 gets the whole set: print-ready art (4000 px PNG and SVG), a certificate of arms explaining its meaning, a profile picture and a phone wallpaper, yours to use anywhere.'
+PRICE_NOTE = 'Designing is free and needs no account. When you love it, $9 gets the whole set: print-ready art (4000 px PNG and SVG), a certificate of arms explaining its meaning, a profile picture and a phone wallpaper. For a club, team or business, the <a href="/crest-logo-maker.html">$29 Logo Kit</a> adds logo, icon, banner and brand files.'
 
 
 def ld_base(p, extra=None):
@@ -276,16 +277,16 @@ def clan():
     faqs = [
         ('Will it work as a Discord server icon?', 'Yes. Download the 1200 px or 4000 px PNG and crop it to a square around the shield. Tick "Transparent background" for a clean cut-out.'),
         ('Can my guild print it on hoodies or banners?', 'Yes. Once bought, you can use it for any lawful purpose, including merchandise. The SVG scales to any size.'),
-        ('Can I make it free?', 'Designing is free and you can share a link to your design with your group to vote on. The $9 download is only needed for the full-resolution files without the preview watermark.'),
+        ('Can I make it free?', 'Designing is free and you can share a link to your design with your group to vote on. The $9 set gives you the full-resolution files without the watermark; the $29 Logo Kit adds icons, banners and a brand sheet.'),
     ]
     p = dict(slug=slug, h1='Clan and Guild Logo Maker', og='clan', og_title='Clan and Guild Logo Maker: heraldic emblems for gaming groups',
              title='Clan Logo Maker and Guild Emblem Maker (Heraldic Style) | Crest Studio',
              desc='Make a heraldic clan logo or guild emblem for your gaming group, Discord server or esports team. Free online maker, $9 for transparent PNG and SVG.')
     p['ld'] = ld_base(p, [faq_ld(faqs), APP_LD])
-    ex = [crest('Iron Ravens', 'Swift and Unseen', SABLE, OR, GOLD_LIGHT, 'bend', 'sword', 'clear'),
-          crest('Night Owls Guild', 'We Rise by Night', AZURE, ARGENT, ARGENT, 'fess', 'crescent', 'clear'),
-          crest('Crownbreakers', 'The Crown Is Earned', GULES, OR, GOLD_LIGHT, 'saltire', 'crown', 'clear'),
-          crest('Starfall', 'Ad Astra', PURPURE, OR, GOLD_LIGHT, 'pale', 'mullet', 'clear')]
+    ex = [crest('Iron Ravens', 'Swift and Unseen', SABLE, OR, GOLD_LIGHT, 'bend', 'sword'),
+          crest('Night Owls Guild', 'We Rise by Night', AZURE, ARGENT, ARGENT, 'fess', 'crescent'),
+          crest('Crownbreakers', 'The Crown Is Earned', GULES, OR, GOLD_LIGHT, 'saltire', 'crown'),
+          crest('Starfall', 'Ad Astra', PURPURE, OR, GOLD_LIGHT, 'pale', 'mullet')]
     body = hero('For guilds, clans, servers and teams', 'Clan and Guild Logo Maker',
                 'A heraldic emblem looks sharp as a Discord icon, on a guild banner or on a team hoodie. ' + PRICE_NOTE)
     body += gallery(ex, 'clan', 'Edit this emblem')
@@ -296,6 +297,7 @@ def clan():
 <li><b>A battle cry for a motto.</b> Two to four words. It shows on the ribbon of the full crest and makes a good server tagline.</li></ul>
 <h3>Let the group vote</h3>
 <p>Click "Copy link to my design" in the studio and paste it in your server. Anyone who opens the link sees the same design and can tweak their own version.</p>
+<div class="callout"><b>Need the full set of team files?</b> The <a href="/crest-logo-maker.html">$29 Crest Logo Kit</a> adds a transparent logo, a shield-only icon, a Discord server icon and banners for X, LinkedIn and YouTube.</div>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html">Make your clan emblem</a></p></section>'''
     body += faq_html(faqs)
     write_page(p, body)
@@ -559,7 +561,7 @@ def surname():
 def spec_page(sp):
     p = dict(slug=sp['slug'], h1=sp['h1'], og=sp['og'], og_title=sp['og_title'], title=sp['title'], desc=sp['desc'])
     p['ld'] = ld_base(p, [faq_ld(sp['faqs']), APP_LD])
-    body = hero(sp['eyebrow'], sp.get('h1_html', E(sp['h1'])), sp['lede'] + ' ' + PRICE_NOTE,
+    body = hero(sp['eyebrow'], sp.get('h1_html', E(sp['h1'])), sp['lede'] + ' ' + sp.get('price_note', PRICE_NOTE),
                 cta=sp.get('cta', 'Design yours free'), second=sp.get('second'))
     body += gallery(sp['examples'], 'x' + sp['og'][:4])
     body += sp['body']
@@ -578,7 +580,7 @@ def sitemap_and_llms():
     with open(os.path.join(ROOT, 'sitemap.xml'), 'w') as f:
         f.write(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
     lines = ['# Crest Studio by Usurp', '',
-             '> Free online coat of arms and family crest maker. Anyone can design a heraldic crest (name, motto, colors, division, emblem) in the browser for free with no account. A one-time $9 purchase downloads print-ready files (4000 px PNG, 1200 px PNG, SVG vector) usable for any lawful purpose, personal or commercial. Original decorative artwork, not an official grant of arms. Payments by Dodo Payments; 14-day refunds.', '',
+             '> Free online coat of arms and family crest maker. Anyone can design a heraldic crest (name, motto, colors, division, emblem) in the browser for free with no account. A one-time $9 purchase downloads print-ready files (4000 px PNG, 1200 px PNG, SVG vector), a certificate of arms with its blazon and meaning, a profile picture and a phone wallpaper. A $29 Crest Logo Kit adds transparent logo files, favicons and app icons, social banners and a brand sheet for clubs, teams and businesses. All files are usable for any lawful purpose, personal or commercial. Original decorative artwork, not an official grant of arms. Payments by Dodo Payments; 14-day refunds.', '',
              '## Main tool', f'- [Crest Studio: design your own coat of arms]({SITE}/crest.html): the free designer and $9 download', '',
              '## Free tools and guides']
     lines += [f'- [{h}]({SITE}/{s}): {d}' for s, h, d in PAGES_INDEX]

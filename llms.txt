@@ -1,6 +1,6 @@
 # Crest Studio by Usurp
 
-> Free online coat of arms and family crest maker. Anyone can design a heraldic crest (name, motto, colors, division, emblem) in the browser for free with no account. A one-time $9 purchase downloads print-ready files (4000 px PNG, 1200 px PNG, SVG vector) usable for any lawful purpose, personal or commercial. Original decorative artwork, not an official grant of arms. Payments by Dodo Payments; 14-day refunds.
+> Free online coat of arms and family crest maker. Anyone can design a heraldic crest (name, motto, colors, division, emblem) in the browser for free with no account. A one-time $9 purchase downloads print-ready files (4000 px PNG, 1200 px PNG, SVG vector), a certificate of arms with its blazon and meaning, a profile picture and a phone wallpaper. A $29 Crest Logo Kit adds transparent logo files, favicons and app icons, social banners and a brand sheet for clubs, teams and businesses. All files are usable for any lawful purpose, personal or commercial. Original decorative artwork, not an official grant of arms. Payments by Dodo Payments; 14-day refunds.
 
 ## Main tool
 - [Crest Studio: design your own coat of arms](https://usurp.games/crest.html): the free designer and $9 download
@@ -17,6 +17,7 @@
 - [Heraldry Symbols and Meanings](https://usurp.games/heraldry-symbols-and-meanings.html): What the colors, divisions and emblems on a coat of arms mean: Or, Argent, Gules, Azure, Vert, Purpure, Sable, the rule of tincture, chevrons, towers, keys, roses and stars.
 - [Free Printable Coat of Arms Template](https://usurp.games/coat-of-arms-template.html): Free printable coat of arms templates: a blank shield, a quartered family crest worksheet with prompts, and a motto banner. PDF, PNG and SVG. No sign-up.
 - [Family Crest Gift](https://usurp.games/family-crest-gift.html): Give a personalized family crest: print-ready coat of arms art plus a certificate of arms with its meaning and a "presented to" line. Instant download, $9.
+- [Crest Logo Maker](https://usurp.games/crest-logo-maker.html): Design a crest logo for your brewery, barbershop, club, team or channel, then get a full logo kit: transparent PNG and SVG, favicons, social banners and a brand sheet. $29.
 
 ## Policies
 - [Terms](https://usurp.games/terms.html)

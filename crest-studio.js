@@ -6,6 +6,8 @@ const $ = s => document.querySelector(s);
 /* ============ EDIT HERE ============ */
 const PRODUCT_ID = 'pdt_0Nq7l6osvcUL8N0wu65UL';           // Dodo live product: Custom Heraldic Crest
 const PRICE = 9;                                            // must match the price set in Dodo
+const KIT_ID = 'pdt_0Nq8R4zhafrgCTZA1HYkj';                // Dodo live product: Crest Logo Kit
+const KIT_PRICE = 29;
 const CHECKOUT = 'https://checkout.dodopayments.com/buy/';
 const RETURN_URL = 'https://usurp.games/crest.html';
 const CONTACT = 'hello@usurp.games';
@@ -158,6 +160,11 @@ function extras() {
   inc.querySelector('.mc-n').textContent = String(D.name).trim() || 'Your house';
   inc.querySelector('[data-t-avatar]').innerHTML = shield('t3', '90 120 820 820');
   inc.querySelector('[data-t-wall]').innerHTML = shield('t4', '60 150 880 880');
+  const bn = $('[data-t-banner]');
+  if (bn) {
+    bn.innerHTML = shield('t5', '90 120 820 820') + '<span class="bn-t"><b></b><i></i></span>';
+    bn.querySelector('b').textContent = String(D.name).trim() || 'Your house'; bn.querySelector('i').textContent = String(D.motto).trim();
+  }
 }
 function swatches(el, key) {
   el.innerHTML = TINCTURES.map(([n, c]) => `<button type="button" class="sw" style="--sw:${c}" data-k="${key}" data-v="${c}" aria-label="${n}" title="${n}"></button>`).join('');
@@ -168,9 +175,9 @@ function syncControls() {
   $('[data-f-bg]').checked = D.bg === 'clear';
   document.querySelectorAll('.sw').forEach(b => b.setAttribute('aria-pressed', String(D[b.dataset.k] === b.dataset.v)));
 }
-function buyUrl() {
+function buyUrl(pid = PRODUCT_ID) {
   const p = new URLSearchParams({ quantity:'1', redirect_url:RETURN_URL, metadata_design:enc(D), showDiscounts:'false' });
-  return `${CHECKOUT}${PRODUCT_ID}?${p}`;
+  return `${CHECKOUT}${pid}?${p}`;
 }
 function wire() {
   $('[data-f-div]').innerHTML = DIVISIONS.map(([v, n]) => `<option value="${v}">${n}</option>`).join('');
@@ -209,6 +216,12 @@ function wire() {
     catch (e) { note('Could not save the preview on this browser. Try "Copy link to my design" instead.'); }
     if (window.clarity) try { window.clarity('event', 'crest_free_preview'); } catch (err) {}
   };
+  const kitBtn = $('[data-buy-kit]');
+  if (kitBtn) kitBtn.onclick = e => {
+    if (!String(D.name).trim()) { e.preventDefault(); note('Add a name for your house first.'); $('[data-f-name]').focus(); return; }
+    save(); e.currentTarget.href = buyUrl(KIT_ID);
+    if (window.clarity) try { window.clarity('event', 'kit_checkout'); } catch (err) {}
+  };
   $('[data-buy]').onclick = e => {
     if (!String(D.name).trim()) { e.preventDefault(); note('Add a name for your house first.'); $('[data-f-name]').focus(); return; }
     save(); e.currentTarget.href = buyUrl();
@@ -242,8 +255,10 @@ function saveBlob(blob, name) {
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
   document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
 }
-async function downloadSvg(d) { saveBlob(new Blob([svgString(d, await fontCss())], { type:'image/svg+xml' }), `${fileBase(d)}-coat-of-arms.svg`); }
-async function downloadPng(d, size, preview = false) {
+async function svgBlob(d) { return new Blob([svgString(d, await fontCss())], { type:'image/svg+xml' }); }
+async function downloadSvg(d) { saveBlob(await svgBlob(d), `${fileBase(d)}-coat-of-arms.svg`); }
+async function downloadPng(d, size, preview = false) { saveBlob(await pngBlob(d, size, preview), preview ? `${fileBase(d)}-crest-preview.png` : `${fileBase(d)}-coat-of-arms-${size}px.png`); }
+async function pngBlob(d, size, preview = false) {
   await document.fonts.load(`900 64px 'Cinzel Decorative'`); await document.fonts.load(`700 40px 'Cinzel'`);
   const L = layout(preview ? { ...d, bg:'parch' } : d, 'x');
   const k = size / W, cv = document.createElement('canvas');
@@ -267,8 +282,7 @@ async function downloadPng(d, size, preview = false) {
     ctx.font = `700 26px ${FONT}`; ctx.fillStyle = '#5c4417';
     ctx.fillText('Design yours free at usurp.games/crest', W / 2, HT - 70);
   }
-  const blob = await new Promise(r => cv.toBlob(r, 'image/png'));
-  saveBlob(blob, preview ? `${fileBase(d)}-crest-preview.png` : `${fileBase(d)}-coat-of-arms-${size}px.png`);
+  return await new Promise(r => cv.toBlob(r, 'image/png'));
 }
 
 /* ============ the rest of the $9 package: certificate, profile picture, phone wallpaper ============ */
@@ -302,7 +316,8 @@ function fitText(ctx, text, fontAt, size, maxW, min) { let z = size; ctx.font = 
 function spaced(ctx, text, x, y, px) { if ('letterSpacing' in ctx) { ctx.letterSpacing = px + 'px'; ctx.fillText(text, x, y); ctx.letterSpacing = '0px'; } else ctx.fillText(text, x, y); }
 const toBlob = cv => new Promise(r => cv.toBlob(r, 'image/png'));
 
-async function downloadCertificate(d, g) {
+async function downloadCertificate(d, g) { saveBlob(await certBlob(d, g), `${fileBase(d)}-certificate-of-arms.png`); }
+async function certBlob(d, g) {
   await fontsReady();
   const CC = window.CrestCore, CW = 2550, CHh = 3300, cv = canvasOf(CW, CHh), ctx = cv.getContext('2d');   // US Letter at 300 dpi
   ctx.fillStyle = '#efe1bd'; ctx.fillRect(0, 0, CW, CHh);
@@ -330,17 +345,20 @@ async function downloadCertificate(d, g) {
   else { ctx.font = `48px ${FONT_B}`; ctx.fillText(`Designed ${date}`, CW / 2, y); }
   ctx.fillStyle = '#8a6a3a'; ctx.font = `32px ${FONT_B}`;
   ctx.fillText('Original heraldic artwork, not an official grant of arms. Designed at usurp.games', CW / 2, CHh - 150);
-  saveBlob(await toBlob(cv), `${fileBase(d)}-certificate-of-arms.png`);
+  return await toBlob(cv);
 }
-async function downloadAvatar(d) {
+async function downloadAvatar(d) { saveBlob(await avatarBlob(d, 1080, d.bg !== 'clear'), `${fileBase(d)}-profile-picture-1080.png`); }
+// Square shield-only image. fill: true puts it on parchment, false leaves it transparent.
+async function avatarBlob(d, S, fill) {
   await fontsReady();
-  const S = 1080, cv = canvasOf(S, S), ctx = cv.getContext('2d');
-  if (d.bg !== 'clear') { ctx.fillStyle = '#efe1bd'; ctx.fillRect(0, 0, S, S); }
+  const cv = canvasOf(S, S), ctx = cv.getContext('2d');
+  if (fill) { ctx.fillStyle = '#efe1bd'; ctx.fillRect(0, 0, S, S); }
   const k = S / 820; await drawCrest(ctx, { ...d, bg:'clear' }, -90 * k, -120 * k, k, { noName:true, noRibbon:true });
-  saveBlob(await toBlob(cv), `${fileBase(d)}-profile-picture-1080.png`);
+  return await toBlob(cv);
 }
 const rgba = (hex, a) => `rgba(${parseInt(hex.slice(1, 3), 16)},${parseInt(hex.slice(3, 5), 16)},${parseInt(hex.slice(5, 7), 16)},${a})`;
-async function downloadWallpaper(d) {
+async function downloadWallpaper(d) { saveBlob(await wallBlob(d), `${fileBase(d)}-phone-wallpaper.png`); }
+async function wallBlob(d) {
   await fontsReady();
   const WW = 1170, WH = 2532, cv = canvasOf(WW, WH), ctx = cv.getContext('2d');
   const g = ctx.createLinearGradient(0, 0, 0, WH); g.addColorStop(0, '#0c0a08'); g.addColorStop(.55, '#1d1814'); g.addColorStop(1, '#0c0a08');
@@ -353,7 +371,154 @@ async function downloadWallpaper(d) {
   if (mt) { ctx.fillStyle = '#f3dc92'; fitText(ctx, mt, z => `700 ${z}px ${FONT}`, 62, 1000, 34); ctx.fillText(mt, WW / 2, 2090); }
   const nm = String(d.name).trim();
   if (nm) { ctx.fillStyle = '#a8997c'; fitText(ctx, nm, z => `900 ${z}px ${FONT_D}`, 46, 1000, 28); ctx.fillText(nm, WW / 2, mt ? 2170 : 2090); }
-  saveBlob(await toBlob(cv), `${fileBase(d)}-phone-wallpaper.png`);
+  return await toBlob(cv);
+}
+
+/* ============ Crest Logo Kit ($29): everything above plus logo, icon, social and brand files in one ZIP ============ */
+function shieldSvgString(d, fontCssText = '') {
+  const L = layout({ ...d, bg:'clear' }, 's', { noName:true, noRibbon:true });
+  const style = fontCssText ? `<style>${fontCssText}</style>` : '';
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="90 120 820 820" width="820" height="820">${style}${L.art}${L.texts.map(textSvg).join('')}</svg>`;
+}
+// Banner: dark stone background, a glow in the field color, the shield and the house name and motto, centered in the safe area.
+async function bannerBlob(d, w, h, safeW = w, safeH = h) {
+  await fontsReady();
+  const cv = canvasOf(w, h), ctx = cv.getContext('2d');
+  const g = ctx.createLinearGradient(0, 0, w, h); g.addColorStop(0, '#0c0a08'); g.addColorStop(.5, '#1d1814'); g.addColorStop(1, '#0c0a08');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+  const s = Math.round(Math.min(safeH * 0.86, safeW * 0.34));
+  const rg = ctx.createRadialGradient(w / 2, h / 2, 10, w / 2, h / 2, Math.max(w, h) * 0.45); rg.addColorStop(0, rgba(d.f, .45)); rg.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = rg; ctx.fillRect(0, 0, w, h);
+  const nm = String(d.name).trim(), mt = String(d.motto).trim();
+  const maxText = safeW - s - s * 0.18 - safeW * 0.06;
+  let nameSize = Math.round(s * 0.2); ctx.font = `900 ${nameSize}px ${FONT_D}`;
+  while (nameSize > 14 && ctx.measureText(nm).width > maxText) { nameSize -= 2; ctx.font = `900 ${nameSize}px ${FONT_D}`; }
+  const nameW = nm ? ctx.measureText(nm).width : 0;
+  let mottoSize = Math.round(nameSize * 0.5); ctx.font = `700 ${mottoSize}px ${FONT}`;
+  while (mottoSize > 10 && ctx.measureText(mt).width > maxText) { mottoSize -= 1; ctx.font = `700 ${mottoSize}px ${FONT}`; }
+  const mottoW = mt ? ctx.measureText(mt).width : 0;
+  const textW = Math.max(nameW, mottoW), gap = textW ? s * 0.18 : 0, total = s + gap + textW;
+  const x0 = (w - total) / 2, y0 = (h - s) / 2;
+  const k = s / 820; await drawCrest(ctx, { ...d, bg:'clear' }, x0 - 90 * k, y0 - 120 * k, k, { noName:true, noRibbon:true });
+  ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+  const tx = x0 + s + gap, cy = h / 2;
+  if (nm) { ctx.fillStyle = '#f3dc92'; ctx.font = `900 ${nameSize}px ${FONT_D}`; ctx.fillText(nm, tx, mt ? cy - nameSize * 0.08 : cy + nameSize * 0.35); }
+  if (mt) { ctx.fillStyle = '#d4af5a'; ctx.font = `700 ${mottoSize}px ${FONT}`; ctx.fillText(mt, tx, cy + mottoSize * 1.55); }
+  return await toBlob(cv);
+}
+const hexRgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)).join(', ');
+async function brandSheetBlob(d) {
+  await fontsReady();
+  const CC = window.CrestCore, BW = 2550, BH = 3300, cv = canvasOf(BW, BH), ctx = cv.getContext('2d');
+  ctx.fillStyle = '#faf6ec'; ctx.fillRect(0, 0, BW, BH);
+  ctx.fillStyle = '#14110e'; ctx.fillRect(0, 0, BW, 360);
+  ctx.textAlign = 'left'; ctx.fillStyle = '#d4af5a'; ctx.font = `700 46px ${FONT}`; spaced(ctx, 'BRAND SHEET', 160, 150, 12);
+  const nm = String(d.name).trim() || 'Your House';
+  ctx.fillStyle = '#f3dc92'; fitText(ctx, nm, z => `900 ${z}px ${FONT_D}`, 110, 2200, 50); ctx.fillText(nm, 160, 280);
+  await drawCrest(ctx, { ...d, bg:'clear' }, 120, 340, 0.95, { noName:true });          // left column, about 950 x 1190
+  // colors
+  let y = 520; const x = 1180;
+  ctx.fillStyle = '#7a1020'; ctx.font = `700 40px ${FONT}`; spaced(ctx, 'COLORS', x, y, 10); y += 50;
+  const tname = h => (CC && CC.blazon({ ...D, f:h, div:'plain', ch:'none' }).replace('.', '')) || '';
+  const sw = [['Field', d.f], ['Division', d.d], ['Emblem', d.c], ['Gold trim', '#d4af5a'], ['Ink', '#2a1a0e'], ['Parchment', '#efe1bd']];
+  for (const [label, hx] of sw) {
+    ctx.fillStyle = hx; ctx.fillRect(x, y, 150, 150); ctx.strokeStyle = '#5c4417'; ctx.lineWidth = 3; ctx.strokeRect(x, y, 150, 150);
+    ctx.fillStyle = '#2a1a0e'; ctx.font = `700 44px ${FONT}`; ctx.fillText(label, x + 190, y + 55);
+    ctx.font = `40px ${FONT_B}`; ctx.fillStyle = '#4a3420';
+    const heraldic = ['Field', 'Division', 'Emblem'].includes(label) ? `  ·  ${tname(hx)}` : '';
+    ctx.fillText(`HEX ${hx.toUpperCase()}   RGB ${hexRgb(hx)}${heraldic}`, x + 190, y + 115);
+    y += 190;
+  }
+  // type and usage
+  y = Math.max(y + 40, 1700);
+  const block = (title, lines) => {
+    ctx.fillStyle = '#7a1020'; ctx.font = `700 40px ${FONT}`; spaced(ctx, title, 160, y, 10); y += 70;
+    ctx.fillStyle = '#2a1a0e'; ctx.font = `46px ${FONT_B}`;
+    for (const l of lines) for (const ln of wrapLines(ctx, l, 2200)) { ctx.fillText(ln, 160, y); y += 62; }
+    y += 50;
+  };
+  block('TYPEFACES', ['Headings and house name: Cinzel Decorative. Motto and labels: Cinzel. Body text: IM Fell English. All three are free Google Fonts under the SIL Open Font License, so you can use them anywhere.']);
+  block('BLAZON', [CC ? CC.blazon(d) : '']);
+  block('USING YOUR CREST', [
+    'Use the transparent files on websites, merch and dark or photo backgrounds; use the parchment version for framed prints.',
+    'Below about 120 px wide, switch to the shield-only files so the emblem stays readable.',
+    'Leave clear space around the crest of at least a tenth of its width. Do not stretch, recolor or crop through the shield.',
+  ]);
+  ctx.fillStyle = '#8a6a3a'; ctx.font = `32px ${FONT_B}`; ctx.textAlign = 'center';
+  ctx.fillText('Original heraldic artwork made with Crest Studio at usurp.games. Not an official grant of arms.', BW / 2, BH - 110);
+  return await toBlob(cv);
+}
+function kitReadme(d, base) {
+  const CC = window.CrestCore;
+  return [
+    `CREST LOGO KIT: ${String(d.name).trim()}`,
+    `Motto: ${String(d.motto).trim() || '(none)'}`,
+    `Blazon: ${CC ? CC.blazon(d) : ''}`,
+    '',
+    'WHAT IS IN THIS ZIP',
+    `logo/   ${base}-crest-transparent-4000.png  full crest, transparent background (4000 x 5000 px)`,
+    `        ${base}-crest-parchment-4000.png    full crest on parchment, for framed prints`,
+    `        ${base}-crest-1200.png              web size`,
+    `        ${base}-crest.svg                   full crest, vector, scales to any size`,
+    `        ${base}-shield-transparent-2048.png shield only, square, transparent`,
+    `        ${base}-shield.svg                  shield only, vector`,
+    'icons/  favicon-32.png, favicon-48.png, icon-192.png, icon-512.png (transparent), apple-touch-icon-180.png (on parchment)',
+    'social/ profile-picture-1080.png, discord-server-icon-512.png, x-header-1500x500.png,',
+    '        linkedin-banner-1584x396.png, youtube-banner-2560x1440.png (artwork kept inside the TV and mobile safe area)',
+    'print/  certificate-of-arms.png (US Letter, 300 dpi), phone-wallpaper.png',
+    'brand/  brand-sheet.png (colors with HEX and RGB, typefaces, usage notes)',
+    '',
+    'LICENSE',
+    'You may use these files for any lawful purpose, personal or commercial, including logos, branding, merchandise, print and web.',
+    'Other people can make similar designs with the same tool, so the design is not exclusive to you. If you want to register it',
+    'as a trademark, search for conflicts first and take advice where you are. This is original decorative artwork in the style of',
+    'heraldry, not an official grant of arms. Fonts are free Google Fonts under the SIL Open Font License.',
+    '',
+    'Help or refunds (within 14 days): hello@usurp.games  ·  Make another: https://usurp.games/crest.html',
+    '',
+  ].join('\r\n');
+}
+async function loadZip() {
+  if (window.JSZip) return window.JSZip;
+  await new Promise((ok, bad) => { const sc = document.createElement('script'); sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'; sc.onload = ok; sc.onerror = bad; document.head.appendChild(sc); });
+  return window.JSZip;
+}
+async function kitBlob(d, g, onStep = () => {}) {
+  const JSZip = await loadZip(), zip = new JSZip(), base = fileBase(d), css = await fontCss();
+  const steps = [
+    ['logo/' + base + '-crest-transparent-4000.png', () => pngBlob({ ...d, bg:'clear' }, 4000)],
+    ['logo/' + base + '-crest-parchment-4000.png', () => pngBlob({ ...d, bg:'parch' }, 4000)],
+    ['logo/' + base + '-crest-1200.png', () => pngBlob(d, 1200)],
+    ['logo/' + base + '-crest.svg', async () => new Blob([svgString({ ...d, bg:'clear' }, css)], { type:'image/svg+xml' })],
+    ['logo/' + base + '-shield-transparent-2048.png', () => avatarBlob(d, 2048, false)],
+    ['logo/' + base + '-shield.svg', async () => new Blob([shieldSvgString(d, css)], { type:'image/svg+xml' })],
+    ['icons/favicon-32.png', () => avatarBlob(d, 32, false)],
+    ['icons/favicon-48.png', () => avatarBlob(d, 48, false)],
+    ['icons/icon-192.png', () => avatarBlob(d, 192, false)],
+    ['icons/icon-512.png', () => avatarBlob(d, 512, false)],
+    ['icons/apple-touch-icon-180.png', () => avatarBlob(d, 180, true)],
+    ['social/profile-picture-1080.png', () => avatarBlob(d, 1080, true)],
+    ['social/discord-server-icon-512.png', () => avatarBlob(d, 512, true)],
+    ['social/x-header-1500x500.png', () => bannerBlob(d, 1500, 500, 1100, 340)],
+    ['social/linkedin-banner-1584x396.png', () => bannerBlob(d, 1584, 396, 1000, 300)],
+    ['social/youtube-banner-2560x1440.png', () => bannerBlob(d, 2560, 1440, 1546, 423)],
+    ['print/certificate-of-arms.png', () => certBlob(d, g)],
+    ['print/phone-wallpaper.png', () => wallBlob(d)],
+    ['brand/brand-sheet.png', () => brandSheetBlob(d)],
+  ];
+  for (let i = 0; i < steps.length; i++) { onStep(i + 1, steps.length); zip.file(steps[i][0], await steps[i][1]()); }
+  zip.file('README.txt', kitReadme(d, base));
+  return await zip.generateAsync({ type:'blob', compression:'STORE' });
+}
+async function downloadKit(d, g, btn) {
+  const label = btn ? btn.textContent : '';
+  try {
+    const blob = await kitBlob(d, g, (i, n) => { if (btn) btn.textContent = `Building your kit… ${i} of ${n}`; });
+    saveBlob(blob, `${fileBase(d)}-crest-logo-kit.zip`);
+    if (window.clarity) try { window.clarity('event', 'kit_download'); } catch (e) {}
+  } catch (e) {
+    note(`Something went wrong building the ZIP. Download the files one by one above, or email ${CONTACT} with your payment reference.`);
+  } finally { if (btn) btn.textContent = label; }
 }
 
 /* ============ return from checkout ============ */
@@ -370,11 +535,11 @@ async function handleReturn() {
     return;
   }
   title.textContent = 'Checking your payment…'; msg.textContent = 'One moment.';
-  let design = null, verified = false;
+  let design = null, verified = false, plan = 'crest';
   try {
     const r = await fetch(`/api/verify?payment_id=${encodeURIComponent(pid)}`);
     const j = await r.json().catch(() => ({}));
-    if (r.ok && j.ok) { verified = true; design = j.design ? dec(j.design) : null; }
+    if (r.ok && j.ok) { verified = true; design = j.design ? dec(j.design) : null; plan = j.plan === 'kit' ? 'kit' : 'crest'; }
     else if (r.status === 503 && status === 'succeeded') { verified = true; }  // verification not configured yet: trust the checkout redirect
     else { title.textContent = 'We could not confirm this payment'; msg.innerHTML = `If you were charged, email <a href="mailto:${CONTACT}?subject=Crest%20order%20${encodeURIComponent(pid)}">${CONTACT}</a> with your payment reference and we will send your files.`; return; }
   } catch (e) {
@@ -394,6 +559,9 @@ async function handleReturn() {
   on('[data-dl-cert]', () => downloadCertificate(d, gift()));
   on('[data-dl-avatar]', () => downloadAvatar(d));
   on('[data-dl-wall]', () => downloadWallpaper(d));
+  const kb = dl.querySelector('[data-dl-kit]');
+  if (kb) { kb.hidden = plan !== 'kit'; kb.onclick = () => downloadKit(d, gift(), kb); }
+  if (plan === 'kit') title.textContent = 'Your Crest Logo Kit is ready';
   box.scrollIntoView({ block:'start' });
   if (window.clarity) try { window.clarity('event', 'crest_purchase'); } catch (e) {}
 }
@@ -402,5 +570,5 @@ document.addEventListener('DOMContentLoaded', () => {
   wire(); syncControls(); preview(); handleReturn();
 });
 // exposed for tests
-window.__crest = { enc, dec, layout, svgString, sanitize, downloadCertificate, downloadAvatar, downloadWallpaper, gift };
+window.__crest = { enc, dec, layout, svgString, sanitize, downloadCertificate, downloadAvatar, downloadWallpaper, gift, kitBlob, bannerBlob, brandSheetBlob };
 })();

@@ -125,6 +125,8 @@ function sanitize(d) {
 const KEY = 'usurp-crest-v1';
 let D;
 try { D = sanitize(JSON.parse(localStorage.getItem(KEY)) || DEFAULT); } catch (e) { D = { ...DEFAULT }; }
+// A shared link (?d=...) opens that design.
+{ const shared = new URLSearchParams(location.search).get('d'); const sd = shared && dec(shared); if (sd) D = sd; }
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) {} };
 
 function preview() {
@@ -162,9 +164,18 @@ function wire() {
     D.f = pick(t); do { D.d = pick(t); } while (D.d === D.f); D.c = pick(['#f3dc92', '#e8e4d8', '#1d1915', '#b3242f']);
     D.div = pick(DIVISIONS)[0]; D.ch = pick(CHARGES.slice(0, 8))[0]; upd();
   };
+  $('[data-share]').onclick = async () => {
+    const url = `${RETURN_URL}?d=${enc(D)}`;
+    try {
+      if (navigator.share && matchMedia('(pointer:coarse)').matches) { await navigator.share({ title:'My coat of arms', text:'I designed my coat of arms. Make yours free:', url }); return; }
+      await navigator.clipboard.writeText(url); note('Link copied. Anyone who opens it sees your design.');
+    } catch (e) { note(url); }
+    if (window.clarity) try { window.clarity('event', 'crest_share'); } catch (e) {}
+  };
   $('[data-buy]').onclick = e => {
     if (!String(D.name).trim()) { e.preventDefault(); note('Add a name for your house first.'); $('[data-f-name]').focus(); return; }
     save(); e.currentTarget.href = buyUrl();
+    if (window.clarity) try { window.clarity('event', 'crest_checkout'); } catch (err) {}
   };
 }
 function note(m) { const n = $('[data-note]'); n.textContent = m; n.hidden = !m; }

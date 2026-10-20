@@ -39,3 +39,4 @@
 .site-foot p+p{margin-top:6px}
 .stage{margin:0;padding:12px}
 @media(max-width:420px){.sw{width:36px;height:36px}.sws{gap:7px}}
+.row2{display:flex;flex-wrap:wrap;gap:10px}.row2 .btn{flex:1 1 180px}

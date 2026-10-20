@@ -47,10 +47,23 @@ def describe(d):
     div = {'plain': f'a {F} shield', 'perpale': f'a shield split down the middle in {F} and {D}',
            'quarterly': f'a shield quartered in {F} and {D}', 'chevron': f'a {F} shield with a {D} chevron',
            'fess': f'a {F} shield with a {D} horizontal band', 'bend': f'a {F} shield with a {D} diagonal band',
-           'saltire': f'a {F} shield with a {D} X-shaped cross', 'pale': f'a {F} shield with a {D} vertical stripe'}[d['div']]
+           'saltire': f'a {F} shield with a {D} X-shaped cross', 'pale': f'a {F} shield with a {D} vertical stripe',
+           'perfess': f'a shield split across the middle in {F} and {D}', 'perbend': f'a shield split diagonally in {F} and {D}',
+           'perbendsin': f'a shield split diagonally in {F} and {D}', 'perchevron': f'a {F} shield with a {D} chevron-shaped base',
+           'persaltire': f'a shield divided into four triangles of {F} and {D}', 'cross': f'a {F} shield with a {D} cross',
+           'pile': f'a {F} shield with a {D} wedge from the top', 'chief': f'a {F} shield with a {D} band across the top',
+           'bordure': f'a {F} shield with a {D} border', 'canton': f'a {F} shield with a {D} square in the corner',
+           'paly': f'a shield striped vertically in {F} and {D}', 'barry': f'a shield striped horizontally in {F} and {D}',
+           'bendy': f'a shield striped diagonally in {F} and {D}', 'checky': f'a shield checkered in {F} and {D}',
+           'gyronny': f'a shield divided into eight wedges of {F} and {D}'}.get(d['div'], f'a {F} shield')
     nm = re.sub(r'^(house|clan|family|the)\s+', '', d['name'], flags=re.I).strip()
     k = d['ch']
-    ch = '' if k == 'none' else f'the letter {(nm[:1] or "?").upper()} in {C}' if k == 'initial' else f'a {C} {CH_PLAIN[k]}'
+    n3 = d.get('n') == 3
+    ch = '' if k == 'none' else f'the letter {(nm[:1] or "?").upper()} in {C}' if k == 'initial' else (f'three {C} emblems, each a {CH_PLAIN[k]}' if n3 else f'a {C} {CH_PLAIN[k]}')
+    if d.get('sup', 'none') != 'none':
+        ch = (ch + ', ' if ch else '') + f'held by two {d["sup"]} supporters'
+    if d.get('helm', 'none') != 'none':
+        ch = (ch + ', ' if ch else '') + {'helm': "with a knight's helm above", 'crown': 'with a crown above', 'coronet': 'with a coronet above'}[d['helm']]
     who = f'Coat of arms of {d["name"]}' if d['name'] else 'Coat of arms example'
     out = f'{who}: {div}' + (f' and {ch}' if ch else '')
     return out + (f', motto "{d["motto"]}"' if d['motto'] else '')

@@ -102,3 +102,28 @@
 @media(min-width:900px){.buybar{display:none}}
 @media(max-width:899px){.has-buybar .site-foot{padding-bottom:84px}}
 @media(prefers-reduced-motion:reduce){.buybar{transition:none}}
+/* shield shape, emblem count, full achievement */
+.seg{display:inline-flex;border:1px solid var(--gold-deep)}
+.seg button{font:inherit;font-family:var(--serif);font-size:13px;letter-spacing:.1em;color:var(--muted);background:#120e0a;border:0;padding:10px 18px;min-height:44px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--gold-deep)}
+.seg button[aria-pressed="true"]{color:#14110e;background:var(--gold-2)}
+.shapes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;max-width:420px}
+.shapes button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;background:#17120d;border:1px solid #3a2e1f;color:var(--muted);font:inherit;font-size:12px;cursor:pointer;min-height:70px}
+.shapes svg{width:28px;height:34px}
+.shapes svg path{fill:#3a2e1f;stroke:var(--gold);stroke-width:5}
+.shapes button[aria-checked="true"]{border-color:var(--gold-2);color:var(--gold-2);background:#2a2015}
+.shapes button[aria-checked="true"] svg path{fill:var(--gold-deep)}
+.grand{border:1px solid var(--gold-deep);background:linear-gradient(180deg,rgba(212,175,90,.09),rgba(0,0,0,.25));padding:14px 16px;margin:0;display:grid;gap:10px}
+.grand legend{font-family:var(--serif);color:var(--gold-2);font-size:15px;letter-spacing:.12em;text-transform:uppercase;padding:0 6px}
+.grand legend em{font-style:normal;font-size:10px;letter-spacing:.14em;color:#14110e;background:var(--gold-2);padding:2px 6px;margin-left:6px;vertical-align:2px}
+.grand p{font-size:15px;color:var(--muted);margin:0}
+.g2{display:grid;gap:10px}@media(min-width:520px){.g2{grid-template-columns:1fr 1fr}}
+/* "See it as": colour, engraved, line art, seal */
+.stage .art img{width:100%;height:auto;display:block}
+.views{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 12px;margin-top:10px;position:relative;z-index:1}
+.views .mk{margin:0}
+.views .seg button{padding:8px 12px;font-size:12px;min-height:40px}
+.views-note{flex-basis:100%;text-align:center;font-size:14px;line-height:1.4;color:var(--muted);margin:0}
+@media(max-width:380px){.views .seg button{padding:8px 8px;letter-spacing:.04em}}
+.fld>span em.opt-l{font-family:var(--body);font-style:italic;text-transform:none;letter-spacing:0;color:var(--muted);font-size:13px;margin-left:4px}
+.kit.heir{border-color:var(--gold-deep)}

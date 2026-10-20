@@ -31,21 +31,28 @@
 <button class="btn ghost" type="button" data-dl-avatar>Download profile picture (1080 px)</button>
 <button class="btn ghost" type="button" data-dl-wall>Download phone wallpaper</button>
 <button class="btn" type="button" data-dl-kit hidden>Download your Logo Kit (ZIP)</button>
+<button class="btn" type="button" data-dl-heir hidden>Download your heirloom files (ZIP)</button>
 <button class="btn ghost" type="button" data-share-paid>Show it off: copy a share link</button>
 </div>
 <p class="ref muted-s" data-paid-ref></p>
 </div></section>
 
 <section class="studio wrap">
-<div class="stage frame"><div class="art" data-preview></div><span class="wm" aria-hidden="true">Preview · usurp.games</span></div>
+<div class="stage frame"><div class="art" data-preview></div><span class="wm" aria-hidden="true">Preview · usurp.games</span>
+<div class="views"><span class="mk">See it as</span><div class="seg" role="group" aria-label="See your crest as" data-view><button type="button" data-v="color" aria-pressed="true">Colour</button><button type="button" data-v="engraved" aria-pressed="false">Engraved</button><button type="button" data-v="line" aria-pressed="false">Line art</button><button type="button" data-v="seal" aria-pressed="false">Seal</button></div><p class="views-note" data-view-note hidden></p></div></div>
 <form class="panel" onsubmit="return false">
 <label class="fld"><span>House or family name</span><input type="text" maxlength="40" data-f-name autocomplete="off"></label>
 <label class="fld"><span>Motto <a href="/latin-motto-generator.html" style="text-transform:none;letter-spacing:0;font-family:var(--body);font-size:14px">(need ideas?)</a></span><input type="text" maxlength="48" data-f-motto autocomplete="off"></label>
+<label class="fld"><span>Established, or a date <em class="opt-l">optional</em></span><input type="text" maxlength="28" data-f-est autocomplete="off" placeholder="Est. 1987, or your wedding date"></label>
 <div class="fld"><span>Field colour</span><div class="sws" data-sw-f></div></div>
 <label class="fld"><span>Division</span><select data-f-div></select></label>
 <div class="fld"><span>Division colour</span><div class="sws" data-sw-d></div></div>
 <div class="fld emb"><span>Emblem: <b data-emb-cur></b></span><div class="emb-tabs" data-emb-tabs></div><div class="emb-grid" role="radiogroup" aria-label="Emblem" data-f-ch></div></div>
 <div class="fld"><span>Emblem colour</span><div class="sws" data-sw-c></div></div>
+<div class="fld"><span>How many emblems</span><div class="seg" data-f-n><button type="button" data-v="1" aria-pressed="true">One</button><button type="button" data-v="3" aria-pressed="false">Three</button></div></div>
+<div class="fld"><span>Shield shape</span><div class="shapes" role="radiogroup" aria-label="Shield shape" data-f-shape></div></div>
+<fieldset class="grand"><legend>Make it grand <em>new</em></legend><p>Add a helm or crown above the shield and a pair of supporters holding it, like royal and noble arms.</p>
+<div class="g2"><label class="fld"><span>Above the shield</span><select data-f-helm></select></label><label class="fld"><span>Supporters</span><select data-f-sup></select></label></div></fieldset>
 <label class="chk"><input type="checkbox" data-f-bg> Transparent background (no parchment)</label>
 <div class="row2"><button class="btn ghost" type="button" data-random>Surprise me</button><button class="btn ghost" type="button" data-share>Copy link to my design</button></div>
 <div class="row2"><button class="btn ghost" type="button" data-free>Save a free preview image</button><a class="btn ghost" data-mail href="#">Email it to myself</a></div>
@@ -77,10 +84,15 @@
 <a class="btn big" data-buy href="#" rel="noopener">Get my coat of arms, $9</a>
 <p class="note" data-note hidden></p>
 <p class="muted-s">One-time payment in USD (shown in your local currency where available). Secure checkout by Dodo Payments, our merchant of record. Instant download after payment. Refundable within 14 days.</p>
+<div class="kit heir" data-heir hidden>
+<p class="mk">For families, gifts and makers</p>
+<p class="kit-copy">The <b>Heirloom set</b>: everything in the $9 set, plus your crest as a traditional engraving, line art and two-tone files for stamps, embroidery and Cricut, a round seal ready for a wax seal stamp, a coloring page, six bookplates, a tall house banner and an A4 certificate.</p>
+<a class="btn big" data-buy-heir href="#" rel="noopener">Get the Heirloom set, $19</a>
+</div>
 <div class="kit">
-<p class="mk">For clubs, teams, creators and businesses</p>
+<p class="mk">The complete set, for families, clubs and businesses</p>
 <div class="kit-prev" data-t-banner aria-hidden="true"></div>
-<p class="kit-copy">The <b>Crest Logo Kit</b>: everything in the $9 set, plus transparent logo files, favicon and app icons, profile and banner sizes for Discord, YouTube, X and LinkedIn, and a brand sheet with your exact colors and fonts. One ZIP, commercial use.</p>
+<p class="kit-copy">The <b>Crest Logo Kit</b>: everything in the $9 set, plus the heirloom files (engraving, line art, stamp and wax seal designs, coloring page, bookplates, house banner) and the logo pack: transparent logo files, favicon and app icons, profile and banner sizes for Discord, YouTube, X and LinkedIn, and a brand sheet with your exact colors and fonts. Commercial use.</p>
 <a class="btn big ghost" data-buy-kit href="#" rel="noopener">Get the Logo Kit, $29</a>
 </div>
 </div>
@@ -116,7 +128,9 @@
 </div></section>
 <section class="wrap faq" id="faq">
 <h2 class="gilt center">Questions</h2>
-<details><summary>What exactly do I get?</summary><p>Six files of the design you made: a 4000 × 5000 px PNG for print, a 1200 × 1500 px PNG for the web, an SVG vector you can scale to any size, a printable certificate of arms (US Letter, 300 dpi) with your blazon, its meaning and an optional "presented to" line, a 1080 px profile picture and a phone wallpaper. They download straight after payment.</p></details><details><summary>What is the Crest Logo Kit?</summary><p>A $29 option for clubs, teams, creators and small businesses that want the crest as a logo. You get everything in the $9 set plus transparent logo PNGs and SVG, a shield-only version for small sizes, favicon and app icons, a profile picture and Discord icon, banners sized for X, LinkedIn and YouTube, and a brand sheet with your exact colors (HEX and RGB) and fonts, all in one ZIP with a commercial-use license. See the <a href="/crest-logo-maker.html">crest logo maker</a> page.</p></details><details><summary>Does it make a good gift?</summary><p>Yes, that is one of the most common uses. Add the recipient under "Giving it as a gift?" and it prints on the certificate. Files arrive instantly, and the 4000 px print file is large enough to frame at about 13 by 16 inches at full print quality. See <a href="/family-crest-gift.html">family crest gift ideas</a>.</p></details>
+<details><summary>What exactly do I get?</summary><p>Six files of the design you made: a 4000 × 5000 px PNG for print, a 1200 × 1500 px PNG for the web, an SVG vector you can scale to any size, a printable certificate of arms (US Letter, 300 dpi) with your blazon, its meaning and an optional "presented to" line, a 1080 px profile picture and a phone wallpaper. They download straight after payment.</p></details><details><summary>What is the Crest Logo Kit?</summary><p>The complete set, $29. You get everything in the $9 set, the heirloom files (below) and a logo pack: transparent logo PNGs and SVG, a shield-only version for small sizes, favicon and app icons, a profile picture and Discord icon, banners sized for X, LinkedIn and YouTube, and a brand sheet with your exact colors (HEX and RGB) and fonts, with a commercial-use license. See the <a href="/crest-logo-maker.html">crest logo maker</a> page.</p></details>
+<details><summary>Can I get a wax seal, stamp, signet ring or embroidery made from it?</summary><p>Yes. The heirloom files include a round seal in solid black (the file wax seal and stamp makers ask for), two-tone and line-art SVGs for rubber stamps, Cricut, laser engraving and embroidery, and a traditional engraving that shows your colours with heraldic hatching, the way crests are engraved on signet rings and silver. Use "See it as" above the designer to preview each one.</p></details>
+<details><summary>Can I add a date, or make a wedding crest?</summary><p>Yes. Add "Est. 1987" or your wedding date under the motto. For a couple, type both names with an ampersand (for example "Ava &amp; James") and choose the "Your initial" emblem: it becomes an A&amp;J monogram. See <a href="/wedding-crest.html">wedding crests</a>.</p></details><details><summary>Does it make a good gift?</summary><p>Yes, that is one of the most common uses. Add the recipient under "Giving it as a gift?" and it prints on the certificate. Files arrive instantly, and the 4000 px print file is large enough to frame at about 13 by 16 inches at full print quality. See <a href="/family-crest-gift.html">family crest gift ideas</a>.</p></details>
 <details><summary>Can I use it commercially?</summary><p>Yes. You can use your coat of arms for any lawful purpose, personal or commercial, including printing, merchandise, logos and branding. See the <a href="/terms.html">Terms</a>.</p></details>
 <details><summary>Is this a real, official coat of arms?</summary><p>No. It is original decorative artwork in the style of heraldry. It is not a grant of arms from any heraldic authority and does not claim descent from any family.</p></details>
 <details><summary>Does it do anything in the Usurp game?</summary><p>No. Crest Studio is a separate product. Buying artwork gives no rank, title, badge or advantage in the Usurp prototype.</p></details>

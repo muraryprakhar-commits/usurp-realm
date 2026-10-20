@@ -58,14 +58,7 @@ const LORE_BANNERMEN = ['Marrow and Sons Forge','The Gilded Quill'];
 const TIER_COL = { 'Bannerman':'#2f5a8a', 'Merchant House':'#2f6a4a', 'Noble House':'#7a1020' };
 const WAITLIST = 'https://usurp-alpha.vercel.app/';
 const CONTACT = 'hello@usurp.games';
-// EDIT HERE: Dodo checkout links for the Founding Member Pass.
-// LIVE: paste the live link once Dodo verifies the account. Empty = "Checkout opens soon" for the public.
-// TEST: Dodo Test Mode link, only used when the page is opened with ?checkout=test (no real money).
-const FOUNDER_CHECKOUT_LIVE = 'https://checkout.dodopayments.com/buy/pdt_0Nq7l6osvcUL8N0wu65UL?quantity=1&redirect_url=https://usurp.games%2Fthanks.html';
-const FOUNDER_CHECKOUT_TEST = 'https://test.checkout.dodopayments.com/buy/pdt_0NpzeJkuCRyChxLnZPd3k?quantity=1&redirect_url=https://usurp.games%2Fthanks.html';
-const CHECKOUT_TEST_MODE = new URLSearchParams(location.search).get('checkout') === 'test';
-const FOUNDER_CHECKOUT_URL = CHECKOUT_TEST_MODE ? FOUNDER_CHECKOUT_TEST : FOUNDER_CHECKOUT_LIVE;
-const FOUNDER_PRICE = 29;
+
 
 /* ============ state ============ */
 const KEY = 'usurp-kingdom-v1';
@@ -73,7 +66,6 @@ const fresh = () => ({
   name:'Wanderer', style:0, spend:0, house:null,
   lore: LORE.map(l => ({ id:l.id, spend:l.spend })),
   log: (typeof CHRONICLE !== 'undefined' ? CHRONICLE : []).map(([d, t]) => ({ day:d, text:t, t:0 })),
-  founderPayments: [],
   decrees: [{ who:'Queen Isolde Vire', house:'vire', lore:true, text:'The throne is held. Come and take it.', scope:'Whole realm', t:Date.now() }],
   weekStart: Date.now(), used:0, extra:0, badges:[], patrons:[], jousts:0,
 });
@@ -81,21 +73,6 @@ let S;
 try { S = JSON.parse(localStorage.getItem(KEY)); } catch (e) { S = null; }
 if (!S || !Array.isArray(S.lore)) S = fresh();
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
-// Founding Member payments recorded by /thanks.html on this device. Each counts once.
-function applyFounderPayments() {
-  let F = null; try { F = JSON.parse(localStorage.getItem('usurp-founder-v1')); } catch (e) {}
-  if (!F || !Array.isArray(F.payments)) return false;
-  S.founderPayments = S.founderPayments || [];
-  let added = false;
-  F.payments.forEach(pid => {
-    if (S.founderPayments.includes(pid)) return;
-    S.founderPayments.push(pid); S.spend += FOUNDER_PRICE; added = true;
-    if (!S.badges.includes('Founding Member')) S.badges.push('Founding Member');
-    S.log.unshift({ t:Date.now(), text:`${S.name} became a Founding Member.` });
-  });
-  if (added) save();
-  return added;
-}
 
 /* ============ helpers ============ */
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
@@ -155,7 +132,7 @@ function patronCrest(p, cls) {
 function youCrest(cls) { return S.house && H[S.house] ? crest(H[S.house], cls) : insignia(BANDS[ranks().you].ins).replace('class="ins"', `class="${cls}"`); }
 
 /* ============ chrome: header nav for this one-page realm ============ */
-const NAV = [['#map', 'Map'], ['#throne', 'Throne'], ['#founders', 'Founders'], ['#ranks', 'Ranks'], ['#houses', 'Houses'], ['#decrees', 'Decrees'], ['#games', 'Games'], ['#charter', 'Charter']];
+const NAV = [['#map', 'Map'], ['#throne', 'Throne'], ['#studio', 'Crest Studio'], ['#ranks', 'Ranks'], ['#houses', 'Houses'], ['#decrees', 'Decrees'], ['#games', 'Games'], ['#charter', 'Charter']];
 function chromeRealm() {
   const logo = crest(H.crown, 'logo').replace('class="logo"', 'width="30" height="36"');
   q('[data-head]').innerHTML = `<div class="head-in"><span class="torch" aria-hidden="true"></span>
@@ -163,7 +140,7 @@ function chromeRealm() {
     <nav class="nav" aria-label="Realm">${NAV.map(([u, t]) => `<a href="${u}">${t}</a>`).join('')}</nav>
     <span class="torch" aria-hidden="true"></span></div>`;
   q('[data-foot]').innerHTML = `<a class="brand" href="#map">${logo}<span class="gilt">USURP</span></a>
-    <p>Prototype. Ladder purchases are simulated. The Founding Member Pass is the only real purchase.</p>
+    <p>Prototype. Ladder purchases are simulated. The only real purchase is <a href="/crest.html">Crest Studio</a> artwork, a separate product with no effect on the game.</p>
     <p>Every House, ruler, name and event shown is illustrative lore, not a real user.</p>
     <p>Numbers are a starting proposal, not final.</p>
     <p style="margin-top:10px"><a href="${WAITLIST}">Join the waitlist</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/refunds.html">Refunds</a> · <a href="mailto:${CONTACT}">${CONTACT}</a></p>
@@ -371,23 +348,9 @@ function wire() {
   q('[data-ico="trivia"]').innerHTML = `<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="22" y="22" width="56" height="58" fill="#e9d9b4" stroke="#6e4f25" stroke-width="2"/><rect x="16" y="16" width="68" height="10" rx="5" fill="#8a6a3a"/><rect x="16" y="76" width="68" height="10" rx="5" fill="#8a6a3a"/><g stroke="#7a5a3a" stroke-width="2"><path d="M30 38h40M30 48h34M30 58h38"/></g><text x="50" y="72" text-anchor="middle" font-family="Cinzel Decorative,serif" font-weight="900" font-size="16" fill="#7a1020">?</text></svg>`;
   q('[data-ico="joust"]').innerHTML = insignia('knight');
 
-  // Founding Member Pass: the one real purchase. Hosted checkout, nothing random.
+  // Crest Studio teaser: sample crest only. The studio lives on /crest.html.
   const fc = q('[data-founder-crest]');
-  if (fc) fc.innerHTML = crest({ name:'Founding Member', c:['#5a0b16', '#d4af5a'], div:'chevron', ch:'crown' });
-  const fp = q('[data-founder-price]'); if (fp) fp.textContent = usd(FOUNDER_PRICE);
-  const fb = q('[data-founder-buy]');
-  if (fb && FOUNDER_CHECKOUT_URL) {
-    fb.href = FOUNDER_CHECKOUT_URL; fb.textContent = `Become a Founding Member, ${usd(FOUNDER_PRICE)}`;
-    fb.removeAttribute('aria-disabled'); fb.rel = 'noopener';
-    if (CHECKOUT_TEST_MODE) {
-      fb.textContent += ' (test)';
-      const note = document.createElement('p'); note.className = 'muted-s founder-fine';
-      note.textContent = 'Test mode: Dodo test checkout, no real money. Use Dodo’s test card from their docs.';
-      fb.closest('.actions').after(note);
-    }
-  } else if (fb) {
-    fb.addEventListener('click', e => { e.preventDefault(); toast('Checkout opens soon. Join the waitlist in the footer to hear first.'); });
-  }
+  if (fc) fc.innerHTML = crest({ name:'Your House', c:['#1f4e8a', '#d4af5a'], div:'quarterly', ch:'crown' });
 
   // Links that came from the Kingdom art (map info panel) route inside this page instead.
   document.addEventListener('click', e => {
@@ -404,9 +367,7 @@ function wire() {
 
 document.addEventListener('DOMContentLoaded', () => {
   if (typeof H === 'undefined') return;
-  const founded = applyFounderPayments();
   chromeRealm(); wire(); render();
-  if (founded) toast('Welcome, Founder. Your badge and standing are updated.');
   const bar = q('.proto-bar');
   const setPB = () => document.documentElement.style.setProperty('--pbh', (bar ? bar.offsetHeight : 0) + 'px');
   setPB(); addEventListener('resize', setPB);

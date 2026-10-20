@@ -1,43 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Welcome, Founder · Usurp</title><meta name="robots" content="noindex">
-<meta name="theme-color" content="#14110e"><link rel="icon" href="/icon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/legal.css">
-<style>.thanks{text-align:center}.thanks h1{margin-top:8px}.thanks .btn{margin-top:22px}.ref{font-family:var(--serif);font-size:12px;letter-spacing:.08em;color:var(--ink-soft);margin-top:14px;word-break:break-all}</style></head>
-<body>
-<header class="site-head"><div class="head-in"><a class="brand" href="/"><span class="gilt">USURP</span></a><nav class="nav" aria-label="Policies"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/refunds.html">Refunds</a><a href="/">Back to the realm</a></nav></div></header>
-<main class="legal"><div class="scroll"><div class="parchment thanks" data-box>
-<p class="eyebrow">Founding Member Pass</p>
-<h1 data-title>Checking your payment</h1>
-<p data-msg>One moment.</p>
-<p class="ref" data-ref></p>
-<a class="btn" href="/#founders">Return to the realm</a>
-</div></div></main>
-<footer class="site-foot"><p>Questions or a refund within 14 days: <a href="mailto:hello@usurp.games">hello@usurp.games</a></p></footer>
-<script>
-(function () {
-  var p = new URLSearchParams(location.search);
-  var status = (p.get('status') || '').toLowerCase();
-  var pid = p.get('payment_id') || '';
-  var $ = function (s) { return document.querySelector(s); };
-  if (pid) $('[data-ref]').textContent = 'Payment reference: ' + pid;
-  if (status === 'succeeded' || status === 'success' || status === 'paid') {
-    $('[data-title]').textContent = 'Welcome, Founder';
-    $('[data-msg]').textContent = 'Your Founding Member Pass is confirmed. A receipt from Dodo Payments is on its way to your email. Your badge now shows in the realm on this device.';
-    // Prototype: remember this payment on this device; the realm applies it on the next visit.
-    // The real Founders roll is updated from Dodo's records, not from this page.
-    try {
-      var FK = 'usurp-founder-v1', F = JSON.parse(localStorage.getItem(FK) || '{"payments":[]}');
-      if (pid && F.payments.indexOf(pid) < 0) { F.payments.push(pid); localStorage.setItem(FK, JSON.stringify(F)); }
-    } catch (e) {}
-  } else if (status) {
-    $('[data-title]').textContent = 'Payment not completed';
-    $('[data-msg]').textContent = 'Your payment did not go through, and you have not been charged for the Pass. You can try again from the realm, or email us if something looks wrong.';
-  } else {
-    $('[data-title]').textContent = 'Thank you';
-    $('[data-msg]').textContent = 'If you just paid, your receipt from Dodo Payments is on its way to your email.';
-  }
-})();
-</script>
-</body></html>
+<title>Redirecting · Usurp</title><meta name="robots" content="noindex">
+<script>location.replace('/crest.html' + location.search);</script>
+<meta http-equiv="refresh" content="0;url=/crest.html"></head>
+<body><p><a href="/crest.html">Continue to Crest Studio</a></p></body></html>

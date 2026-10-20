@@ -1,12 +1,29 @@
 {
   "redirects": [
-    { "source": "/crest", "destination": "/crest.html", "permanent": false },
-    { "source": "/studio", "destination": "/crest.html", "permanent": false }
+    {
+      "source": "/crest",
+      "destination": "/crest.html",
+      "permanent": false
+    },
+    {
+      "source": "/studio",
+      "destination": "/crest.html",
+      "permanent": false
+    }
   ],
   "rewrites": [
-    { "source": "/c/:code", "destination": "/api/share?d=:code" }
+    {
+      "source": "/c/:code",
+      "destination": "/api/share?d=:code"
+    },
+    {
+      "source": "/card/:code",
+      "destination": "/api/card?d=:code"
+    }
   ],
   "functions": {
-    "api/og.js": { "includeFiles": "api/fonts/**" }
+    "api/og.js": {
+      "includeFiles": "api/fonts/**"
+    }
   }
 }

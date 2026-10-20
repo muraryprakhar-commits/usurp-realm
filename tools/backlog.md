@@ -21,3 +21,10 @@ Pick the angle a real searcher has; keep every claim checkable (see the rules in
 - [ ] How to read a blazon (keyword: how to blazon a coat of arms): explain tinctures, divisions, charges with examples from the Studio's own blazon output
 - [ ] Heraldic mottos in English (keyword: family motto ideas): 40 original English mottos by theme, each linking into the Studio
 - [ ] Coat of arms for writers and worldbuilders (keyword: fantasy heraldry for novels)
+
+## Spanish pages (new search market; write natively in neutral Latin American Spanish, not word-for-word translation)
+Add these as specs with slugs under es/ (for example es/escudo-de-armas-familiar.html), lang="es" content, and link each back to the Studio.
+The Studio itself stays in English for now, so say plainly on each page that the designer is in English and easy to use.
+- [ ] Crear escudo de armas familiar (keyword: crear escudo de armas / escudo de armas familiar)
+- [ ] Significado de los colores y símbolos del escudo de armas (keyword: significado de los colores en heráldica)
+- [ ] Lemas en latín para escudos con traducción (keyword: lemas en latín para escudo)

@@ -55,7 +55,7 @@ def crest_img(d, cls=''):
     return f'<img src="/img/crests/{fn}" width="600" height="750" loading="lazy" decoding="async" alt="{E(describe(d))}"{c}>'
 
 
-NAV = [('/crest.html', 'Studio'), ('/family-crest-generator.html', 'By last name'), ('/family-crest-gift.html', 'Gifts'), ('/latin-motto-generator.html', 'Mottos'),
+NAV = [('/crest.html', 'Studio'), ('/coat-of-arms-quiz.html', 'Quiz'), ('/family-crest-generator.html', 'By last name'), ('/family-crest-gift.html', 'Gifts'), ('/latin-motto-generator.html', 'Mottos'),
        ('/fantasy-house-name-generator.html', 'House names'),
        ('/heraldry-symbols-and-meanings.html', 'Meanings'), ('/coat-of-arms-template.html', 'Templates')]
 
@@ -64,7 +64,7 @@ PAGES_INDEX = []  # (slug, title, blurb) filled by page()
 
 def head(p):
     ld = json.dumps(p['ld'], ensure_ascii=False).replace('</', '<\\/')
-    return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    return f'''<!doctype html><html lang="{p.get('lang', 'en')}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{E(p['title'])}</title>
 <meta name="description" content="{E(p['desc'])}">
 <link rel="canonical" href="{SITE}/{p['slug']}">
@@ -88,7 +88,8 @@ def header(slug):
 # Every guide page: (slug, short title, one-line blurb). Spec pages from usecases.py are appended automatically.
 REGISTRY = [
     ('family-crest-generator.html', 'Crest by last name', 'Six crests for your surname in one click'),
-    ('coat-of-arms-ideas.html', 'Coat of arms ideas', '80 original crests to customize'),
+    ('coat-of-arms-quiz.html', 'Heraldry quiz', 'What would your coat of arms be?'),
+    ('coat-of-arms-ideas.html', 'Coat of arms ideas', '70+ original crests to customize'),
     ('family-crest-gift.html', 'Family crest gift', 'A personal gift with a certificate'),
     ('crest-logo-maker.html', 'Crest logo maker', 'A logo kit for clubs and businesses'),
     ('family-crest-maker.html', 'Family crest maker', 'A crest that tells your family story'),
@@ -146,6 +147,7 @@ def crumbs(slug, name):
 def write_page(p, body):
     PAGES_INDEX.append((p['slug'], p['h1'], p['desc']))
     doc = head(p) + '<body>' + header(p['slug']) + '<main>' + body + related(p['slug']) + '</main>' + footer() + p.get('scripts', '') + '</body></html>'
+    os.makedirs(os.path.dirname(os.path.join(ROOT, p['slug'])), exist_ok=True)   # allows es/... pages
     with open(os.path.join(ROOT, p['slug']), 'w', encoding='utf-8') as f:
         f.write(doc)
 
@@ -638,8 +640,104 @@ def ideas():
     write_page(p, body)
 
 
+QUIZ = [
+    dict(q='When a friend is in trouble, you are the one who...', w={'wt': 1, 'wc': 2}, a=[
+        ('steps in and stands up for them', {'t': GULES, 'c': 'sword'}),
+        ('keeps their secret safe', {'t': AZURE, 'c': 'key'}),
+        ('makes them laugh until it is better', {'t': VERT, 'c': 'rose'}),
+        ('makes a plan to fix it', {'t': PURPURE, 'c': 'mullet'}),
+        ('stays calm and steady beside them', {'t': SABLE, 'c': 'tower'})]),
+    dict(q='Pick the place you would rule from.', w={'wc': 1, 'wd': 1}, a=[
+        ('A castle on a sea cliff', {'c': 'tower', 'd': 'pale'}),
+        ('A harbor town under the moon', {'c': 'crescent', 'd': 'fess'}),
+        ('The great hall of the capital', {'c': 'crown', 'd': 'quarterly'}),
+        ('A manor with a walled rose garden', {'c': 'rose', 'd': 'chevron'}),
+        ('A watchtower where four roads meet', {'c': 'key', 'd': 'saltire'})]),
+    dict(q='Which matters most to you?', w={'wt': 2}, a=[
+        ('Courage', {'t': GULES}), ('Truth and loyalty', {'t': AZURE}), ('Hope and joy', {'t': VERT}),
+        ('Justice', {'t': PURPURE}), ('Patience', {'t': MURREY}), ('Staying the same when everything changes', {'t': SABLE})]),
+    dict(q='How do you take on a big challenge?', w={'wd': 2, 'wth': 1}, a=[
+        ('Head on, right away', {'d': 'bend', 'th': 'courage'}),
+        ('With a careful plan', {'d': 'quarterly', 'th': 'wisdom'}),
+        ('Together with my people', {'d': 'chevron', 'th': 'family'}),
+        ('Slowly and steadily until it is done', {'d': 'pale', 'th': 'perseverance'}),
+        ('My own way, whatever anyone says', {'d': 'saltire', 'th': 'ambition'})]),
+    dict(q='Gold or silver?', w={'wm': 1}, a=[
+        ('Gold: warm, generous, a little bold', {'m': OR}), ('Silver: calm, clear, quietly confident', {'m': ARGENT})]),
+    dict(q='Pick a time of day.', w={'wc': 1, 'wth': 1}, a=[
+        ('Dawn, before anyone else is up', {'c': 'mullet', 'th': 'ambition'}),
+        ('High noon', {'c': 'sword', 'th': 'courage'}),
+        ('Golden hour at dusk', {'c': 'rose', 'th': 'love'}),
+        ('Midnight', {'c': 'crescent', 'th': 'perseverance'}),
+        ('A long dinner with everyone at the table', {'c': 'crown', 'th': 'family'})]),
+    dict(q='What would you most like to be remembered for?', w={'wth': 2}, a=[
+        ('Being brave', {'th': 'courage'}), ('Being kind', {'th': 'love'}), ('Being wise', {'th': 'wisdom'}),
+        ('Being loyal', {'th': 'family'}), ('Building something great', {'th': 'ambition'}), ('Doing the right thing', {'th': 'honor'})]),
+]
+ARCHETYPES = {
+    'tower': ('The Protector', 'You hold the line for the people you love. Steady and dependable, you are the one everyone leans on.'),
+    'key': ('The Keeper', 'Trusted with secrets and with people. You guard what matters and know which doors to open.'),
+    'rose': ('The Heart', 'Warm, hopeful and generous with joy. People feel better for having you around.'),
+    'mullet': ('The Dreamer', 'You aim high and pull others up with you: ambition with a sense of wonder.'),
+    'crescent': ('The Night Owl', 'Patient and quietly hopeful. Your best plans come together while others sleep.'),
+    'sword': ('The Champion', 'Brave, direct and fair. You are first to step in when something is wrong.'),
+    'crown': ('The Leader', 'Natural authority and a big table. You bring people together and take responsibility.'),
+}
+
+
+def quiz():
+    slug = 'coat-of-arms-quiz.html'
+    faqs = [('Is this based on real heraldry?', 'Yes, loosely. The colors, divisions and emblems are real heraldic elements, and the quiz uses the traditional meanings later heraldic writers gave them (courage for red, loyalty for blue, hope for green and so on). It is a bit of fun, not a historical grant of arms.'),
+            ('Can I change my result?', 'Yes. Click "Make it yours" to open your crest in Crest Studio and change any color, emblem or the motto. Designing is free.'),
+            ('Can I get my crest as a picture or print?', 'Yes. In the Studio, $9 gets print-ready art (4000 px PNG and SVG), a certificate of arms explaining its meaning, a profile picture and a phone wallpaper.'),
+            ('How do I share my result?', 'Click "Share my result". The link previews your crest in WhatsApp, iMessage, Discord and most social apps, and brings friends to the quiz so they can find theirs.')]
+    p = dict(slug=slug, h1='What Would Your Coat of Arms Be?', og='quiz', og_title='Heraldry quiz: what would your coat of arms be?',
+             title='Coat of Arms Quiz: What Would Your Coat of Arms Be? | Crest Studio',
+             desc='Take the free 2-minute heraldry quiz and get your own coat of arms: colors, emblem and Latin motto chosen from your answers, with its meaning. Share it with friends.')
+    p['ld'] = ld_base(p, [faq_ld(faqs), {'@type': 'WebApplication', 'name': 'Coat of Arms Quiz', 'url': f'{SITE}/{slug}', 'applicationCategory': 'GameApplication',
+                                          'operatingSystem': 'Any (web browser)', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}}])
+    data = {'themes': ['courage', 'perseverance', 'family', 'wisdom', 'ambition', 'honor', 'love'],
+            'tinctures': [GULES, AZURE, VERT, PURPURE, SABLE, MURREY], 'divisions': ['chevron', 'bend', 'quarterly', 'fess', 'pale', 'saltire', 'perpale'],
+            'charges': ['tower', 'key', 'rose', 'mullet', 'crescent', 'sword', 'crown'],
+            'archetypes': {k: {'title': t, 'desc': dsc} for k, (t, dsc) in ARCHETYPES.items()},
+            'mottos': [{'la': la, 'en': en, 't': t} for la, en, t, _ in MOTTOS if t != 'faith']}
+    p['scripts'] = (f'<script type="application/json" id="quiz-data">{json.dumps(data, ensure_ascii=False)}</script>'
+                    '<script src="/crest-core.js" defer></script><script src="/quiz.js" defer></script>')
+    qs = ''
+    for i, q in enumerate(QUIZ, 1):
+        attrs = ' '.join(f'data-{k}="{v}"' for k, v in q['w'].items())
+        opts = ''.join(f'<label class="opt"><input type="radio" name="q{i}" value="{E(";".join(f"{k}:{v}" for k, v in a.items()))}"><span>{E(t)}</span></label>' for t, a in q['a'])
+        qs += f'<fieldset class="qstep" data-q {attrs}><legend>{E(q["q"])}</legend>{opts}</fieldset>'
+    qs += ('<fieldset class="qstep" data-q><legend>Last one: what name should your house carry?</legend>'
+           '<label class="fld"><span>Your name or family name</span><input type="text" maxlength="28" data-name autocomplete="family-name" placeholder="Ashford"></label>'
+           '<button class="btn big" type="button" data-finish style="margin-top:14px;width:100%">Reveal my coat of arms</button></fieldset>')
+    arcs = ''.join(f'<li><b>{E(t)}</b> ({ {"mullet": "star"}.get(k, k)}): {E(dsc)}</li>' for k, (t, dsc) in ARCHETYPES.items())
+    body = hero('Free 2-minute quiz', 'What Would Your Coat of Arms Be?',
+                'Seven quick questions about how you live. We turn your answers into a real heraldic crest, with colors, an emblem and a Latin motto chosen for you, and tell you what it all means.',
+                cta_href='#quiz', cta='Start the quiz')
+    body += f'''<section class="gen quiz" id="quiz" data-quiz aria-label="Heraldry quiz">
+<div class="friend" data-friend hidden><div class="f-art" data-f-art></div><p>A friend sent you their coat of arms: <b data-f-name></b>. Take the quiz to find yours.</p></div>
+<div class="qnav" data-nav><button class="btn ghost" type="button" data-back hidden>Back</button><span data-progress>Question 1 of {len(QUIZ) + 1}</span><div class="bar"><i data-bar></i></div></div>
+{qs}
+<div class="qres" data-result hidden>
+<div class="r-art" data-r-art></div>
+<h2 class="gilt" data-r-title></h2><p class="lede" data-r-desc></p>
+<p class="r-motto" data-r-motto></p><p class="r-blz" data-r-blazon></p><p data-r-mean></p>
+<div class="cta-row" style="margin-top:18px"><button class="btn big" type="button" data-r-share>Share my result</button><a class="btn ghost" data-r-edit href="/crest.html">Make it yours</a></div>
+<p class="muted-s center" data-r-note></p>
+<p class="center" style="margin-top:10px"><a data-r-buy href="/crest.html">Get it as print files, a certificate and a wallpaper ($9)</a> · <button class="linkish" type="button" data-again>Take it again</button></p>
+</div></section>'''
+    body += f'''<section class="sec"><h2 class="gilt">How the quiz works</h2>
+<p>Each answer nudges one part of your crest. Your values choose the field color, using the traditional meanings from heraldry (red for courage, blue for truth and loyalty, green for hope, purple for justice, black for constancy, mulberry for patience). How you face a challenge sets the division, gold or silver sets the metal, and your other answers pick the emblem and the theme of your Latin motto. Your name goes across the top.</p>
+<p>The meanings come from heraldic writers of the 1500s and 1600s rather than the medieval knights themselves, so treat your result as a bit of fun with real roots. More in the <a href="/heraldry-symbols-and-meanings.html">heraldry meanings guide</a>.</p>
+<h3>The seven archetypes</h3><ul>{arcs}</ul>
+<p class="center" style="margin-top:22px"><a class="btn big" href="#quiz">Take the quiz</a></p></section>'''
+    body += faq_html(faqs)
+    write_page(p, body)
+
+
 def spec_page(sp):
-    p = dict(slug=sp['slug'], h1=sp['h1'], og=sp['og'], og_title=sp['og_title'], title=sp['title'], desc=sp['desc'])
+    p = dict(slug=sp['slug'], h1=sp['h1'], og=sp['og'], og_title=sp['og_title'], title=sp['title'], desc=sp['desc'], lang=sp.get('lang', 'en'))
     p['ld'] = ld_base(p, [faq_ld(sp['faqs']), APP_LD])
     body = hero(sp['eyebrow'], sp.get('h1_html', E(sp['h1'])), sp['lede'] + ' ' + sp.get('price_note', PRICE_NOTE),
                 cta=sp.get('cta', 'Design yours free'), second=sp.get('second'))
@@ -680,7 +778,7 @@ def sitemap_and_llms():
 
 
 if __name__ == '__main__':
-    for fn in (surname, ideas, family, dnd, wedding, clan, school, mottos, houses, meanings, templates):
+    for fn in (surname, quiz, ideas, family, dnd, wedding, clan, school, mottos, houses, meanings, templates):
         fn()
     for sp in SPECS:
         spec_page(sp)

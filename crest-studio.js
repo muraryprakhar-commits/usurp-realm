@@ -203,6 +203,25 @@ function wire() {
     const sg = () => { try { localStorage.setItem(GKEY, JSON.stringify({ to:gt.value.slice(0, 40), from:gf.value.slice(0, 40) })); } catch (e) {} };
     gt.oninput = sg; gf.oninput = sg;
   }
+  const mk = $('[data-c-make]');
+  if (mk) {
+    const cardUrl = () => {
+      const q = new URLSearchParams();
+      const to = $('[data-c-to]').value.trim(), from = $('[data-c-from]').value.trim(), msg = $('[data-c-msg]').value.trim();
+      if (to) q.set('to', to.slice(0, 40)); if (from) q.set('from', from.slice(0, 40)); if (msg) q.set('msg', msg.slice(0, 160));
+      const qs = q.toString();
+      return `https://usurp.games/card/${enc(D)}${qs ? '?' + qs : ''}`;
+    };
+    $('[data-c-preview]').onclick = e => { e.currentTarget.href = cardUrl(); };
+    mk.onclick = async () => {
+      const url = cardUrl(), to = $('[data-c-to]').value.trim();
+      try {
+        if (navigator.share && matchMedia('(pointer:coarse)').matches) await navigator.share({ title:'A coat of arms for you', text: to ? `${to}, I made you something:` : 'I made you something:', url });
+        else { await navigator.clipboard.writeText(url); note('E-card link copied. Paste it into a message or email.'); }
+      } catch (e) { note(url); }
+      if (window.clarity) try { window.clarity('event', 'card_create'); } catch (err) {}
+    };
+  }
   const free = $('[data-free]');
   if (free) free.onclick = async () => {
     try { await downloadPng({ ...D }, 800, true); note('Preview saved. Share it anywhere. The $9 download is full size with no watermark.'); }
@@ -564,7 +583,7 @@ async function handleReturn() {
   const sp = $('[data-share-paid]');
   if (sp) sp.onclick = () => shareDesign(d, m => { $('[data-paid-ref]').textContent = m; });
   const kb = dl.querySelector('[data-dl-kit]');
-  if (kb) { kb.hidden = plan !== 'kit'; kb.onclick = () => downloadKit(d, gift(), kb); }
+  if (kb) { if (plan === 'kit') { kb.hidden = false; kb.onclick = () => downloadKit(d, gift(), kb); } else kb.remove(); }
   if (plan === 'kit') title.textContent = 'Your Crest Logo Kit is ready';
   box.scrollIntoView({ block:'start' });
   if (window.clarity) try { window.clarity('event', 'crest_purchase'); } catch (e) {}
@@ -574,5 +593,7 @@ document.addEventListener('DOMContentLoaded', () => {
   wire(); syncControls(); preview(); handleReturn();
 });
 // exposed for tests
-window.__crest = { enc, dec, layout, svgString, sanitize, downloadCertificate, downloadAvatar, downloadWallpaper, gift, kitBlob, bannerBlob, brandSheetBlob };
+window.__crest = { enc, dec, layout, sanitize };
+// File builders are exposed only on a local test server (tools/press.py and the test scripts use them).
+if (['localhost', '127.0.0.1'].includes(location.hostname)) Object.assign(window.__crest, { svgString, downloadCertificate, downloadAvatar, downloadWallpaper, gift, kitBlob, bannerBlob, brandSheetBlob });
 })();

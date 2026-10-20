@@ -43,7 +43,7 @@ SPECS = [
 <li><b>Add the gift line.</b> Open "Giving it as a gift?" and type who it is for and who it is from. It prints on the certificate.</li>
 <li><b>Download the set</b> for $9: print art, certificate, profile picture and phone wallpaper.</li>
 <li><b>Print and frame.</b> The 4000 by 5000 px file prints at about 13 by 16 inches at full photo quality (300 pixels per inch), and comfortably at 16 by 20. The certificate is sized for US Letter.</li></ol>
-<div class="callout"><b>Short on time?</b> Email the files or the phone wallpaper with a note, then print a framed copy for later. It still counts.</div>
+<div class="callout"><b>Short on time?</b> In the studio, open "Send it as a free e-card": they get a link where their crest appears with your message, and you can print a framed copy later. It still counts.</div>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html">Design the gift</a></p></section>''',
         faqs=[('Can I give it as a last-minute gift?', 'Yes. The files download as soon as payment goes through, so you can print or email them the same day.'),
               ('Does the recipient need an account or anything else?', 'No. They receive ordinary image files (PNG and SVG) that open on any phone or computer.'),

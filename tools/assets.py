@@ -59,6 +59,7 @@ OG = {
     'meanings': ('Heraldry Symbols and Meanings', 'Colors, divisions and emblems explained', crest('House Valemont', 'Veritas Vincit', GULES, OR, GOLD_LIGHT, 'quarterly', 'crown')),
     'templates': ('Free Coat of Arms Templates', 'Printable shields and a family crest worksheet', None),
     'surname': ('Family Crest Generator', 'Six crests for your last name in one click', crest('The Carter Family', 'Together We Rise', AZURE, OR, GOLD_LIGHT, 'chevron', 'initial')),
+    'quiz': ('What Would Your Coat of Arms Be?', 'A free 2-minute heraldry quiz', crest('House Ashford', 'Per Aspera Ad Astra', AZURE, OR, GOLD_LIGHT, 'chevron', 'tower')),
     'ideas': ('80 Coat of Arms Ideas', 'Original crests you can customize free', crest('House Ravenmere', 'We Rise by Night', PURPURE, OR, GOLD_LIGHT, 'chevron', 'crescent')),
 }
 from usecases import SPECS

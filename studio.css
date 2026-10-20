@@ -73,3 +73,7 @@
 .bn-t i{font-family:var(--serif);font-style:normal;color:var(--gold);font-size:13px;letter-spacing:.08em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .kit-copy{font-size:16px;color:var(--text)}
 .kit-copy b{color:var(--gold-2);font-weight:400;font-family:var(--serif)}
+.ecard-mk{border:1px solid #3a2e1f;padding:10px 14px}
+.ecard-mk summary{cursor:pointer;font-family:var(--serif);color:var(--gold-2);font-size:15px}
+.ecard-mk[open]{display:grid;gap:12px}
+.fld textarea{width:100%;padding:10px 14px;font:inherit;font-size:17px;color:var(--text);background:#120e0a;border:1px solid var(--gold-deep);border-radius:0;resize:vertical}

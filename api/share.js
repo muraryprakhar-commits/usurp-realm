@@ -9,8 +9,9 @@ module.exports = (req, res) => {
   if (!d) { res.writeHead(302, { Location: '/crest.html' }); return res.end(); }
   const name = d.name.trim() || 'A noble house';
   const title = `${name}: a coat of arms`;
-  const desc = (d.motto.trim() ? `"${d.motto.trim()}". ` : '') + 'Design your own coat of arms free at usurp.games.';
-  const img = `https://usurp.games/api/og?d=${code}`, target = `/crest.html?d=${code}`;
+  const desc = quiz ? 'My heraldry quiz result. Take the free quiz to find your own coat of arms.' : (d.motto.trim() ? `"${d.motto.trim()}". ` : '') + 'Design your own coat of arms free at usurp.games.';
+  const quiz = req.query && req.query.via === 'quiz';   // quiz results send friends to the quiz, not the studio
+  const img = `https://usurp.games/api/og?d=${code}`, target = quiz ? `/coat-of-arms-quiz.html?r=${code}` : `/crest.html?d=${code}`;
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Cache-Control', 'public, max-age=86400');
   res.end(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">

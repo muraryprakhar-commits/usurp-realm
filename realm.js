@@ -61,7 +61,7 @@ const CONTACT = 'hello@usurp.games';
 // EDIT HERE: Dodo checkout links for the Founding Member Pass.
 // LIVE: paste the live link once Dodo verifies the account. Empty = "Checkout opens soon" for the public.
 // TEST: Dodo Test Mode link, only used when the page is opened with ?checkout=test (no real money).
-const FOUNDER_CHECKOUT_LIVE = '';
+const FOUNDER_CHECKOUT_LIVE = 'https://checkout.dodopayments.com/buy/pdt_0Nq7l6osvcUL8N0wu65UL?quantity=1&redirect_url=https://usurp.games%2Fthanks.html';
 const FOUNDER_CHECKOUT_TEST = 'https://test.checkout.dodopayments.com/buy/pdt_0NpzeJkuCRyChxLnZPd3k?quantity=1&redirect_url=https://usurp.games%2Fthanks.html';
 const CHECKOUT_TEST_MODE = new URLSearchParams(location.search).get('checkout') === 'test';
 const FOUNDER_CHECKOUT_URL = CHECKOUT_TEST_MODE ? FOUNDER_CHECKOUT_TEST : FOUNDER_CHECKOUT_LIVE;

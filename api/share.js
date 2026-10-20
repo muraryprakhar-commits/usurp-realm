@@ -7,10 +7,10 @@ module.exports = (req, res) => {
   const code = String((req.query && req.query.d) || '').replace(/[^A-Za-z0-9_-]/g, '').slice(0, 800);
   const d = code && C.dec(code);
   if (!d) { res.writeHead(302, { Location: '/crest.html' }); return res.end(); }
+  const quiz = req.query && req.query.via === 'quiz';   // quiz results send friends to the quiz, not the studio
   const name = d.name.trim() || 'A noble house';
   const title = `${name}: a coat of arms`;
   const desc = quiz ? 'My heraldry quiz result. Take the free quiz to find your own coat of arms.' : (d.motto.trim() ? `"${d.motto.trim()}". ` : '') + 'Design your own coat of arms free at usurp.games.';
-  const quiz = req.query && req.query.via === 'quiz';   // quiz results send friends to the quiz, not the studio
   const img = `https://usurp.games/api/og?d=${code}`, target = quiz ? `/coat-of-arms-quiz.html?r=${code}` : `/crest.html?d=${code}`;
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Cache-Control', 'public, max-age=86400');

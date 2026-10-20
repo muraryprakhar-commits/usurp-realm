@@ -1017,8 +1017,10 @@ def game_cards(exclude=None, small=False, eager=False):
         if g['id'] == exclude:
             continue
         play = '' if small else '<em>Play free</em>'
-        load = ('fetchpriority="high"' if not out else 'loading="eager"') if eager else 'loading="lazy"'
-        out.append(f'<a class="gm-card" href="/{g["slug"]}"><img src="/img/games/{g["id"]}.webp" width="600" height="800" {load} decoding="async" '
+        load = ('fetchpriority="high"' if not out else 'loading="eager"' if len(out) < 2 else 'loading="lazy"') if eager else 'loading="lazy"'
+        src = (f'src="/img/games/{g["id"]}.webp" srcset="/img/games/{g["id"]}-400.webp 400w, /img/games/{g["id"]}.webp 600w" '
+               f'sizes="{"(max-width:560px) 46vw, 260px" if not small else "(max-width:560px) 46vw, 200px"}"')
+        out.append(f'<a class="gm-card" href="/{g["slug"]}"><img {src} width="600" height="800" {load} decoding="async" '
                    f'alt="{E(g["name"])}: screenshot of the game"><span class="gc-t"><b>{E(g["name"])}</b><span>{E(g["card"])}</span>{play}</span></a>')
     return ''.join(out)
 

@@ -94,6 +94,7 @@ def main():
         for gid in SCENES:
             im = grab(page, port, gid); thumbs[gid] = im
             im.save(os.path.join(ROOT, 'img', 'games', f'{gid}.webp'), 'WEBP', quality=82, method=6)
+            im.resize((400, 533), Image.LANCZOS).save(os.path.join(ROOT, 'img', 'games', f'{gid}-400.webp'), 'WEBP', quality=80, method=6)   # phones
             og_image(im, titles[gid], subs[gid], os.path.join(ROOT, 'og', f'game-{gid}.png'))
             print('shot', gid)
         b.close()

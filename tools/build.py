@@ -2,7 +2,7 @@
 """Builds the Crest Studio guide and free-tool pages, sitemap.xml and llms.txt.
 Run from the repo root:  python3 tools/build.py
 Pages are plain static HTML so search engines and AI crawlers read everything without JS."""
-import html, json, os, subprocess, sys, datetime
+import html, json, os, re, subprocess, sys, datetime, hashlib
 from urllib.parse import quote
 
 sys.path.insert(0, os.path.dirname(__file__))
@@ -21,6 +21,38 @@ def render(items):
     out = subprocess.run(['node', os.path.join(ROOT, 'tools', 'render.js')], input=payload,
                          capture_output=True, text=True, check=True).stdout
     return json.loads(out)
+
+
+# ---------- crest images: real files so Google Images and Bing can index them ----------
+IMG_JOBS = {}   # filename -> design, rendered by tools/assets.py
+PLAIN_C = {GULES: 'red', MURREY: 'deep red', AZURE: 'blue', VERT: 'green', PURPURE: 'purple', SABLE: 'black', OR: 'gold', ARGENT: 'silver', GOLD_LIGHT: 'gold'}
+
+
+def slugify(t):
+    return re.sub(r'[^a-z0-9]+', '-', t.lower()).strip('-')[:60] or 'crest'
+
+
+def describe(d):
+    F, D, C = PLAIN_C.get(d['f'], 'colored'), PLAIN_C.get(d['d'], 'colored'), PLAIN_C.get(d['c'], 'colored')
+    div = {'plain': f'a {F} shield', 'perpale': f'a shield split down the middle in {F} and {D}',
+           'quarterly': f'a shield quartered in {F} and {D}', 'chevron': f'a {F} shield with a {D} chevron',
+           'fess': f'a {F} shield with a {D} horizontal band', 'bend': f'a {F} shield with a {D} diagonal band',
+           'saltire': f'a {F} shield with a {D} X-shaped cross', 'pale': f'a {F} shield with a {D} vertical stripe'}[d['div']]
+    nm = re.sub(r'^(house|clan|family|the)\s+', '', d['name'], flags=re.I).strip()
+    ch = {'initial': f'the letter {(nm[:1] or "?").upper()} in {C}', 'tower': f'a {C} tower', 'sword': f'a {C} sword',
+          'crown': f'a {C} crown', 'key': f'a {C} key', 'crescent': f'a {C} crescent moon', 'rose': f'a {C} rose',
+          'mullet': f'a {C} star', 'none': ''}[d['ch']]
+    who = f'Coat of arms of {d["name"]}' if d['name'] else 'Coat of arms example'
+    out = f'{who}: {div}' + (f' and {ch}' if ch else '')
+    return out + (f', motto "{d["motto"]}"' if d['motto'] else '')
+
+
+def crest_img(d, cls=''):
+    key = hashlib.sha1(json.dumps(d, sort_keys=True).encode()).hexdigest()[:8]
+    fn = f"{slugify(d['name'] or d['div'] + '-' + d['ch'])}-coat-of-arms-{key}.webp"
+    IMG_JOBS[fn] = d
+    c = f' class="{cls}"' if cls else ''
+    return f'<img src="/img/crests/{fn}" width="600" height="750" loading="lazy" decoding="async" alt="{E(describe(d))}"{c}>'
 
 
 NAV = [('/crest.html', 'Studio'), ('/family-crest-generator.html', 'By last name'), ('/family-crest-gift.html', 'Gifts'), ('/latin-motto-generator.html', 'Mottos'),
@@ -56,6 +88,7 @@ def header(slug):
 # Every guide page: (slug, short title, one-line blurb). Spec pages from usecases.py are appended automatically.
 REGISTRY = [
     ('family-crest-generator.html', 'Crest by last name', 'Six crests for your surname in one click'),
+    ('coat-of-arms-ideas.html', 'Coat of arms ideas', '80 original crests to customize'),
     ('family-crest-gift.html', 'Family crest gift', 'A personal gift with a certificate'),
     ('crest-logo-maker.html', 'Crest logo maker', 'A logo kit for clubs and businesses'),
     ('family-crest-maker.html', 'Family crest maker', 'A crest that tells your family story'),
@@ -83,7 +116,7 @@ def gallery(designs, prefix, btn='Customize this crest'):
     cards = []
     for d, r in zip(designs, out):
         sub = f'<p class="sub">{E(d["motto"])}</p>' if d['motto'] else ''
-        cards.append(f'<figure class="card">{r["svg"]}<figcaption class="cap">{E(d["name"])}</figcaption>{sub}'
+        cards.append(f'<figure class="card">{crest_img(d)}<figcaption class="cap">{E(d["name"])}</figcaption>{sub}'
                      f'<a class="btn ghost" href="{r["url"]}">{btn}</a></figure>')
     return '<div class="gallery">' + ''.join(cards) + '</div>'
 
@@ -447,7 +480,7 @@ def meanings():
             ('quarterly', 'Quarterly', 'Four quarters, historically used to combine inherited arms. In a modern crest, four parts of one story.', PURPURE, ARGENT),
             ('plain', 'Plain', 'One color only. Rare and striking, used for some of the oldest and simplest arms.', GULES, OR)]
     dv = render([(crest('', '', f, d, GOLD_LIGHT, k, 'none'), f'dv{i}', f'{n} division example') for i, (k, n, _, f, d) in enumerate(divs)])
-    dcards = ''.join(f'<figure class="card">{r["svg"]}<figcaption class="cap">{n}</figcaption><p class="sub">{t}</p><a class="btn ghost" href="{r["url"]}">Try a {n.lower()}</a></figure>' for (k, n, t, f, d), r in zip(divs, dv))
+    dcards = ''.join(f'<figure class="card">{crest_img(crest('', '', f, d, GOLD_LIGHT, k, 'none'))}<figcaption class="cap">{n}</figcaption><p class="sub">{t}</p><a class="btn ghost" href="{r["url"]}">Try a {n.lower()}</a></figure>' for (k, n, t, f, d), r in zip(divs, dv))
     charges = [('tower', 'Tower', 'Defense, protection and the safety of a home. A good emblem for a family or a border house.', SABLE, OR, GOLD_LIGHT, 'chevron'),
                ('key', 'Key', 'Guardianship and trust. Keys are the emblem of Saint Peter, keeper of the keys of heaven.', AZURE, ARGENT, GOLD_LIGHT, 'bend'),
                ('rose', 'Rose', 'Hope and joy. The Tudor rose united the red rose of Lancaster and the white rose of York. In English cadency, a seventh son.', VERT, OR, GULES, 'fess'),
@@ -457,7 +490,7 @@ def meanings():
                ('crown', 'Crown', 'Authority, victory, or loyalty to a sovereign.', AZURE, OR, OR, 'fess'),
                ('initial', 'Initial', 'A modern touch: your family or house initial, monogram style.', MURREY, OR, GOLD_LIGHT, 'chevron')]
     cv = render([(crest('', '', f, d, c, dv_, k), f'ch{i}', f'{n} emblem example') for i, (k, n, _, f, d, c, dv_) in enumerate(charges)])
-    ccards = ''.join(f'<figure class="card">{r["svg"]}<figcaption class="cap">{n}</figcaption><p class="sub">{t}</p><a class="btn ghost" href="{r["url"]}">Use a {n.split(" (")[0].lower()}</a></figure>' for (k, n, t, *_), r in zip(charges, cv))
+    ccards = ''.join(f'<figure class="card">{crest_img(crest('', '', f, d, c, dv_, k))}<figcaption class="cap">{n}</figcaption><p class="sub">{t}</p><a class="btn ghost" href="{r["url"]}">Use a {n.split(" (")[0].lower()}</a></figure>' for (k, n, t, f, d, c, dv_), r in zip(charges, cv))
     body = hero('A plain-English guide', 'Heraldry Symbols and Meanings',
                 'What the colors, divisions and emblems on a coat of arms traditionally mean, and how to use them to design a crest that says something true about you.',
                 cta_href='#colors', cta='Read the guide', second=('/crest.html', 'Design a crest'))
@@ -558,6 +591,53 @@ def surname():
     write_page(p, body)
 
 
+def ideas():
+    """A large gallery of original crests by theme: built for image search and for browsing."""
+    import random
+    slug = 'coat-of-arms-ideas.html'
+    rnd = random.Random(1066)
+    COLS, MET, CMET = [GULES, MURREY, AZURE, VERT, PURPURE, SABLE], [OR, ARGENT], [GOLD_LIGHT, ARGENT, OR]
+    DIVS = ['chevron', 'perpale', 'fess', 'bend', 'quarterly', 'saltire', 'pale', 'plain']
+    CH = ['tower', 'key', 'rose', 'mullet', 'crescent', 'sword', 'crown', 'initial']
+
+    def mk(name, motto, ch=None, div=None):
+        return crest(name, motto, rnd.choice(COLS), rnd.choice(MET), rnd.choice(CMET), div or rnd.choice(DIVS), ch or rnd.choice(CH))
+    fam_m = FAMILY_MOTTOS
+    fantasy_m = HOUSE_MOTTOS
+    themes = [
+        ('family', 'Family crest ideas', 'Crests built around a family name, with mottos a family might actually say. Type your own surname into the <a href="/family-crest-generator.html">family crest generator</a> for six more.',
+         [mk(f'The {n} Family', rnd.choice(fam_m)) for n in ['Smith', 'Johnson', 'Williams', 'Brown', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez', 'Wilson', 'Anderson', 'Taylor', 'Thomas', 'Moore', 'Lee', 'Patel']]),
+        ('fantasy', 'Fantasy noble house ideas', 'Sigils for the great houses of a campaign or novel. More in the <a href="/fantasy-house-name-generator.html">house name generator</a>.',
+         [mk(f'House {a}{b}', rnd.choice(fantasy_m)) for a, b in [('Thorn', 'wall'), ('Raven', 'mere'), ('Ash', 'ford'), ('Storm', 'hold'), ('Silver', 'vale'), ('Ember', 'wick'), ('Grey', 'combe'), ('Frost', 'gard'), ('Dusk', 'haven'), ('Iron', 'ridge'), ('Wren', 'bourne'), ('Oak', 'shaw')]]),
+        ('teams', 'Sports club and team crest ideas', 'Badges for amateur clubs, Sunday leagues and fantasy leagues. Clubs can get logo and banner files with the <a href="/crest-logo-maker.html">Crest Logo Kit</a>.',
+         [mk(n, m) for n, m in [('Ravensgate FC', 'Ever Onward'), ('Northvale Rovers', 'Run Together'), ('Oakmere Athletic', 'Strength in Unity'), ('Harbor Town Rowing', 'Pull as One'), ('Ironbridge RFC', 'Hold the Line'), ('Westbrook Wanderers', 'Far and Fast'), ('Saltmarsh Cricket Club', 'Steady Hands'), ('Highfield Harriers', 'Swift and True'), ('Kingsford Fantasy League', 'Glory Is Earned'), ('Millbrook Chess Club', 'Think Twice')]]),
+        ('business', 'Business and brand crest ideas', 'Heritage-style marks for small businesses. See the <a href="/crest-logo-maker.html">crest logo maker</a> for the full brand kit.',
+         [mk(n, m) for n, m in [('Ironhold Brewing Co.', 'Brewed With Patience'), ('Oakmere Coffee', 'First Light'), ('The Copper Key Inn', 'All Are Welcome'), ('Briarwood Books', 'Sapere Aude'), ('Fairhaven Barbers', 'Sharp Since Today'), ('Stonegate Bakery', 'Daily Bread'), ('Ashford Leatherworks', 'Made to Last'), ('Thornfield Distillery', 'Slow and Steady'), ('Wrenbourne Florist', 'Grow Gently'), ('Hartwell Tailors', 'Measure Twice')]]),
+        ('wedding', 'Wedding and couple crest ideas', 'Joint crests for invitations and wax seals, often split per pale to join two families. More in the <a href="/wedding-crest.html">wedding crest guide</a>.',
+         [mk(n, m, div='perpale') for n, m in [('Rossi & Chen', 'Omnia Vincit Amor'), ('Lena & Arjun', 'Ever Yours'), ('The Okafors', 'Two Hearts, One Home'), ('Kim & Alvarez', 'Together We Rise'), ('Maya & Sam', 'Always'), ('The Novaks', 'Root and Branch'), ('Priya & Daniel', 'Home Is Our Hearth'), ('Bell & Hart', 'Ubi Concordia, Ibi Victoria')]]),
+        ('school', 'School house crest ideas', 'Crests for classroom and school house systems, named after virtues. See <a href="/school-house-crests.html">school house crests</a>.',
+         [mk(n, m) for n, m in [('House Fortis', 'Audentes Fortuna Iuvat'), ('House Sapientia', 'Sapere Aude'), ('House Caritas', 'Non Sibi Sed Omnibus'), ('House Constantia', 'Per Aspera ad Astra'), ('House Veritas', 'Veritas Vincit'), ('House Spes', 'Dum Spiro Spero'), ('House Honor', 'Facta Non Verba'), ('House Lux', 'Fiat Lux')]]),
+        ('gaming', 'Gaming clan and guild crest ideas', 'Emblems that still read as a small server icon. See <a href="/clan-logo-maker.html">clan and guild logos</a>.',
+         [mk(n, m) for n, m in [('Iron Ravens', 'Swift and Unseen'), ('Night Owls Guild', 'We Rise by Night'), ('Crownbreakers', 'The Crown Is Earned'), ('Starfall', 'Ad Astra'), ('The Ember Pact', 'By Oath and Ember'), ('Wolfsbane Company', 'Steel Remembers'), ('Moonkeepers', 'Watch and Ward'), ('Last Light Guild', 'First Light, Last Stand')]]),
+    ]
+    total = sum(len(t[3]) for t in themes)
+    faqs = [('Can I use one of these crests?', 'Yes. Click "Customize" to open any of them in Crest Studio, change anything you like, and design for free. Buying the files ($9, or $29 for the Logo Kit) gives you print-ready art you can use anywhere.'),
+            ('Are these real historical coats of arms?', 'No. Every crest on this page is an original design made with Crest Studio. The names are illustrative, and none is an official grant of arms or a claim about any real family or organization.'),
+            ('Why do they all look so readable?', 'Every example follows the heraldic rule of tincture: a metal (gold or silver) against a color. It is the simplest way to make a crest clear from a distance.')]
+    p = dict(slug=slug, h1='Coat of Arms Ideas', og='ideas', og_title=f'{total} Coat of Arms Ideas you can customize free',
+             title=f'{total} Coat of Arms Ideas: Family, Fantasy, Team and Business Crests | Crest Studio',
+             desc=f'Browse {total} original coat of arms and family crest ideas for families, fantasy houses, sports clubs, businesses, weddings, school houses and gaming clans. Customize any of them free.')
+    p['ld'] = ld_base(p, [faq_ld(faqs), {'@type': 'ImageGallery', 'name': 'Coat of arms ideas', 'url': f'{SITE}/{slug}'}])
+    toc = ' · '.join(f'<a href="#{k}">{E(t.replace(" ideas", ""))}</a>' for k, t, _, _ in themes)
+    body = hero('Free to customize', f'{total} Coat of Arms Ideas',
+                'Original crests for families, fantasy houses, clubs, businesses, couples, schools and gaming groups. Every one opens in Crest Studio so you can make it yours. ' + PRICE_NOTE)
+    body += f'<p class="center muted-s" style="margin:-8px 16px 10px">{toc}</p>'
+    for k, t, intro, ds in themes:
+        body += f'<section class="sec" id="{k}"><h2 class="gilt">{E(t)}</h2><p>{intro}</p></section>' + gallery(ds, 'id' + k[:3], 'Customize')
+    body += faq_html(faqs)
+    write_page(p, body)
+
+
 def spec_page(sp):
     p = dict(slug=sp['slug'], h1=sp['h1'], og=sp['og'], og_title=sp['og_title'], title=sp['title'], desc=sp['desc'])
     p['ld'] = ld_base(p, [faq_ld(sp['faqs']), APP_LD])
@@ -576,9 +656,18 @@ for _sp in SPECS:
 
 def sitemap_and_llms():
     pages = [('crest.html', '1.0')] + [(s, '0.8') for s, _, _ in PAGES_INDEX] + [('', '0.5'), ('terms.html', '0.2'), ('privacy.html', '0.2'), ('refunds.html', '0.2')]
-    urls = ''.join(f'<url><loc>{SITE}/{s}</loc><lastmod>{TODAY}</lastmod><priority>{pr}</priority></url>\n' for s, pr in pages)
+    def imgs(slug):
+        try:
+            body = open(os.path.join(ROOT, slug), encoding='utf-8').read() if slug else ''
+        except FileNotFoundError:
+            return ''
+        found = list(dict.fromkeys(re.findall(r'src="(/img/crests/[^"]+)"', body)))
+        return ''.join(f'<image:image><image:loc>{SITE}{u}</image:loc></image:image>' for u in found[:1000])
+    urls = ''.join(f'<url><loc>{SITE}/{s}</loc><lastmod>{TODAY}</lastmod><priority>{pr}</priority>{imgs(s)}</url>\n' for s, pr in pages)
     with open(os.path.join(ROOT, 'sitemap.xml'), 'w') as f:
-        f.write(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
+        f.write(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n{urls}</urlset>\n')
+    with open(os.path.join(ROOT, 'tools', 'img-jobs.json'), 'w') as f:
+        json.dump(IMG_JOBS, f)
     lines = ['# Crest Studio by Usurp', '',
              '> Free online coat of arms and family crest maker. Anyone can design a heraldic crest (name, motto, colors, division, emblem) in the browser for free with no account. A one-time $9 purchase downloads print-ready files (4000 px PNG, 1200 px PNG, SVG vector), a certificate of arms with its blazon and meaning, a profile picture and a phone wallpaper. A $29 Crest Logo Kit adds transparent logo files, favicons and app icons, social banners and a brand sheet for clubs, teams and businesses. All files are usable for any lawful purpose, personal or commercial. Original decorative artwork, not an official grant of arms. Payments by Dodo Payments; 14-day refunds.', '',
              '## Main tool', f'- [Crest Studio: design your own coat of arms]({SITE}/crest.html): the free designer and $9 download', '',
@@ -591,7 +680,7 @@ def sitemap_and_llms():
 
 
 if __name__ == '__main__':
-    for fn in (surname, family, dnd, wedding, clan, school, mottos, houses, meanings, templates):
+    for fn in (surname, ideas, family, dnd, wedding, clan, school, mottos, houses, meanings, templates):
         fn()
     for sp in SPECS:
         spec_page(sp)

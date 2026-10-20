@@ -196,14 +196,7 @@ function wire() {
     D.f = pick(t); do { D.d = pick(t); } while (D.d === D.f); D.c = pick(['#f3dc92', '#e8e4d8', '#1d1915', '#b3242f']);
     D.div = pick(DIVISIONS)[0]; D.ch = pick(CHARGES.slice(0, 8))[0]; upd();
   };
-  $('[data-share]').onclick = async () => {
-    const url = `${RETURN_URL}?d=${enc(D)}`;
-    try {
-      if (navigator.share && matchMedia('(pointer:coarse)').matches) { await navigator.share({ title:'My coat of arms', text:'I designed my coat of arms. Make yours free:', url }); return; }
-      await navigator.clipboard.writeText(url); note('Link copied. Anyone who opens it sees your design.');
-    } catch (e) { note(url); }
-    if (window.clarity) try { window.clarity('event', 'crest_share'); } catch (e) {}
-  };
+  $('[data-share]').onclick = () => shareDesign(D, note);
   const gt = $('[data-g-to]'), gf = $('[data-g-from]');
   if (gt && gf) {
     const G = gift(); gt.value = G.to; gf.value = G.from;
@@ -227,6 +220,15 @@ function wire() {
     save(); e.currentTarget.href = buyUrl();
     if (window.clarity) try { window.clarity('event', 'crest_checkout'); } catch (err) {}
   };
+}
+// Share links (usurp.games/c/CODE) show the crest itself as the preview in chats and social apps.
+async function shareDesign(d, say) {
+  const url = `https://usurp.games/c/${enc(d)}`;
+  try {
+    if (navigator.share && matchMedia('(pointer:coarse)').matches) { await navigator.share({ title:'My coat of arms', text:'I designed my coat of arms. Make yours free:', url }); }
+    else { await navigator.clipboard.writeText(url); say('Link copied. When you paste it, the preview shows your crest.'); }
+  } catch (e) { say(url); }
+  if (window.clarity) try { window.clarity('event', 'crest_share'); } catch (e) {}
 }
 function note(m) { const n = $('[data-note]'); n.textContent = m; n.hidden = !m; }
 
@@ -559,6 +561,8 @@ async function handleReturn() {
   on('[data-dl-cert]', () => downloadCertificate(d, gift()));
   on('[data-dl-avatar]', () => downloadAvatar(d));
   on('[data-dl-wall]', () => downloadWallpaper(d));
+  const sp = $('[data-share-paid]');
+  if (sp) sp.onclick = () => shareDesign(d, m => { $('[data-paid-ref]').textContent = m; });
   const kb = dl.querySelector('[data-dl-kit]');
   if (kb) { kb.hidden = plan !== 'kit'; kb.onclick = () => downloadKit(d, gift(), kb); }
   if (plan === 'kit') title.textContent = 'Your Crest Logo Kit is ready';

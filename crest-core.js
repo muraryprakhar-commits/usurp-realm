@@ -94,6 +94,19 @@ function b64(str) {
 }
 const enc = d => b64(JSON.stringify([d.name, d.motto, d.f, d.d, d.c, d.div, d.ch, d.bg])).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 const studioUrl = d => '/crest.html?d=' + enc(sanitize(d));
+function unb64(str) {
+  if (typeof atob === 'function') return decodeURIComponent(escape(atob(str)));
+  return Buffer.from(str, 'base64').toString('utf8');
+}
+// Reads a design code (from ?d= or /c/CODE). Returns null if it is not a valid design.
+function dec(code) {
+  try {
+    const b = String(code).replace(/-/g, '+').replace(/_/g, '/');
+    const a = JSON.parse(unb64(b + '==='.slice((b.length + 3) % 4)));
+    if (!Array.isArray(a)) return null;
+    return sanitize({ name:a[0], motto:a[1], f:a[2], d:a[3], c:a[4], div:a[5], ch:a[6], bg:a[7] });
+  } catch (e) { return null; }
+}
 const HEX = /^#[0-9a-f]{6}$/i;
 function sanitize(d) {
   return {
@@ -155,7 +168,7 @@ function tinctureNote(d0) {
   if (d.div === 'plain' && d.ch !== 'none' && isM(F) === isM(C)) return `Heralds' rule: a metal (gold, silver) should sit against a color. This emblem and field are both ${isM(F) ? 'metals' : 'colors'}, so it reads less clearly from a distance.`;
   return '';
 }
-const api = { TINCTURES, DIVISIONS, CHARGES, DEFAULT, layout, textSvg, svg, enc, studioUrl, sanitize, xesc, blazon, meaning, tinctureNote };
+const api = { TINCTURES, DIVISIONS, CHARGES, DEFAULT, layout, textSvg, svg, enc, dec, studioUrl, sanitize, xesc, blazon, meaning, tinctureNote };
 if (typeof module !== 'undefined' && module.exports) module.exports = api;
 else root.CrestCore = api;
 })(typeof window !== 'undefined' ? window : this);

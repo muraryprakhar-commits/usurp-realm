@@ -59,6 +59,7 @@ OG = {
     'meanings': ('Heraldry Symbols and Meanings', 'Colors, divisions and emblems explained', crest('House Valemont', 'Veritas Vincit', GULES, OR, GOLD_LIGHT, 'quarterly', 'crown')),
     'templates': ('Free Coat of Arms Templates', 'Printable shields and a family crest worksheet', None),
     'surname': ('Family Crest Generator', 'Six crests for your last name in one click', crest('The Carter Family', 'Together We Rise', AZURE, OR, GOLD_LIGHT, 'chevron', 'initial')),
+    'ideas': ('80 Coat of Arms Ideas', 'Original crests you can customize free', crest('House Ravenmere', 'We Rise by Night', PURPURE, OR, GOLD_LIGHT, 'chevron', 'crescent')),
 }
 from usecases import SPECS
 for _sp in SPECS:
@@ -74,6 +75,35 @@ def og_html(title, sub, art):
 h1{{font-family:'Cinzel Decorative';font-weight:900;font-size:60px;line-height:1.08;margin:14px 0 18px;color:#f3dc92}}
 p{{font-size:32px;color:#d9c9a6}}.u{{margin-top:34px;font-family:Cinzel;font-weight:700;font-size:24px;color:#d4af5a;letter-spacing:.12em}}
 </style></head><body>{left}<div><div class="eb">Crest Studio · Free</div><h1>{title}</h1><p>{sub}</p><div class="u">usurp.games</div></div></body></html>'''
+
+
+def render_images(browser):
+    """Renders every crest image the pages reference (tools/img-jobs.json, written by build.py) as 600x750 WebP.
+    Existing files are kept (names include a hash of the design); files no page uses any more are removed."""
+    from PIL import Image
+    import io
+    jobs_path = os.path.join(ROOT, 'tools', 'img-jobs.json')
+    if not os.path.exists(jobs_path):
+        return
+    jobs = json.load(open(jobs_path))
+    idir = os.path.join(ROOT, 'img', 'crests'); os.makedirs(idir, exist_ok=True)
+    for old in os.listdir(idir):
+        if old not in jobs:
+            os.remove(os.path.join(idir, old))
+    todo = [(fn, d) for fn, d in jobs.items() if not os.path.exists(os.path.join(idir, fn))]
+    if not todo:
+        print('images: all', len(jobs), 'up to date'); return
+    svgs = render_crests([(d, f'im{i}', d['name']) for i, (fn, d) in enumerate(todo)])
+    pg = browser.new_page(viewport={'width': 600, 'height': 750})
+    pg.set_content(f'<!doctype html><html><head>{FONTS}<style>html,body{{margin:0;background:#efe1bd}}#a svg{{display:block;width:600px;height:750px}}</style></head><body><div id="a"></div></body></html>')
+    pg.wait_for_timeout(1200)
+    for (fn, d), r in zip(todo, svgs):
+        pg.evaluate('h => { document.getElementById("a").innerHTML = h; }', r['svg'])
+        pg.evaluate('document.fonts.ready')
+        png = pg.locator('#a svg').screenshot()
+        Image.open(io.BytesIO(png)).convert('RGB').save(os.path.join(idir, fn), 'WEBP', quality=82, method=6)
+    pg.close()
+    print('images: rendered', len(todo), 'of', len(jobs))
 
 
 def main():
@@ -103,6 +133,7 @@ def main():
                 art = svgs['family-crest-worksheet'].replace('<svg ', '<svg style="background:#fff" ', 1)
             og.set_content(og_html(title, sub, art)); og.wait_for_timeout(900)
             og.screenshot(path=os.path.join(odir, key + '.png'))
+        render_images(b)
         b.close()
     print('templates:', sorted(os.listdir(tdir)))
     print('og:', sorted(os.listdir(odir)))

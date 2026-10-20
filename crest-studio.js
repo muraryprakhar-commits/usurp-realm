@@ -280,17 +280,15 @@ function note(m) { const n = $('[data-note]'); n.textContent = m; n.hidden = !m;
 let FONT_CSS = null;
 async function fontCss() {
   if (FONT_CSS !== null) return FONT_CSS;
+  // The two typefaces used inside the artwork, embedded so SVG downloads look right anywhere. Served from this site.
   try {
-    const css = await (await fetch('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Cinzel:wght@700&display=swap')).text();
+    const faces = [['Cinzel Decorative', 900, '/fonts/cinzel-decorative-900-latin.woff2'], ['Cinzel', 700, '/fonts/cinzel-latin.woff2']];
     const parts = [];
-    const blocks = [...css.matchAll(/@font-face\s*{[^}]*}/g)].map(m => m[0]);
-    const basic = blocks.filter(b => b.includes('U+0000-00FF'));
-    for (const block of (basic.length ? basic : blocks)) {
-      const url = (block.match(/url\((https:[^)]+)\)/) || [])[1];
-      if (!url) continue;
-      const buf = await (await fetch(url)).arrayBuffer();
-      let bin = ''; const u8 = new Uint8Array(buf); for (let i = 0; i < u8.length; i += 0x8000) bin += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000));
-      parts.push(block.replace(url, `data:font/woff2;base64,${btoa(bin)}`));
+    for (const [fam, w, url] of faces) {
+      const r = await fetch(url); if (!r.ok) throw new Error('font ' + r.status);
+      const u8 = new Uint8Array(await r.arrayBuffer());
+      let bin = ''; for (let i = 0; i < u8.length; i += 0x8000) bin += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000));
+      parts.push(`@font-face{font-family:'${fam}';font-style:normal;font-weight:${w};src:url(data:font/woff2;base64,${btoa(bin)}) format('woff2')}`);
     }
     FONT_CSS = parts.join('\n');
   } catch (e) { FONT_CSS = ''; }

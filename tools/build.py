@@ -107,8 +107,7 @@ def head(p):
 <script type="application/ld+json">{ld}</script>
 <script type="text/javascript">(function(c,l,a,r,i,t,y){{c[a]=c[a]||function(){{(c[a].q=c[a].q||[]).push(arguments)}};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);}})(window,document,"clarity","script","yzjmha008x");</script>
 <meta name="theme-color" content="#14110e"><link rel="icon" href="/icon.svg" type="image/svg+xml">{f'<meta name="google-adsense-account" content="{ADS["client"]}">' if ADS['client'] else ''}
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<link rel="preload" href="/fonts/cinzel-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/cinzel-decorative-900-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/studio.css"><link rel="stylesheet" href="/pages.css">{p.get('head_extra', '')}
 </head>'''
 
@@ -1006,13 +1005,20 @@ GAMES = [
 GAMES_LD_PUB = {'@type': 'Organization', 'name': 'Usurp (Murary Studios)', 'url': f'{SITE}/'}
 
 
-def game_cards(exclude=None, small=False):
+def ver(path):
+    """'/games/engine.js' -> '/games/engine.js?v=1a2b3c4d' from the file's content, so year-long caching stays safe."""
+    with open(os.path.join(ROOT, path.lstrip('/')), 'rb') as f:
+        return f'{path}?v={hashlib.sha1(f.read()).hexdigest()[:8]}'
+
+
+def game_cards(exclude=None, small=False, eager=False):
     out = []
     for g in GAMES:
         if g['id'] == exclude:
             continue
         play = '' if small else '<em>Play free</em>'
-        out.append(f'<a class="gm-card" href="/{g["slug"]}"><img src="/img/games/{g["id"]}.webp" width="600" height="800" loading="lazy" decoding="async" '
+        load = ('fetchpriority="high"' if not out else 'loading="eager"') if eager else 'loading="lazy"'
+        out.append(f'<a class="gm-card" href="/{g["slug"]}"><img src="/img/games/{g["id"]}.webp" width="600" height="800" {load} decoding="async" '
                    f'alt="{E(g["name"])}: screenshot of the game"><span class="gc-t"><b>{E(g["name"])}</b><span>{E(g["card"])}</span>{play}</span></a>')
     return ''.join(out)
 
@@ -1024,7 +1030,7 @@ def ads_json():
 
 def game_page(G):
     p = dict(slug=G['slug'], h1=G['h1'], og='game-' + G['id'], og_title=G['og_title'], title=G['title'], desc=G['desc'], no_related=True,
-             head_extra='<link rel="stylesheet" href="/games/games.css">')
+             head_extra=f'<link rel="stylesheet" href="{ver("/games/games.css")}">')
     vg = {'@type': 'VideoGame', 'name': G['name'], 'url': page_url(G['slug']), 'description': G['desc'], 'genre': G['genre'],
           'gamePlatform': ['Web browser', 'Mobile web browser'], 'applicationCategory': 'Game', 'operatingSystem': 'Any', 'playMode': 'SinglePlayer',
           'inLanguage': 'en', 'isAccessibleForFree': True, 'image': f'{SITE}/img/games/{G["id"]}.webp', 'publisher': GAMES_LD_PUB,
@@ -1034,7 +1040,7 @@ def game_page(G):
         {'@type': 'ListItem', 'position': 2, 'name': 'Medieval games', 'item': f'{SITE}/games/'},
         {'@type': 'ListItem', 'position': 3, 'name': G['name'], 'item': page_url(G['slug'])}]}
     p['ld'] = {'@context': 'https://schema.org', '@graph': [{'@type': 'WebPage', 'name': G['h1'], 'url': page_url(G['slug']), 'description': G['desc']}, crumbs3, vg, faq_ld(G['faqs'])]}
-    p['scripts'] = f'<script>window.USURP_ADS={ads_json()}</script><script src="/games/engine.js" defer></script><script src="/games/{G["js"]}.js" defer></script>'
+    p['scripts'] = f'<script>window.USURP_ADS={ads_json()}</script><script src="{ver("/games/engine.js")}" defer></script><script src="{ver("/games/" + G["js"] + ".js")}" defer></script>'
     how = ''.join(f'<li>{E(x)}</li>' for x in G['how'])
     tips = ''.join(f'<li>{E(x)}</li>' for x in G['tips'])
     body = (f'<div class="gm-top"><h1 class="gilt">{E(G["h1"])}</h1><p>{E(G["tagline"])}</p></div>'
@@ -1060,14 +1066,14 @@ def games_hub():
     p = dict(slug=slug, h1='Medieval Games', og='games', og_title='Free medieval games: archery, jousting, castle defense and sword duels',
              title='Free Medieval Games: Archery, Jousting, Castle Defense and Sword Duels | Usurp',
              desc='Four free medieval games to play in your browser on phone or computer: an archery contest, a jousting tournament, a castle defense and a sword duel. No download, no account.',
-             no_related=True, head_extra='<link rel="stylesheet" href="/games/games.css">')
+             no_related=True, head_extra=f'<link rel="stylesheet" href="{ver("/games/games.css")}">')
     items = {'@type': 'ItemList', 'name': 'Medieval games', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'url': page_url(g['slug']), 'name': g['name']} for i, g in enumerate(GAMES)]}
     p['ld'] = ld_base(p, [faq_ld(faqs), items])
-    p['scripts'] = f'<script>window.USURP_ADS={ads_json()}</script><script src="/games/engine.js" defer></script>'
+    p['scripts'] = f'<script>window.USURP_ADS={ads_json()}</script><script src="{ver("/games/engine.js")}" defer></script>'
     body = hero('Free to play · no download', 'Medieval Games',
                 'Four short games of skill for your phone or computer: an archery contest, a jousting tournament, a castle under siege and a sword duel. Each takes a minute to learn and a lot longer to master.',
                 cta_href='#games', cta='Pick a game', second=('/crest.html', 'Design your coat of arms'))
-    body += f'<section id="games"><div class="gm-grid">{game_cards()}</div></section>'
+    body += f'<section id="games"><div class="gm-grid">{game_cards(eager=True)}</div></section>'
     body += ('<section class="gm-info"><h2 class="gilt">Your coat of arms, in every game</h2>'
              '<p>These games are made by Crest Studio, the free coat of arms maker. Design your arms there and they ride with you: on your shield in the joust and the duel, '
              'on the banners of your castle, and beside your score at the archery butts. Your design is saved on your device, so there is nothing to sign up for.</p>'
@@ -1113,7 +1119,7 @@ def advertise():
 <h2 class="gilt" style="margin-top:22px">Price</h2>
 <p>A flat fee per week or per month, quoted on request. Before you pay, we show you the current visits to the pages your ad would run on, so you know what you are buying.</p>
 <p style="margin-top:16px"><a class="btn" href="mailto:hello@usurp.games?subject=Advertising%20on%20Usurp">hello@usurp.games</a></p></section>'''
-    p['head_extra'] = '<link rel="stylesheet" href="/games/games.css">'
+    p['head_extra'] = f'<link rel="stylesheet" href="{ver("/games/games.css")}">'
     write_page(p, body)
 
 

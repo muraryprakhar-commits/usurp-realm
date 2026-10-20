@@ -20,12 +20,12 @@
 .ug-tb svg{width:22px;height:22px}
 .ug-tb:hover{border-color:var(--gold)}
 .ug-tb:focus-visible{outline:2px solid var(--gold-2);outline-offset:2px}
-.ug-ov{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto;
+.ug-ov{position:absolute;inset:0;z-index:3;display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow:auto;overscroll-behavior:contain;
   background:radial-gradient(ellipse at center,rgba(12,10,8,.62),rgba(12,10,8,.9));animation:ugfade .25s ease}
 .ug-ov[hidden]{display:none!important}
 @keyframes ugfade{from{opacity:0}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){.ug-ov{animation:none}}
-.ug-card{width:100%;max-width:400px;text-align:center;padding:18px 16px 16px;background:linear-gradient(180deg,rgba(42,32,20,.94),rgba(20,16,12,.96));border:1px solid var(--gold-deep);box-shadow:0 10px 40px rgba(0,0,0,.6)}
+.ug-card{margin:auto;width:100%;max-width:400px;text-align:center;padding:18px 16px 16px;background:linear-gradient(180deg,rgba(42,32,20,.94),rgba(20,16,12,.96));border:1px solid var(--gold-deep);box-shadow:0 10px 40px rgba(0,0,0,.6)}
 .ug-k{font-family:var(--serif);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin:0}
 .ug-t{font-family:var(--serif-d);font-weight:900;color:var(--gold-2);font-size:clamp(22px,5.4vw,30px);line-height:1.15;margin:6px 0 4px}
 .ug-big{font-family:var(--serif-d);font-weight:900;font-size:clamp(46px,13vw,68px);line-height:1;color:#fff3cf;margin:6px 0 0;text-shadow:0 0 24px rgba(255,190,80,.35)}
@@ -84,3 +84,23 @@
 .ug-choice span{font-size:15px;color:var(--muted);line-height:1.3}
 .sponsor-card{display:block;margin-top:12px;border:1px solid #3a2e1f}
 .sponsor-card img{width:100%;height:auto}
+/* phones held sideways: the header scrolls away and the game takes the full height */
+@media (orientation:landscape) and (max-height:540px){
+  body.ug-page .site-head{position:relative}
+  .gm-top{padding:6px 16px 0}.gm-top h1{font-size:18px}.gm-top p{display:none}
+  .ug,.ug-bar{width:min(100% - 16px, calc((100vh - 64px) * .75));width:min(100% - 16px, calc((100svh - 64px) * .75))}
+  .ug-bar{margin-top:4px}
+}
+/* small game boxes (phones held sideways, short windows): a compact card so the start button is always in view */
+.ug.ug-small .ug-ov{padding:8px}
+.ug.ug-small .ug-card{padding:10px 10px 12px}
+.ug.ug-small .ug-howto,.ug.ug-small .ug-crest{display:none}
+.ug.ug-small .ug-t{font-size:19px;margin:2px 0}
+.ug.ug-small .ug-big{font-size:40px;margin:2px 0 0}
+.ug.ug-small .ug-sub,.ug.ug-small .ug-lines{font-size:14px}
+.ug.ug-small .ug-btns{margin-top:10px;gap:8px}
+.ug.ug-small .ug-btns .btn{min-width:0;padding:10px 14px;font-size:12px}
+.ug.ug-small .ug-choice{min-height:0;padding:8px 10px}
+.ug.ug-small .ug-choice span{font-size:13px}
+.ug-rot{display:none;font-size:13px;color:var(--muted)}
+@media (orientation:landscape) and (max-height:540px){.ug-rot{display:inline}.ug-bestl{display:none}}

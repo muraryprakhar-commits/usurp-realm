@@ -68,3 +68,9 @@ python3 tools/indexnow.py  # after deploy: tell Bing, Yandex and others about ev
 - Play tracking: Microsoft Clarity custom events `play_<game>`, `round_<game>`, `finish_<game>`, `share_<game>`,
   `crest_click_<game>`, plus the session tag `game`. Optional GA4 events if `ADS['ga']` is set.
 - Local test hook: on localhost each game exposes `window.__ug.st()` (its state) and `window.__ugFreeze`.
+- Speed: fonts are self-hosted in `fonts/` (SIL OFL, licences included) and cached for a year; game scripts and
+  `games/games.css` are referenced with `?v=<content hash>` by `tools/build.py` and cached for a year (vercel.json).
+  After editing any file in `games/`, rerun `python3 tools/build.py` so the pages point at the new version.
+- Ads are robust to ad blockers and empty slots: a blocked or unfilled banner shows the house ad, and a between-round
+  break that does not start within 2.5 s simply continues the game. Verified with Google's own test ads
+  (`test: True` with H5 on shows Google's sample interstitial at the round break).

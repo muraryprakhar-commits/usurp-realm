@@ -139,19 +139,25 @@ UG.drawShield = (ctx, rec, x, y, h, alpha = 1) => {
 };
 
 /* ---------- ads: banner slot below the game, and a between-rounds break ---------- */
-let adsLoaded = false;
+// adsState: 'off' until a network is configured, then 'loading', 'ready', or 'failed' (blocked by an ad blocker,
+// offline, or refused). Every path falls back to the house ad, so a blocked or empty ad never leaves a hole or a stall.
+let adsState = 'off', h5Ready = false;
 function loadAdsense() {
-  if (adsLoaded || !ADS.client) return; adsLoaded = true;
+  if (adsState !== 'off' || !ADS.client) return;
+  adsState = 'loading';
+  window.adsbygoogle = window.adsbygoogle || [];
+  if (ADS.h5) {
+    window.adBreak = window.adConfig = function (o) { window.adsbygoogle.push(o); };
+    window.adConfig({ preloadAdBreaks: 'on', sound: AU.muted ? 'off' : 'on', onReady: () => { h5Ready = true; } });
+  }
   const s = document.createElement('script');
   s.async = true; s.crossOrigin = 'anonymous';
   s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(ADS.client)}`;
   if (ADS.h5) { s.setAttribute('data-ad-frequency-hint', ADS.freq || '60s'); if (ADS.test) s.setAttribute('data-adbreak-test', 'on'); }
+  if (ADS.test && !ADS.h5) s.setAttribute('data-adtest', 'on');
+  s.onload = () => { adsState = 'ready'; };
+  s.onerror = () => { adsState = 'failed'; UG.track('ad_blocked'); document.querySelectorAll('[data-ad-slot].ad-net').forEach(houseFill); };
   document.head.appendChild(s);
-  window.adsbygoogle = window.adsbygoogle || [];
-  if (ADS.h5) {
-    window.adBreak = window.adConfig = function (o) { window.adsbygoogle.push(o); };
-    window.adConfig({ preloadAdBreaks: 'on', sound: AU.muted ? 'off' : 'on' });
-  }
 }
 function crestCard(cls) {
   const me = UG.myDesign();
@@ -165,41 +171,50 @@ function fillHouseArt(root) {
     el.innerHTML = `<svg viewBox="218 181 564 720" aria-hidden="true">${L.art}${L.texts.map(C.textSvg).join('')}</svg>`;
   });
 }
+// The house ad: a Crest Studio card, or a directly sold sponsor banner when one is configured.
+function houseFill(slot) {
+  slot.classList.remove('ad-net');
+  const sp = ADS.sponsor;
+  if (sp && sp.href && sp.img) {
+    slot.innerHTML = `<span class="ad-lbl">Sponsor</span><a class="sponsor" href="${sp.href}" rel="sponsored noopener" target="_blank"><img src="${sp.img}" alt="${(sp.alt || 'Sponsor').replace(/"/g, '&quot;')}" width="728" height="90" loading="lazy"></a>`;
+    slot.querySelector('a').addEventListener('click', () => UG.track('sponsor_click'));
+    return;
+  }
+  slot.innerHTML = crestCard('house-bn') + '<p class="ad-sell">Want your brand here? <a href="/advertise.html">Advertise on these games</a></p>';
+  fillHouseArt(slot);
+  slot.querySelector('[data-house-ad]').addEventListener('click', () => UG.track('house_click'));
+}
 UG.mountBanner = () => {
   document.querySelectorAll('[data-ad-slot]').forEach(slot => {
     if (slot.dataset.filled) return; slot.dataset.filled = '1';
-    if (ADS.client && ADS.slot) {
-      slot.classList.add('ad-net');
-      slot.innerHTML = `<span class="ad-lbl">Advertisement</span><ins class="adsbygoogle" style="display:block" data-ad-client="${ADS.client}" data-ad-slot="${ADS.slot}" data-ad-format="auto" data-full-width-responsive="true"></ins>`;
-      loadAdsense();
-      try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
-      return;
-    }
-    const sp = ADS.sponsor;
-    if (sp && sp.href && sp.img) {
-      slot.innerHTML = `<span class="ad-lbl">Sponsor</span><a class="sponsor" href="${sp.href}" rel="sponsored noopener" target="_blank"><img src="${sp.img}" alt="${(sp.alt || 'Sponsor').replace(/"/g, '&quot;')}" width="728" height="90" loading="lazy"></a>`;
-      slot.querySelector('a').addEventListener('click', () => UG.track('sponsor_click'));
-      return;
-    }
-    slot.innerHTML = crestCard('house-bn') + '<p class="ad-sell">Want your brand here? <a href="/advertise.html">Advertise on these games</a></p>';
-    fillHouseArt(slot);
-    slot.querySelector('[data-house-ad]').addEventListener('click', () => UG.track('house_click'));
+    if (!(ADS.client && ADS.slot) || adsState === 'failed') return houseFill(slot);
+    slot.classList.add('ad-net');
+    slot.innerHTML = `<span class="ad-lbl">Advertisement</span><ins class="adsbygoogle" style="display:block" data-ad-client="${ADS.client}" data-ad-slot="${ADS.slot}" data-ad-format="auto" data-full-width-responsive="true"${ADS.test ? ' data-adtest="on"' : ''}></ins>`;
+    loadAdsense();
+    try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
+    const ins = slot.querySelector('ins');
+    // Google marks an empty slot data-ad-status="unfilled"; show the house ad there instead of a blank box.
+    const check = () => { if (!ins.isConnected) return true; const st = ins.getAttribute('data-ad-status'); if (st === 'unfilled') { UG.track('ad_unfilled'); houseFill(slot); return true; } return st === 'filled'; };
+    if ('MutationObserver' in window) { const mo = new MutationObserver(() => { if (check()) mo.disconnect(); }); mo.observe(ins, { attributes: true, attributeFilter: ['data-ad-status'] }); }
+    setTimeout(() => { if (ins.isConnected && !ins.getAttribute('data-ad-status') && !ins.querySelector('iframe')) houseFill(slot); }, 10000);
   });
 };
-/* Between rounds: Google's game interstitial when it is switched on (it decides itself whether an ad is ready and
-   applies its own frequency limits), otherwise an occasional, skippable Crest Studio card. Never before the first
-   round of a visit and never during play. */
+/* Between rounds: Google's game interstitial when it is switched on and its library is ready (Google decides whether an
+   ad is available and applies its own frequency limits), otherwise an occasional, skippable Crest Studio card. Never
+   before the first round of a visit and never during play; if no ad starts within 2.5 s, the next round just begins. */
 let roundsStarted = 0, lastHouse = 0;
 UG.between = (game, done) => {
   roundsStarted++;
   if (roundsStarted < 2) return done();
-  if (ADS.client && ADS.h5 && window.adBreak) {
-    let finished = false; const fin = () => { if (!finished) { finished = true; game.resumeAudio(); done(); } };
+  if (ADS.client && ADS.h5 && window.adBreak && adsState !== 'failed' && (h5Ready || adsState === 'ready')) {
+    let finished = false, started = false;
+    const fin = () => { if (finished) return; finished = true; clearTimeout(t1); clearTimeout(t2); game.resumeAudio(); done(); };
+    const t1 = setTimeout(() => { if (!started) fin(); }, 2500);
+    const t2 = setTimeout(fin, 45000);
     window.adBreak({ type: 'next', name: `${GAME}-round-${roundsStarted}`,
-      beforeAd: () => { game.pauseAudio(); UG.track('ad_start'); },
+      beforeAd: () => { started = true; game.pauseAudio(); UG.track('ad_start'); },
       afterAd: () => game.resumeAudio(),
       adBreakDone: info => { UG.track('ad_' + ((info && info.breakStatus) || 'done')); fin(); } });
-    setTimeout(fin, 15000);   // never leave a player stuck if the ad library stalls
     return;
   }
   const now = Date.now();
@@ -212,6 +227,7 @@ UG.start = function (spec) {
   GAME = spec.id;
   try { if (window.clarity) window.clarity('set', 'game', GAME); } catch (e) {}
   const root = document.querySelector(`[data-game="${spec.id}"]`); if (!root) return;
+  document.body.classList.add('ug-page');
   const W = spec.W || 540, H = spec.H || 720;
   const cv = document.createElement('canvas'); cv.className = 'ug-c'; cv.setAttribute('aria-label', spec.label || spec.title); cv.setAttribute('role', 'img');
   root.prepend(cv);
@@ -224,7 +240,7 @@ UG.start = function (spec) {
     on: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
     off: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16.5 9.5l5 5m0-5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
     fs: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="2"/></svg>' };
-  wrap.insertAdjacentHTML('beforeend', `<div class="ug-bar"><span class="ug-bestl" data-bestl></span><span class="ug-bar-r"><button type="button" class="ug-tb" data-mute aria-pressed="${AU.muted}" aria-label="Sound off">${AU.muted ? ICON.off : ICON.on}</button><button type="button" class="ug-tb" data-fs aria-label="Full screen">${ICON.fs}</button></span></div>`);
+  wrap.insertAdjacentHTML('beforeend', `<div class="ug-bar"><span class="ug-bestl" data-bestl></span><span class="ug-rot">Hold your phone upright for a bigger game</span><span class="ug-bar-r"><button type="button" class="ug-tb" data-mute aria-pressed="${AU.muted}" aria-label="Sound off">${AU.muted ? ICON.off : ICON.on}</button><button type="button" class="ug-tb" data-fs aria-label="Full screen">${ICON.fs}</button></span></div>`);
   const ov = root.querySelector('[data-ov]'), card = root.querySelector('[data-card]'), live = root.querySelector('[data-live]'), bestl = wrap.querySelector('[data-bestl]');
   const showBest = () => { bestl.textContent = UG.store.get(`ug-best-${spec.id}`, 0) ? `Your best: ${UG.store.get(`ug-best-${spec.id}`, 0)}${spec.bestUnit || ''}` : ''; };
   showBest();
@@ -232,6 +248,7 @@ UG.start = function (spec) {
   function fit() {
     const r = cv.getBoundingClientRect(); dpr = Math.min(2, window.devicePixelRatio || 1);
     cv.width = Math.max(1, Math.round(r.width * dpr)); cv.height = Math.max(1, Math.round(r.height * dpr)); scale = cv.width / W;
+    root.classList.toggle('ug-small', r.height < 470);
   }
   fit();
   if ('ResizeObserver' in window) new ResizeObserver(fit).observe(cv); else window.addEventListener('resize', fit);
@@ -269,7 +286,12 @@ UG.start = function (spec) {
       if (o.title) this.say(`${o.title}${o.big !== undefined ? ': ' + o.big : ''}`);
       if (p && AU.ctx) setTimeout(() => { try { p.focus({ preventScroll: true }); } catch (e) {} }, 30);   // not on first load, so Space still scrolls the page
     },
-    hide() { ov.hidden = true; root.classList.remove('ov-on'); try { cv.focus({ preventScroll: true }); } catch (e) {} },
+    hide() {
+      ov.hidden = true; root.classList.remove('ov-on'); try { cv.focus({ preventScroll: true }); } catch (e) {}
+      // bring the whole game on screen when play starts (phones held sideways, or after scrolling)
+      const r = root.getBoundingClientRect();
+      if (r.top < 0 || r.bottom > innerHeight) root.scrollIntoView({ block: r.height > innerHeight ? 'start' : 'center', behavior: UG.reduced ? 'auto' : 'smooth' });
+    },
     // An occasional break between rounds when no ad network is switched on: one tap to continue.
     houseBreak(done) {
       const sp = ADS.sponsor;

@@ -185,3 +185,10 @@ body.ug-embed .ug-bestl{display:inline!important}
 .rail-games a{display:block;text-decoration:none;color:var(--gold-2);font-family:var(--serif);font-size:12px;letter-spacing:.06em;text-align:center;line-height:1.25}
 .rail-games img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;border:1px solid #3a2e1f;margin-bottom:3px;display:block}
 .rail-games a:hover img{border-color:var(--gold-deep)}
+/* share row under each game */
+.gm-share{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 10px;max-width:860px;margin:14px auto 0;padding:0 16px}
+.gm-share span{font-family:var(--serif);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.gm-share a,.gm-share button{font:inherit;font-size:15px;line-height:1;padding:9px 12px;color:var(--gold-2);background:#120e0a;border:1px solid #5a4523;text-decoration:none;cursor:pointer}
+.gm-share a:hover,.gm-share button:hover{border-color:var(--gold)}
+.gm-share a:focus-visible,.gm-share button:focus-visible{outline:2px solid var(--gold-2);outline-offset:2px}
+@media(max-width:420px){.gm-share span{flex-basis:100%;text-align:center;margin:0}}

@@ -439,6 +439,15 @@ UG.start = function (spec) {
   idle(() => { UG.core(); UG.mountBanner(); if (ADS.client && ADS.h5) loadAdsense(); });
   return g;
 };
+// Share row under each game: count which network people share to, and copy the game's link.
+document.addEventListener('click', e => {
+  const a = e.target.closest && e.target.closest('[data-share]'); if (!a) return;
+  UG.track('share_' + a.dataset.share);
+  if (a.dataset.share !== 'link') return;
+  const url = a.dataset.url || location.href.split('#')[0].split('?')[0];
+  const ok = () => { const l = a.dataset.l || (a.dataset.l = a.textContent); a.textContent = 'Link copied'; setTimeout(() => { a.textContent = l; }, 1800); };
+  (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(ok).catch(() => { try { window.prompt('Copy this link:', url); } catch (err) {} });
+});
 // "Put this game on your website": copy the embed code from the box next to the button.
 document.addEventListener('click', e => {
   const b = e.target.closest && e.target.closest('[data-copy]'); if (!b) return;

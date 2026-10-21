@@ -96,14 +96,29 @@ def page_url(slug):
     return f'{SITE}/{slug[:-10]}' if slug.endswith('/index.html') else f'{SITE}/{slug}'
 
 
+def og_image(key):
+    """URL of a page's 1200x630 share image. Game images also get a JPEG copy (about a third of the PNG's weight),
+    so link previews in WhatsApp and other apps load quickly and stay under their size limits."""
+    png = os.path.join(ROOT, 'og', key + '.png')
+    if key.startswith('game') and os.path.exists(png):
+        jpg = png[:-4] + '.jpg'
+        if not os.path.exists(jpg) or os.path.getmtime(jpg) < os.path.getmtime(png):
+            from PIL import Image
+            Image.open(png).convert('RGB').save(jpg, 'JPEG', quality=86, optimize=True, progressive=True)
+        return f'{SITE}/og/{key}.jpg', 'image/jpeg'
+    return f'{SITE}/og/{key}.png', 'image/png'
+
+
 def head(p):
     ld = json.dumps(p['ld'], ensure_ascii=False).replace('</', '<\\/')
+    img, img_type = og_image(p['og'])
+    alt = E(p.get('og_alt', p['og_title']))
     return f'''<!doctype html><html lang="{p.get('lang', 'en')}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{E(p['title'])}</title>
 <meta name="description" content="{E(p['desc'])}">
 <link rel="canonical" href="{page_url(p['slug'])}">
-<meta property="og:title" content="{E(p['og_title'])}"><meta property="og:description" content="{E(p['desc'])}"><meta property="og:url" content="{page_url(p['slug'])}"><meta property="og:type" content="website"><meta property="og:site_name" content="Crest Studio by Usurp"><meta property="og:image" content="{SITE}/og/{p['og']}.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{E(p['og_title'])}"><meta name="twitter:description" content="{E(p['desc'])}"><meta name="twitter:image" content="{SITE}/og/{p['og']}.png">
+<meta property="og:title" content="{E(p['og_title'])}"><meta property="og:description" content="{E(p['desc'])}"><meta property="og:url" content="{page_url(p['slug'])}"><meta property="og:type" content="website"><meta property="og:site_name" content="Crest Studio by Usurp"><meta property="og:image" content="{img}"><meta property="og:image:type" content="{img_type}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="{alt}">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{E(p['og_title'])}"><meta name="twitter:description" content="{E(p['desc'])}"><meta name="twitter:image" content="{img}"><meta name="twitter:image:alt" content="{alt}">
 <script type="application/ld+json">{ld}</script>
 <script type="text/javascript">(function(c,l,a,r,i,t,y){{c[a]=c[a]||function(){{(c[a].q=c[a].q||[]).push(arguments)}};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);}})(window,document,"clarity","script","yzjmha008x");</script>
 <meta name="theme-color" content="#14110e"><link rel="icon" href="/icon.svg" type="image/svg+xml">{f'<meta name="google-adsense-account" content="{ADS["client"]}">' if ADS['client'] else ''}
@@ -937,8 +952,8 @@ for _sp in SPECS:
 GAMES = [
     dict(id='archery', slug='games/archery.html', js='archery', short='Archery', name="The King's Archery Contest",
          h1="Archery Game: The King's Archery Contest", og_title="Archery game: can you win the King's Archery Contest?",
-         title="Archery Game: The King's Archery Contest (Free, No Download) | Usurp Games",
-         desc='Free medieval archery game for phone and computer. Hold to draw, aim into the wind and loose nine arrows at 20, 40 and 60 metres. A new daily contest every day. No download.',
+         title="Free Archery Game Online: The King's Archery Contest",
+         desc='Free medieval archery game for phone and computer. Hold to draw, aim into the wind and shoot nine arrows at three distances. A new contest every day.',
          tagline='Nine arrows, three distances, one champion. Mind the wind.', genre=['Sports', 'Skill', 'Archery'],
          card='Hold to draw, aim into the wind, hit the gold.',
          how=['Press and hold anywhere on the field to draw your bow. The ring around your sight fills as you draw.',
@@ -957,8 +972,8 @@ GAMES = [
                ('Can I put my own coat of arms in the game?', 'Yes. Design your coat of arms free in <a href="/crest.html">Crest Studio</a> on this device and it appears in every game, on your shield and your banners.')]),
     dict(id='joust', slug='games/joust.html', js='joust', short='Jousting', name='The Joust',
          h1='Jousting Game: The Joust', og_title='Jousting game: unhorse five knights and win the tournament',
-         title='Jousting Game: Ride in a Medieval Tournament (Free, No Download) | Usurp Games',
-         desc='Free medieval jousting game. Spur your horse, aim your lance at the shield and strike as the ring closes. Unhorse five knights to win the tournament. Plays on phone and computer.',
+         title='Jousting Game Online: Free Medieval Tournament',
+         desc='Free jousting game for phone and computer. Spur your horse, aim your lance and strike as the ring closes. Unhorse five knights to win the tournament.',
          tagline='Three taps a pass. Five challengers. Unhorse them all.', genre=['Sports', 'Action', 'Timing'],
          card='Spur, aim, strike. Unhorse five knights.',
          how=['Spur: tap when the needle crosses the gold, to gallop at full speed.',
@@ -976,8 +991,8 @@ GAMES = [
                ('Can my knight carry my own coat of arms?', "Yes. Design one free in <a href=\"/crest.html\">Crest Studio</a> and it appears on your shield, your lance and your horse's cloth.")]),
     dict(id='castle', slug='games/castle-defense.html', js='castle', short='Castle defense', name='Hold the Castle',
          h1='Castle Defense Game: Hold the Castle', og_title='Castle defense game: how many waves can you hold?',
-         title='Castle Defense Game: Hold the Castle (Free, No Download) | Usurp Games',
-         desc='Free castle defense game for phone and computer. Loose arrows from your towers, stop rams, ladders and catapults, and choose a reward after every wave. How many waves can you hold?',
+         title='Castle Defense Game Online: Hold the Castle (Free)',
+         desc='Free castle defense game for phone and computer. Shoot from your towers, stop rams, ladders and catapults, and pick a reward after each wave.',
          tagline="The Usurper's host is at the gates. Hold the wall.", genre=['Strategy', 'Tower defense', 'Action'],
          card='Loose arrows, stop the rams, hold the wall.',
          how=['Tap or click the field to loose an arrow from the nearest tower. Arrows take a moment to fly, so aim ahead of moving foes.',
@@ -993,8 +1008,8 @@ GAMES = [
                ('Whose banner flies on the wall?', 'Yours, if you have designed a coat of arms in <a href="/crest.html">Crest Studio</a> on this device. Until then a golden lion on blue flies there.')]),
     dict(id='duel', slug='games/sword-duel.html', js='duel', short='Sword duel', name='Duel',
          h1='Sword Fighting Game: Duel', og_title='Sword fighting reflex game: how fast is your parry?',
-         title='Sword Fighting Game: Duel, a Free Reflex Test (No Download) | Usurp Games',
-         desc="Free medieval sword fighting game that tests your reflexes. Read the knight's blade, parry left, high or right, beware the feints and riposte. See your parry speed in milliseconds.",
+         title='Sword Fighting Game Online: Free Parry Reflex Test',
+         desc="Free medieval sword fighting game. Read the knight's blade, parry left, high or right, beat the feints and riposte. See your parry speed in milliseconds.",
          tagline='Read the blade. Parry. Riposte. How fast are your hands?', genre=['Action', 'Reflex', 'Fighting'],
          card='Read the blade, parry, riposte. Test your reflexes.',
          how=['Your opponent raises their sword to your left, overhead or to your right, then strikes.',
@@ -1010,8 +1025,8 @@ GAMES = [
                ('Can I use my own coat of arms?', 'Yes. Design one free in <a href="/crest.html">Crest Studio</a>: your arms appear beside your hearts and your sword grip takes your colours.')]),
     dict(id='siege', slug='games/trebuchet-game.html', js='trebuchet', short='Trebuchet siege', name='Siege: The Trebuchet Game',
          pre=['/games/vendor/matter.min.js'], h1='Trebuchet Game: Siege', og_title='Trebuchet game: can you topple all ten castles?',
-         title='Trebuchet Game: Siege, Topple 10 Castles (Free, No Download) | Usurp Games',
-         desc='Free trebuchet game for phone and computer. Aim, fling stones and fire pots, and topple ten castles of timber and stone with real physics until every guard yields. No download.',
+         title='Trebuchet Game Online: Topple 10 Castles, Free',
+         desc='Free trebuchet game with real physics. Aim, fling stones and fire pots, and bring down ten castles of timber and stone. Plays on phone and computer.',
          tagline='Ten castles. Real physics. Never quite enough stones.', genre=['Physics', 'Puzzle', 'Strategy'],
          card='Fling stones, topple castles, win the siege.',
          how=['Drag back anywhere on the field. The further you pull, the harder the throw; the angle of your pull sets the arc.',
@@ -1030,8 +1045,8 @@ GAMES = [
                 '<p>The most famous is the Warwolf, built for Edward I of England at the siege of Stirling Castle in 1304. Master James of St George oversaw its construction, and its shots demolished a section of the curtain wall. In this game you only need to topple timber and stone, and the guards simply wave a white flag.</p>')),
     dict(id='tafl', slug='games/viking-chess.html', js='tafl', short='Viking chess', name='Viking Chess (Hnefatafl)', play_mode=['SinglePlayer', 'MultiPlayer'],
          h1='Viking Chess (Hnefatafl): Play Online Free', og_title='Viking chess: can the king escape?',
-         title='Viking Chess (Hnefatafl) Online: Play Free vs Computer or a Friend | Usurp Games',
-         desc='Play Viking chess free in your browser. Defend the king or lead the raiders in Brandubh (7x7) or Tablut (9x9), against the computer at three levels or a friend on one device. No download.',
+         title='Viking Chess (Hnefatafl) Online: Free vs Computer',
+         desc='Play Viking chess free in your browser: defend the king or lead the raiders in Brandubh or Tablut, against the computer at three levels or a friend.',
          tagline='Get the king to a corner, or trap him. Every piece moves like a rook.', genre=['Board game', 'Strategy', 'Abstract'],
          card='Lead the king to a corner, or trap him.',
          how=['The defenders and their king start in the middle; the raiders start around the edges. The raiders move first.',
@@ -1049,8 +1064,8 @@ GAMES = [
                 '<p>The clearest account of how a tafl game was played comes much later. In 1732 the Swedish naturalist Carl Linnaeus recorded Tablut in the journal of his expedition to Lapland. Every modern rule set, including the one used here, is a reconstruction built from that account and from the boards that survive.</p>')),
     dict(id='morris', slug='games/nine-mens-morris.html', js='morris', short="Nine Men's Morris", name="Nine Men's Morris", play_mode=['SinglePlayer', 'MultiPlayer'],
          h1="Nine Men's Morris: Play Online Free", og_title="Nine Men's Morris: can you beat the Lord?",
-         title="Nine Men's Morris Online: Play Free vs Computer or a Friend | Usurp Games",
-         desc="Play Nine Men's Morris free in your browser against the computer at three levels, or against a friend on one device. The medieval game of mills, with clear rules and no download.",
+         title="Nine Men's Morris Online: Free vs Computer or Friend",
+         desc="Play Nine Men's Morris free in your browser against the computer at three levels or a friend on one device. The medieval game of mills, with clear rules.",
          tagline='The medieval game of mills. Three in a row takes a piece.', genre=['Board game', 'Strategy', 'Abstract'],
          card='Place, slide, make mills. Beat the Lord.',
          how=['Each player has nine pieces. Take turns placing them on the empty points where the lines meet.',
@@ -1165,8 +1180,25 @@ def embed_page(G):
         f.write(doc)
 
 
+def share_row(G):
+    """Share links under each game: plain links to each network's own share page (no scripts or trackers from them),
+    plus a copy-link button. Every link shares the game's own address, so its share image and title show up."""
+    url = page_url(G['slug'])
+    text = G.get('share_text') or f'{G["og_title"]} Free to play:'
+    u, t = quote(url, safe=''), quote(text, safe='')
+    nets = [('whatsapp', 'WhatsApp', f'https://wa.me/?text={quote(text + " " + url, safe="")}'),
+            ('x', 'X', f'https://x.com/intent/post?text={t}&url={u}'),
+            ('facebook', 'Facebook', f'https://www.facebook.com/sharer/sharer.php?u={u}'),
+            ('reddit', 'Reddit', f'https://www.reddit.com/submit?url={u}&title={quote(G["og_title"], safe="")}'),
+            ('email', 'Email', f'mailto:?subject={quote(G["og_title"], safe="")}&body={quote(text + " " + url, safe="")}')]
+    links = ''.join(f'<a href="{E(h)}" data-share="{k}" target="_blank" rel="noopener">{n}</a>' for k, n, h in nets)
+    return (f'<div class="gm-share" aria-label="Share this game"><span>Share this game</span>'
+            f'<button type="button" data-share="link" data-url="{url}">Copy link</button>{links}</div>')
+
+
 def game_page(G):
     p = dict(slug=G['slug'], h1=G['h1'], og='game-' + G['id'], og_title=G['og_title'], title=G['title'], desc=G['desc'], no_related=True,
+             og_alt=f'{G["name"]}, a free medieval game: title and a screenshot of the game',
              head_extra=f'<link rel="stylesheet" href="{ver("/games/games.css")}">')
     vg = {'@type': 'VideoGame', 'name': G['name'], 'url': page_url(G['slug']), 'description': G['desc'], 'genre': G['genre'],
           'gamePlatform': ['Web browser', 'Mobile web browser'], 'applicationCategory': 'Game', 'operatingSystem': 'Any', 'playMode': G.get('play_mode', 'SinglePlayer'),
@@ -1184,6 +1216,7 @@ def game_page(G):
             f'<div class="gm-stage"><aside class="ad-slot ad-rail" data-ad-slot data-house="static" aria-label="More games">{games_rail(G)}</aside>'
             f'<div class="ug-wrap"><div class="ug" data-game="{G["id"]}"><noscript><p style="padding:24px;text-align:center">This game needs JavaScript turned on.</p></noscript></div></div>'
             '<aside class="ad-slot ad-rail" data-ad-slot aria-label="Sponsored"></aside></div>'
+            f'{share_row(G)}'
             f'<section class="gm-info" id="how-to-play"><h2 class="gilt">How to play</h2><ol>{how}</ol>'
             f'<div class="gm-keys"><div><b>Phone and tablet</b>{E(G["touch"])}</div><div><b>Computer</b>{E(G["keys"])}</div></div>'
             f'<h2 class="gilt" style="margin-top:22px">Tips</h2><ul>{tips}</ul>'
@@ -1209,8 +1242,8 @@ def games_hub():
             ('Do you save anything about me?', 'Only your best scores and sound setting, kept in your own browser. There are no accounts. See the <a href="/privacy.html">privacy policy</a>.'),
             ('What does my coat of arms have to do with it?', 'Design a coat of arms in <a href="/crest.html">Crest Studio</a> and every game uses it: on your shield in the duel and the joust, on the banners of your castle and beside your score in the archery contest.')]
     p = dict(slug=slug, h1='Medieval Games', og='games', og_title='Free medieval games: trebuchet siege, Viking chess, archery, jousting and more',
-             title='Free Medieval Games: Trebuchet, Viking Chess, Archery, Jousting and More | Usurp',
-             desc=f'{GN.capitalize()} free medieval games for phone or computer: a trebuchet siege, Viking chess, Nine Men\'s Morris, an archery contest, a joust, a castle defense and a sword duel. No download.',
+             title='Free Medieval Games Online: Trebuchet, Viking Chess and More',
+             desc=f'{GN.capitalize()} free medieval games for phone or computer: trebuchet siege, Viking chess, Nine Men\'s Morris, archery, jousting, castle defense and sword duels.',
              no_related=True, head_extra=f'<link rel="stylesheet" href="{ver("/games/games.css")}">')
     items = {'@type': 'ItemList', 'name': 'Medieval games', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'url': page_url(g['slug']), 'name': g['name']} for i, g in enumerate(GAMES)]}
     p['ld'] = ld_base(p, [faq_ld(faqs), items])
@@ -1243,7 +1276,7 @@ def embed_hub():
             ('Can I put the games on a site that sells things?', 'Yes. Please keep the credit line under the game. You may not resell the games, put them behind a paywall or present them as your own.')]
     p = dict(slug=slug, h1='Free Medieval Games for Your Website', og='games', og_title='Free medieval games for your website: copy one code, no sign-up',
              title='Free Medieval Games to Embed on Your Website or Blog | Usurp',
-             desc='Put free Viking chess, Nine Men\'s Morris, a trebuchet siege, archery or jousting on your blog, class page or club site. Copy the code, paste it in. No sign-up, no ad networks, works on phones.',
+             desc='Put free Viking chess, Nine Men\'s Morris, archery, jousting or a trebuchet siege on your blog or class page. Copy one code. No sign-up, no ad networks.',
              no_related=True, head_extra=f'<link rel="stylesheet" href="{ver("/games/games.css")}">')
     items = {'@type': 'ItemList', 'name': 'Embeddable medieval games', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'url': page_url(g['slug']), 'name': g['name']} for i, g in enumerate(GAMES)]}
     p['ld'] = ld_base(p, [faq_ld(faqs), items])

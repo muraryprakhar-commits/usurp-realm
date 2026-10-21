@@ -119,3 +119,18 @@
 .gm-mini a{display:block;text-decoration:none;color:var(--gold-2);font-family:var(--serif);font-size:12px;letter-spacing:.08em;text-align:center}
 .gm-mini img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;border:1px solid #3a2e1f;margin-bottom:4px}
 .gm-mini a:hover img{border-color:var(--gold-deep)}
+
+/* ad slot low on guide pages: links to the games until an ad network fills it */
+.ad-slot.ad-content{max-width:900px;margin:34px auto 10px;padding:0 16px}
+.ad-slot.ad-content.ad-net{min-height:280px}
+.ad-slot .ad-lbl{display:block;font-family:var(--serif);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#7d6f57;text-align:center;margin-bottom:4px}
+.hg{border:1px solid #3a2e1f;background:#120e0a;padding:20px 18px;text-align:center}
+.hg .hg-k{font-family:var(--serif);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin:0}
+.hg h2{margin:4px 0 6px}
+.hg p{margin:6px auto 0;max-width:620px}
+.hg-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0 12px}
+.hg-row a{display:block;text-decoration:none;color:var(--gold-2)}
+.hg-row img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;border:1px solid #3a2e1f;display:block;margin-bottom:4px}
+.hg-row a:hover img{border-color:var(--gold-deep)}
+.hg-row b{font-family:var(--serif);font-size:13px;letter-spacing:.04em;font-weight:700}
+@media(max-width:520px){.hg-row{grid-template-columns:repeat(2,minmax(0,1fr))}}

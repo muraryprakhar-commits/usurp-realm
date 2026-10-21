@@ -135,7 +135,7 @@ REGISTRY = [
     ('fantasy-house-name-generator.html', 'House name generator', 'A name, motto and sigil in one click'),
     ('heraldry-symbols-and-meanings.html', 'Heraldry meanings', 'What colors and emblems stand for'),
     ('coat-of-arms-template.html', 'Printable templates', 'Free blank shields and worksheets'),
-    ('games/', 'Medieval games', 'Archery, jousting, castle defense and duels'),
+    ('games/', 'Medieval games', 'Trebuchet siege, Viking chess, archery and more'),
 ]
 
 
@@ -184,7 +184,14 @@ def crumbs(slug, name):
 def write_page(p, body):
     PAGES_INDEX.append((p['slug'], p['h1'], p['desc']))
     rel = '' if p.get('no_related') else related(p['slug'])
-    doc = head(p) + '<body>' + header(p['slug']) + '<main>' + body + rel + '</main>' + footer() + p.get('scripts', '') + '</body></html>'
+    # Guide pages carry one ad slot, after the FAQ and far below the Studio pitch. Until an ad network is on it shows
+    # our games; with one on, /ads.js swaps in the network ad (and falls back to the games if no ad comes).
+    slot, js = '', ''
+    if not p.get('no_related'):
+        slot = content_slot()
+        if ADS['client'] and ADS['slot']:
+            js = f'<script>window.USURP_ADS={ads_json()}</script><script src="{ver("/ads.js")}" defer></script>'
+    doc = head(p) + '<body>' + header(p['slug']) + '<main>' + body + slot + rel + '</main>' + footer() + p.get('scripts', '') + js + '</body></html>'
     os.makedirs(os.path.dirname(os.path.join(ROOT, p['slug'])), exist_ok=True)   # allows es/... pages
     with open(os.path.join(ROOT, p['slug']), 'w', encoding='utf-8') as f:
         f.write(doc)
@@ -925,7 +932,7 @@ for _sp in SPECS:
 
 
 # ------------------------------------------------------------------ games
-# Four short medieval games. Each is one canvas drawn in code (no image files), with a shared engine in games/engine.js.
+# Short medieval games and board games. Each is one canvas drawn in code (no image files), with a shared engine in games/engine.js.
 # Thumbnails and share images come from tools/game_shots.py, which plays each game and photographs it.
 GAMES = [
     dict(id='archery', slug='games/archery.html', js='archery', short='Archery', name="The King's Archery Contest",
@@ -1001,8 +1008,96 @@ GAMES = [
                ('Is it violent?', 'No blood. Knights clash, parry and yield.'),
                ('Does it work on a phone?', 'Yes, with big buttons and swipes, in any modern browser.'),
                ('Can I use my own coat of arms?', 'Yes. Design one free in <a href="/crest.html">Crest Studio</a>: your arms appear beside your hearts and your sword grip takes your colours.')]),
+    dict(id='siege', slug='games/trebuchet-game.html', js='trebuchet', short='Trebuchet siege', name='Siege: The Trebuchet Game',
+         pre=['/games/vendor/matter.min.js'], h1='Trebuchet Game: Siege', og_title='Trebuchet game: can you topple all ten castles?',
+         title='Trebuchet Game: Siege, Topple 10 Castles (Free, No Download) | Usurp Games',
+         desc='Free trebuchet game for phone and computer. Aim, fling stones and fire pots, and topple ten castles of timber and stone with real physics until every guard yields. No download.',
+         tagline='Ten castles. Real physics. Never quite enough stones.', genre=['Physics', 'Puzzle', 'Strategy'],
+         card='Fling stones, topple castles, win the siege.',
+         how=['Drag back anywhere on the field. The further you pull, the harder the throw; the angle of your pull sets the arc.',
+              'Let go to fling a stone from your trebuchet. Dots show the start of the flight; the wind, top right, bends it.',
+              'Knock the castle down until every one of the Usurper\'s guards yields. A guard yields when he falls, is knocked flat or takes a hard hit.',
+              'From the fourth castle you also get fire pots: tap FIRE POT to load one. It bursts on impact and shoves everything nearby.'],
+         touch='Drag back anywhere and let go. Tap FIRE POT to switch ammunition.',
+         keys='Up and down set the angle, left and right set the power, Space throws, Enter switches to a fire pot. Or drag with the mouse.',
+         tips=['Hit the posts low: when a post goes, the whole floor above it comes down.', 'Stone blocks shrug off glancing blows. Aim at timber, or drop a stone on them from high above.',
+               'Every stone you keep scores 1,000 points and earns stars, so the first shot matters most.', 'A high lob lands on the guards on top; a flat, fast shot breaks the lower floors.'],
+         faqs=[('How many levels are there?', 'Ten castles, from a timber watch post to the Usurper\'s Keep, with your progress saved on this device. Take a castle with stones to spare to earn up to three stars.'),
+               ('Is the physics real?', 'Yes. Every block, guard and stone is a physical body with weight and friction, run by the open-source Matter.js engine, so no two collapses are quite the same.'),
+               ('Is it violent?', 'No. Guards wave a white flag and yield when they fall or are knocked over. Nobody is hurt.'),
+               ('Did trebuchets really knock down castles?', 'They did. Edward I of England had an enormous trebuchet, the Warwolf, built for the siege of Stirling Castle in 1304, and it brought down part of the castle wall. The defenders were allowed to surrender that July.')],
+         about=('A siege engine that ended sieges', '<p>A counterweight trebuchet is a giant lever. A heavy box of stones on the short arm drops, the long arm whips over, and a sling at its tip lets go of the stone at the top of the swing. Medieval armies used them to batter walls from out of bowshot.</p>'
+                '<p>The most famous is the Warwolf, built for Edward I of England at the siege of Stirling Castle in 1304. Master James of St George oversaw its construction, and its shots demolished a section of the curtain wall. In this game you only need to topple timber and stone, and the guards simply wave a white flag.</p>')),
+    dict(id='tafl', slug='games/viking-chess.html', js='tafl', short='Viking chess', name='Viking Chess (Hnefatafl)', play_mode=['SinglePlayer', 'MultiPlayer'],
+         h1='Viking Chess (Hnefatafl): Play Online Free', og_title='Viking chess: can the king escape?',
+         title='Viking Chess (Hnefatafl) Online: Play Free vs Computer or a Friend | Usurp Games',
+         desc='Play Viking chess free in your browser. Defend the king or lead the raiders in Brandubh (7x7) or Tablut (9x9), against the computer at three levels or a friend on one device. No download.',
+         tagline='Get the king to a corner, or trap him. Every piece moves like a rook.', genre=['Board game', 'Strategy', 'Abstract'],
+         card='Lead the king to a corner, or trap him.',
+         how=['The defenders and their king start in the middle; the raiders start around the edges. The raiders move first.',
+              'Every piece moves any number of empty squares in a straight line, like a rook in chess. Only the king may stop on the throne in the middle or on a corner.',
+              'Take an enemy piece by trapping it between two of yours, in a line. A corner, or the empty throne, counts as one of yours.',
+              'The defenders win when the king reaches a corner. The raiders win by surrounding the king: four sides on the throne, three beside it, two anywhere else.'],
+         touch='Tap a piece, then one of the dots. You can also drag pieces.', keys='Click a piece, then a square. Or use the arrow keys to move the blue frame and Space to choose.',
+         tips=['As the king, open two routes to corners at once. The raiders can only block one per move.', 'As the raiders, guard the squares next to the corners before you attack the king.',
+               'A piece may move between two enemy pieces safely. Pieces are only taken by the move that closes the trap.', 'The king can take part in captures, so use him as a fighter.'],
+         faqs=[('Is Viking chess the same as chess?', 'No. Hnefatafl is an older and different game. The sides are unequal: a king and a small guard against twice as many raiders, and the two sides have different goals.'),
+               ('Which rules does this game use?', 'The full Viking rules were never written down, so players use modern reconstructions. Here the king escapes to a corner, and he is captured by four raiders on the throne, three beside it, or two anywhere else. The two boards use the same rules.'),
+               ('What are Brandubh and Tablut?', 'Two members of the tafl family. Brandubh is played on a 7 by 7 board; small 7 by 7 tafl boards have been found mainly in Ireland, and the name is usually translated as raven black. Tablut, on 9 by 9, was recorded by Carl Linnaeus in 1732 during his expedition to Lapland.'),
+               ('Can two people play?', 'Yes. Choose Two players to pass and play on one phone, tablet or computer.')],
+         about=('A board game from the age of the Vikings', '<p>Tafl games were played across the Viking world, and the Icelandic sagas mention hnefatafl by name. A wooden game board from the Gokstad ship burial in Norway has a tafl grid on one side and Nine Men\'s Morris on the other.</p>'
+                '<p>The clearest account of how a tafl game was played comes much later. In 1732 the Swedish naturalist Carl Linnaeus recorded Tablut in the journal of his expedition to Lapland. Every modern rule set, including the one used here, is a reconstruction built from that account and from the boards that survive.</p>')),
+    dict(id='morris', slug='games/nine-mens-morris.html', js='morris', short="Nine Men's Morris", name="Nine Men's Morris", play_mode=['SinglePlayer', 'MultiPlayer'],
+         h1="Nine Men's Morris: Play Online Free", og_title="Nine Men's Morris: can you beat the Lord?",
+         title="Nine Men's Morris Online: Play Free vs Computer or a Friend | Usurp Games",
+         desc="Play Nine Men's Morris free in your browser against the computer at three levels, or against a friend on one device. The medieval game of mills, with clear rules and no download.",
+         tagline='The medieval game of mills. Three in a row takes a piece.', genre=['Board game', 'Strategy', 'Abstract'],
+         card='Place, slide, make mills. Beat the Lord.',
+         how=['Each player has nine pieces. Take turns placing them on the empty points where the lines meet.',
+              'Three of your pieces in a row along a line is a mill. Every mill you make lets you take one of your opponent\'s pieces.',
+              'When all eighteen are placed, take turns sliding one piece along a line to the next empty point.',
+              'A player down to three pieces may fly to any empty point. Leave your opponent with two pieces, or with no move, and you win.'],
+         touch='Tap a point to place a piece. To move, tap your piece and then a glowing point, or drag it.',
+         keys='Click, or use the arrow keys to move the blue ring and Space to choose.',
+         tips=['Make two-in-a-rows that the computer has to answer, so it spends its turns blocking.', 'A piece that can slide out of a mill and back in again makes a new mill every other turn.',
+               'Corners touch only two points; the middle of a side touches three or four. Pieces on corners are easier to hem in.', 'Keep your pieces free to move. Being blocked after the placing phase loses the game.'],
+         faqs=[('Can you take a piece that is in a mill?', 'Only when every one of your opponent\'s pieces is in a mill. Otherwise you must take a piece that is not.'),
+               ('What happens with three pieces left?', 'That player may fly: move any piece to any empty point, not only along a line. It makes a comeback possible.'),
+               ('Can the game be a draw?', 'Yes. Here it is a draw if the same position comes round three times, or if 30 moves each pass without a capture.'),
+               ("How old is Nine Men's Morris?", "Very old. A Viking-age board from the Gokstad ship burial in Norway has it on one side, and by the 1300s it was one of the most played games in Europe. In Shakespeare's A Midsummer Night's Dream, Titania complains that the nine men's morris marked out on the village green is filled up with mud.")],
+         about=("The game of mills", "<p>Nine Men's Morris goes by many names: mills, merels, and in German Mühle. Boards were scratched into stone benches and church seats, and cut into the turf of village greens.</p>"
+                "<p>It was already played in the Viking age: the game board from the Gokstad ship burial in Norway has Nine Men's Morris on one side and a tafl game on the other. The rules here are the common modern ones, including flying when a player is down to three pieces.</p>")),
 ]
 GAMES_LD_PUB = {'@type': 'Organization', 'name': 'Usurp (Murary Studios)', 'url': f'{SITE}/'}
+NUM = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve']
+GN = NUM[len(GAMES)]                                   # 'seven': used in page text so it stays right as games are added
+
+
+def game_scripts(G, embed=False):
+    pre = ''.join(f'<script src="{ver(x)}" defer></script>' for x in G.get('pre', []))
+    return pre + f'<script src="{ver("/games/engine.js")}" defer></script><script src="{ver("/games/" + G["js"] + ".js")}" defer></script>'
+
+
+def games_rail(G):
+    """House content for the left rail beside a game on wide screens: the other games. A network ad replaces it when on."""
+    first = ['siege', 'tafl', 'morris', 'archery', 'joust', 'castle', 'duel']
+    others = sorted((g for g in GAMES if g['id'] != G['id']), key=lambda g: first.index(g['id']) if g['id'] in first else 99)
+    return ('<div class="rail-games"><p class="ad-lbl">More games</p>' + ''.join(
+        f'<a href="/{g["slug"]}"><img src="/img/games/{g["id"]}-400.webp" width="400" height="533" loading="lazy" decoding="async" alt=""><span>{E(g["short"])}</span></a>'
+        for g in others[:6]) + '</div>')
+
+
+def games_promo():
+    """House content for the slot low on every crest guide: our free games, so a reader who is done with crests stays."""
+    picks = [g for g in GAMES if g['id'] in ('siege', 'tafl', 'morris', 'archery')]
+    cells = ''.join(f'<a href="/{g["slug"]}"><img src="/img/games/{g["id"]}-400.webp" width="400" height="533" loading="lazy" decoding="async" alt=""><b>{E(g["short"])}</b></a>' for g in picks)
+    return (f'<div class="hg"><p class="hg-k">Free to play, no download</p><h2 class="gilt">Medieval games</h2>'
+            f'<p>Take a break from heraldry: {GN} free games, from a trebuchet siege to Viking chess. Your coat of arms rides with you in every one.</p>'
+            f'<div class="hg-row">{cells}</div><p><a class="btn ghost" href="/games/">All {GN} games</a></p></div>')
+
+
+def content_slot():
+    return f'<div class="ad-slot ad-content" data-ad-slot data-house="static">{games_promo()}</div>'
 
 
 def ver(path):
@@ -1062,7 +1157,7 @@ def embed_page(G):
 <link rel="stylesheet" href="{ver("/styles.css")}"><link rel="stylesheet" href="{ver("/games/games.css")}">
 </head><body class="ug-embed"><main class="ue-main"><div class="ug-wrap"><div class="ug" data-game="{G["id"]}"><noscript><p style="padding:24px;text-align:center">This game needs JavaScript turned on. <a href="{canon}">Play it on usurp.games</a></p></noscript></div></div></main>
 <a class="ue-by" href="{canon}?from=embed">{E(G["name"])} · free at <b>usurp.games</b></a>
-<script>window.USURP_ADS={{}};window.USURP_EMBED=1</script><script src="{ver("/games/engine.js")}" defer></script><script src="{ver("/games/" + G["js"] + ".js")}" defer></script>
+<script>window.USURP_ADS={{}};window.USURP_EMBED=1</script>{game_scripts(G)}
 </body></html>'''
     os.makedirs(os.path.join(ROOT, 'embed'), exist_ok=True)
     with open(os.path.join(ROOT, 'embed', f'{G["id"]}.html'), 'w', encoding='utf-8') as f:
@@ -1073,7 +1168,7 @@ def game_page(G):
     p = dict(slug=G['slug'], h1=G['h1'], og='game-' + G['id'], og_title=G['og_title'], title=G['title'], desc=G['desc'], no_related=True,
              head_extra=f'<link rel="stylesheet" href="{ver("/games/games.css")}">')
     vg = {'@type': 'VideoGame', 'name': G['name'], 'url': page_url(G['slug']), 'description': G['desc'], 'genre': G['genre'],
-          'gamePlatform': ['Web browser', 'Mobile web browser'], 'applicationCategory': 'Game', 'operatingSystem': 'Any', 'playMode': 'SinglePlayer',
+          'gamePlatform': ['Web browser', 'Mobile web browser'], 'applicationCategory': 'Game', 'operatingSystem': 'Any', 'playMode': G.get('play_mode', 'SinglePlayer'),
           'inLanguage': 'en', 'isAccessibleForFree': True, 'image': f'{SITE}/img/games/{G["id"]}.webp', 'publisher': GAMES_LD_PUB,
           'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}}
     crumbs3 = {'@type': 'BreadcrumbList', 'itemListElement': [
@@ -1081,19 +1176,22 @@ def game_page(G):
         {'@type': 'ListItem', 'position': 2, 'name': 'Medieval games', 'item': f'{SITE}/games/'},
         {'@type': 'ListItem', 'position': 3, 'name': G['name'], 'item': page_url(G['slug'])}]}
     p['ld'] = {'@context': 'https://schema.org', '@graph': [{'@type': 'WebPage', 'name': G['h1'], 'url': page_url(G['slug']), 'description': G['desc']}, crumbs3, vg, faq_ld(G['faqs'])]}
-    p['scripts'] = f'<script>window.USURP_ADS={ads_json()}</script><script src="{ver("/games/engine.js")}" defer></script><script src="{ver("/games/" + G["js"] + ".js")}" defer></script>'
+    p['scripts'] = f'<script>window.USURP_ADS={ads_json()}</script>{game_scripts(G)}'
     how = ''.join(f'<li>{E(x)}</li>' for x in G['how'])
     tips = ''.join(f'<li>{E(x)}</li>' for x in G['tips'])
     body = (f'<div class="gm-top"><h1 class="gilt">{E(G["h1"])}</h1><p>{E(G["tagline"])}</p></div>'
+            f'<div class="gm-stage"><aside class="ad-slot ad-rail" data-ad-slot data-house="static" aria-label="More games">{games_rail(G)}</aside>'
             f'<div class="ug-wrap"><div class="ug" data-game="{G["id"]}"><noscript><p style="padding:24px;text-align:center">This game needs JavaScript turned on.</p></noscript></div></div>'
+            '<aside class="ad-slot ad-rail" data-ad-slot aria-label="Sponsored"></aside></div>'
             f'<section class="gm-info" id="how-to-play"><h2 class="gilt">How to play</h2><ol>{how}</ol>'
             f'<div class="gm-keys"><div><b>Phone and tablet</b>{E(G["touch"])}</div><div><b>Computer</b>{E(G["keys"])}</div></div>'
             f'<h2 class="gilt" style="margin-top:22px">Tips</h2><ul>{tips}</ul>'
-            '<div class="callout"><b>Ride under your own banner.</b> Design your coat of arms free in <a href="/crest.html">Crest Studio</a> and it appears in every game on this site: on your shield, your banners and your lance.</div></section>'
+            '<div class="callout"><b>Ride under your own banner.</b> Design your coat of arms free in <a href="/crest.html">Crest Studio</a> and it appears in every game on this site: on your shield, your banners and your lance.</div>'
+            + (f'<h2 class="gilt" style="margin-top:22px">{E(G["about"][0])}</h2>{G["about"][1]}' if G.get('about') else '') + '</section>'
             f'<section class="gm-embed" id="embed"><details><summary>Put this game on your website (free)</summary>'
             '<p>For blogs, class pages and club sites. Paste this code into an HTML or embed block in WordPress, Blogger, Google Sites, Wix or Squarespace. '
             'Inside the game there are no ad networks, no analytics and no cookies.</p>'
-            f'{embed_box(G)}<p style="margin:0 0 14px"><a href="/games/embed.html">All four games, and help adding them</a></p></details></section>'
+            f'{embed_box(G)}<p style="margin:0 0 14px"><a href="/games/embed.html">All {GN} games, and help adding them</a></p></details></section>'
             '<div class="ad-slot" data-ad-slot></div>'
             f'<section class="gm-more"><h2 class="gilt">More medieval games</h2><div class="gm-grid">{game_cards(G["id"], small=True)}</div>'
             '<p class="center" style="margin-top:14px"><a href="/games/">All games</a> · <a href="/crest.html">Design your coat of arms</a></p></section>')
@@ -1103,20 +1201,21 @@ def game_page(G):
 
 def games_hub():
     slug = 'games/index.html'
-    faqs = [('Are the games free?', 'Yes. All four games are free to play in your browser, with no download, no account and no purchase needed.'),
+    faqs = [('Are the games free?', f'Yes. All {GN} games are free to play in your browser, with no download, no account and no purchase needed.'),
+            ('Can I play with a friend?', 'Yes. Viking chess and Nine Men\'s Morris have a two-player mode for one phone, tablet or computer, and every game has a share button to challenge a friend to beat your score.'),
             ('Do they work on phones?', 'Yes. Every game is designed for touch first and also plays with a mouse and keyboard. Use the full-screen button under a game for the best view on a phone.'),
             ('Are the games suitable for children?', 'Yes. There is no blood or gore: arrows hit targets, lances shatter, knights yield and walls crumble.'),
             ('Do you save anything about me?', 'Only your best scores and sound setting, kept in your own browser. There are no accounts. See the <a href="/privacy.html">privacy policy</a>.'),
             ('What does my coat of arms have to do with it?', 'Design a coat of arms in <a href="/crest.html">Crest Studio</a> and every game uses it: on your shield in the duel and the joust, on the banners of your castle and beside your score in the archery contest.')]
-    p = dict(slug=slug, h1='Medieval Games', og='games', og_title='Free medieval games: archery, jousting, castle defense and sword duels',
-             title='Free Medieval Games: Archery, Jousting, Castle Defense and Sword Duels | Usurp',
-             desc='Four free medieval games to play in your browser on phone or computer: an archery contest, a jousting tournament, a castle defense and a sword duel. No download, no account.',
+    p = dict(slug=slug, h1='Medieval Games', og='games', og_title='Free medieval games: trebuchet siege, Viking chess, archery, jousting and more',
+             title='Free Medieval Games: Trebuchet, Viking Chess, Archery, Jousting and More | Usurp',
+             desc=f'{GN.capitalize()} free medieval games for phone or computer: a trebuchet siege, Viking chess, Nine Men\'s Morris, an archery contest, a joust, a castle defense and a sword duel. No download.',
              no_related=True, head_extra=f'<link rel="stylesheet" href="{ver("/games/games.css")}">')
     items = {'@type': 'ItemList', 'name': 'Medieval games', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'url': page_url(g['slug']), 'name': g['name']} for i, g in enumerate(GAMES)]}
     p['ld'] = ld_base(p, [faq_ld(faqs), items])
     p['scripts'] = f'<script>window.USURP_ADS={ads_json()}</script><script src="{ver("/games/engine.js")}" defer></script>'
     body = hero('Free to play · no download', 'Medieval Games',
-                'Four short games of skill for your phone or computer. Each takes a minute to learn and a lot longer to master.',
+                f'{GN.capitalize()} games of skill and strategy for your phone or computer, from a trebuchet siege to the board games of the Vikings. Each takes a minute to learn and a lot longer to master.',
                 cta_href='#games', cta='Play now', second=('/crest.html', 'Design your coat of arms'))
     body += f'<section id="games"><div class="gm-grid">{game_cards(eager=True)}</div></section>'
     body += ('<section class="gm-info"><h2 class="gilt">Your coat of arms, in every game</h2>'
@@ -1143,7 +1242,7 @@ def embed_hub():
             ('Can I put the games on a site that sells things?', 'Yes. Please keep the credit line under the game. You may not resell the games, put them behind a paywall or present them as your own.')]
     p = dict(slug=slug, h1='Free Medieval Games for Your Website', og='games', og_title='Free medieval games for your website: copy one code, no sign-up',
              title='Free Medieval Games to Embed on Your Website or Blog | Usurp',
-             desc='Put a free archery contest, jousting tournament, castle defense or sword duel on your blog, class page or club site. Copy the code, paste it in. No sign-up, no ad networks, works on phones.',
+             desc='Put free Viking chess, Nine Men\'s Morris, a trebuchet siege, archery or jousting on your blog, class page or club site. Copy the code, paste it in. No sign-up, no ad networks, works on phones.',
              no_related=True, head_extra=f'<link rel="stylesheet" href="{ver("/games/games.css")}">')
     items = {'@type': 'ItemList', 'name': 'Embeddable medieval games', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'url': page_url(g['slug']), 'name': g['name']} for i, g in enumerate(GAMES)]}
     p['ld'] = ld_base(p, [faq_ld(faqs), items])
@@ -1158,7 +1257,7 @@ def embed_hub():
                     'document.querySelectorAll("[data-prev]").forEach(function(b){b.onclick=function(){show(b.dataset.prev,false)}});'
                     'box.querySelector("[data-prev-play]").onclick=function(){show(cur,true)}})()</script>')
     body = hero('Free for your website', 'Free Medieval Games for Your Website',
-                'Put an archery contest, a jousting tournament, a castle defense or a sword duel on your blog, class page or club site. Copy the code, paste it in, done. No sign-up, and it works on phones.',
+                'Put Viking chess, Nine Men\'s Morris, a trebuchet siege, an archery contest or a joust on your blog, class page or club site. Copy the code, paste it in, done. No sign-up, and it works on phones.',
                 cta_href='#games', cta='Get the code', second=('/games/', 'Play them first'))
     body += (f'<section class="ge-prev"><h2 class="gilt">This is what your visitors see</h2><div class="ge-tabs">{tabs}</div>'
              f'<div class="ge-frame" data-prev-box><img src="/img/games/{GAMES[0]["id"]}-400.webp" width="400" height="533" loading="lazy" decoding="async" alt="">'
@@ -1174,7 +1273,7 @@ def embed_hub():
              ('Anywhere else', 'Any page editor that accepts HTML or an iframe works the same way: paste the code where the game should appear.')]
     body += ('<section class="gm-info"><h2 class="gilt">How to add it</h2><div class="ge-steps">'
              + ''.join(f'<div><b>{E(a)}</b>{E(b)}</div>' for a, b in steps) + '</div>'
-             '<p>Only want a link? Point to <a href="/games/">usurp.games/games</a> for all four games.</p>'
+             f'<p>Only want a link? Point to <a href="/games/">usurp.games/games</a> for all {GN} games.</p>'
              '<div class="callout"><b>Made by Crest Studio.</b> These games come from <a href="/crest.html">Crest Studio</a>, the free coat of arms maker. '
              'Questions or a game you would like for your class or club: <a href="mailto:hello@usurp.games?subject=Embedded%20games">hello@usurp.games</a>.</div></section>')
     body += faq_html(faqs)
@@ -1204,7 +1303,7 @@ def advertise():
              desc='Put your brand in front of players of free medieval games and people designing family crests and fantasy sigils. Banner and round-sponsor placements, family friendly, no pop-ups.',
              no_related=True)
     p['ld'] = ld_base(p)
-    rows = [('Game banner', 'Under each of the four games and on the games hub. Your 728 x 90 image and link, scaled to fit phones. It sits below the game, so it never catches a tap meant for the game.'),
+    rows = [('Game banner', f'Under each of the {GN} games and on the games hub. Your 728 x 90 image and link, scaled to fit phones. It sits below the game, so it never catches a tap meant for the game.'),
             ('Round sponsor', 'Your image and link on the intermission card between rounds, titled as today\'s tournament sponsor. Shown only at natural breaks, never during play, and players continue with one tap.'),
             ('Custom sponsorship', 'For example a tournament named after your brand, or your arms carried by a challenger in the joust and the duel. Ask us.')]
     table = ''.join(f'<div><b>{E(a)}</b>{E(b)}</div>' for a, b in rows)

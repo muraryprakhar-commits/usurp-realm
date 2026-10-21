@@ -86,3 +86,14 @@ python3 tools/indexnow.py  # after deploy: tell Bing, Yandex and others about ev
   plain text credit link under it, which is the part search engines count as a backlink.
 - Where people get it: a "Put this game on your website" box on each game page, and `/games/embed.html` (live preview,
   copy buttons, how-to for WordPress, Blogger, Google Sites, Wix, Squarespace, FAQ). Clarity event `embed_copy_<game>`.
+
+## More games, ad slots and portal builds (21 Oct 2026)
+- Three more games: `games/trebuchet-game.html` (Siege: ten castles with real physics from Matter.js 0.20, MIT,
+  self-hosted at `games/vendor/matter.min.js`), `games/viking-chess.html` (Hnefatafl: Brandubh 7x7 and Tablut 9x9, either
+  side vs the computer at three strengths, or two players), `games/nine-mens-morris.html` (three strengths, or two players).
+  The board-game computer players are alpha-beta searches with a time budget (`think()` in tafl.js and morris.js).
+- Ad slots: two rails beside every game on screens 1180 px and wider (left: more games; right: Crest Studio), and one slot
+  after the FAQ on every guide page (house content: the games). With `ADS` set in tools/build.py, the game pages fill
+  them through games/engine.js and the guide pages through /ads.js; both fall back to the house content when no ad comes.
+- Portal builds: `python3 tools/portal.py /some/dir` writes upload-ready CrazyGames zips (SDK v3, ads only at natural
+  breaks, no links out), three covers per game and UPLOAD-KIT.md. Output goes outside the site (dist/ is git-ignored).

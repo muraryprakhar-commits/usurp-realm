@@ -9,7 +9,17 @@ const ADS = window.USURP_ADS || {};   // { client, slot, h5, test, sponsor, ga }
 // Embedded on someone else's site (/embed/*.html): no ad network and no analytics, links open in a new tab,
 // and the game never scrolls the host page.
 const EMBED = UG.embed = !!window.USURP_EMBED;
+// Hosted on a game portal (a build from tools/portal.py): only the portal's own ad SDK, no links out, no house ads,
+// and ads only at natural breaks (a level won or lost), never on a button press.
+const PORTAL = UG.portal = window.USURP_PORTAL || '';
+const BASE = window.USURP_BASE || '/';
 const SITE = 'https://usurp.games';
+const CG = () => (PORTAL === 'crazygames' && window.CrazyGames && window.CrazyGames.SDK) || null;
+let cgReady = false;
+if (PORTAL === 'crazygames') {
+  const sdk = CG();
+  if (sdk) sdk.init().then(() => { cgReady = true; }).catch(() => {});
+}
 
 /* ---------- small helpers ---------- */
 UG.clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
@@ -88,7 +98,7 @@ function setMuted(m) { AU.muted = m; UG.store.set('ug-muted', m); if (AU.out) AU
 let corePromise = null;
 UG.core = () => {
   if (window.CrestCore) return Promise.resolve(window.CrestCore);
-  if (!corePromise) corePromise = new Promise(res => { const s = document.createElement('script'); s.src = '/crest-core.js'; s.async = true; s.onload = () => res(window.CrestCore || null); s.onerror = () => res(null); document.head.appendChild(s); });
+  if (!corePromise) corePromise = new Promise(res => { const s = document.createElement('script'); s.src = BASE + 'crest-core.js'; s.async = true; s.onload = () => res(window.CrestCore || null); s.onerror = () => res(null); document.head.appendChild(s); });
   return corePromise;
 };
 UG.myDesign = () => { try { const d = JSON.parse(localStorage.getItem('usurp-crest-v1')); return d && typeof d === 'object' && d.f ? d : null; } catch (e) { return null; } };
@@ -164,6 +174,7 @@ function loadAdsense() {
   document.head.appendChild(s);
 }
 function crestCard(cls) {
+  if (PORTAL) return '';
   const me = UG.myDesign();
   return `<a class="${cls}" href="${EMBED ? `${SITE}/crest.html?from=embed-${GAME}` : '/crest.html'}" data-house-ad><span class="hb-art" data-hb-art></span><span class="hb-t"><b>${me ? 'Your arms deserve a frame' : 'Ride under your own banner'}</b><span>${me ? 'Print-ready files of your coat of arms, a certificate and a wallpaper, $9.' : 'Design your coat of arms free. It appears on your knight in every game.'}</span></span><span class="btn">${me ? 'Get my files' : 'Design my crest'}</span></a>`;
 }
@@ -178,6 +189,7 @@ function fillHouseArt(root) {
 // The house ad: a Crest Studio card, or a directly sold sponsor banner when one is configured.
 function houseFill(slot) {
   slot.classList.remove('ad-net');
+  if (slot.__house !== undefined) { slot.innerHTML = slot.__house; return; }   // a slot that came with its own house content
   const sp = ADS.sponsor;
   if (sp && sp.href && sp.img) {
     slot.innerHTML = `<span class="ad-lbl">Sponsor</span><a class="sponsor" href="${sp.href}" rel="sponsored noopener" target="_blank"><img src="${sp.img}" alt="${(sp.alt || 'Sponsor').replace(/"/g, '&quot;')}" width="728" height="90" loading="lazy"></a>`;
@@ -189,8 +201,12 @@ function houseFill(slot) {
   slot.querySelector('[data-house-ad]').addEventListener('click', () => UG.track('house_click'));
 }
 UG.mountBanner = () => {
+  if (PORTAL) return;
   document.querySelectorAll('[data-ad-slot]').forEach(slot => {
-    if (slot.dataset.filled) return; slot.dataset.filled = '1';
+    if (slot.dataset.filled) return;
+    if (!slot.offsetWidth) return;              // a rail hidden on this screen size: leave it empty, so no ad loads unseen
+    slot.dataset.filled = '1';
+    if (slot.dataset.house === 'static' && slot.__house === undefined) slot.__house = slot.innerHTML;
     if (!(ADS.client && ADS.slot) || adsState === 'failed') return houseFill(slot);
     slot.classList.add('ad-net');
     slot.innerHTML = `<span class="ad-lbl">Advertisement</span><ins class="adsbygoogle" style="display:block" data-ad-client="${ADS.client}" data-ad-slot="${ADS.slot}" data-ad-format="auto" data-full-width-responsive="true"${ADS.test ? ' data-adtest="on"' : ''}></ins>`;
@@ -206,9 +222,10 @@ UG.mountBanner = () => {
 /* Between rounds: Google's game interstitial when it is switched on and its library is ready (Google decides whether an
    ad is available and applies its own frequency limits), otherwise an occasional, skippable Crest Studio card. Never
    before the first round of a visit and never during play; if no ad starts within 2.5 s, the next round just begins. */
-let roundsStarted = 0, lastHouse = 0;
+let roundsStarted = 0, lastHouse = 0, roundsDone = 0;
 UG.between = (game, done) => {
   roundsStarted++;
+  if (PORTAL) return done();                    // portals get their ad at the natural break instead (see screen)
   if (roundsStarted < 2) return done();
   if (ADS.client && ADS.h5 && window.adBreak && adsState !== 'failed' && (h5Ready || adsState === 'ready')) {
     let finished = false, started = false;
@@ -276,6 +293,19 @@ UG.start = function (spec) {
     resumeAudio() { if (AU.ctx && AU.ctx.state === 'suspended') AU.ctx.resume(); },
     // Overlay screens. o: { kicker, title, big, sub, lines[], html, primary:{label,on}, secondary:{label,on}, cta }
     screen(o) {
+      if (PORTAL) {
+        o = Object.assign({}, o, { cta: false });
+        if (o.secondary && /friend/i.test(o.secondary.label)) delete o.secondary;
+        try { const sdk = CG(); if (sdk && cgReady) sdk.game.gameplayStop(); } catch (e) {}
+        // A level won or lost is the natural break for the portal's ad. The card waits until the ad is over.
+        if ((o.brk || (o.lines && o.title && o.primary)) && !o._adDone && CG() && cgReady && roundsDone++ > 0) {
+          const self = this; let fin = false;
+          const go = () => { if (fin) return; fin = true; self.resumeAudio(); self.screen(Object.assign({}, o, { _adDone: true })); };
+          setTimeout(go, 40000);
+          try { CG().ad.requestAd('midgame', { adStarted: () => { self.pauseAudio(); UG.track('ad_start'); }, adFinished: go, adError: go }); } catch (e) { go(); }
+          return;
+        }
+      }
       const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
       card.innerHTML = (o.kicker ? `<p class="ug-k">${esc(o.kicker)}</p>` : '') + (o.title ? `<h2 class="ug-t">${esc(o.title)}</h2>` : '')
         + (o.big !== undefined ? `<p class="ug-big">${esc(o.big)}</p>` : '') + (o.sub ? `<p class="ug-sub">${esc(o.sub)}</p>` : '')
@@ -295,9 +325,10 @@ UG.start = function (spec) {
     },
     hide() {
       ov.hidden = true; root.classList.remove('ov-on'); try { cv.focus({ preventScroll: true }); } catch (e) {}
+      try { const sdk = CG(); if (sdk && cgReady) sdk.game.gameplayStart(); } catch (e) {}
       // bring the whole game on screen when play starts (phones held sideways, or after scrolling)
       const r = root.getBoundingClientRect();
-      if (!EMBED && (r.top < 0 || r.bottom > innerHeight)) root.scrollIntoView({ block: r.height > innerHeight ? 'start' : 'center', behavior: UG.reduced ? 'auto' : 'smooth' });
+      if (!EMBED && !PORTAL && (r.top < 0 || r.bottom > innerHeight)) root.scrollIntoView({ block: r.height > innerHeight ? 'start' : 'center', behavior: UG.reduced ? 'auto' : 'smooth' });
     },
     // An occasional break between rounds when no ad network is switched on: one tap to continue.
     houseBreak(done) {

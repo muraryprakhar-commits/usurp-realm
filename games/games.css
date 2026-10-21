@@ -127,3 +127,39 @@
   #games .gm-card span{font-size:13px}
   #games .gm-card em{margin-top:6px;font-size:11px}
 }
+/* embed code box on game pages and /games/embed.html */
+.gm-embed{max-width:860px;margin:22px auto 0;padding:0 16px}
+.gm-embed details{border:1px solid #3a2e1f;background:#120e0a;padding:0 14px}
+.gm-embed summary{cursor:pointer;padding:12px 0;font-family:var(--serif);color:var(--gold-2);letter-spacing:.06em}
+.gm-embed details[open] summary{border-bottom:1px solid #3a2e1f;margin-bottom:10px}
+.ge-box{margin:10px 0 14px}
+.ge-box textarea{width:100%;min-height:118px;resize:vertical;font:13px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#e8dcc0;background:#0c0a08;border:1px solid #5a4523;padding:10px;box-sizing:border-box}
+.ge-box textarea:focus{outline:2px solid var(--gold-2);outline-offset:1px}
+.ge-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:8px}
+.ge-row .btn{min-width:150px}
+.ge-games{display:grid;gap:16px;max-width:980px;margin:18px auto 0;padding:0 16px}
+.ge-game{display:grid;gap:14px;grid-template-columns:120px 1fr;align-items:start;border:1px solid #3a2e1f;background:#120e0a;padding:14px}
+.ge-game img{width:120px;height:auto;aspect-ratio:3/4;object-fit:cover;background:#0c0a08}
+.ge-game h3{font-family:var(--serif-d);font-weight:900;color:var(--gold-2);font-size:20px;margin:0 0 4px}
+.ge-game p{margin:0;color:var(--muted)}
+@media(max-width:560px){.ge-game{grid-template-columns:1fr}.ge-game img{width:96px}}
+.ge-prev{max-width:520px;margin:14px auto 0;padding:0 16px;text-align:center}
+.ge-prev iframe{display:block;width:100%;max-width:480px;height:min(724px,calc(100vw * 1.42));border:0;margin:12px auto 0;background:#0c0a08}
+.ge-tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.ge-tabs button{font:inherit;font-size:14px;padding:8px 12px;color:var(--text);background:#17120d;border:1px solid #5a4523;cursor:pointer}
+.ge-tabs button[aria-pressed="true"]{border-color:var(--gold-2);color:var(--gold-2)}
+.ge-steps{display:grid;gap:10px;grid-template-columns:1fr;margin:10px 0}
+@media(min-width:720px){.ge-steps{grid-template-columns:1fr 1fr}}
+.ge-steps div{border:1px solid #3a2e1f;background:#120e0a;padding:10px 14px}
+.ge-steps b{display:block;font-family:var(--serif);color:var(--gold-2);font-size:14px;letter-spacing:.08em;text-transform:uppercase}
+/* the embed page itself (inside someone else's iframe): the game fills the frame */
+html.ue,html.ue body{height:100%;margin:0;background:#0c0a08;overflow:hidden}
+body.ug-embed{display:flex;flex-direction:column;min-height:100%}
+.ue-main{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;padding-top:4px}
+body.ug-embed .ug{margin:0 auto;width:min(100% - 8px, calc((100vh - 84px) * .75))}
+body.ug-embed .ug-bar{width:min(100% - 8px, calc((100vh - 84px) * .75));margin:6px auto 0}
+body.ug-embed .ug-rot{display:none!important}
+body.ug-embed .ug-bestl{display:inline!important}
+.ue-by{display:block;flex:none;text-align:center;font-size:12px;line-height:1.3;padding:4px 8px 6px;color:#a8997c;text-decoration:none;font-family:var(--serif);letter-spacing:.04em}
+.ue-by b{color:var(--gold-2);font-weight:700}
+.ue-by:hover b{text-decoration:underline}

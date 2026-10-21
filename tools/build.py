@@ -144,7 +144,7 @@ def footer():
     links = ''.join(f'<a href="{h}">{t}</a>' for h, t in allp)
     games = ''.join(f'<a href="/{g["slug"]}">{g["short"]}</a>' for g in GAMES)
     return f'''<footer class="site-foot"><nav class="foot-links" aria-label="Crest Studio pages">{links}</nav>
-<nav class="foot-links" aria-label="Games"><a href="/games/">Medieval games</a>{games}</nav>
+<nav class="foot-links" aria-label="Games"><a href="/games/">Medieval games</a>{games}<a href="/games/embed.html">Games for your website</a></nav>
 <p><a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/refunds.html">Refunds</a> · <a href="/advertise.html">Advertise</a> · <a href="mailto:hello@usurp.games">hello@usurp.games</a></p>
 <p>Crest Studio by Usurp · Operated by Prakhar Murary (Murary Studios), Jaipur, Rajasthan, India · <a href="/realm.html">Usurp, the game (prototype)</a></p></footer>'''
 
@@ -1030,6 +1030,45 @@ def ads_json():
     return json.dumps({k: ADS[k] for k in keys if ADS.get(k)}, separators=(',', ':'))
 
 
+EMBED_W = 480
+EMBED_H = round(EMBED_W * 4 / 3 + 84)   # the 3:4 game plus its sound bar and the credit line
+
+
+def embed_code(G):
+    """The snippet site owners paste: the game in an iframe, plus a plain text credit link (the part search engines count).
+    The height falls back to the fixed attribute wherever the CSS min()/calc() is unsupported or stripped by a CMS."""
+    return (f'<iframe src="{SITE}/embed/{G["id"]}.html" title="{G["name"]}, a free medieval game" width="{EMBED_W}" height="{EMBED_H}" '
+            f'style="display:block;width:100%;max-width:{EMBED_W}px;height:min({EMBED_H}px,calc(100vw * 1.42));border:0;margin:0 auto" '
+            f'loading="lazy" allow="fullscreen; clipboard-write; web-share" allowfullscreen></iframe>\n'
+            f'<p style="text-align:center;font-size:14px;margin:6px 0 0"><a href="{page_url(G["slug"])}">{G["name"]}</a>, '
+            f'a free game from <a href="{SITE}/">Crest Studio</a></p>')
+
+
+def embed_box(G):
+    return (f'<div class="ge-box" data-emb="{G["id"]}"><textarea readonly rows="6" spellcheck="false" aria-label="Embed code for {E(G["name"])}">{E(embed_code(G))}</textarea>'
+            f'<div class="ge-row"><button type="button" class="btn" data-copy>Copy the code</button>'
+            f'<a href="/embed/{G["id"]}.html" target="_blank" rel="noopener">Preview</a></div></div>')
+
+
+def embed_page(G):
+    """/embed/<id>.html: just the game, for other sites' iframes. No analytics, no ad network, no cookies; every link opens
+    in a new tab; noindex with a canonical to the real game page so search engines credit that page."""
+    canon = page_url(G['slug'])
+    doc = f'''<!doctype html><html lang="en" class="ue"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>{E(G["name"])}: a free medieval game | Usurp</title>
+<meta name="description" content="{E(G["desc"])}"><meta name="robots" content="noindex">
+<link rel="canonical" href="{canon}"><base target="_blank"><meta name="theme-color" content="#0c0a08"><link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/cinzel-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/cinzel-decorative-900-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{ver("/styles.css")}"><link rel="stylesheet" href="{ver("/games/games.css")}">
+</head><body class="ug-embed"><main class="ue-main"><div class="ug-wrap"><div class="ug" data-game="{G["id"]}"><noscript><p style="padding:24px;text-align:center">This game needs JavaScript turned on. <a href="{canon}">Play it on usurp.games</a></p></noscript></div></div></main>
+<a class="ue-by" href="{canon}?from=embed">{E(G["name"])} · free at <b>usurp.games</b></a>
+<script>window.USURP_ADS={{}};window.USURP_EMBED=1</script><script src="{ver("/games/engine.js")}" defer></script><script src="{ver("/games/" + G["js"] + ".js")}" defer></script>
+</body></html>'''
+    os.makedirs(os.path.join(ROOT, 'embed'), exist_ok=True)
+    with open(os.path.join(ROOT, 'embed', f'{G["id"]}.html'), 'w', encoding='utf-8') as f:
+        f.write(doc)
+
+
 def game_page(G):
     p = dict(slug=G['slug'], h1=G['h1'], og='game-' + G['id'], og_title=G['og_title'], title=G['title'], desc=G['desc'], no_related=True,
              head_extra=f'<link rel="stylesheet" href="{ver("/games/games.css")}">')
@@ -1051,6 +1090,10 @@ def game_page(G):
             f'<div class="gm-keys"><div><b>Phone and tablet</b>{E(G["touch"])}</div><div><b>Computer</b>{E(G["keys"])}</div></div>'
             f'<h2 class="gilt" style="margin-top:22px">Tips</h2><ul>{tips}</ul>'
             '<div class="callout"><b>Ride under your own banner.</b> Design your coat of arms free in <a href="/crest.html">Crest Studio</a> and it appears in every game on this site: on your shield, your banners and your lance.</div></section>'
+            f'<section class="gm-embed" id="embed"><details><summary>Put this game on your website (free)</summary>'
+            '<p>For blogs, class pages and club sites. Paste this code into an HTML or embed block in WordPress, Blogger, Google Sites, Wix or Squarespace. '
+            'Inside the game there are no ad networks, no analytics and no cookies.</p>'
+            f'{embed_box(G)}<p style="margin:0 0 14px"><a href="/games/embed.html">All four games, and help adding them</a></p></details></section>'
             '<div class="ad-slot" data-ad-slot></div>'
             f'<section class="gm-more"><h2 class="gilt">More medieval games</h2><div class="gm-grid">{game_cards(G["id"], small=True)}</div>'
             '<p class="center" style="margin-top:14px"><a href="/games/">All games</a> · <a href="/crest.html">Design your coat of arms</a></p></section>')
@@ -1079,8 +1122,54 @@ def games_hub():
     body += ('<section class="gm-info"><h2 class="gilt">Your coat of arms, in every game</h2>'
              '<p>These games are made by Crest Studio, the free coat of arms maker. Design your arms there and they ride with you: on your shield in the joust and the duel, '
              'on the banners of your castle, and beside your score at the archery butts. Your design is saved on your device, so there is nothing to sign up for.</p>'
-             '<p style="margin-top:14px"><a class="btn" href="/crest.html">Design my coat of arms</a></p></section>'
+             '<p style="margin-top:14px"><a class="btn" href="/crest.html">Design my coat of arms</a></p>'
+             '<h2 class="gilt" style="margin-top:26px">Put a game on your website</h2>'
+             '<p>Run a blog, a class page or a club site? Every game can sit on your page for free with one line of code, and it works on phones. '
+             '<a href="/games/embed.html">Get the code</a>.</p></section>'
              '<div class="ad-slot" data-ad-slot></div>')
+    body += faq_html(faqs)
+    write_page(p, body)
+
+
+def embed_hub():
+    """/games/embed.html: free embeddable games for site owners. Every embed carries a credit link back to the game."""
+    slug = 'games/embed.html'
+    faqs = [('Is it really free?', 'Yes. Embedding is free for any website, personal, school, club or business. No sign-up, no fee and no key.'),
+            ('Are there ads in the embedded games?', 'No ad networks. Every few rounds a short card invites players to design their own coat of arms on Crest Studio, our free coat of arms maker, and they continue with one tap.'),
+            ('Do you collect data about my visitors?', 'The embedded games load no analytics, no advertising and no cookies. Best scores and the sound setting stay in the player’s own browser. See the <a href="/privacy.html">privacy policy</a>.'),
+            ('Are the games suitable for students?', 'Yes. There is no blood, no chat, no accounts and nothing to buy inside the games: arrows hit targets, lances shatter, knights yield and walls crumble. They work on school Chromebooks, tablets and phones.'),
+            ('Can I change the size?', f'Yes. Change the {EMBED_W} in max-width and width to any size you like; the game scales to fit and keeps its shape. It works from about 300 pixels wide.'),
+            ('Do I need to update the code when you improve a game?', 'No. The code loads the current version of the game, so fixes and new features reach your page on their own.'),
+            ('Can I put the games on a site that sells things?', 'Yes. Please keep the credit line under the game. You may not resell the games, put them behind a paywall or present them as your own.')]
+    p = dict(slug=slug, h1='Free Medieval Games for Your Website', og='games', og_title='Free medieval games for your website: copy one code, no sign-up',
+             title='Free Medieval Games to Embed on Your Website or Blog | Usurp',
+             desc='Put a free archery contest, jousting tournament, castle defense or sword duel on your blog, class page or club site. Copy the code, paste it in. No sign-up, no ad networks, works on phones.',
+             no_related=True, head_extra=f'<link rel="stylesheet" href="{ver("/games/games.css")}">')
+    items = {'@type': 'ItemList', 'name': 'Embeddable medieval games', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'url': page_url(g['slug']), 'name': g['name']} for i, g in enumerate(GAMES)]}
+    p['ld'] = ld_base(p, [faq_ld(faqs), items])
+    tabs = ''.join(f'<button type="button" data-prev="{g["id"]}" aria-pressed="{str(i == 0).lower()}">{E(g["short"])}</button>' for i, g in enumerate(GAMES))
+    p['scripts'] = (f'<script src="{ver("/games/engine.js")}" defer></script>'
+                    '<script>document.querySelectorAll("[data-prev]").forEach(function(b){b.onclick=function(){var f=document.querySelector("[data-prev-frame]");'
+                    'f.src="/embed/"+b.dataset.prev+".html";document.querySelectorAll("[data-prev]").forEach(function(x){x.setAttribute("aria-pressed",x===b)})}})</script>')
+    body = hero('Free for your website', 'Free Medieval Games for Your Website',
+                'Put an archery contest, a jousting tournament, a castle defense or a sword duel on your blog, class page or club site. Copy the code, paste it in, done. No sign-up, and it works on phones.',
+                cta_href='#games', cta='Get the code', second=('/games/', 'Play them first'))
+    body += (f'<section class="ge-prev"><h2 class="gilt">This is what your visitors see</h2><div class="ge-tabs">{tabs}</div>'
+             f'<iframe data-prev-frame src="/embed/{GAMES[0]["id"]}.html" title="Preview of an embedded game" loading="lazy" allow="fullscreen; clipboard-write; web-share" allowfullscreen></iframe></section>')
+    cards = ''.join(f'<div class="ge-game"><img src="/img/games/{g["id"]}-400.webp" width="400" height="533" loading="lazy" decoding="async" alt="{E(g["name"])}: screenshot">'
+                    f'<div><h3>{E(g["name"])}</h3><p>{E(g["card"])}</p>{embed_box(g)}</div></div>' for g in GAMES)
+    body += f'<section id="games" class="sec" style="padding-bottom:0"><h2 class="gilt center">Pick a game and copy its code</h2><div class="ge-games">{cards}</div></section>'
+    steps = [('WordPress', 'Add a Custom HTML block where you want the game and paste the code. On WordPress.com this needs a plan that allows custom code.'),
+             ('Blogger', 'In the post editor, switch to HTML view, paste the code where you want the game, then switch back.'),
+             ('Google Sites', 'Insert, then Embed, then the Embed code tab. Paste the code, press Next, then Insert. Drag the box taller if the game looks cut off.'),
+             ('Wix', 'Add, then Embed Code, then Embed HTML. Paste the code into the box and resize the element to about 480 by 720.'),
+             ('Squarespace', 'Add an Embed block, choose Code Snippet, and paste the code. A Code block works too.'),
+             ('Anywhere else', 'Any page editor that accepts HTML or an iframe works the same way: paste the code where the game should appear.')]
+    body += ('<section class="gm-info"><h2 class="gilt">How to add it</h2><div class="ge-steps">'
+             + ''.join(f'<div><b>{E(a)}</b>{E(b)}</div>' for a, b in steps) + '</div>'
+             '<p>Only want a link? Point to <a href="/games/">usurp.games/games</a> for all four games.</p>'
+             '<div class="callout"><b>Made by Crest Studio.</b> These games come from <a href="/crest.html">Crest Studio</a>, the free coat of arms maker. '
+             'Questions or a game you would like for your class or club: <a href="mailto:hello@usurp.games?subject=Embedded%20games">hello@usurp.games</a>.</div></section>')
     body += faq_html(faqs)
     write_page(p, body)
 
@@ -1088,7 +1177,9 @@ def games_hub():
 def games_pages():
     for G in GAMES:
         game_page(G)
+        embed_page(G)
     games_hub()
+    embed_hub()
     # ads.txt tells ad buyers which sellers may sell this site's ad space. Written only once AdSense is configured.
     path = os.path.join(ROOT, 'ads.txt')
     if ADS['client']:

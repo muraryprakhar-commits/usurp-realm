@@ -3,6 +3,7 @@
 const PRODUCTS = {
   crest: 'pdt_0Nq7l6osvcUL8N0wu65UL',   // Custom Coat of Arms, $9
   kit: 'pdt_0Nq8R4zhafrgCTZA1HYkj',     // Crest Logo Kit, $29
+  heirloom: '',                         // Heirloom set, $19 (same ID as HEIRLOOM_ID in crest-studio.js; empty until it exists)
 };
 
 module.exports = async (req, res) => {
@@ -22,8 +23,13 @@ module.exports = async (req, res) => {
     const ids = (Array.isArray(p.product_cart) ? p.product_cart : []).map(i => i && i.product_id);
     let plan = null;
     if (ids.includes(PRODUCTS.kit)) plan = 'kit';
+    else if (PRODUCTS.heirloom && ids.includes(PRODUCTS.heirloom)) plan = 'heirloom';
     else if (ids.includes(PRODUCTS.crest)) plan = 'crest';
-    else if (ids.length === 0) plan = String(p.settlement_currency || '').toUpperCase() === 'USD' && Number(p.settlement_amount) >= 1500 ? 'kit' : 'crest';
+    else if (ids.length === 0) {
+      // $9 / $19 / $29 in cents, with room for fees and taxes either way
+      const usd = String(p.settlement_currency || '').toUpperCase() === 'USD', amt = Number(p.settlement_amount);
+      plan = !usd || amt < 1400 ? 'crest' : amt >= 2400 || !PRODUCTS.heirloom ? 'kit' : 'heirloom';
+    }
     const refunded = p.refund_status === 'full';
     if (p.status !== 'succeeded' || !plan || refunded) return res.status(402).json({ ok: false, error: 'not_paid' });
     const design = p.metadata && typeof p.metadata.design === 'string' ? p.metadata.design.slice(0, 600) : null;

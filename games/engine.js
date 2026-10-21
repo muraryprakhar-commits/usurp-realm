@@ -6,6 +6,10 @@
 'use strict';
 const UG = window.UG = {};
 const ADS = window.USURP_ADS || {};   // { client, slot, h5, test, sponsor, ga } written by tools/build.py; empty means house ads only
+// Embedded on someone else's site (/embed/*.html): no ad network and no analytics, links open in a new tab,
+// and the game never scrolls the host page.
+const EMBED = UG.embed = !!window.USURP_EMBED;
+const SITE = 'https://usurp.games';
 
 /* ---------- small helpers ---------- */
 UG.clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
@@ -161,7 +165,7 @@ function loadAdsense() {
 }
 function crestCard(cls) {
   const me = UG.myDesign();
-  return `<a class="${cls}" href="/crest.html" data-house-ad><span class="hb-art" data-hb-art></span><span class="hb-t"><b>${me ? 'Your arms deserve a frame' : 'Ride under your own banner'}</b><span>${me ? 'Print-ready files of your coat of arms, a certificate and a wallpaper, $9.' : 'Design your coat of arms free. It appears on your knight in every game.'}</span></span><span class="btn">${me ? 'Get my files' : 'Design my crest'}</span></a>`;
+  return `<a class="${cls}" href="${EMBED ? `${SITE}/crest.html?from=embed-${GAME}` : '/crest.html'}" data-house-ad><span class="hb-art" data-hb-art></span><span class="hb-t"><b>${me ? 'Your arms deserve a frame' : 'Ride under your own banner'}</b><span>${me ? 'Print-ready files of your coat of arms, a certificate and a wallpaper, $9.' : 'Design your coat of arms free. It appears on your knight in every game.'}</span></span><span class="btn">${me ? 'Get my files' : 'Design my crest'}</span></a>`;
 }
 function fillHouseArt(root) {
   const el = root.querySelector('[data-hb-art]'); if (!el) return;
@@ -293,7 +297,7 @@ UG.start = function (spec) {
       ov.hidden = true; root.classList.remove('ov-on'); try { cv.focus({ preventScroll: true }); } catch (e) {}
       // bring the whole game on screen when play starts (phones held sideways, or after scrolling)
       const r = root.getBoundingClientRect();
-      if (r.top < 0 || r.bottom > innerHeight) root.scrollIntoView({ block: r.height > innerHeight ? 'start' : 'center', behavior: UG.reduced ? 'auto' : 'smooth' });
+      if (!EMBED && (r.top < 0 || r.bottom > innerHeight)) root.scrollIntoView({ block: r.height > innerHeight ? 'start' : 'center', behavior: UG.reduced ? 'auto' : 'smooth' });
     },
     // An occasional break between rounds when no ad network is switched on: one tap to continue.
     houseBreak(done) {
@@ -310,12 +314,16 @@ UG.start = function (spec) {
         primary: { label: 'Continue', on: () => { this.hide(); done(); } } });
     },
     share(text) {
-      const url = location.href.split('#')[0].split('?')[0];
+      // Always share the game's own page (the canonical URL), also from an embed on another site.
+      const can = document.querySelector('link[rel="canonical"]');
+      const url = (can && can.href) || location.href.split('#')[0].split('?')[0];
       UG.track('share');
-      if (navigator.share && matchMedia('(pointer:coarse)').matches) { navigator.share({ title: document.title, text, url }).catch(() => {}); return; }
-      const msg = `${text} ${url}`;
-      (navigator.clipboard ? navigator.clipboard.writeText(msg) : Promise.reject()).then(() => this.say('Copied. Paste it anywhere to challenge a friend.')).catch(() => {});
-      const b = card.querySelector('[data-s]'); if (b) { const l = b.textContent; b.textContent = 'Copied!'; setTimeout(() => { b.textContent = l; }, 1600); }
+      const b = card.querySelector('[data-s]');
+      const copied = () => { this.say('Copied. Paste it anywhere to challenge a friend.'); if (b) { const l = b.textContent; b.textContent = 'Copied!'; setTimeout(() => { b.textContent = l; }, 1600); } };
+      // Inside an embed the host page may not allow sharing or the clipboard; then open the game's page instead.
+      const copy = () => (navigator.clipboard ? navigator.clipboard.writeText(`${text} ${url}`) : Promise.reject()).then(copied).catch(() => { if (EMBED) window.open(url, '_blank', 'noopener'); });
+      if (navigator.share && matchMedia('(pointer:coarse)').matches) { navigator.share({ title: document.title, text, url }).catch(e => { if (!e || e.name !== 'AbortError') copy(); }); return; }
+      copy();
     },
   };
 
@@ -400,6 +408,15 @@ UG.start = function (spec) {
   idle(() => { UG.core(); UG.mountBanner(); if (ADS.client && ADS.h5) loadAdsense(); });
   return g;
 };
+// "Put this game on your website": copy the embed code from the box next to the button.
+document.addEventListener('click', e => {
+  const b = e.target.closest && e.target.closest('[data-copy]'); if (!b) return;
+  const box = b.closest('[data-emb]'), ta = box && box.querySelector('textarea'); if (!ta) return;
+  const ok = () => { const l = b.dataset.l || (b.dataset.l = b.textContent); b.textContent = 'Copied!'; setTimeout(() => { b.textContent = l; }, 1800); };
+  ta.focus(); ta.select();
+  (navigator.clipboard ? navigator.clipboard.writeText(ta.value) : Promise.reject()).then(ok).catch(() => { try { if (document.execCommand('copy')) ok(); } catch (err) {} });
+  try { if (window.clarity) window.clarity('event', `embed_copy_${box.dataset.emb}`); } catch (err) {}
+});
 // Pages without a game (the games hub) still fill their ad slot once the page is idle.
 document.addEventListener('DOMContentLoaded', () => {
   if (document.querySelector('[data-game]') || !document.querySelector('[data-ad-slot]')) return;

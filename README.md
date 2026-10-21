@@ -74,3 +74,15 @@ python3 tools/indexnow.py  # after deploy: tell Bing, Yandex and others about ev
 - Ads are robust to ad blockers and empty slots: a blocked or unfilled banner shows the house ad, and a between-round
   break that does not start within 2.5 s simply continues the game. Verified with Google's own test ads
   (`test: True` with H5 on shows Google's sample interstitial at the round break).
+
+## Embeddable games (21 Oct 2026)
+- `/embed/<id>.html` (archery, joust, castle, duel): just the game, for other sites' iframes. Built by `embed_page()` in
+  `tools/build.py`. No analytics, no ad network, no cookies (Microsoft says Clarity must not run on sites aimed at
+  under-18s, and embeds will land on class pages). `<base target="_blank">` opens every link in a new tab; links to
+  usurp.games carry `?from=embed` or `?from=embed-<game>` so click-throughs show up in Clarity on our own pages.
+  noindex, with a canonical to the real game page. The engine's embed mode (`window.USURP_EMBED`) never scrolls the
+  host page and shares the game's canonical URL.
+- The snippet (`embed_code()`): an iframe 480 x 724 (height falls back to the attribute if a CMS strips the CSS) plus a
+  plain text credit link under it, which is the part search engines count as a backlink.
+- Where people get it: a "Put this game on your website" box on each game page, and `/games/embed.html` (live preview,
+  copy buttons, how-to for WordPress, Blogger, Google Sites, Wix, Squarespace, FAQ). Clarity event `embed_copy_<game>`.

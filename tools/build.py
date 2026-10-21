@@ -1074,7 +1074,8 @@ GN = NUM[len(GAMES)]                                   # 'seven': used in page t
 
 
 def game_scripts(G, embed=False):
-    pre = ''.join(f'<script src="{ver(x)}" defer></script>' for x in G.get('pre', []))
+    # 'pre' files load on demand inside the game (the physics library): the page only names them
+    pre = ''.join(f'<link data-matter href="{ver(x)}">' for x in G.get('pre', []))
     return pre + f'<script src="{ver("/games/engine.js")}" defer></script><script src="{ver("/games/" + G["js"] + ".js")}" defer></script>'
 
 

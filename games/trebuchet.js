@@ -2,8 +2,18 @@
    Ten castles of timber and stone, real physics (Matter.js, MIT licence, served from this site), no image files. */
 (function () {
 'use strict';
-const M = window.Matter; if (!M) return;
-const { Engine, Bodies, Composite, Body, Events, Sleeping } = M;
+// The physics library loads when the player starts a castle, not with the page, so the page itself stays fast.
+// The page prefetches it (<link data-matter>), so by then it is usually already in the browser's cache.
+let Engine, Bodies, Composite, Body, Events, Sleeping, matterP = null;
+function needMatter() {
+  if (window.Matter) return Promise.resolve(window.Matter);
+  if (!matterP) matterP = new Promise((res, rej) => {
+    const l = document.querySelector('link[data-matter]'), s = document.createElement('script');
+    s.src = l ? l.getAttribute('href') : '/games/vendor/matter.min.js'; s.onload = () => res(window.Matter); s.onerror = rej;
+    document.head.appendChild(s);
+  });
+  return matterP.then(M => { ({ Engine, Bodies, Composite, Body, Events, Sleeping } = M); return M; });
+}
 const { clamp, lerp, ease, rand } = UG;
 const W = 540, H = 720, SC = 0.75, WW = W / SC, WH = H / SC, GY = 880;    // world is 720 x 960; the ground's top is at y 880
 const XO = -180;                                                         // castles are laid out for x 480..880; shift them closer
@@ -74,6 +84,21 @@ function buildLevel(i) {
   S.settling = false;
   for (const gd of guards) { gd.y0 = gd.position.y; gd.tip = 0; }
 }
+// The castle drawn without physics, behind the start menu and while the physics library loads.
+function ghost(i) {
+  const L = LEVELS[i], rect = (cx, cy, w, h, top = w) => {
+    const v = [{ x: cx - top / 2, y: cy - h / 2 }, { x: cx + top / 2, y: cy - h / 2 }, { x: cx + w / 2, y: cy + h / 2 }, { x: cx - w / 2, y: cy + h / 2 }];
+    return { vertices: v, position: { x: cx, y: cy }, angle: 0, bounds: { min: { x: cx - w / 2, y: cy - h / 2 }, max: { x: cx + w / 2, y: cy + h / 2 } } };
+  };
+  const out = { blocks: [], guards: [], hills: [] };
+  for (let p of L.parts) {
+    p = Object.assign({}, p, { x: p.x + XO });
+    if (p.k === 'h') out.hills.push(rect(p.x, GY - p.h / 2, p.w, p.h));
+    else if (p.k === 'g') out.guards.push(Object.assign(rect(p.x, GY - p.yb - 22, 26, 44), { boss: p.boss }));
+    else out.blocks.push(Object.assign(rect(p.x, GY - p.yb - p.h / 2, p.w, p.h, p.k === 'r' ? p.w * 0.3 : p.w), { mat: p.m, hp: 99 }));
+  }
+  return out;
+}
 function impact(a, b) {
   if (S.settling || !S.live) return;
   const rel = Math.hypot(a.velocity.x - b.velocity.x, a.velocity.y - b.velocity.y);
@@ -127,6 +152,14 @@ function explode(shot) {
 }
 
 function startLevel(g, i) {
+  const G0 = ghost(i);
+  S = Object.assign(S || {}, { lvl: i, L: LEVELS[i], blocks: G0.blocks, guards: G0.guards, hills: G0.hills, phase: 'loading', stones: LEVELS[i].stones, fire: LEVELS[i].fire, wind: LEVELS[i].wind, score: 0 });
+  g.state = 'play';
+  needMatter().then(() => realStart(g, i)).catch(() => {
+    g.screen({ kicker: 'Siege', title: 'The game could not load', sub: 'Check your connection and try again.', primary: { label: 'Try again', on: () => { g.hide(); startLevel(g, i); } } });
+  });
+}
+function realStart(g, i) {
   S = { g, lvl: i, L: LEVELS[i], hills: [], blocks: [], guards: [], kill: [], blast: [], flags: [], booms: [], down: 0, broke: 0, score: 0,
         stones: LEVELS[i].stones, fire: LEVELS[i].fire, ammo: 'stone', aim: { a: 0.78, p: 0.68 }, dragging: false, drag0: null,
         phase: 'intro', phaseT: 0, shot: null, arm: 0, armT: 0, shotT: 0, live: false, acc: 0, wind: LEVELS[i].wind, msg: '', msgT: 0, shots: 0 };
@@ -339,13 +372,15 @@ UG.start({
     me = UG.player(); myShield = UG.shield(me.design);
     foeShield = UG.shield({ name: 'The Usurper', motto: '', f: '#1d1915', d: '#b3242f', c: '#b3242f', div: 'chevron', ch: 'wolf', bg: 'clear' });
     for (let i = 0; i < 4; i++) clouds.push({ x: Math.random() * WW, y: 110 + Math.random() * 260, p: Array.from({ length: 4 }, (_, j) => [j * 34 - 50, (Math.random() - 0.5) * 14, 22 + Math.random() * 18]) });
-    S = { lvl: Math.min(prog.unlocked, LEVELS.length) - 1, hills: [], blocks: [], guards: [], kill: [], blast: [], flags: [], booms: [], score: 0, phase: 'intro', aim: { a: 0.78, p: 0.68 }, L: LEVELS[0], stones: 3, fire: 0, wind: 0 };
-    S.g = g; S.L = LEVELS[S.lvl]; buildLevel(S.lvl);
+    const lv = Math.min(prog.unlocked, LEVELS.length) - 1, G0 = ghost(lv);
+    S = { lvl: lv, hills: G0.hills, blocks: G0.blocks, guards: G0.guards, kill: [], blast: [], flags: [], booms: [], score: 0, phase: 'intro', aim: { a: 0.78, p: 0.68 }, L: LEVELS[lv], stones: 3, fire: 0, wind: 0, g };
     menu(g);
+    // warm the cache once the page is idle: the file arrives, but nothing runs until the player starts
+    (window.requestIdleCallback || (f => setTimeout(f, 2000)))(() => { const l = document.querySelector('link[data-matter]'); if (l && !window.Matter) { const x = document.createElement('link'); x.rel = 'prefetch'; x.href = l.getAttribute('href'); document.head.appendChild(x); } });
   },
   update(g, dt) {
     g.dt = dt;
-    if (!engine) return;
+    if (!engine || S.phase === 'loading') return;
     if (S.msgT > 0) S.msgT -= dt;
     for (const f of S.flags) f.t += dt; S.flags = S.flags.filter(f => f.t < 1.6);
     for (const b of S.booms) b.t += dt; S.booms = S.booms.filter(b => b.t < 0.5);
@@ -380,9 +415,9 @@ UG.start({
   draw(g, ctx) {
     ctx.save(); ctx.scale(SC, SC);
     sky(ctx, g);
-    for (const h of S.hills) { poly(ctx, h); ctx.fillStyle = '#6b7f45'; ctx.fill(); ctx.fillStyle = '#857558'; ctx.fillRect(h.bounds.min.x, h.bounds.min.y + 14, h.bounds.max.x - h.bounds.min.x, h.bounds.max.y - h.bounds.min.y); ctx.fillStyle = '#6b8b38'; ctx.fillRect(h.bounds.min.x - 4, h.bounds.min.y, h.bounds.max.x - h.bounds.min.x + 8, 16); }
+    for (const h of S.hills) { if (!h.vertices) continue; poly(ctx, h); ctx.fillStyle = '#6b7f45'; ctx.fill(); ctx.fillStyle = '#857558'; ctx.fillRect(h.bounds.min.x, h.bounds.min.y + 14, h.bounds.max.x - h.bounds.min.x, h.bounds.max.y - h.bounds.min.y); ctx.fillStyle = '#6b8b38'; ctx.fillRect(h.bounds.min.x - 4, h.bounds.min.y, h.bounds.max.x - h.bounds.min.x + 8, 16); }
     trebuchet(ctx, g);
-    if (engine) {
+    {
       for (const b of S.blocks) if (!b.gone) drawBlock(ctx, b);
       for (const gd of S.guards) if (!gd.out) drawGuard(ctx, gd, g);
       if (S.shot) { ctx.save(); ctx.translate(S.shot.position.x, S.shot.position.y); ctx.rotate(S.shot.angle); ammoArt(ctx, 0, 0, S.shot.fire, g); ctx.restore(); }
@@ -400,10 +435,10 @@ UG.start({
     for (const b of S.booms) { ctx.globalAlpha = 1 - b.t / 0.5; ctx.fillStyle = '#ffd76a'; ctx.beginPath(); ctx.arc(b.x, b.y, 40 + b.t * 260, 0, 6.283); ctx.fill(); ctx.globalAlpha = 1; }
     if (g.state === 'play' && S.phase === 'aim') preview(ctx);
     ctx.restore();
-    if (g.state === 'play' || g.state === 'over') hud(ctx, g);
+    if ((g.state === 'play' || g.state === 'over') && S.phase !== 'loading') hud(ctx, g);
   },
   down(g, x, y) {
-    if (g.state !== 'play' || S.phase !== 'aim') return;
+    if (g.state !== 'play' || S.phase !== 'aim' || !engine) return;
     if (fireBtnHit(x, y)) { if (S.fire > 0) { S.ammo = S.ammo === 'fire' ? 'stone' : 'fire'; if (S.ammo === 'stone' && S.stones <= 0) S.ammo = 'fire'; UG.sfx.click(); } return; }
     S.dragging = true; S.drag0 = { x, y, a: S.aim.a, p: S.aim.p }; UG.sfx.draw();
   },

@@ -34,7 +34,7 @@ LISTING = {
 
 
 def page(G):
-    pre = ''.join(f'<script src="{x.lstrip("/").replace("games/", "")}"></script>' for x in G.get('pre', []))
+    pre = ''.join(f'<link data-matter href="{x.lstrip("/").replace("games/", "")}">' for x in G.get('pre', []))
     return f'''<!doctype html><html lang="en" class="ue"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>{G["name"]}</title>
 <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="games.css">

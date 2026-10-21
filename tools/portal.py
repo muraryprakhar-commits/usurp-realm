@@ -179,14 +179,14 @@ def capture(out):
 
 def kit(out, built):
     lines = ['# CrazyGames upload kit', '',
-             'One folder and one zip per game. Upload the zip; the folder is the same files, for testing.', '',
+             'One zip per game in uploads/, three covers per game in covers/, and the listing text below.', '',
              '## Before the first upload (about 10 minutes, once)',
              '1. Open developer.crazygames.com and sign up as a developer with your own email.',
              '2. Fill in your payout details (CrazyGames asks for these before a submission).',
              '3. For each game: Submit a game, upload the zip, then add the three covers and the text below.',
              '', 'CrazyGames reviews each game. A new game starts in Basic Launch, where ads are off; games selected for Full Launch earn a share of the ads.',
              'These builds already include the CrazyGames SDK v3: ads only at natural breaks (after a level is won or lost, never during play or on a button), sound muted during ads, gameplay start and stop events, and no links or other ads.',
-             'They are not published on any other game portal, which keeps them eligible.', '']
+             'They are on usurp.games (your own site) and nowhere else. Check the current CrazyGames terms before also listing them on another portal.', '']
     for G, d in built:
         L = LISTING.get(G['id'], {})
         lines += [f'## {G["name"]}', f'- Zip: `{G["id"]}.zip`', f'- Covers: `{G["id"]}-landscape-1920x1080.png`, `{G["id"]}-portrait-800x1200.png`, `{G["id"]}-square-800x800.png`',

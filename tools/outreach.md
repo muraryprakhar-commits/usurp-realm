@@ -12,6 +12,6 @@ Rules for the weekly autopilot:
 
 | Date | Target | Page that invites pitches | Status |
 |---|---|---|---|
-| 2026-10-20 | Emily Reviews holiday gift guide | emilyreviews.com 2026 submissions post | Draft ready |
-| 2026-10-20 | FSM Media holiday gift guide | fsm-media.com/gift-guide-submissions | Draft ready |
-| 2026-10-20 | Canadian Mom Reviews holiday gift guide | canadianmomreviews.com/holiday-gift-guide-submission-2 | Draft ready |
+| 2026-10-20 | Emily Reviews holiday gift guide | emilyreviews.com 2026 submissions post | Sent 2026-10-20, no reply yet (21 Oct) |
+| 2026-10-20 | FSM Media holiday gift guide | fsm-media.com/gift-guide-submissions | Sent 2026-10-20, no reply yet (21 Oct) |
+| 2026-10-20 | Canadian Mom Reviews holiday gift guide | canadianmomreviews.com/holiday-gift-guide-submission-2 | Sent 2026-10-20, no reply yet (21 Oct) |

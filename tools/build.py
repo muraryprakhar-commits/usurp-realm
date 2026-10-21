@@ -1329,6 +1329,60 @@ def games_pages():
         os.remove(path)
 
 
+def stats_page():
+    """usurp.games/stats.html: plays per game per week, for Prakhar to check himself. Not linked, not indexed."""
+    names = json.dumps({g['id']: g['name'] for g in GAMES})
+    slugs = json.dumps({g['id']: '/' + g['slug'] for g in GAMES})
+    short = json.dumps({g['id']: g['short'] for g in GAMES})
+    doc = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Game plays | Usurp</title><meta name="robots" content="noindex,nofollow"><link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/cinzel-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="{ver("/styles.css")}">
+<style>
+main{{max-width:980px;margin:0 auto;padding:24px 16px 60px}}h1{{font-size:clamp(26px,5vw,38px);margin:0}}
+.sub{{color:var(--muted);margin:4px 0 18px}}.box{{border:1px solid #3a2e1f;background:#120e0a;padding:14px 16px;margin:14px 0}}
+.tw{{overflow-x:auto;border:1px solid #3a2e1f;margin:12px 0}}table{{border-collapse:collapse;width:100%;font-size:16px;font-variant-numeric:tabular-nums}}
+th,td{{padding:9px 12px;text-align:right;border-bottom:1px solid #2a2117;white-space:nowrap}}th:first-child,td:first-child{{text-align:left}}
+th{{font-family:var(--serif);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-2);background:#17120d;font-weight:700}}
+tr.tot td{{font-weight:700;color:var(--gold-2);border-top:1px solid #5a4523}}td a{{color:var(--text)}}.muted{{color:var(--muted);font-size:15px}}
+h2{{font-size:clamp(20px,4vw,26px);margin:26px 0 4px}}
+.wk th,.wk td{{padding:8px 9px;font-size:15px}}.wk th{{font-size:11px;letter-spacing:.08em}}
+</style></head><body><main>
+<h1 class="gilt">Game plays</h1><p class="sub" data-sub>Loading the counts…</p>
+<div data-out></div>
+<div class="box muted"><b style="color:var(--gold-2)">What counts.</b> A play is someone starting a game on usurp.games (in Siege, starting a castle). Finished means they reached the results screen
+(Nine Men's Morris, Viking chess and Siege count a finished match or castle). Weeks run Monday to Sunday in UTC, so they start at 5:30 am India time on Monday.
+Games embedded on other sites and the CrazyGames versions are not counted here: embeds collect nothing, and CrazyGames shows its own numbers in its developer portal.
+The same plays also appear in Microsoft Clarity as Smart events named play_archery, play_joust and so on.</div>
+</main>
+<script>
+(function(){{
+var NAMES={names},SLUGS={slugs},SHORT={short},out=document.querySelector('[data-out]'),sub=document.querySelector('[data-sub]');
+function n(x){{return (x||0).toLocaleString('en-US')}}
+function esc(s){{return String(s).replace(/[&<>"]/g,function(c){{return{{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}}[c]}})}}
+function day(s){{var d=new Date(s+'T00:00:00Z');return d.toLocaleDateString('en-GB',{{day:'numeric',month:'short',timeZone:'UTC'}})}}
+fetch('/api/stats',{{cache:'no-store'}}).then(function(r){{return r.json()}}).then(function(j){{
+  if(!j.connected){{sub.textContent='The play counter is built but not connected to its database yet, so there are no counts to show.';out.innerHTML='<div class="box">Connect the free Upstash Redis database to the usurp-realm project in Vercel (Storage, then Create Database, then Upstash for Redis) and redeploy. Counting starts from that moment.</div>';return}}
+  if(!j.ok){{sub.textContent='The counter could not be reached just now. Try again in a minute.';return}}
+  var G=j.games,W=j.weeks,cur=W[0],prev=W[1],sum=function(w,g,e){{return (w&&w.counts[g]&&w.counts[g][e])||0}};
+  var four=function(g,e){{var t=0;for(var i=0;i<4&&i<W.length;i++)t+=sum(W[i],g,e);return t}};
+  var all=function(g,e){{return (j.all[g]&&j.all[g][e])||0}};
+  var rows=G.map(function(g){{return {{g:g,tw:sum(cur,g,'play'),lw:sum(prev,g,'play'),f4:four(g,'play'),al:all(g,'play'),fin:all(g,'finish')}}}}).sort(function(a,b){{return b.tw-a.tw||b.lw-a.lw||b.al-a.al}});
+  var T={{tw:0,lw:0,f4:0,al:0,fin:0}};rows.forEach(function(r){{for(var k in T)T[k]+=r[k]}});
+  sub.textContent='This week started '+day(cur.start)+'. Updated '+new Date(j.updated).toLocaleString('en-GB',{{dateStyle:'medium',timeStyle:'short'}})+'.';
+  var h='<h2 class="gilt">Plays per game</h2><div class="tw"><table><thead><tr><th>Game</th><th>This week</th><th>Last week</th><th>Last 4 weeks</th><th>All time</th><th>Finished</th></tr></thead><tbody>';
+  rows.forEach(function(r){{h+='<tr><td><a href="'+SLUGS[r.g]+'">'+esc(NAMES[r.g]||r.g)+'</a></td><td>'+n(r.tw)+'</td><td>'+n(r.lw)+'</td><td>'+n(r.f4)+'</td><td>'+n(r.al)+'</td><td>'+n(r.fin)+(r.al?' ('+Math.round(100*r.fin/r.al)+'%)':'')+'</td></tr>'}});
+  h+='<tr class="tot"><td>All games</td><td>'+n(T.tw)+'</td><td>'+n(T.lw)+'</td><td>'+n(T.f4)+'</td><td>'+n(T.al)+'</td><td>'+n(T.fin)+'</td></tr></tbody></table></div>';
+  h+='<h2 class="gilt">Week by week</h2><p class="muted">Plays per game, newest week first.</p><div class="tw"><table class="wk"><thead><tr><th>Week of</th>'+G.map(function(g){{return '<th>'+esc(SHORT[g]||g)+'</th>'}}).join('')+'<th>Total</th></tr></thead><tbody>';
+  var any=function(w){{return G.some(function(g){{return sum(w,g,'play')}})}},last=3;W.forEach(function(w,i){{if(any(w))last=Math.max(last,i)}});
+  W.slice(0,last+1).forEach(function(w){{var t=0;h+='<tr><td>'+day(w.start)+'</td>'+G.map(function(g){{var v=sum(w,g,'play');t+=v;return '<td>'+n(v)+'</td>'}}).join('')+'<td>'+n(t)+'</td></tr>'}});
+  out.innerHTML=h+'</tbody></table></div>';
+}}).catch(function(){{sub.textContent='The counter could not be reached just now. Try again in a minute.'}});
+}})();
+</script></body></html>'''
+    with open(os.path.join(ROOT, 'stats.html'), 'w', encoding='utf-8') as f:
+        f.write(doc)
+
+
 def advertise():
     """A plain page for selling the game ad slots directly, linked from every house banner."""
     slug = 'advertise.html'
@@ -1383,7 +1437,7 @@ def sitemap_and_llms():
 
 
 if __name__ == '__main__':
-    for fn in (home, surname, quiz, ideas, family, dnd, wedding, clan, school, mottos, houses, meanings, templates, games_pages, advertise):
+    for fn in (home, surname, quiz, ideas, family, dnd, wedding, clan, school, mottos, houses, meanings, templates, games_pages, advertise, stats_page):
         fn()
     for sp in SPECS:
         spec_page(sp)

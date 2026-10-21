@@ -3,5 +3,6 @@ Allow: /
 Allow: /api/og
 Disallow: /api/
 Disallow: /press/
+Disallow: /stats.html
 
 Sitemap: https://usurp.games/sitemap.xml

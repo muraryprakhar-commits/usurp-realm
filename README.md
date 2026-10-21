@@ -97,3 +97,14 @@ python3 tools/indexnow.py  # after deploy: tell Bing, Yandex and others about ev
   them through games/engine.js and the guide pages through /ads.js; both fall back to the house content when no ad comes.
 - Portal builds: `python3 tools/portal.py /some/dir` writes upload-ready CrazyGames zips (SDK v3, ads only at natural
   breaks, no links out), three covers per game and UPLOAD-KIT.md. Output goes outside the site (dist/ is git-ignored).
+
+## Play counter and stats page (21 Oct 2026)
+- `games/engine.js` sends a tiny POST to `/api/play?g=<game>&e=play|finish` when a game starts or ends on usurp.games
+  (never in embeds or portal builds). In Siege every castle started counts as a play.
+- `api/play.js` adds 1 to two Redis hashes: `plays:<ISO week>` and `plays:all` (fields like `tafl:play`). It stores
+  nothing about the player. POST only, our own pages only (Origin/Referer check), known games only.
+- `api/stats.js` returns the last 12 weeks and all-time totals as JSON (cached 5 minutes);
+  `stats.html` (built by `stats_page()` in tools/build.py, noindex, disallowed in robots.txt) shows them as tables.
+- Storage: the free Upstash Redis database from the Vercel Marketplace, connected to this project. The functions read
+  `KV_REST_API_URL`/`KV_REST_API_TOKEN` or `UPSTASH_REDIS_REST_URL`/`UPSTASH_REDIS_REST_TOKEN`. Until one is connected,
+  pings are accepted and dropped, and the stats page says it is not connected.

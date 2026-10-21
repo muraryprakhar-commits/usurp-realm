@@ -42,9 +42,16 @@ UG.reduced = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce
 
 /* ---------- tracking: Microsoft Clarity events (already on every page), and GA4 if an ID is configured ---------- */
 let GAME = 'games';
+// Our own play counter (/api/play, shown at usurp.games/stats.html): only starts and finished rounds, only on
+// usurp.games itself (never in embeds or portal builds), no cookies and nothing about the player.
+const COUNTED = ['play', 'finish'];
 UG.track = (ev, extra) => {
   try { if (window.clarity) window.clarity('event', `${ev}_${GAME}`); } catch (e) {}
   try { if (window.gtag && ADS.ga) window.gtag('event', ev, Object.assign({ game: GAME }, extra || {})); } catch (e) {}
+  const cev = GAME === 'siege' && ev === 'round' ? 'play' : ev;   // in Siege every castle started is a play
+  if (!EMBED && !PORTAL && COUNTED.includes(cev) && GAME !== 'games') {
+    try { const u = `/api/play?g=${encodeURIComponent(GAME)}&e=${cev}`; if (!(navigator.sendBeacon && navigator.sendBeacon(u))) fetch(u, { method: 'POST', keepalive: true }).catch(() => {}); } catch (e) {}
+  }
 };
 
 /* ---------- sound: everything is synthesized, so there is nothing to download ---------- */

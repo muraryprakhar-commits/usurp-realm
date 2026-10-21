@@ -179,7 +179,7 @@ def capture(out):
 
 def kit(out, built):
     lines = ['# CrazyGames upload kit', '',
-             'One zip per game in uploads/, three covers per game in covers/, and the listing text below.', '',
+             'Everything is in this folder: one zip per game (for example `archery.zip`), three covers per game named after it, and the listing text below.', '',
              '## Before the first upload (about 10 minutes, once)',
              '1. Open developer.crazygames.com and sign up as a developer with your own email.',
              '2. Fill in your payout details (CrazyGames asks for these before a submission).',

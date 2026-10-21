@@ -1148,14 +1148,21 @@ def embed_hub():
     items = {'@type': 'ItemList', 'name': 'Embeddable medieval games', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'url': page_url(g['slug']), 'name': g['name']} for i, g in enumerate(GAMES)]}
     p['ld'] = ld_base(p, [faq_ld(faqs), items])
     tabs = ''.join(f'<button type="button" data-prev="{g["id"]}" aria-pressed="{str(i == 0).lower()}">{E(g["short"])}</button>' for i, g in enumerate(GAMES))
+    # The preview is a screenshot until someone taps it, so a running game never slows the page down.
     p['scripts'] = (f'<script src="{ver("/games/engine.js")}" defer></script>'
-                    '<script>document.querySelectorAll("[data-prev]").forEach(function(b){b.onclick=function(){var f=document.querySelector("[data-prev-frame]");'
-                    'f.src="/embed/"+b.dataset.prev+".html";document.querySelectorAll("[data-prev]").forEach(function(x){x.setAttribute("aria-pressed",x===b)})}})</script>')
+                    '<script>(function(){var cur="' + GAMES[0]['id'] + '",box=document.querySelector("[data-prev-box]");'
+                    'function show(id,play){cur=id;var f=box.querySelector("iframe");if(play||f){if(!f){f=document.createElement("iframe");f.title="Preview of an embedded game";'
+                    'f.setAttribute("allow","fullscreen; clipboard-write; web-share");f.allowFullscreen=true;box.innerHTML="";box.appendChild(f)}f.src="/embed/"+id+".html"}'
+                    'else{box.querySelector("img").src="/img/games/"+id+"-400.webp"}'
+                    'document.querySelectorAll("[data-prev]").forEach(function(x){x.setAttribute("aria-pressed",String(x.dataset.prev===id))})}'
+                    'document.querySelectorAll("[data-prev]").forEach(function(b){b.onclick=function(){show(b.dataset.prev,false)}});'
+                    'box.querySelector("[data-prev-play]").onclick=function(){show(cur,true)}})()</script>')
     body = hero('Free for your website', 'Free Medieval Games for Your Website',
                 'Put an archery contest, a jousting tournament, a castle defense or a sword duel on your blog, class page or club site. Copy the code, paste it in, done. No sign-up, and it works on phones.',
                 cta_href='#games', cta='Get the code', second=('/games/', 'Play them first'))
     body += (f'<section class="ge-prev"><h2 class="gilt">This is what your visitors see</h2><div class="ge-tabs">{tabs}</div>'
-             f'<iframe data-prev-frame src="/embed/{GAMES[0]["id"]}.html" title="Preview of an embedded game" loading="lazy" allow="fullscreen; clipboard-write; web-share" allowfullscreen></iframe></section>')
+             f'<div class="ge-frame" data-prev-box><img src="/img/games/{GAMES[0]["id"]}-400.webp" width="400" height="533" loading="lazy" decoding="async" alt="">'
+             '<button type="button" class="btn big" data-prev-play>Play the preview</button></div></section>')
     cards = ''.join(f'<div class="ge-game"><img src="/img/games/{g["id"]}-400.webp" width="400" height="533" loading="lazy" decoding="async" alt="{E(g["name"])}: screenshot">'
                     f'<div><h3>{E(g["name"])}</h3><p>{E(g["card"])}</p>{embed_box(g)}</div></div>' for g in GAMES)
     body += f'<section id="games" class="sec" style="padding-bottom:0"><h2 class="gilt center">Pick a game and copy its code</h2><div class="ge-games">{cards}</div></section>'

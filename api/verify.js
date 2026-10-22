@@ -3,7 +3,7 @@
 const PRODUCTS = {
   crest: 'pdt_0Nq7l6osvcUL8N0wu65UL',   // Custom Coat of Arms, $9
   kit: 'pdt_0Nq8R4zhafrgCTZA1HYkj',     // Crest Logo Kit, $29
-  heirloom: '',                         // Heirloom set, $19 (same ID as HEIRLOOM_ID in crest-studio.js; empty until it exists)
+  heirloom: 'pdt_0NqJRujr3pL9QJ19guMOt', // Heirloom Crest Set, $19 (same ID as HEIRLOOM_ID in crest-studio.js)
 };
 
 module.exports = async (req, res) => {

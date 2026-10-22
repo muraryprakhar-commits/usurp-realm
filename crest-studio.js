@@ -10,7 +10,7 @@ const KIT_ID = 'pdt_0Nq8R4zhafrgCTZA1HYkj';                // Dodo live product:
 const KIT_PRICE = 29;
 // Heirloom set: engraving, line art, stamp and seal files, coloring page, bookplates, house banner, A4 certificate.
 // Leave HEIRLOOM_ID empty until the $19 product exists in Dodo; the tier stays hidden and the files ship with the Kit.
-const HEIRLOOM_ID = '';
+const HEIRLOOM_ID = 'pdt_0NqJRujr3pL9QJ19guMOt';      // Dodo live product: Heirloom Crest Set, $19 (created 22 Oct 2026)
 const HEIRLOOM_PRICE = 19;
 const CHECKOUT = 'https://checkout.dodopayments.com/buy/';
 const RETURN_URL = 'https://usurp.games/crest.html';

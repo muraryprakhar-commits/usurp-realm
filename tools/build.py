@@ -218,7 +218,7 @@ def hero(eyebrow, h1, lede, cta_href='/crest.html', cta='Design yours free', sec
 <p class="lede">{lede}</p><div class="cta-row"><a class="btn big" href="{cta_href}">{cta}</a>{s}</div></section>'''
 
 
-PRICE_NOTE = 'Designing is free and needs no account. When you love it, $9 gets the whole set: print-ready art (4000 px PNG and SVG), a certificate of arms explaining its meaning, a profile picture and a phone wallpaper. For a club, team or business, the <a href="/crest-logo-maker.html">$29 Logo Kit</a> adds logo, icon, banner and brand files.'
+PRICE_NOTE = 'Designing is free and needs no account. When you love it, $9 gets the whole set: print-ready art (4000 px PNG and SVG), a certificate of arms explaining its meaning, a profile picture and a phone wallpaper. For a family gift or a wax seal, the $19 Heirloom set adds an engraving, seal, bookplates and a house banner. For a club, team or business, the <a href="/crest-logo-maker.html">$29 Logo Kit</a> adds logo, icon, banner and brand files.'
 
 
 def ld_base(p, extra=None):
@@ -1495,7 +1495,7 @@ def sitemap_and_llms():
     with open(os.path.join(ROOT, 'tools', 'img-jobs.json'), 'w') as f:
         json.dump(IMG_JOBS, f)
     lines = ['# Crest Studio by Usurp', '',
-             '> Free online coat of arms and family crest maker. Anyone can design a heraldic crest (name, motto, colors, division, emblem) in the browser for free with no account. A one-time $9 purchase downloads print-ready files (4000 px PNG, 1200 px PNG, SVG vector), a certificate of arms with its blazon and meaning, a profile picture and a phone wallpaper. A $29 Crest Logo Kit adds transparent logo files, favicons and app icons, social banners and a brand sheet for clubs, teams and businesses. All files are usable for any lawful purpose, personal or commercial. Original decorative artwork, not an official grant of arms. Payments by Dodo Payments; 14-day refunds.', '',
+             '> Free online coat of arms and family crest maker. Anyone can design a heraldic crest (name, motto, colors, division, emblem) in the browser for free with no account. A one-time $9 purchase downloads print-ready files (4000 px PNG, 1200 px PNG, SVG vector), a certificate of arms with its blazon and meaning, a profile picture and a phone wallpaper. A $19 Heirloom set adds a hatched engraving, line-art and two-tone files for stamps and embroidery, a round seal for wax seal stamps, a coloring page, bookplates, a house banner and an A4 certificate. A $29 Crest Logo Kit adds the heirloom files plus transparent logo files, favicons and app icons, social banners and a brand sheet for clubs, teams and businesses. All files are usable for any lawful purpose, personal or commercial. Original decorative artwork, not an official grant of arms. Payments by Dodo Payments; 14-day refunds.', '',
              '## Main tool', f'- [Crest Studio home]({SITE}/): what Crest Studio is, sample files, and six crests for any last name',
              f'- [Crest Studio: design your own coat of arms]({SITE}/crest.html): the free designer with 50 heraldic emblems, and the $9 download', '',
              '## Free tools and guides']

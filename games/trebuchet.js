@@ -17,7 +17,9 @@ function needMatter() {
 const { clamp, lerp, ease, rand } = UG;
 const W = 540, H = 720, SC = 0.75, WW = W / SC, WH = H / SC, GY = 880;    // world is 720 x 960; the ground's top is at y 880
 const XO = -180;                                                         // castles are laid out for x 480..880; shift them closer
-const PIV = { x: 92, y: GY - 234 }, REL = { x: 148, y: GY - 354 }, VMAX = 16.5, STEP = 1000 / 60;
+const PIV = { x: 92, y: GY - 234 }, REL = { x: 148, y: GY - 354 }, STEP = 1000 / 60;
+// Aiming. Full power at 45 degrees lands just past the right edge of the screen, so the whole drag is useful.
+const VMAX = 11.5, PMIN = 0.3, AMIN = 0.09, AMAX = 1.4, PULL = 170;
 const GSTEP = 0.001 * STEP * STEP;                                         // gravity per step, as Matter integrates it
 const MAT = {
   wood: { density: 0.0016, friction: 0.7, hp: 14, tough: 6.5, col: '#9a6a36', dark: '#6b4423', line: '#5a3a1c', pts: 50 },
@@ -161,7 +163,7 @@ function startLevel(g, i) {
 }
 function realStart(g, i) {
   S = { g, lvl: i, L: LEVELS[i], hills: [], blocks: [], guards: [], kill: [], blast: [], flags: [], booms: [], down: 0, broke: 0, score: 0,
-        stones: LEVELS[i].stones, fire: LEVELS[i].fire, ammo: 'stone', aim: { a: 0.78, p: 0.68 }, dragging: false, drag0: null,
+        stones: LEVELS[i].stones, fire: LEVELS[i].fire, ammo: 'stone', aim: { a: 0.78, p: 0.6 }, dragging: false, drag0: null, trail: [], lastTrail: null, lastAim: null,
         phase: 'intro', phaseT: 0, shot: null, arm: 0, armT: 0, shotT: 0, live: false, acc: 0, wind: LEVELS[i].wind, msg: '', msgT: 0, shots: 0 };
   buildLevel(i);
   g.state = 'play';
@@ -174,7 +176,7 @@ function launch(g) {
   const fire = S.ammo === 'fire';
   if (fire ? S.fire <= 0 : S.stones <= 0) return;
   if (fire) S.fire--; else S.stones--;
-  S.shots++; S.phase = 'swing'; S.armT = 0; S.live = true;
+  S.shots++; S.phase = 'swing'; S.armT = 0; S.live = true; S.trail = []; S.lastAim = { a: S.aim.a, p: S.aim.p };
   UG.sfx.whoosh(); UG.sfx.twang();
 }
 function release() {
@@ -193,6 +195,7 @@ function settled() {
   return true;
 }
 function endShot(g) {
+  if (S.trail.length) S.lastTrail = S.trail;               // the last shot's path stays on screen while you aim the next
   if (S.shot) { Composite.remove(engine.world, S.shot); S.shot = null; }
   const left = S.guards.filter(x => !x.out).length;
   if (!left) return win(g);
@@ -237,7 +240,7 @@ function menu(g, pick) {
     return;
   }
   g.screen({ kicker: 'Trebuchet game', title: 'Siege',
-    html: '<ol class="ug-howto"><li>Drag back anywhere to aim. Further back throws harder.</li><li>Let go to fling a stone from your trebuchet.</li><li>Topple the castle until every one of the Usurper\'s guards yields.</li></ol>',
+    html: '<ol class="ug-howto"><li>Pull back anywhere, like a slingshot. The arrow shows the angle; longer and redder means more power.</li><li>Let go to throw. The orange dots show where your last stone flew, so you can correct.</li><li>Topple the castle until every one of the Usurper\'s guards yields.</li></ol>',
     sub: totalBest() ? `Campaign total: ${totalBest()} · ${Object.keys(prog.stars).length} of ${LEVELS.length} castles taken` : `${LEVELS.length} castles of timber and stone`,
     primary: { label: next > 0 ? `Play castle ${next + 1}` : 'Begin the siege', on: () => { g.hide(); UG.between(g, () => startLevel(g, next)); } },
     secondary: prog.unlocked > 1 ? { label: 'Choose a castle', on: () => menu(g, true) } : undefined });
@@ -321,15 +324,41 @@ function ammoArt(ctx, x, y, fire, g) {
     ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(x, y, 19, 0, 6.283); ctx.fill();
   }
 }
+function powerColour(p) { return p < 0.55 ? '#7fd06b' : p < 0.8 ? '#ffd76a' : '#ff8a5c'; }
 function preview(ctx) {
+  // where the last stone went, so the next shot can be corrected
+  if (S.lastTrail) {
+    ctx.fillStyle = 'rgba(255,170,90,.55)';
+    S.lastTrail.forEach(([x, y], i) => { if (i % 2 === 0) { ctx.beginPath(); ctx.arc(x, y, 3.5, 0, 6.283); ctx.fill(); } });
+    const [lx, ly] = S.lastTrail[S.lastTrail.length - 1];
+    ctx.strokeStyle = 'rgba(255,170,90,.85)'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(lx - 9, ly - 9); ctx.lineTo(lx + 9, ly + 9); ctx.moveTo(lx + 9, ly - 9); ctx.lineTo(lx - 9, ly + 9); ctx.stroke();
+  }
+  // the opening of this shot's flight: the same length on every castle
   const v = S.aim.p * VMAX; let x = REL.x, y = REL.y, vx = Math.cos(S.aim.a) * v, vy = -Math.sin(S.aim.a) * v;
-  const steps = Math.round(18 + 34 * (1 - S.lvl / LEVELS.length));    // later castles show less of the arc
-  ctx.fillStyle = 'rgba(255,255,255,.9)';
+  const steps = Math.max(26, 44 - S.lvl * 2);
+  ctx.fillStyle = 'rgba(255,255,255,.95)';
   for (let i = 1; i <= steps; i++) {
     vy += GSTEP; vx += S.wind * 0.004; x += vx; y += vy;
-    if (i % 3 === 0) { ctx.globalAlpha = 1 - i / (steps + 6); ctx.beginPath(); ctx.arc(x, y, 5, 0, 6.283); ctx.fill(); }
+    if (i % 3 === 0) { ctx.globalAlpha = 1 - i / (steps + 8); ctx.beginPath(); ctx.arc(x, y, 5.5, 0, 6.283); ctx.fill(); }
   }
   ctx.globalAlpha = 1;
+  // the aim arrow from the sling: its direction is the angle, its length and colour the power
+  const L = 46 + 120 * (S.aim.p - PMIN) / (1 - PMIN), ex = REL.x + Math.cos(S.aim.a) * L, ey = REL.y - Math.sin(S.aim.a) * L;
+  ctx.strokeStyle = 'rgba(20,14,8,.6)'; ctx.lineWidth = 11; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(REL.x, REL.y); ctx.lineTo(ex, ey); ctx.stroke();
+  ctx.strokeStyle = powerColour(S.aim.p); ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(REL.x, REL.y); ctx.lineTo(ex, ey); ctx.stroke();
+  ctx.save(); ctx.translate(ex, ey); ctx.rotate(-S.aim.a); ctx.fillStyle = powerColour(S.aim.p); ctx.beginPath(); ctx.moveTo(14, 0); ctx.lineTo(-6, -10); ctx.lineTo(-6, 10); ctx.closePath(); ctx.fill(); ctx.restore();
+}
+// The pull, drawn in screen units on top of everything while the finger is down.
+function pullBand(ctx) {
+  if (!S.dragging || !S.cur) return;
+  const { x: x0, y: y0 } = S.drag0, { x: x1, y: y1 } = S.cur;
+  ctx.strokeStyle = 'rgba(255,243,207,.75)'; ctx.lineWidth = 2; ctx.setLineDash([6, 6]); ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke(); ctx.setLineDash([]);
+  ctx.strokeStyle = 'rgba(255,243,207,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x0, y0, 14, 0, 6.283); ctx.stroke();
+  ctx.fillStyle = powerColour(S.aim.p); ctx.beginPath(); ctx.arc(x1, y1, 9, 0, 6.283); ctx.fill();
+  const t = `${Math.round(S.aim.a * 57.3)}°  ·  ${Math.round(S.aim.p * 100)}%`;
+  ctx.font = UG.font(16, 700); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  const ty = clamp(y1 - 38, 80, H - 80), tx = clamp(x1, 70, W - 70);
+  ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(20,14,8,.85)'; ctx.strokeText(t, tx, ty); ctx.fillStyle = '#fff3cf'; ctx.fillText(t, tx, ty);
 }
 function hud(ctx, g) {
   ctx.fillStyle = 'rgba(12,10,8,.66)'; ctx.fillRect(0, 0, W, 50); ctx.fillStyle = 'rgba(212,175,90,.6)'; ctx.fillRect(0, 50, W, 1.5);
@@ -354,13 +383,15 @@ function hud(ctx, g) {
     ctx.fillStyle = S.fire ? '#fff3cf' : '#7d6f57'; ctx.textAlign = 'center'; ctx.font = UG.font(12, 700); ctx.fillText(`FIRE POT × ${S.fire}`, bx + bw / 2, by + bh / 2 + 1);
   }
   if (S.phase === 'aim') {
-    ctx.textAlign = 'center'; ctx.fillStyle = '#e8dcc2'; ctx.font = UG.font(12, 700);
-    ctx.fillText(`${Math.round(S.aim.a * 57.3)}° · power ${Math.round(S.aim.p * 100)}%`, W / 2 - (S.L.fire ? 40 : 0), H - 26);
+    const cx = W / 2 - (S.L.fire ? 40 : 0);
+    ctx.textAlign = 'center'; ctx.fillStyle = '#fff3cf'; ctx.font = UG.font(13, 700);
+    ctx.fillText(`Angle ${Math.round(S.aim.a * 57.3)}° · power ${Math.round(S.aim.p * 100)}%`, cx, S.lastAim ? H - 34 : H - 26);
+    if (S.lastAim) { ctx.fillStyle = '#d9a46a'; ctx.font = UG.font(11, 700); ctx.fillText(`last shot ${Math.round(S.lastAim.a * 57.3)}° · ${Math.round(S.lastAim.p * 100)}%  (orange)`, cx, H - 16); }
   }
   if (S.msgT > 0) {
     ctx.globalAlpha = Math.min(1, S.msgT * 2); ctx.font = UG.font(28, 900, 'Cinzel Decorative'); ctx.textAlign = 'center'; ctx.lineWidth = 6; ctx.strokeStyle = 'rgba(20,14,8,.85)';
     ctx.strokeText(S.msg, W / 2, 150); ctx.fillStyle = '#ffd76a'; ctx.fillText(S.msg, W / 2, 150);
-    if (S.lvl === 0 && S.phase !== 'fly') { ctx.font = UG.font(15, 700); ctx.lineWidth = 4; const t = 'Drag back anywhere, then let go'; ctx.strokeText(t, W / 2, 186); ctx.fillStyle = '#fff3cf'; ctx.fillText(t, W / 2, 186); }
+    if (S.lvl === 0 && S.phase !== 'fly') { ctx.font = UG.font(15, 700); ctx.lineWidth = 4; const t = 'Pull back like a slingshot, then let go'; ctx.strokeText(t, W / 2, 186); ctx.fillStyle = '#fff3cf'; ctx.fillText(t, W / 2, 186); }
     ctx.globalAlpha = 1;
   }
 }
@@ -368,19 +399,30 @@ function fireBtnHit(x, y) { return S.L.fire && x > W - 128 && y > H - 46; }
 
 UG.start({
   id: 'siege', title: 'Siege', label: 'Trebuchet game: fling stones at a castle', W, H,
+  help(g, resume) {
+    g.screen({ kicker: 'How to play', title: 'Siege',
+      html: '<ul class="ug-rules">'
+        + '<li><b>Aim</b>: pull back anywhere, like a slingshot (or drag towards the castle). The arrow on the trebuchet shows the angle; longer and redder is more power.</li>'
+        + '<li><b>Correct</b>: the orange dots show your last stone. Too far? Less power. Hitting the wall instead of the tower top? A higher angle.</li>'
+        + '<li><b>A good start</b>: about 45 degrees and 60 to 75 percent power reaches most castles.</li>'
+        + '<li><b>Win</b>: every guard must yield. Guards yield when they fall, tip over or take a hard hit.</li>'
+        + '<li><b>Fire pots</b> (from castle 4) burst on impact and shove everything nearby. Tap FIRE POT to load one.</li>'
+        + '<li><b>Stars</b>: each stone left over is worth 1,000 points and a star.</li></ul>',
+      primary: resume ? { label: 'Back to the siege', on: resume } : { label: 'Got it', on: () => menu(g) } });
+  },
   init(g) {
     me = UG.player(); myShield = UG.shield(me.design);
     foeShield = UG.shield({ name: 'The Usurper', motto: '', f: '#1d1915', d: '#b3242f', c: '#b3242f', div: 'chevron', ch: 'wolf', bg: 'clear' });
     for (let i = 0; i < 4; i++) clouds.push({ x: Math.random() * WW, y: 110 + Math.random() * 260, p: Array.from({ length: 4 }, (_, j) => [j * 34 - 50, (Math.random() - 0.5) * 14, 22 + Math.random() * 18]) });
     const lv = Math.min(prog.unlocked, LEVELS.length) - 1, G0 = ghost(lv);
-    S = { lvl: lv, hills: G0.hills, blocks: G0.blocks, guards: G0.guards, kill: [], blast: [], flags: [], booms: [], score: 0, phase: 'intro', aim: { a: 0.78, p: 0.68 }, L: LEVELS[lv], stones: 3, fire: 0, wind: 0, g };
+    S = { lvl: lv, hills: G0.hills, blocks: G0.blocks, guards: G0.guards, kill: [], blast: [], flags: [], booms: [], score: 0, phase: 'intro', aim: { a: 0.78, p: 0.6 }, L: LEVELS[lv], stones: 3, fire: 0, wind: 0, g };
     menu(g);
     // warm the cache once the page is idle: the file arrives, but nothing runs until the player starts
     (window.requestIdleCallback || (f => setTimeout(f, 2000)))(() => { const l = document.querySelector('link[data-matter]'); if (l && !window.Matter) { const x = document.createElement('link'); x.rel = 'prefetch'; x.href = l.getAttribute('href'); document.head.appendChild(x); } });
   },
   update(g, dt) {
     g.dt = dt;
-    if (!engine || S.phase === 'loading') return;
+    if (!engine || S.phase === 'loading' || g.state === 'help') return;
     if (S.msgT > 0) S.msgT -= dt;
     for (const f of S.flags) f.t += dt; S.flags = S.flags.filter(f => f.t < 1.6);
     for (const b of S.booms) b.t += dt; S.booms = S.booms.filter(b => b.t < 0.5);
@@ -394,6 +436,7 @@ UG.start({
     while (S.acc >= STEP) {
       if (S.shot && S.wind) Body.setVelocity(S.shot, { x: S.shot.velocity.x + S.wind * 0.004, y: S.shot.velocity.y });
       Engine.update(engine, STEP); S.acc -= STEP;
+      if (S.shot && S.trail.length < 400) S.trail.push([S.shot.position.x, S.shot.position.y]);
       if (S.kill.length) { const k = S.kill; S.kill = []; k.forEach(breakBlock); }
       if (S.blast.length) { const k = S.blast; S.blast = []; k.forEach(s => { if (s === S.shot) explode(s); }); }
     }
@@ -436,33 +479,39 @@ UG.start({
     if (g.state === 'play' && S.phase === 'aim') preview(ctx);
     ctx.restore();
     if ((g.state === 'play' || g.state === 'over') && S.phase !== 'loading') hud(ctx, g);
+    if (g.state === 'play' && S.phase === 'aim') pullBand(ctx);
   },
   down(g, x, y) {
     if (g.state !== 'play' || S.phase !== 'aim' || !engine) return;
     if (fireBtnHit(x, y)) { if (S.fire > 0) { S.ammo = S.ammo === 'fire' ? 'stone' : 'fire'; if (S.ammo === 'stone' && S.stones <= 0) S.ammo = 'fire'; UG.sfx.click(); } return; }
-    S.dragging = true; S.drag0 = { x, y, a: S.aim.a, p: S.aim.p }; UG.sfx.draw();
+    S.dragging = true; S.drag0 = { x, y, a: S.aim.a, p: S.aim.p }; S.cur = { x, y }; UG.sfx.draw();
   },
   move(g, x, y) {
     if (!S.dragging) return;
-    // pull back from where you first touched: the shot goes the opposite way
-    const dx = S.drag0.x - x, dy = S.drag0.y - y, d = Math.hypot(dx, dy);
+    S.cur = { x, y };
+    // Pull back like a slingshot (down and to the left) and the shot flies the opposite way. Dragging towards the
+    // castle instead points the shot where you drag: either way the shot always goes right, never back at you.
+    let dx = S.drag0.x - x, dy = S.drag0.y - y;
+    const d = Math.hypot(dx, dy);
     if (d < 12) return;
-    S.aim.a = clamp(Math.atan2(-dy, dx), 0.12, 1.45);
-    S.aim.p = clamp(d / 210, 0.2, 1);
+    if (dx < 0) { dx = -dx; dy = -dy; }
+    S.aim.a = clamp(Math.atan2(-dy, dx), AMIN, AMAX);
+    S.aim.p = clamp(PMIN + (1 - PMIN) * (d - 12) / (PULL - 12), PMIN, 1);
   },
   up(g, x, y) {
     if (!S.dragging) return;
     S.dragging = false;
     const d = Math.hypot(S.drag0.x - x, S.drag0.y - y);
+    S.cur = null;
     if (d < 12) { S.aim.a = S.drag0.a; S.aim.p = S.drag0.p; return; }   // a tap is not a shot
     launch(g);
   },
   key(g, key, down) {
     if (!down || g.state !== 'play' || S.phase !== 'aim') return;
-    if (key === 'ArrowUp' || key === 'w' || key === 'W') S.aim.a = clamp(S.aim.a + 0.03, 0.12, 1.45);
-    if (key === 'ArrowDown' || key === 's' || key === 'S') S.aim.a = clamp(S.aim.a - 0.03, 0.12, 1.45);
-    if (key === 'ArrowRight' || key === 'd' || key === 'D') S.aim.p = clamp(S.aim.p + 0.02, 0.2, 1);
-    if (key === 'ArrowLeft' || key === 'a' || key === 'A') S.aim.p = clamp(S.aim.p - 0.02, 0.2, 1);
+    if (key === 'ArrowUp' || key === 'w' || key === 'W') S.aim.a = clamp(S.aim.a + 1 / 57.3, AMIN, AMAX);
+    if (key === 'ArrowDown' || key === 's' || key === 'S') S.aim.a = clamp(S.aim.a - 1 / 57.3, AMIN, AMAX);
+    if (key === 'ArrowRight' || key === 'd' || key === 'D') S.aim.p = clamp(S.aim.p + 0.01, PMIN, 1);
+    if (key === 'ArrowLeft' || key === 'a' || key === 'A') S.aim.p = clamp(S.aim.p - 0.01, PMIN, 1);
     if (key === 'Enter' && S.fire > 0) { S.ammo = S.ammo === 'fire' ? 'stone' : 'fire'; if (S.ammo === 'stone' && S.stones <= 0) S.ammo = 'fire'; }
     if (key === ' ' || key === 'Spacebar') launch(g);
   },

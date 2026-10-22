@@ -1012,15 +1012,25 @@ GAMES = [
          desc="Free medieval sword fighting game. Read the knight's blade, parry left, high or right, beat the feints and riposte. See your parry speed in milliseconds.",
          tagline='Read the blade. Parry. Riposte. How fast are your hands?', genre=['Action', 'Reflex', 'Fighting'],
          card='Read the blade, parry, riposte. Test your reflexes.',
-         how=['Your opponent raises their sword to your left, overhead or to your right, then strikes.',
-              'Parry the same way before the blade lands: tap the left, high or right button, swipe, or use the arrow keys.',
-              'Watch for feints: some knights start one way and strike another. Guess early and you will be fooled.',
-              'Parry just before the blow lands for a perfect parry, then tap the glowing mark to riposte. Land enough ripostes and the knight yields.'],
-         touch='Tap the three buttons, or swipe left, up or right. Tap the glowing mark to riposte.', keys='Arrow keys or A, W and D to parry. Space to riposte.',
-         tips=['Do not guess. Wait until the blade has clearly moved, then parry.', 'Perfect parries come from patience: block in the last instant before the strike.',
-               'Every fourth parry in a row also opens a riposte.', 'Beating a knight wins back a lost heart.'],
+         how=['Your opponent raises his sword to your left, overhead or to your right, then strikes. Parry that side before the blade lands: tap LEFT, HIGH or RIGHT, swipe, or use the arrow keys.',
+              'A ring appears on the button you need and shrinks as the blow comes. Parry while it is inside the gold band for a perfect parry.',
+              'A perfect parry opens a riposte: tap the knight within a second to strike him. Ripostes are what beat a knight; his health bar shows how many he can take.',
+              'Three perfect parries fill your Valour and light the Mighty Blow button: two hits at once. Use it between his attacks.',
+              'New to it? The training yard teaches every move in about a minute, with nothing to lose.'],
+         touch='Tap the three buttons, or swipe left, up or right. Tap the knight to riposte, and MIGHTY BLOW when it glows.', keys='Arrow keys or A, W and D to parry. Space to riposte or for the Mighty Blow.',
+         tips=['Do not guess. Parry only once the ring is on a button; on a feint it jumps, so follow it.', 'Ordinary parries keep you alive, perfect parries win: early in a duel, aim for the gold every time.',
+               'Save the Mighty Blow for the pause after a combo, or press it the moment he starts a wind-up to strike first.', 'Five perfect parries in a row win back a heart, and beating a knight restores one too.'],
+         about=('How to win the duel', '<p>Every knight fights in a style of his own, and each one is introduced with a tip before the fight.</p><ul>'
+                '<li><b>The Squire</b> is slow and honest: the place to practise perfect parries.</li>'
+                '<li><b>The Brute</b> is slow but tough. Only ripostes hurt him, so be patient for the gold.</li>'
+                '<li><b>The Trickster</b> feints: his blade starts one way and switches. Wait for the ring to settle.</li>'
+                '<li><b>The Berserker</b> strikes in twos and threes. Parry each blow, then use your Mighty Blow in the pause.</li>'
+                '<li><b>The Swift</b> is very fast. Read the blade early and accept ordinary parries.</li>'
+                '<li><b>Champions</b> come after that, mixing every trick and growing faster each time.</li></ul>'
+                '<p>When a duel ends, the game tells you what hit you most often (slow parries, the wrong side or feints) and what to change.</p>'),
          faqs=[('Is this a reaction time test?', 'Partly. It times how long you take to parry once the blade shows where it is going, so it rewards quick reading as well as quick hands. Feints keep it fair: guessing does not work.'),
                ('Is it violent?', 'No blood. Knights clash, parry and yield.'),
+               ('How do I beat a knight?', 'Land ripostes. A perfect parry, made while the shrinking ring is inside the gold band, opens a riposte: tap the knight to hit him. Each riposte takes one point from his health bar, and a Mighty Blow takes two.'),
                ('Does it work on a phone?', 'Yes, with big buttons and swipes, in any modern browser.'),
                ('Can I use my own coat of arms?', 'Yes. Design one free in <a href="/crest.html">Crest Studio</a>: your arms appear beside your hearts and your sword grip takes your colours.')]),
     dict(id='siege', slug='games/trebuchet-game.html', js='trebuchet', short='Trebuchet siege', name='Siege: The Trebuchet Game',
@@ -1029,13 +1039,13 @@ GAMES = [
          desc='Free trebuchet game with real physics. Aim, fling stones and fire pots, and bring down ten castles of timber and stone. Plays on phone and computer.',
          tagline='Ten castles. Real physics. Never quite enough stones.', genre=['Physics', 'Puzzle', 'Strategy'],
          card='Fling stones, topple castles, win the siege.',
-         how=['Drag back anywhere on the field. The further you pull, the harder the throw; the angle of your pull sets the arc.',
-              'Let go to fling a stone from your trebuchet. Dots show the start of the flight; the wind, top right, bends it.',
+         how=['Pull back anywhere on the screen, like a slingshot: down and to the left aims up and to the right. The arrow on the trebuchet shows your angle, and it grows longer and redder with power.',
+              'Let go to throw. White dots show the start of the flight, and the orange dots show where your last stone went, so you can adjust: more power to throw further, a higher angle to drop onto the top of a tower.',
               'Knock the castle down until every one of the Usurper\'s guards yields. A guard yields when he falls, is knocked flat or takes a hard hit.',
               'From the fourth castle you also get fire pots: tap FIRE POT to load one. It bursts on impact and shoves everything nearby.'],
-         touch='Drag back anywhere and let go. Tap FIRE POT to switch ammunition.',
-         keys='Up and down set the angle, left and right set the power, Space throws, Enter switches to a fire pot. Or drag with the mouse.',
-         tips=['Hit the posts low: when a post goes, the whole floor above it comes down.', 'Stone blocks shrug off glancing blows. Aim at timber, or drop a stone on them from high above.',
+         touch='Pull back anywhere and let go. Tap FIRE POT to switch ammunition.',
+         keys='Up and down change the angle one degree at a time, left and right change the power, Space throws, Enter switches to a fire pot. Or pull back with the mouse.',
+         tips=['Most castles fall to about 45 degrees and 60 to 75 percent power. Start there and adjust from the orange trail.', 'Hit the posts low: when a post goes, the whole floor above it comes down.', 'Stone blocks shrug off glancing blows. Aim at timber, or drop a stone on them from high above.',
                'Every stone you keep scores 1,000 points and earns stars, so the first shot matters most.', 'A high lob lands on the guards on top; a flat, fast shot breaks the lower floors.'],
          faqs=[('How many levels are there?', 'Ten castles, from a timber watch post to the Usurper\'s Keep, with your progress saved on this device. Take a castle with stones to spare to earn up to three stars.'),
                ('Is the physics real?', 'Yes. Every block, guard and stone is a physical body with weight and friction, run by the open-source Matter.js engine, so no two collapses are quite the same.'),
@@ -1083,7 +1093,67 @@ GAMES = [
          about=("The game of mills", "<p>Nine Men's Morris goes by many names: mills, merels, and in German Mühle. Boards were scratched into stone benches and church seats, and cut into the turf of village greens.</p>"
                 "<p>It was already played in the Viking age: the game board from the Gokstad ship burial in Norway has Nine Men's Morris on one side and a tafl game on the other. The rules here are the common modern ones, including flying when a player is down to three pieces.</p>")),
 ]
+def tafl_svg(title, pieces, arrows=(), taken=(), special=((0, 0), (4, 0), (0, 4), (4, 4), (2, 2)), bad=()):
+    """A 5 by 5 rules diagram: pieces (x, y, 'r'aider|'g'uard|'k'ing), moves as arrows, taken pieces crossed out."""
+    C, M = 40, 6
+    sz = 5 * C + 2 * M
+    out = [f'<svg viewBox="0 0 {sz} {sz}" width="{sz}" height="{sz}" role="img" aria-label="{E(title)}">',
+           f'<rect x="0" y="0" width="{sz}" height="{sz}" fill="#5c3a1c"/>']
+    for y in range(5):
+        for x in range(5):
+            f = '#8f5f2e' if (x, y) in special else ('#b98a52' if (x + y) % 2 else '#c69a60')
+            out.append(f'<rect x="{M + x * C}" y="{M + y * C}" width="{C}" height="{C}" fill="{f}" stroke="rgba(60,34,14,.5)"/>')
+            if (x, y) in special:
+                cx, cy = M + x * C + C / 2, M + y * C + C / 2
+                out.append(f'<path d="M{cx-10} {cy-10}L{cx+10} {cy+10}M{cx+10} {cy-10}L{cx-10} {cy+10}" stroke="rgba(255,225,170,.5)" stroke-width="2"/>')
+    ctr = lambda x, y: (M + x * C + C / 2, M + y * C + C / 2)
+    for (x0, y0), (x1, y1) in bad:
+        (a, b), (c, d) = ctr(x0, y0), ctr(x1, y1)
+        out.append(f'<path d="M{a} {b}L{c} {d}" stroke="#c8312f" stroke-width="3" stroke-dasharray="6 5"/>'
+                   f'<path d="M{c-8} {d-8}L{c+8} {d+8}M{c+8} {d-8}L{c-8} {d+8}" stroke="#c8312f" stroke-width="4"/>')
+    for x, y, k in pieces:
+        cx, cy = ctr(x, y)
+        fill, ring = {'r': ('#1d1915', '#c9a84f'), 'g': ('#efe6d0', '#7a1020'), 'k': ('#efe6d0', '#7a1020')}[k]
+        op = ' opacity=".45"' if (x, y) in taken else ''
+        out.append(f'<g{op}><circle cx="{cx}" cy="{cy+2}" r="15" fill="rgba(0,0,0,.35)"/><circle cx="{cx}" cy="{cy}" r="15" fill="{fill}" stroke="#2a1a0e" stroke-width="1.5"/>'
+                   f'<circle cx="{cx}" cy="{cy}" r="10" fill="none" stroke="{ring}" stroke-width="2.5"/>')
+        if k == 'k':
+            out.append(f'<path d="M{cx-8} {cy+4}L{cx-9} {cy-5}L{cx-4} {cy-1}L{cx} {cy-8}L{cx+4} {cy-1}L{cx+9} {cy-5}L{cx+8} {cy+4}Z" fill="#ffd76a" stroke="#5a3a10"/>')
+        out.append('</g>')
+        if (x, y) in taken:
+            out.append(f'<path d="M{cx-12} {cy-12}L{cx+12} {cy+12}M{cx+12} {cy-12}L{cx-12} {cy+12}" stroke="#c8312f" stroke-width="4" stroke-linecap="round"/>')
+    for (x0, y0), (x1, y1) in arrows:
+        (a, b), (c, d) = ctr(x0, y0), ctr(x1, y1)
+        L = ((c - a) ** 2 + (d - b) ** 2) ** 0.5
+        ux, uy = (c - a) / L, (d - b) / L
+        ex, ey = c - ux * 17, d - uy * 17
+        out.append(f'<path d="M{a + ux * 17} {b + uy * 17}L{ex} {ey}" stroke="#ffd76a" stroke-width="4" stroke-linecap="round"/>'
+                   f'<path d="M{ex + ux * 8} {ey + uy * 8}L{ex - uy * 7} {ey + ux * 7}L{ex + uy * 7} {ey - ux * 7}Z" fill="#ffd76a"/>')
+    out.append('</svg>')
+    return ''.join(out)
+
+
+def tafl_figs():
+    figs = [
+        ('Moving', 'Every piece slides any distance in a straight line, like a rook. No diagonals, no jumping.',
+         tafl_svg('Moving', [(2, 2, 'g')], arrows=[((2, 2), (2, 0)), ((2, 2), (4, 2))], special=((0, 0), (4, 0), (0, 4), (4, 4)), bad=[((2, 2), (4, 4))])),
+        ('Taking a piece', 'Trap an enemy between two of your pieces in a line. The trapped piece is taken.',
+         tafl_svg('Taking a piece', [(0, 2, 'g'), (1, 2, 'r'), (2, 2, 'g')], arrows=[((2, 4), (2, 2))], taken={(1, 2)}, special=((0, 0), (4, 0), (0, 4), (4, 4)))),
+        ('Corners help', 'A corner, or the empty throne, counts as your piece when you trap against it.',
+         tafl_svg('Corners help', [(1, 0, 'r'), (2, 0, 'g')], arrows=[((2, 3), (2, 0))], taken={(1, 0)}, special=((0, 0), (4, 0), (0, 4), (4, 4)))),
+        ('The king escapes', 'The defenders win as soon as the king reaches any corner.',
+         tafl_svg('The king escapes', [(4, 1, 'k'), (1, 3, 'r'), (2, 0, 'r')], arrows=[((4, 1), (4, 4))])),
+        ('Trapping the king', 'Away from the throne, two raiders on opposite sides take the king. On the throne he needs four; beside it, three and the throne.',
+         tafl_svg('Trapping the king', [(1, 1, 'r'), (2, 1, 'k'), (3, 1, 'r')], arrows=[((3, 4), (3, 1))], taken={(2, 1)}, special=((0, 0), (4, 0), (0, 4), (4, 4)))),
+    ]
+    cells = ''.join(f'<figure>{svg}<figcaption><b>{E(t)}.</b> {E(c)}</figcaption></figure>' for t, c, svg in figs)
+    return f'<h2 class="gilt" style="margin-top:22px">The rules in pictures</h2><div class="rules-figs">{cells}</div>'
+
+
 GAMES_LD_PUB = {'@type': 'Organization', 'name': 'Usurp (Murary Studios)', 'url': f'{SITE}/'}
+for _G in GAMES:
+    if _G['id'] == 'tafl':
+        _G['figs'] = tafl_figs()
 NUM = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve']
 GN = NUM[len(GAMES)]                                   # 'seven': used in page text so it stays right as games are added
 
@@ -1217,7 +1287,7 @@ def game_page(G):
             f'<div class="ug-wrap"><div class="ug" data-game="{G["id"]}"><noscript><p style="padding:24px;text-align:center">This game needs JavaScript turned on.</p></noscript></div></div>'
             '<aside class="ad-slot ad-rail" data-ad-slot aria-label="Sponsored"></aside></div>'
             f'{share_row(G)}'
-            f'<section class="gm-info" id="how-to-play"><h2 class="gilt">How to play</h2><ol>{how}</ol>'
+            f'<section class="gm-info" id="how-to-play"><h2 class="gilt">How to play</h2><ol>{how}</ol>{G.get("figs", "")}'
             f'<div class="gm-keys"><div><b>Phone and tablet</b>{E(G["touch"])}</div><div><b>Computer</b>{E(G["keys"])}</div></div>'
             f'<h2 class="gilt" style="margin-top:22px">Tips</h2><ul>{tips}</ul>'
             '<div class="callout"><b>Ride under your own banner.</b> Design your coat of arms free in <a href="/crest.html">Crest Studio</a> and it appears in every game on this site: on your shield, your banners and your lance.</div>'

@@ -25,9 +25,9 @@ SCENES = {
         mk('foot', 410, 590, { state: 'attack', hp: 1, max: 1 }), mk('runner', 80, 300, { hp: 1, max: 1 })];
       S.arrows = [{ x0: 270, y0: 600, x1: 272, y1: 470, t: .55, dur: .4, dmg: 1 }, { x0: 448, y0: 600, x1: 360, y1: 330, t: .4, dur: .45, dmg: 1 }, { x0: 92, y0: 600, x1: 200, y1: 300, t: .7, dur: .5, dmg: 1 }];
       S.aim = [272, 470];"""),
-    'duel': ("games/sword-duel.html", """const S = __ug.st(); Object.assign(S, { phase: 'attack', msgs: [], hearts: 2, score: 385, streak: 3 });
-      S.atk = { dir: 'R', fake: null, T: 1, t: 0.9, switchAt: 0, input: null, inputT: 0, done: false };"""),
-    'siege': ("games/trebuchet-game.html", """__ug.start(4); setTimeout(() => { const S = __ug.st(); S.aim.a = 0.62; S.aim.p = 0.86;
+    'duel': ("games/sword-duel.html", """const S = __ug.st(); Object.assign(S, { phase: 'attack', msgs: [], hearts: 2, score: 385, streak: 3, valour: 2 });
+      S.atk = { dir: 'R', fake: null, T: 1, t: 0.88, switchAt: 0, input: null, inputT: 0, done: false };"""),
+    'siege': ("games/trebuchet-game.html", """__ug.start(4); setTimeout(() => { const S = __ug.st(); S.aim.a = 0.62; S.aim.p = 0.93;
       window.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true })); }, 2300);"""),
     'tafl': ("games/viking-chess.html", """const S = __ug.st(), B = S.B; B.fill(0);
       [[0,3],[1,3],[5,3],[6,2],[3,0],[2,1],[3,5],[4,6],[1,5]].forEach(([x, y]) => B[y * 7 + x] = 1);
@@ -37,7 +37,8 @@ SCENES = {
       [0, 1, 2, 9, 17, 12, 22].forEach(i => b[i] = 1); [3, 4, 5, 10, 14, 19].forEach(i => b[i] = 2);
       Object.assign(S, { h: [0, 2, 3], turn: 1, removing: true, msgT: 0, mill: { pts: [0, 1, 2], t: 0.15, p: 1 }, last: { f: -1, t: 2, p: 1 }, thinking: 0 });"""),
 }
-START = {'tafl': ['.ug [data-c="0"]', '.ug [data-c="1"]'], 'morris': ['.ug [data-c="1"]']}
+# menus: a first-time visitor sees 'start here' first in Viking chess and the training yard first in the duel
+START = {'tafl': ['.ug [data-c="1"]', '.ug [data-c="1"]'], 'morris': ['.ug [data-c="1"]'], 'duel': ['.ug [data-c="1"]']}
 AFTER = {'siege': 3700}
 
 

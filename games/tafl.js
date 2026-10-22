@@ -190,9 +190,30 @@ function think(B0, side, L) {
   return pick;
 }
 
+/* ---------- lessons: five small puzzles that teach the rules on a 7 by 7 board ---------- */
+// p: pieces as [x, y, kind] with kind 1 raider, 2 guard, 3 king. side: who the learner plays. ok(rec, f, t): success test.
+const LESSONS = [
+  { title: 'Moving', side: 2, text: 'Every piece slides any number of empty squares in a straight line, like a rook in chess. Tap the guard, then the gold square.',
+    p: [[3, 5, 2], [3, 3, 3], [0, 3, 1], [3, 0, 1]], target: [6, 5], ok: (r, f, t) => t === at(6, 5), hint: 'Straight lines only: tap the guard, then the gold square.' },
+  { title: 'Taking a piece', side: 2, text: 'Trap a raider between two of your pieces, in a straight line, to take it. Slide your guard up to the gold square.',
+    p: [[2, 1, 2], [3, 1, 1], [4, 5, 2], [3, 3, 3], [0, 3, 1]], target: [4, 1], ok: r => r.caps.length > 0, hint: 'Close the trap: the raider must end up between two guards.' },
+  { title: 'Corners help', side: 2, text: 'Corners count as one of your pieces. Trap the raider against the corner.',
+    p: [[1, 0, 1], [2, 4, 2], [3, 3, 3], [6, 3, 1]], target: [2, 0], ok: r => r.caps.length > 0, hint: 'Put your guard on the other side of the raider from the corner.' },
+  { title: 'The king escapes', side: 2, text: 'The defenders win when the king reaches any corner. Tap the king (the crown), then a corner.',
+    p: [[6, 3, 3], [0, 3, 1], [3, 0, 1], [3, 6, 1], [4, 3, 2]], target: [6, 0], ok: r => r.win === 2, hint: 'The king slides like the others: straight up to the corner.' },
+  { title: 'Trapping the king', side: 1, text: 'Now you lead the raiders. Away from the throne, two raiders on opposite sides take the king. Close the trap.',
+    p: [[5, 1, 3], [4, 1, 1], [6, 4, 1], [1, 5, 2], [0, 3, 1]], target: [6, 1], ok: r => r.win === 1, hint: 'Slide the lower raider up so the king is between two raiders.' },
+];
+function lessonBoard(L) {
+  setSize(7);
+  const B = new Int8Array(NN);
+  for (const [x, y, k] of L.p) B[at(x, y)] = k;
+  return B;
+}
+
 /* ---------- game state ---------- */
 let S = null, me = null, myShield = null, opp = null, oppShield = null, games = 0;
-let mode = { ai: true, me: 2, n: 7, level: LEVELS[1] };
+let mode = { ai: true, me: 2, n: 7, level: LEVELS[1], lesson: false };
 const wins = UG.store.get('ug-tafl-wins', {});
 function lum(hex) {
   const v = parseInt(String(hex).replace('#', ''), 16), c = [(v >> 16) & 255, (v >> 8) & 255, v & 255].map(a => { a /= 255; return a <= 0.03928 ? a / 12.92 : Math.pow((a + 0.055) / 1.055, 2.4); });
@@ -208,6 +229,42 @@ function colours() {
 }
 const SIDE = { 1: 'Raiders', 2: 'Defenders' };
 function who(side) { return mode.ai ? (side === mode.me ? 'You' : opp.name.split(' of ')[0]) : SIDE[side]; }
+function newLesson(g, i) {
+  const L = LESSONS[i];
+  mode = { ai: true, me: L.side, n: 7, level: mode.level || LEVELS[1], lesson: true };
+  opp = { name: 'Lesson', design: { name: 'Raiders', motto: '', f: '#1d1915', d: '#c9a84f', c: '#c9a84f', div: 'plain', ch: 'raven', bg: 'clear' } };
+  oppShield = UG.shield(opp.design);
+  S = { B: lessonBoard(L), turn: L.side, sel: -1, anim: null, fades: [], last: null, think: 0, over: false, plies: 0, quiet: 0, seen: new Map(), col: colours(),
+        msg: '', msgT: 0, cur: THRONE, kb: false, wait: null, taken: { 1: 0, 2: 0 }, lesson: { i, L, done: false } };
+  g.state = 'play';
+  if (i === 0) UG.track('lesson');
+  g.say(`Lesson ${i + 1}: ${L.title}. ${L.text}`);
+}
+function lessonCheck(g, r, f, t) {
+  const Ls = S.lesson, ok = Ls.L.ok(r, f, t);
+  Ls.done = true;
+  if (ok) {
+    UG.sfx.coin(); g.pop('Well done!', W / 2, 330, { c: '#9fe08a', size: 30, max: 1.2 });
+    S.msg = Ls.i + 1 < LESSONS.length ? 'Well done! Next lesson…' : 'You know the rules!'; S.msgT = 1.4;
+    S.wait = { t: 1.5, fn: () => { if (Ls.i + 1 < LESSONS.length) newLesson(g, Ls.i + 1); else lessonsDone(g); } };
+  } else {
+    UG.sfx.groan(); S.msg = 'Not quite. ' + Ls.L.hint; S.msgT = 2.4;
+    S.wait = { t: 2.2, fn: () => newLesson(g, Ls.i) };
+  }
+}
+function lessonsDone(g) {
+  UG.store.set('ug-tafl-learned', 1); UG.track('learned');
+  mode.lesson = false; g.state = 'menu';
+  g.screen({ kicker: 'Lessons complete', title: 'You know the rules',
+    html: '<ul class="ug-rules"><li>On the throne the king needs <b>four raiders</b> around him; beside it, <b>three</b> and the throne.</li>'
+      + '<li>You may move <b>between two enemies</b> safely: only the move that closes a trap takes.</li>'
+      + '<li>In a game, <b>red rings</b> mark your pieces in danger and <b>red dots</b> mark moves that take a piece.</li></ul>',
+    choices: [
+      { label: 'Defend the king · Brandubh', sub: 'Easy computer: a good first game', on: () => { mode = { ai: true, me: 2, n: 7, level: LEVELS[0], lesson: false }; g.hide(); UG.between(g, () => newGame(g)); } },
+      { label: 'Lead the raiders · Brandubh', sub: 'Easy computer', on: () => { mode = { ai: true, me: 1, n: 7, level: LEVELS[0], lesson: false }; g.hide(); UG.between(g, () => newGame(g)); } },
+      { label: 'All games', sub: 'Boards, sides and levels', on: () => menu(g) },
+    ] });
+}
 function newGame(g) {
   games++;
   opp = mode.ai ? UG.randomKnight() : { name: 'Raiders', design: { name: 'Raiders', motto: '', f: '#1d1915', d: '#c9a84f', c: '#c9a84f', div: 'plain', ch: 'raven', bg: 'clear' } };
@@ -239,6 +296,8 @@ function play(g, m, animate) {
       if (cv !== 3) g.pop('Taken', cx, cy - 30, { c: '#ffd76a', size: 22, max: 0.8 });
     }
     if (r.caps.length) { UG.sfx.hit(); UG.buzz(25); g.shake(4, 0.15); }
+    if (S.lesson) return lessonCheck(g, r, f, t);
+    if (r.caps.length && !S.capTold && isHuman(S.turn) && r.caps.some(([, cv]) => cv !== 3)) { S.capTold = 1; S.msg = 'Taken: trapped between two of your pieces'; S.msgT = 2; }
     if (r.win) return finish(g, r.win, r.win === 2 ? 'escape' : 'taken');
     endTurn(g, r.caps.length > 0);
   };
@@ -292,23 +351,27 @@ function finish(g, winner, why) {
 }
 function countSide(side) { let n = 0; for (const v of S.B) if (own(v, side)) n++; return n; }
 function menu(g) {
-  g.state = 'menu';
+  g.state = 'menu'; mode.lesson = false;
+  const learned = UG.store.get('ug-tafl-learned', 0);
+  const learn = { label: learned ? 'Lessons: the rules in 2 minutes' : 'New to Viking chess? Start here', sub: 'Five quick lessons on a real board', on: () => { g.hide(); newLesson(g, 0); } };
   const pickLevel = () => g.screen({ kicker: VARIANTS[mode.n].name, title: mode.me === 2 ? 'Defend the king' : 'Lead the raiders', sub: 'How strong should the computer play?',
     choices: LEVELS.map(l => ({ label: l.name, sub: l.sub, on: () => { mode.level = l; g.hide(); UG.between(g, () => newGame(g)); } })) });
   g.screen({ kicker: 'Hnefatafl, the Viking board game', title: 'Viking Chess',
-    html: '<ol class="ug-howto"><li>Every piece moves like a rook: any distance in a straight line.</li><li>Trap an enemy piece between two of yours to take it.</li><li>The king wins by reaching a corner. The raiders win by surrounding him.</li></ol>',
+    html: '<ol class="ug-howto"><li><b>Defenders</b> (with the crowned king) win if the king reaches any corner.</li><li><b>Raiders</b> win by trapping the king.</li><li>Pieces slide like rooks; trap an enemy between two of yours to take it.</li></ol>',
     choices: [
+      ...(learned ? [] : [learn]),
       { label: 'Defend the king · Brandubh', sub: '7 by 7, about ten minutes', on: () => { mode = { ai: true, me: 2, n: 7, level: mode.level }; pickLevel(); } },
       { label: 'Defend the king · Tablut', sub: '9 by 9, the larger board', on: () => { mode = { ai: true, me: 2, n: 9, level: mode.level }; pickLevel(); } },
       { label: 'Lead the raiders · Brandubh', sub: 'Trap the king before he escapes', on: () => { mode = { ai: true, me: 1, n: 7, level: mode.level }; pickLevel(); } },
-      { label: 'Two players · Brandubh', sub: 'Pass and play on this device', on: () => { mode = { ai: false, me: 2, n: 7, level: LEVELS[1] }; g.hide(); UG.between(g, () => newGame(g)); } },
+      { label: 'Two players · Brandubh', sub: 'Pass and play on this device', on: () => { mode = { ai: false, me: 2, n: 7, level: LEVELS[1], lesson: false }; g.hide(); UG.between(g, () => newGame(g)); } },
+      ...(learned ? [learn] : []),
     ] });
 }
 
 /* ---------- input ---------- */
 function cellAt(x, y) { const cx = Math.floor((x - BX) / CS), cy = Math.floor((y - BY) / CS); return at(cx, cy); }
 function act(g, i) {
-  if (g.state !== 'play' || S.over || S.anim || S.wait || !isHuman(S.turn) || S.think > 0) return;
+  if (g.state !== 'play' || S.over || S.anim || S.wait || !isHuman(S.turn) || S.think > 0 || (S.lesson && S.lesson.done)) return;
   if (i < 0) { S.sel = -1; return; }
   const v = S.B[i];
   if (v && own(v, S.turn)) {
@@ -374,11 +437,56 @@ function hud(ctx) {
   ctx.textAlign = 'left'; ctx.fillText(`${countSide(left)} pieces · took ${S.taken[right]}`, 48, 38);
   ctx.textAlign = 'right'; ctx.fillText(`${countSide(right)} pieces · took ${S.taken[left]}`, W - 48, 38);
   ctx.textAlign = 'center'; ctx.font = UG.font(9, 700); ctx.fillStyle = '#a8997c';
-  ctx.fillText(`${VARIANTS[mode.n].name.toUpperCase()}${mode.ai ? ' · ' + mode.level.name.toUpperCase() : ''}`, W / 2, 47);
+  ctx.fillText(S.lesson ? `LESSON ${S.lesson.i + 1} OF ${LESSONS.length} · ${S.lesson.L.title.toUpperCase()}` : `${VARIANTS[mode.n].name.toUpperCase()}${mode.ai ? ' · ' + mode.level.name.toUpperCase() : ''}`, W / 2, 47);
   const c = S.col[S.turn]; piece(ctx, W / 2, 24, c, S.turn === 2 ? 2 : 1, 10);
+}
+function wrap(ctx, text, maxW) {
+  const out = []; let line = '';
+  for (const w of text.split(' ')) { const t = line ? line + ' ' + w : w; if (ctx.measureText(t).width > maxW && line) { out.push(line); line = w; } else line = t; }
+  if (line) out.push(line);
+  return out;
+}
+function lessonBox(ctx) {
+  const Ls = S.lesson, t = S.msgT > 0 && S.msg ? S.msg : Ls.L.text;
+  ctx.font = UG.font(15, 700); const lines = wrap(ctx, t, W - 60);
+  const h = 16 + lines.length * 20, y0 = 716 - h;
+  ctx.fillStyle = 'rgba(12,10,8,.86)'; ctx.fillRect(14, y0, W - 28, h); ctx.strokeStyle = '#8a6a24'; ctx.lineWidth = 1.5; ctx.strokeRect(14, y0, W - 28, h);
+  ctx.fillStyle = S.msgT > 0 && S.msg ? (S.msg.startsWith('Not') ? '#ffb39a' : '#9fe08a') : '#fff3cf'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  lines.forEach((l, i) => ctx.fillText(l, W / 2, y0 + 18 + i * 20));
+}
+// The pieces of the side to move that the opponent could take with their next move.
+function dangerFor(side) {
+  const key = S.plies + ':' + side + ':' + S.B.join('');
+  if (S.dKey === key) return S.danger;
+  const out = new Set(), B = Int8Array.from(S.B);
+  for (const m of gen(B, 3 - side)) { const r = make(B, m); for (const [c, cv] of r.caps) if (own(cv, side)) out.add(c); unmake(B, r); }
+  S.dKey = key; S.danger = out;
+  return out;
+}
+function kingRoutes(k) {
+  const out = [], [x, y] = xy(k);
+  for (const [dx, dy] of DIRS) {
+    let cx = x + dx, cy = y + dy, j = -1;
+    while (cx >= 0 && cy >= 0 && cx < N && cy < N) { j = cy * N + cx; if (S.B[j]) { j = -1; break; } cx += dx; cy += dy; }
+    if (j >= 0 && CORNER[j]) out.push(j);
+  }
+  return out;
+}
+function rules(g, resume) {
+  g.screen({ kicker: 'How to play', title: 'Viking Chess',
+    html: '<ul class="ug-rules">'
+      + '<li><b>Goal.</b> Defenders win if the king (the crown) reaches any corner. Raiders win by trapping the king.</li>'
+      + '<li><b>Moving.</b> Every piece slides any number of empty squares in a straight line, like a rook. No diagonals, no jumping. Only the king may stop on the throne (centre) or a corner.</li>'
+      + '<li><b>Taking.</b> Trap an enemy between two of your pieces in a straight line. Corners, and the empty throne, count as your piece.</li>'
+      + '<li><b>Safe squares.</b> You may move between two enemies: only the move that closes a trap takes.</li>'
+      + '<li><b>The king</b> fights too. On the throne he needs four raiders around him; beside it, three plus the throne; anywhere else, two on opposite sides.</li>'
+      + '<li><b>On the board:</b> red dots are moves that take a piece, red rings are your pieces in danger, gold lines are the king\'s open roads to a corner.</li></ul>',
+    primary: resume ? { label: 'Back to the game', on: resume } : { label: 'Got it', on: () => menu(g) },
+    secondary: resume ? undefined : { label: 'Try the lessons', on: () => { g.hide(); newLesson(g, 0); } } });
 }
 function status(ctx) {
   if (S.over) return;
+  if (S.lesson) return lessonBox(ctx);
   let t = S.msgT > 0 && S.msg ? S.msg : '';
   if (!t) {
     if (mode.ai && S.turn !== mode.me) t = `${who(S.turn)} is thinking…`;
@@ -393,6 +501,7 @@ function status(ctx) {
 
 UG.start({
   id: 'tafl', title: 'Viking Chess', label: 'Viking chess (hnefatafl) board game', W, H,
+  help(g, resume) { rules(g, resume); },
   init(g) {
     me = UG.player(); myShield = UG.shield(me.design);
     opp = UG.randomKnight(); oppShield = UG.shield(opp.design);
@@ -404,6 +513,7 @@ UG.start({
     for (const f of S.fades) f.k += dt / 0.45; S.fades = S.fades.filter(f => f.k < 1);
     if (S.anim) { S.anim.k += dt / S.anim.dur; if (S.anim.k >= 1) S.anim.done(); return; }
     if (g.state !== 'play' || S.over) return;
+    if (S.wait) { S.wait.t -= dt; if (S.wait.t <= 0) { const f = S.wait.fn; S.wait = null; f(); } return; }
     if (mode.ai && S.turn !== mode.me && S.think > 0) {
       S.think -= dt;
       if (S.think <= 0) {
@@ -421,8 +531,24 @@ UG.start({
       const [x0, y0] = cellXY(S.last.f), [x1, y1] = cellXY(S.last.t);
       ctx.strokeStyle = 'rgba(255,215,106,.4)'; ctx.lineWidth = 3; ctx.setLineDash([6, 7]); ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke(); ctx.setLineDash([]);
     }
+    const helping = (g.state === 'play' || g.state === 'help') && !S.over && !S.anim;
+    // the king's open roads to a corner: gold for the defenders, a warning for the raiders
+    const k = kingSquare(S.B);
+    if (helping && k >= 0) for (const c of kingRoutes(k)) {
+      const [x0, y0] = cellXY(k), [x1, y1] = cellXY(c), good = !mode.ai || mode.me === 2;
+      ctx.strokeStyle = good ? `rgba(255,215,106,${0.5 + 0.3 * pulse})` : `rgba(255,90,70,${0.5 + 0.3 * pulse})`; ctx.lineWidth = 5; ctx.setLineDash([10, 8]);
+      ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke(); ctx.setLineDash([]);
+    }
+    if (S.lesson && S.lesson.L.target && !S.lesson.done) {
+      const [tx, ty] = S.lesson.L.target, [x, y] = cellXY(at(tx, ty));
+      ctx.strokeStyle = `rgba(255,215,106,${0.6 + 0.4 * pulse})`; ctx.lineWidth = 4; ctx.strokeRect(x - CS / 2 + 4, y - CS / 2 + 4, CS - 8, CS - 8);
+    }
+    // where the selected piece can go: a red ring marks a move that takes a piece, a green star a winning move
     if (S.sel >= 0 && g.state === 'play') for (const t of dests(S.sel)) {
-      const [x, y] = cellXY(t); ctx.fillStyle = `rgba(255,215,106,${0.45 + 0.35 * pulse})`; ctx.beginPath(); ctx.arc(x, y, CS * 0.13, 0, 6.283); ctx.fill();
+      const [x, y] = cellXY(t), r = make(S.B, S.sel * 128 + t), caps = r.caps.length, win = r.win; unmake(S.B, r);
+      if (win) { ctx.fillStyle = `rgba(120,220,110,${0.6 + 0.3 * pulse})`; ctx.beginPath(); ctx.arc(x, y, CS * 0.22, 0, 6.283); ctx.fill(); }
+      else if (caps) { ctx.strokeStyle = `rgba(230,60,50,${0.7 + 0.3 * pulse})`; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(x, y, CS * 0.2, 0, 6.283); ctx.stroke(); ctx.fillStyle = '#e63c32'; ctx.beginPath(); ctx.arc(x, y, CS * 0.09, 0, 6.283); ctx.fill(); }
+      else { ctx.fillStyle = `rgba(255,215,106,${0.45 + 0.35 * pulse})`; ctx.beginPath(); ctx.arc(x, y, CS * 0.13, 0, 6.283); ctx.fill(); }
     }
     const r = CS * 0.36;
     for (let i = 0; i < NN; i++) {
@@ -430,11 +556,17 @@ UG.start({
       const [x, y] = cellXY(i), sel = i === S.sel;
       piece(ctx, x, y - (sel ? 3 : 0), S.col[v === 1 ? 1 : 2], v, v === 3 ? r * 1.12 : r, 1, sel ? 0.8 + 0.2 * pulse : 0);
     }
+    // your pieces the opponent could take next move
+    if (helping && isHuman(S.turn) && !S.lesson && !(mode.ai && S.think > 0)) for (const i of dangerFor(S.turn)) {
+      if (i < 0) continue; const [x, y] = cellXY(i);
+      ctx.strokeStyle = `rgba(230,60,50,${0.55 + 0.35 * pulse})`; ctx.lineWidth = 3; ctx.setLineDash([5, 4]); ctx.beginPath(); ctx.arc(x, y, r + 7, 0, 6.283); ctx.stroke(); ctx.setLineDash([]);
+    }
     if (S.last && !S.anim && S.B[S.last.t]) { const [x, y] = cellXY(S.last.t); ctx.strokeStyle = 'rgba(255,243,207,.7)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, r + 4, 0, 6.283); ctx.stroke(); }
     for (const f of S.fades) { const [x, y] = cellXY(f.i), k = ease.inCubic(f.k); piece(ctx, x, y - k * 26, S.col[f.v === 1 ? 1 : 2], f.v, r * (1 - k * 0.6), 1 - k); }
     if (S.anim) { const A = S.anim, k = ease.outCubic(clamp(A.k, 0, 1)); piece(ctx, lerp(A.x0, A.x1, k), lerp(A.y0, A.y1, k) - Math.sin(Math.PI * k) * 10, S.col[A.v === 1 ? 1 : 2], A.v, A.v === 3 ? r * 1.12 : r); }
     if (S.kb && g.state === 'play' && !S.over) { const [x, y] = cellXY(S.cur); ctx.strokeStyle = '#7ec8ff'; ctx.lineWidth = 3; ctx.setLineDash([5, 4]); ctx.strokeRect(x - CS / 2 + 3, y - CS / 2 + 3, CS - 6, CS - 6); ctx.setLineDash([]); }
     if (g.state !== 'menu') { hud(ctx); status(ctx); }
+    if (S.dangerTold === undefined && helping && isHuman(S.turn) && !S.lesson && S.B && dangerFor(S.turn).size) { S.dangerTold = 1; S.msg = 'Red ring: that piece can be taken next move'; S.msgT = 2.6; }
   },
   down(g, x, y) { if (g.state !== 'play') return; S.kb = false; const i = cellAt(x, y); S.dragFrom = i >= 0 && S.B[i] && own(S.B[i], S.turn) ? i : -1; act(g, i); },
   up(g, x, y) {
@@ -450,5 +582,5 @@ UG.start({
   },
 });
 // test hook, only on a local server
-if (['localhost', '127.0.0.1'].includes(location.hostname)) window.__ug = { st: () => S, think, gen, make, unmake, start, LEVELS, setMode: m => { mode = Object.assign(mode, m); } };
+if (['localhost', '127.0.0.1'].includes(location.hostname)) window.__ug = { st: () => S, think, gen, make, unmake, start, LEVELS, LESSONS, setMode: m => { mode = Object.assign(mode, m); }, mode: () => mode };
 })();

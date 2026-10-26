@@ -5,8 +5,8 @@ Pick the angle a real searcher has; keep every claim checkable (see the rules in
 
 - [x] Lion, wolf, dragon and eagle coat of arms guides (built 20 Oct: lion-coat-of-arms, wolf-coat-of-arms, dragon-coat-of-arms, eagle-coat-of-arms)
 - [x] Irish and Scottish family crest makers (built 20 Oct: irish-family-crest, scottish-family-crest)
-- [ ] Bear coat of arms (keyword: bear coat of arms): strength, Berlin and Bern, bear rampant vs passant; emblem id bear
-- [ ] Stag / deer coat of arms (keyword: stag coat of arms, deer crest): caboshed heads, Highland and Irish deer; emblem id stag
+- [x] Bear coat of arms (built 26 Oct as bear-coat-of-arms.html) (keyword: bear coat of arms): strength, Berlin and Bern, bear rampant vs passant; emblem id bear
+- [x] Stag / deer coat of arms (built 26 Oct as stag-coat-of-arms.html) (keyword: stag coat of arms, deer crest): caboshed heads, Highland and Irish deer; emblem id stag
 - [ ] Griffin coat of arms (keyword: griffin heraldry): eagle plus lion, segreant; emblem id griffin
 - [ ] Unicorn coat of arms (keyword: unicorn coat of arms): Scotland, purity; emblem id unicorn
 - [ ] Phoenix crest (keyword: phoenix crest / phoenix emblem): renewal, gaming clans and comeback stories; emblem id phoenix

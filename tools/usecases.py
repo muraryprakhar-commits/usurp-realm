@@ -313,4 +313,87 @@ SPECS = [
               ('Why is the unicorn the national animal of Scotland?', 'The unicorn was a symbol of purity and power in medieval legend, and Scottish kings used it from the 1400s. Two unicorns supported the royal arms of Scotland.'),
               ('Can I use a saltire on my crest?', 'Yes. The saltire, an X-shaped cross, is a common heraldic shape. In the Studio, choose the Saltire division; silver on blue echoes the flag of Scotland.')],
     ),
+    dict(
+        slug='bear-coat-of-arms.html', cta_href='/crest.html?ch=bear', short='Bear coat of arms', blurb='Berlin, Bern and the bear rampant', og='bear',
+        h1='Bear Coat of Arms', h1_html='The Bear Coat of Arms: Meaning and Design',
+        title='Bear Coat of Arms: Meaning, Poses and the Bears of Berlin and Bern | Crest Studio',
+        og_title='Bear coat of arms: meaning, poses and how to design a bear crest',
+        desc='What a bear means in heraldry, rampant vs passant, the famous bears of Berlin, Bern, Madrid and Greenland, and how to design your own bear crest free in a few minutes.',
+        eyebrow='Strength, protection and the bears of Europe',
+        lede='Bears guard the arms of Berlin, Bern and Madrid, and a polar bear stands on the arms of Greenland. Here is what the bear means, how heralds draw it, and how to put one on a crest of your own.',
+        cta='Design a bear crest',
+        examples=[crest('The Hoffmann Family', 'Strength Protects', ARGENT, ARGENT, SABLE, 'plain', 'bear'),
+                  crest('The Okonkwo Family', 'Fortis et Fidelis', GULES, OR, GOLD_LIGHT, 'plain', 'bear'),
+                  crest('Northwind Bears RFC', 'Stand Together', AZURE, ARGENT, ARGENT, 'plain', 'bear'),
+                  crest('The Bjornsson Family', 'Steady as Stone', SABLE, OR, GOLD_LIGHT, 'plain', 'bear'),
+                  crest('The Marsh Family', 'Guard the Hearth', OR, OR, SABLE, 'plain', 'bear')],
+        body='''<section class="sec"><h2 class="gilt">What a bear means in heraldry</h2>
+<p>Strength, and the protection of family. A bear is slow to anger and terrifying once roused, which is exactly what most people want an emblem to say about the people they look after. Heraldic meanings were written down by later authors rather than set by any rule, so treat them as tradition, not law, but this one has stuck for good reason.</p>
+<p>The bear is far less common in arms than the lion, which makes it a good choice if you want a strong beast that does not look like everyone else's. It was most at home in the heraldry of Germany, Switzerland and Spain, where real bears still roamed the forests when coats of arms were young.</p></section>
+<section class="sec"><h2 class="gilt">Famous bear arms</h2><ul>
+<li><b>Bern, Switzerland:</b> a black bear walking up a gold diagonal band on a red field. The bear appears on the city's seals as early as 1224, and the city legend says Duke Berthold V of Zähringen named the new town after the first animal his hunters caught: a bear.</li>
+<li><b>Berlin, Germany:</b> a black bear rearing up on a silver shield, with red tongue and claws, under a crown. The current design was adopted in 1954.</li>
+<li><b>Madrid, Spain:</b> a black bear standing up against a strawberry tree, the <i>madroño</i>, inside a blue border with seven silver stars. The bear goes back to the medieval town council's banner.</li>
+<li><b>Greenland:</b> a silver polar bear on a blue shield, adopted in 1989. The blue stands for the oceans around the island.</li>
+<li><b>Warwick, England:</b> the bear and ragged staff, the badge of the medieval Earls of Warwick, still flies on the flag of Warwickshire.</li></ul>
+<p>These belong to their cities and countries, so treat them as inspiration and give your bear its own colors, name and motto.</p></section>
+<section class="sec"><h2 class="gilt">Bear poses and their names</h2><ul>
+<li><b>Rampant:</b> rearing on its hind legs with forepaws raised, as in Berlin. This is the bear drawn in Crest Studio.</li>
+<li><b>Passant:</b> walking on all fours, as in Bern.</li>
+<li><b>Sejant:</b> sitting upright.</li>
+<li><b>Statant:</b> standing still with all four feet on the ground.</li></ul>
+<p>Heralds also use a bear's head on its own, cut off cleanly (<i>couped</i>) or with a jagged edge (<i>erased</i>). One old quirk: some English heraldry books said a bear should always be drawn wearing a muzzle unless the blazon said otherwise, so you will see many muzzled bears in older arms.</p></section>
+<section class="sec"><h2 class="gilt">Designing your bear crest</h2>
+<h3>Black on silver or gold</h3><p>A black bear on silver or gold is the classic look of Berlin and Bern, and it reads clearly at any size. A silver bear on blue recalls the polar bear of the north. A gold bear on red or green feels warm and royal. All of these keep the heraldic rule of tincture: a metal against a color.</p>
+<h3>Names with a bear in them</h3><p>Some names already carry a bear. Björn is the Scandinavian word for bear, and Ursula comes from the Latin <i>ursa</i>, a she-bear. A bear crest for a family or a person with a name like that is a quiet heraldic pun, the kind heralds have always loved.</p>
+<h3>For teams and clubs</h3><p>A rearing bear is a natural badge for a rugby or hockey club, a scout troop or an online guild, because the silhouette stays bold even as a small icon. See <a href="/clan-logo-maker.html">clan and guild logos</a> and the <a href="/crest-logo-maker.html">Crest Logo Kit</a>.</p>
+<h3>Mottos</h3><p>Try <i>Fortis et Fidelis</i> (strong and faithful), <i>Fortitudine</i> (by fortitude) or plain English such as "Guard the Hearth". The <a href="/latin-motto-generator.html">Latin motto generator</a> has 50 more with translations. Comparing beasts? The <a href="/lion-coat-of-arms.html">lion</a> and <a href="/wolf-coat-of-arms.html">wolf</a> guides cover the other two favorites.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=bear">Design a bear crest</a></p></section>''',
+        faqs=[('What does a bear mean on a coat of arms?', 'Strength and the protection of family. Heraldic meanings come from later tradition rather than strict rules, but the bear has long been read as a powerful protector.'),
+              ('What is the difference between a bear rampant and a bear passant?', 'A bear rampant rears up on its hind legs with its forepaws raised, as on the arms of Berlin. A bear passant walks on all fours, as on the arms of Bern.'),
+              ('What does the Berlin coat of arms look like?', 'A black bear rampant, with red tongue and claws, on a silver shield under a crown. Bears have stood for Berlin for centuries, and the current design was adopted in 1954.'),
+              ('Can I put a bear on my family crest?', 'Yes. The bear is an ordinary heraldic beast open to anyone in an original design. Just avoid copying a city or national coat of arms exactly, and make the colors, name and motto your own.')],
+    ),
+    dict(
+        slug='stag-coat-of-arms.html', cta_href='/crest.html?ch=stag', short='Stag coat of arms', blurb='Stags, harts and the caboshed head', og='stag',
+        h1='Stag Coat of Arms', h1_html='The Stag Coat of Arms: Meaning and Design',
+        title='Stag Coat of Arms: Meaning, Caboshed Heads and Deer in Heraldry | Crest Studio',
+        og_title='Stag coat of arms: meaning and how to design a deer crest',
+        desc="What a stag means in heraldry, the special words heralds use for deer, the stag's head caboshed, famous stags from the Highlands to Richard II, and how to design your own stag crest free.",
+        eyebrow='Peace, harmony and the deer of the Highlands',
+        lede="The stag is heraldry's gentle strongman: peaceful until provoked, and crowned with antlers. Here is what it means, how heralds describe it, and how to put one on a crest of your own.",
+        cta='Design a stag crest',
+        examples=[crest('The Hartley Family', 'Peace With Strength', VERT, OR, GOLD_LIGHT, 'plain', 'stag'),
+                  crest('The Dunmore Family', 'Stand Still, See Far', AZURE, OR, GOLD_LIGHT, 'plain', 'stag'),
+                  crest('The Keane Family', 'Gentle but Unbowed', GULES, ARGENT, ARGENT, 'plain', 'stag'),
+                  crest('The Hirsch Family', 'Friede und Kraft', ARGENT, ARGENT, SABLE, 'plain', 'stag'),
+                  crest('Glenhallow Walking Club', 'Into the Hills', SABLE, OR, GOLD_LIGHT, 'plain', 'stag')],
+        body='''<section class="sec"><h2 class="gilt">What a stag means in heraldry</h2>
+<p>Peace and harmony: someone who will not fight unless provoked. The stag is strong and well armed, yet it lives quietly in the forest, so heraldic tradition made it a symbol of strength held in reserve. Those meanings come from later writers rather than any fixed rule, but they suit the animal well, and they make the stag a lovely emblem for a calm, steady family.</p>
+<p>Deer were also the great beasts of the medieval hunt, so a stag on a shield could hint at forests, estates and the outdoors. That is still why people choose one today: it feels like the hills, the woods and home.</p></section>
+<section class="sec"><h2 class="gilt">The special words heralds use for deer</h2>
+<p>Heralds gave deer a vocabulary of their own. A <b>stag</b> or <b>hart</b> is the male red deer; <b>hart</b> is the older word for a mature stag. A <b>buck</b> is a fallow deer and a <b>hind</b> is a female. The antlers are called <b>attires</b> and each point is a <b>tyne</b>, so a stag with gold antlers is "attired Or".</p>
+<p>The poses have their own names too:</p><ul>
+<li><b>Caboshed:</b> just the head, seen from the front with its antlers, with no neck showing. This is the stag drawn in Crest Studio, and the most common deer in Scottish arms.</li>
+<li><b>At gaze:</b> standing still and turning its head to look straight at you.</li>
+<li><b>Trippant:</b> walking at an easy pace, the deer's word for passant.</li>
+<li><b>Courant:</b> running at full speed.</li>
+<li><b>Springing:</b> leaping, the deer's word for salient.</li>
+<li><b>Lodged:</b> lying down, used for deer where other beasts are couchant.</li></ul></section>
+<section class="sec"><h2 class="gilt">Famous stags in heraldry</h2><ul>
+<li><b>The Mackenzies of Kintail:</b> the earliest known record of their chief's arms, from 1542, is a gold stag's head caboshed on blue. Those arms belong to the chief, so use them as inspiration only.</li>
+<li><b>Württemberg:</b> three black stag antlers on gold, still seen in the greater arms of the German state of Baden-Württemberg.</li>
+<li><b>Richard II of England:</b> his personal badge was a white hart, painted on the Wilton Diptych of about 1395 to 1399. It is why the White Hart is still a common name for English pubs.</li></ul>
+<p>Outside heraldry, Edwin Landseer's 1851 painting <i>The Monarch of the Glen</i>, now owned by the National Galleries of Scotland, made the Highland stag a picture of Scotland itself. Red deer are native to Ireland as well, which is why the stag suits both <a href="/scottish-family-crest.html">Scottish</a> and <a href="/irish-family-crest.html">Irish</a> crests.</p></section>
+<section class="sec"><h2 class="gilt">Designing your stag crest</h2>
+<h3>Colors</h3><p>A gold stag on green is the forest itself, and gold on blue echoes the old Mackenzie arms. A silver stag on red is bright and bold, and a black stag on silver reads crisply even at small sizes. Each keeps the rule of tincture: a metal against a color.</p>
+<h3>Names with a deer in them</h3><p>Hart and Hartley come from the Old English <i>heorot</i>, a hart, and Hirsch is German for deer. A stag on a crest for a family with one of those names is a classic heraldic pun, known as canting arms.</p>
+<h3>Mottos</h3><p>Try <i>Pax et Fortitudo</i> (peace and strength), <i>Dum Spiro Spero</i> (while I breathe, I hope) or plain English such as "Gentle but Unbowed". The <a href="/latin-motto-generator.html">Latin motto generator</a> has more, and the <a href="/heraldry-symbols-and-meanings.html">meanings guide</a> explains every color.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=stag">Design a stag crest</a></p></section>''',
+        faqs=[('What does a stag mean on a coat of arms?', 'Peace and harmony: someone strong who will not fight unless provoked. As the great beast of the medieval hunt, it can also suggest forests, the outdoors and a love of the land.'),
+              ('What does "caboshed" mean in heraldry?', "A head that is caboshed (also spelled cabossed) is shown from the front with no neck visible. A stag's head caboshed shows the face and full antlers."),
+              ('What is the difference between a stag, a hart and a buck?', 'In heraldry a stag or hart is a male red deer, hart being the older word for a mature stag. A buck is usually a fallow deer, and a hind is a female deer.'),
+              ('Is a stag a Scottish symbol?', 'The red deer is closely tied to the Scottish Highlands, and a stag\'s head caboshed appears in several Scottish arms, including those of the Mackenzie chiefs. It is also native to Ireland and common in English and German heraldry.'),
+              ('Can I use a stag on my family crest?', 'Yes. The stag is a common heraldic charge open to anyone in an original design. Just avoid copying a clan chief\'s or a state\'s arms exactly.')],
+    ),
 ]

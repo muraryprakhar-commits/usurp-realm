@@ -12,6 +12,9 @@ Rules for the weekly autopilot:
 
 | Date | Target | Page that invites pitches | Status |
 |---|---|---|---|
-| 2026-10-20 | Emily Reviews holiday gift guide | emilyreviews.com 2026 submissions post | Sent 2026-10-20, no reply yet (21 Oct) |
-| 2026-10-20 | FSM Media holiday gift guide | fsm-media.com/gift-guide-submissions | Sent 2026-10-20, no reply yet (21 Oct) |
-| 2026-10-20 | Canadian Mom Reviews holiday gift guide | canadianmomreviews.com/holiday-gift-guide-submission-2 | Sent 2026-10-20, no reply yet (21 Oct) |
+| 2026-10-20 | Emily Reviews holiday gift guide | emilyreviews.com 2026 submissions post | Sent 2026-10-20, no reply yet (26 Oct); follow-up due from 30 Oct |
+| 2026-10-20 | FSM Media holiday gift guide | fsm-media.com/gift-guide-submissions | Sent 2026-10-20, no reply yet (26 Oct); follow-up due from 30 Oct |
+| 2026-10-20 | Canadian Mom Reviews holiday gift guide | canadianmomreviews.com/holiday-gift-guide-submission-2 | Sent 2026-10-20, no reply yet (26 Oct); follow-up due from 30 Oct |
+| 2026-10-26 | Free Homeschool Deals (games: free medieval games freebie) | freehomeschooldeals.com/submit (email freebie submissions, subject "Freebie submission") | Draft created 2026-10-26, not sent. Their page wants the graphic attached: attach press/games/free-medieval-games-1000x1500.jpg before sending |
+
+Checked and skipped on 2026-10-26 (rules not met): Love Tabitha 2026 guide (page says submissions closed), She Scribes (needs $50 physical product or fee), First Time Mums UK (paid listing), Frugal Ginger and This Mama Loves (only old years), Toy Insider, Coolmath Games and FastPlayGames (web forms, not email), Chaotican Writer, TTRPG Kids, Tools and Taverns, Mr Donn, Wart Games (no email invitation).

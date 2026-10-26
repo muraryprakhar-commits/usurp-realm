@@ -108,3 +108,8 @@ python3 tools/indexnow.py  # after deploy: tell Bing, Yandex and others about ev
 - Storage: the free Upstash Redis database from the Vercel Marketplace, connected to this project. The functions read
   `KV_REST_API_URL`/`KV_REST_API_TOKEN` or `UPSTASH_REDIS_REST_URL`/`UPSTASH_REDIS_REST_TOKEN`. Until one is connected,
   pings are accepted and dropped, and the stats page says it is not connected.
+
+## Analytics (26 Oct 2026)
+
+- Every public page loads Microsoft Clarity and Vercel Web Analytics (`/_vercel/insights/script.js`, cookieless). Both tags live next to each other in `tools/build.py` and in the hand-written pages.
+- The embeddable games under `/embed/` deliberately load no analytics, because the embed page promises site owners none.

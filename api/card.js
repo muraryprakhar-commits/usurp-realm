@@ -29,6 +29,7 @@ module.exports = (req, res) => {
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/pages.css">
 <script type="text/javascript">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","yzjmha008x");</script>
+<script defer src="/_vercel/insights/script.js"></script>
 <style>
 .ecard{max-width:560px;margin:0 auto;padding:36px 16px 56px;text-align:center}
 .ecard .cseal{opacity:0;transform:scale(.86) translateY(14px);animation:rise 1.1s .25s cubic-bezier(.2,.8,.2,1) forwards}

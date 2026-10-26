@@ -396,4 +396,80 @@ SPECS = [
               ('Is a stag a Scottish symbol?', 'The red deer is closely tied to the Scottish Highlands, and a stag\'s head caboshed appears in several Scottish arms, including those of the Mackenzie chiefs. It is also native to Ireland and common in English and German heraldry.'),
               ('Can I use a stag on my family crest?', 'Yes. The stag is a common heraldic charge open to anyone in an original design. Just avoid copying a clan chief\'s or a state\'s arms exactly.')],
     ),
+    dict(
+        slug='griffin-coat-of-arms.html', cta_href='/crest.html?ch=griffin', short='Griffin coat of arms', blurb='Eagle, lion and the griffin segreant', og='griffin',
+        h1='Griffin Coat of Arms', h1_html='The Griffin Coat of Arms: Meaning and Design',
+        title='Griffin Coat of Arms: Meaning, Segreant and the Griffins of Pomerania | Crest Studio',
+        og_title='Griffin coat of arms: meaning and how to design a griffin crest',
+        desc='What a griffin means in heraldry, why a rearing griffin is called segreant, the wingless keythong, famous griffins from Pomerania to Perugia, and how to design your own griffin crest free.',
+        eyebrow='Half eagle, half lion, all courage',
+        lede="The griffin joins the king of the birds to the king of the beasts: an eagle's head, wings and talons on a lion's body. Here is what it means, the words heralds use for it, and how to put one on a crest of your own.",
+        cta='Design a griffin crest',
+        examples=[crest('The Greif Family', 'Watchful and Bold', ARGENT, ARGENT, GULES, 'plain', 'griffin'),
+                  crest('The Adeyemi Family', 'Courage Keeps Watch', AZURE, OR, GOLD_LIGHT, 'plain', 'griffin'),
+                  crest('Griffon Hall', 'Guard What Matters', SABLE, OR, GOLD_LIGHT, 'plain', 'griffin'),
+                  crest('Harwick Griffins RFC', 'Wings and Claws', GULES, OR, GOLD_LIGHT, 'plain', 'griffin'),
+                  crest('The Sorensen Family', 'Strength With Sight', VERT, ARGENT, ARGENT, 'plain', 'griffin')],
+        body='''<section class="sec"><h2 class="gilt">What a griffin means in heraldry</h2>
+<p>Courage, strength and leadership, with a watchful eye. The griffin borrows from the two most popular animals in heraldry: the eagle for sharp sight and the sky, the lion for strength and the earth. Put together, it reads as someone both brave and vigilant. Heraldic meanings come from later writers rather than any fixed rule, so treat them as tradition, but this one is old and widely shared.</p>
+<p>In ancient stories griffins guarded gold and treasure, which is why many people still choose one to stand for protecting what matters: a family, a home, a team or a business.</p></section>
+<section class="sec"><h2 class="gilt">Segreant, keythong and the griffin's own words</h2>
+<p>Heralds gave the griffin its own vocabulary. Where a lion rearing on its hind legs is <b>rampant</b>, a griffin in the same pose is <b>segreant</b>, usually with its wings raised. That rearing griffin is the one drawn in Crest Studio.</p>
+<ul><li><b>Passant:</b> walking, as with other beasts.</li>
+<li><b>Griffin's head:</b> the eagle-like head alone, often with its ears showing, since a heraldic griffin has ears where an eagle has none.</li>
+<li><b>Keythong:</b> in British heraldry, a "male griffin" is drawn without wings, with spikes or rays coming from its body. It is rare and makes a striking choice if you want something unusual.</li></ul>
+<p>The spelling varies too: griffin, gryphon and griffon all appear in old books and mean the same creature.</p></section>
+<section class="sec"><h2 class="gilt">Famous griffins in heraldry</h2><ul>
+<li><b>Pomerania:</b> a red griffin with gold beak and claws on a silver shield, the arms of the Dukes of Pomerania. The dynasty was even known as the House of Griffins, and the oldest known reference to its griffin is a deed from the early 1190s. The family died out with Duke Bogislaw XIV in 1637, but the red griffin lives on in the arms of the Polish West Pomeranian Voivodeship and the German state of Mecklenburg-Vorpommern.</li>
+<li><b>Perugia, Italy:</b> a griffin segreant wearing a crown, a symbol of the city since the Middle Ages.</li>
+<li><b>Genoa, Italy:</b> two griffins support the old republic's shield with its red cross.</li>
+<li><b>Trinity College, Oxford:</b> uses griffins in its crest.</li></ul>
+<p>These belong to their regions and institutions, so use them for inspiration and give your griffin its own colors, name and motto.</p></section>
+<section class="sec"><h2 class="gilt">Designing your griffin crest</h2>
+<h3>Colors</h3><p>A red griffin on silver is the Pomeranian classic and very bold. A gold griffin on blue or black looks regal, and a silver griffin on green feels fresh and calm. Each follows the rule of tincture: a metal (gold or silver) against a color, so the beast stands out at any size.</p>
+<h3>Griffin supporters</h3><p>Griffins are also popular as supporters, the animals that stand on either side of the shield. In Crest Studio you can add a pair of griffin supporters to any design, so even a crest with a key, a book or an initial on the shield can have griffins guarding it.</p>
+<h3>Names with a griffin in them</h3><p>Griffith, Griffin and the German Greif all echo the creature in sound, and a griffin crest for a family with one of those names is a classic heraldic pun, known as canting arms.</p>
+<h3>For teams, schools and guilds</h3><p>The griffin is a favorite mascot because it combines two strong animals in one bold silhouette. See <a href="/school-house-crests.html">school house crests</a> and <a href="/clan-logo-maker.html">clan and guild logos</a>. Comparing beasts? The <a href="/eagle-coat-of-arms.html">eagle</a> and <a href="/lion-coat-of-arms.html">lion</a> guides cover its two halves.</p>
+<h3>Mottos</h3><p>Try <i>Semper Vigilans</i> (always watchful), <i>Fortis et Fidelis</i> (strong and faithful) or plain English such as "Guard What Matters". The <a href="/latin-motto-generator.html">Latin motto generator</a> has more with translations.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=griffin">Design a griffin crest</a></p></section>''',
+        faqs=[('What does a griffin mean on a coat of arms?', 'Courage, strength and leadership combined with vigilance. As half eagle and half lion, it joins the qualities of both, and in older stories griffins guarded treasure, so it also suggests protection.'),
+              ('What does segreant mean in heraldry?', 'Segreant is the word for a griffin rearing up on its hind legs, usually with its wings raised. It is the griffin equivalent of a lion rampant.'),
+              ('What is a keythong?', 'In British heraldry a keythong, or male griffin, is a griffin drawn without wings and with spikes or rays coming from its body. It is rare in real arms.'),
+              ('Which coat of arms has a red griffin?', 'The arms of the Dukes of Pomerania show a red griffin with gold beak and claws on a silver shield. It still appears in the arms of the West Pomeranian Voivodeship in Poland and of Mecklenburg-Vorpommern in Germany.'),
+              ('Can I put a griffin on my family crest?', 'Yes. The griffin is a traditional heraldic creature open to anyone in an original design. Just avoid copying a regional or institutional coat of arms exactly.')],
+    ),
+    dict(
+        slug='unicorn-coat-of-arms.html', cta_href='/crest.html?ch=unicorn', short='Unicorn coat of arms', blurb="Scotland's unicorn and what it means", og='unicorn',
+        h1='Unicorn Coat of Arms', h1_html='The Unicorn Coat of Arms: Meaning and Design',
+        title="Unicorn Coat of Arms: Meaning, Scotland's Chained Unicorn and Design Ideas | Crest Studio",
+        og_title='Unicorn coat of arms: meaning and how to design a unicorn crest',
+        desc="What a unicorn means in heraldry, why Scotland's royal unicorns wear chains, how the unicorn met the English lion in 1603, and how to design your own unicorn crest free.",
+        eyebrow="Purity, strength and Scotland's national animal",
+        lede="The unicorn is Scotland's national animal and one half of the most famous pair of supporters in heraldry. Here is what it means, where it came from, and how to put one on a crest of your own.",
+        cta='Design a unicorn crest',
+        examples=[crest('The MacAllister Family', 'Untamed and True', AZURE, ARGENT, ARGENT, 'plain', 'unicorn'),
+                  crest('The Blanchard Family', 'Pure in Purpose', GULES, ARGENT, ARGENT, 'plain', 'unicorn'),
+                  crest('The Lindqvist Family', 'Free and Faithful', VERT, OR, GOLD_LIGHT, 'plain', 'unicorn'),
+                  crest('Saint Ninian House', 'Lux et Veritas', PURPURE, ARGENT, ARGENT, 'plain', 'unicorn'),
+                  crest('The Weiss Family', 'Gentle, Never Tame', SABLE, ARGENT, ARGENT, 'plain', 'unicorn')],
+        body='''<section class="sec"><h2 class="gilt">What a unicorn means in heraldry</h2>
+<p>Purity, courage and a strength that cannot be tamed. In medieval stories the unicorn was fierce and impossible to capture by force, so it came to stand for something noble and free. Heraldic meanings come from later tradition rather than strict rules, but the unicorn's has stayed remarkably steady for five hundred years.</p>
+<p>The heraldic unicorn is not quite a horse with a horn. Heralds traditionally draw it with a goat's beard, cloven hooves and a lion's tail, which is why it looks wilder and more ancient than the unicorns of modern cartoons.</p></section>
+<section class="sec"><h2 class="gilt">Scotland and the unicorn</h2>
+<p>The unicorn is Scotland's national animal, and its place in Scottish royal heraldry goes back centuries. James I of Scotland, who reigned from 1406 to 1437, used a unicorn, and from James V onward a pair of unicorns supported the royal arms. Scotland even had a gold coin called the unicorn, first issued under James III and in circulation from 1484 to 1525.</p>
+<p>The royal unicorns are shown crowned and wearing gold chains. A popular explanation is that only a Scottish king was strong enough to tame such a wild creature, so the chain shows power held in check rather than a prisoner.</p>
+<h3>The lion and the unicorn</h3><p>In 1603 James VI of Scotland also became James I of England and Ireland. His royal arms put the English lion on one side of the shield and the Scottish unicorn on the other, and that pairing still supports the royal arms of the United Kingdom today. In the version used in Scotland, the unicorn takes the place of honor on the left as you look at it.</p></section>
+<section class="sec"><h2 class="gilt">Designing your unicorn crest</h2>
+<h3>Colors</h3><p>A silver unicorn on blue is the most Scottish look, echoing the saltire flag's white on blue. Silver on red is bright and dramatic, gold on green feels like an old forest tale, and silver on purple or black looks elegant and a little mysterious. All keep the rule of tincture: a metal against a color.</p>
+<h3>Unicorn supporters</h3><p>Crest Studio lets you add a pair of unicorns as supporters on either side of any shield, so you can keep a family emblem on the shield and still have unicorns standing guard.</p>
+<h3>Scottish families</h3><p>If your family has Scottish roots, the unicorn is a natural choice. Pair it with a thistle or a saltire division for a design that clearly says Scotland. The <a href="/scottish-family-crest.html">Scottish family crest guide</a> explains clan crest badges and how they differ from personal arms.</p>
+<h3>For schools, houses and storytellers</h3><p>The unicorn suits school houses, book clubs and fantasy settings that want an emblem of wonder rather than war. See <a href="/school-house-crests.html">school house crests</a> and the <a href="/dnd-coat-of-arms-generator.html">D&amp;D coat of arms generator</a>.</p>
+<h3>Mottos</h3><p>Try <i>Lux et Veritas</i> (light and truth), <i>Nemo Me Impune Lacessit</i> (no one provokes me with impunity, the motto long associated with Scotland and the Order of the Thistle) or plain English such as "Gentle, Never Tame". The <a href="/latin-motto-generator.html">Latin motto generator</a> has more with translations.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=unicorn">Design a unicorn crest</a></p></section>''',
+        faqs=[('What does a unicorn mean on a coat of arms?', 'Purity, courage and a strength that cannot be tamed. In medieval stories the unicorn could not be captured by force, so it became a symbol of nobility and freedom.'),
+              ("Why is the Scottish unicorn chained?", "The royal unicorns of Scotland are shown crowned and chained. The usual explanation is that only a Scottish king could tame such a wild creature, so the chain represents controlled power."),
+              ('Why are there a lion and a unicorn on the royal coat of arms?', 'When James VI of Scotland also became King of England and Ireland in 1603, his arms paired the English lion with the Scottish unicorn as supporters. The pairing remains on the royal arms of the United Kingdom.'),
+              ('Is the unicorn the national animal of Scotland?', 'Yes. The unicorn has been a Scottish royal emblem for centuries and is widely recognized as Scotland\'s national animal.'),
+              ('Can I put a unicorn on my family crest?', 'Yes. The unicorn is a traditional heraldic creature open to anyone in an original design, either on the shield or as a pair of supporters. Just avoid copying the royal arms exactly.')],
+    ),
 ]

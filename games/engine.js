@@ -46,6 +46,7 @@ let GAME = 'games';
 // usurp.games itself (never in embeds or portal builds), no cookies and nothing about the player.
 const COUNTED = ['play', 'finish'];
 UG.track = (ev, extra) => {
+  if (window.UG_NOTRACK) return;   // this browser turned analytics off on the privacy page
   try { if (window.clarity) window.clarity('event', `${ev}_${GAME}`); } catch (e) {}
   try { if (window.gtag && ADS.ga) window.gtag('event', ev, Object.assign({ game: GAME }, extra || {})); } catch (e) {}
   const cev = GAME === 'siege' && ev === 'round' ? 'play' : ev;   // in Siege every castle started is a play

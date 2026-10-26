@@ -109,6 +109,10 @@ def og_image(key):
     return f'{SITE}/og/{key}.png', 'image/png'
 
 
+# Analytics (Microsoft Clarity and Vercel Web Analytics) load unless this browser turned them off on the privacy page.
+TRACK = '<script>/* analytics: on unless this browser turned it off at /privacy.html#analytics */(function(w,d){var off=false;try{off=localStorage.getItem(\'ug-analytics\')===\'off\'}catch(e){}w.UG_NOTRACK=off;if(off)return;(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(w,d,"clarity","script","yzjmha008x");var v=d.createElement(\'script\');v.defer=true;v.src=\'/_vercel/insights/script.js\';d.head.appendChild(v);})(window,document);</script>'
+
+
 def head(p):
     ld = json.dumps(p['ld'], ensure_ascii=False).replace('</', '<\\/')
     img, img_type = og_image(p['og'])
@@ -120,8 +124,7 @@ def head(p):
 <meta property="og:title" content="{E(p['og_title'])}"><meta property="og:description" content="{E(p['desc'])}"><meta property="og:url" content="{page_url(p['slug'])}"><meta property="og:type" content="website"><meta property="og:site_name" content="Crest Studio by Usurp"><meta property="og:image" content="{img}"><meta property="og:image:type" content="{img_type}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="{alt}">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{E(p['og_title'])}"><meta name="twitter:description" content="{E(p['desc'])}"><meta name="twitter:image" content="{img}"><meta name="twitter:image:alt" content="{alt}">
 <script type="application/ld+json">{ld}</script>
-<script type="text/javascript">(function(c,l,a,r,i,t,y){{c[a]=c[a]||function(){{(c[a].q=c[a].q||[]).push(arguments)}};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);}})(window,document,"clarity","script","yzjmha008x");</script>
-<script defer src="/_vercel/insights/script.js"></script>
+{TRACK}
 <meta name="theme-color" content="#14110e"><link rel="icon" href="/icon.svg" type="image/svg+xml">{f'<meta name="google-adsense-account" content="{ADS["client"]}">' if ADS['client'] else ''}
 <link rel="preload" href="/fonts/cinzel-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/cinzel-decorative-900-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/studio.css"><link rel="stylesheet" href="/pages.css">{p.get('head_extra', '')}
@@ -161,7 +164,7 @@ def footer():
     games = ''.join(f'<a href="/{g["slug"]}">{g["short"]}</a>' for g in GAMES)
     return f'''<footer class="site-foot"><nav class="foot-links" aria-label="Crest Studio pages">{links}</nav>
 <nav class="foot-links" aria-label="Games"><a href="/games/">Medieval games</a>{games}<a href="/games/embed.html">Games for your website</a></nav>
-<p><a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/refunds.html">Refunds</a> · <a href="/advertise.html">Advertise</a> · <a href="mailto:hello@usurp.games">hello@usurp.games</a></p>
+<p><a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/privacy.html#analytics">Privacy choices</a> · <a href="/refunds.html">Refunds</a> · <a href="/advertise.html">Advertise</a> · <a href="mailto:hello@usurp.games">hello@usurp.games</a></p>
 <p>Crest Studio by Usurp · Operated by Prakhar Murary (Murary Studios), Jaipur, Rajasthan, India · <a href="/realm.html">Usurp, the game (prototype)</a></p></footer>'''
 
 

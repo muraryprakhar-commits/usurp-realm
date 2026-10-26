@@ -6,7 +6,7 @@
 <body>
 <header class="site-head"><div class="head-in"><a class="brand" href="/"><span class="gilt">USURP</span></a><nav class="nav" aria-label="Policies"><a href="/terms.html">Terms</a><a href="/privacy.html" aria-current="page">Privacy</a><a href="/refunds.html">Refunds</a><a href="/">Back to Crest Studio</a></nav></div></header>
 <main class="legal"><div class="scroll"><div class="parchment">
-<p class="eyebrow">Last updated 21 October 2026</p>
+<p class="eyebrow">Last updated 26 October 2026</p>
 <h1>Privacy Policy</h1>
 
 <p>Usurp is run by Prakhar Murary (Murary Studios), Jaipur, Rajasthan, India. This page explains what we collect and why.</p>
@@ -14,9 +14,23 @@
 <h2>What stays in your browser</h2>
 <p>Your game progress (name, simulated spend, badges, Decrees), your Crest Studio design, and your best scores and sound setting in the medieval games are saved in your own browser's local storage. The games read your saved Crest Studio design to put your coat of arms on your shield and banners; it never leaves your device for this. Clearing your browser data deletes all of it.</p>
 
-<h2>Analytics</h2>
-<p>We use Microsoft Clarity to understand how people use the site, such as clicks, scrolling and page performance. Clarity sets cookies and collects device and usage data, and masks text you type. See Microsoft's privacy statement at privacy.microsoft.com. We also use Google Search Console, which tells us how the site appears in Google Search and does not track you on our site.</p>
-<p>We also count how many times each game on usurp.games is started and finished, per week, with a simple counter of our own. It keeps only those totals: no cookies, no IP address and nothing about who played.</p>
+<h2 id="analytics">Analytics</h2>
+<p>Analytics is on by default. It shows us which pages and games people use and where things break. We use three tools:</p>
+<ul>
+<li><b>Microsoft Clarity</b> records clicks, scrolling and page performance, and can replay a visit with the text you type masked. It sets cookies and collects device and usage data. In the UK, the European Economic Area and Switzerland, Clarity does not set cookies unless you have given consent. See Microsoft's privacy statement at privacy.microsoft.com.</li>
+<li><b>Vercel Web Analytics</b> counts page views without cookies. It keeps the page, the referring site, your country, browser and device type, and does not identify you.</li>
+<li><b>Our play counter</b> counts how many times each game on usurp.games is started and finished, per week. It keeps only those totals: no cookies, no IP address and nothing about who played.</li>
+</ul>
+<p>We also use Google Search Console, which tells us how the site appears in Google Search and does not track you on our site.</p>
+<div class="ana" data-ana>
+<p class="ana-state" data-ana-state>Analytics is on in this browser.</p>
+<button type="button" class="ana-btn" data-ana-off>Turn off analytics</button>
+<div class="ana-confirm" data-ana-confirm hidden>
+<p>This stops Microsoft Clarity, Vercel Web Analytics and our play counter in this browser, and deletes Clarity's cookies on this site. The games and Crest Studio work the same either way. The choice is saved in this browser only: other browsers and devices are not affected, and clearing your browser data resets it.</p>
+<div class="ana-row"><button type="button" class="ana-btn" data-ana-yes>Turn off</button><button type="button" class="ana-btn" data-ana-no>Cancel</button></div>
+</div>
+<button type="button" class="ana-btn" data-ana-on hidden>Turn analytics back on</button>
+</div>
 
 <h2>Games embedded on other websites</h2>
 <p>Website owners can put our games on their own pages. Those embedded games load no analytics, no advertising and no cookies. They keep only the best scores and the sound setting in the player's own browser. Our hosting provider receives the standard technical information any web request carries, such as the IP address and the address of the page the game is embedded in, to deliver the game and keep it secure.</p>
@@ -34,7 +48,31 @@
 <p>Purchase records are kept as long as tax and accounting law requires. Other data is deleted when no longer needed.</p>
 
 <h2>Your choices</h2>
-<p>You can ask us what we hold about you, or ask us to correct or delete it, by emailing <a href="mailto:hello@usurp.games">hello@usurp.games</a>. You can block Clarity and advertising cookies in your browser settings.</p>
+<p>You can ask us what we hold about you, or ask us to correct or delete it, by emailing <a href="mailto:hello@usurp.games">hello@usurp.games</a>. You can turn analytics off in this browser in the <a href="#analytics">Analytics</a> section above, and block advertising cookies in your browser settings.</p>
 </div></div></main>
 <footer class="site-foot"><p>Usurp · Operated by Prakhar Murary (Murary Studios), Jaipur, India</p></footer>
+<script>
+(function () {
+  var K = 'ug-analytics', q = function (s) { return document.querySelector(s); };
+  var state = q('[data-ana-state]'), off = q('[data-ana-off]'), on = q('[data-ana-on]'), box = q('[data-ana-confirm]');
+  function read() { try { return localStorage.getItem(K) === 'off'; } catch (e) { return null; } }
+  function render() {
+    var v = read();
+    box.hidden = true;
+    if (v === null) { state.textContent = 'This browser blocks site storage, so a choice cannot be saved here. Your browser\'s own tracking protection can block analytics instead.'; off.hidden = on.hidden = true; return; }
+    state.textContent = v ? 'Analytics is off in this browser.' : 'Analytics is on in this browser.';
+    off.hidden = v; on.hidden = !v;
+  }
+  function dropClarityCookies() {
+    var parts = location.hostname.split('.'), doms = [''];
+    for (var i = 0; i < parts.length - 1; i++) { var d = parts.slice(i).join('.'); doms.push(d, '.' + d); }
+    ['_clck', '_clsk'].forEach(function (n) { doms.forEach(function (d) { document.cookie = n + '=; Max-Age=0; path=/' + (d ? '; domain=' + d : ''); }); });
+  }
+  off.onclick = function () { box.hidden = false; off.hidden = true; q('[data-ana-no]').focus(); };
+  q('[data-ana-no]').onclick = render;
+  q('[data-ana-yes]').onclick = function () { try { localStorage.setItem(K, 'off'); } catch (e) {} dropClarityCookies(); render(); };
+  on.onclick = function () { try { localStorage.removeItem(K); } catch (e) {} render(); };
+  render();
+})();
+</script>
 </body></html>

@@ -111,5 +111,7 @@ python3 tools/indexnow.py  # after deploy: tell Bing, Yandex and others about ev
 
 ## Analytics (26 Oct 2026)
 
-- Every public page loads Microsoft Clarity and Vercel Web Analytics (`/_vercel/insights/script.js`, cookieless). Both tags live next to each other in `tools/build.py` and in the hand-written pages.
+- Every public page loads Microsoft Clarity and Vercel Web Analytics (`/_vercel/insights/script.js`, cookieless) by default. One inline snippet loads both: `TRACK` in `tools/build.py`, copied into the hand-written pages (crest.html, realm.html, api/card.js). Change it in all four places.
+- Opt-out: "Privacy choices" in the footer links to `/privacy.html#analytics`. Turning off takes a confirm step; turning back on is one click. The choice is `localStorage['ug-analytics'] = 'off'` in that browser: the snippet then loads neither tag, sets `window.UG_NOTRACK`, and `UG.track` in games/engine.js sends nothing (no Clarity events, no play counter). Turning off also deletes Clarity's first-party cookies (_clck, _clsk).
+- In the UK, EEA and Switzerland, Clarity itself runs without cookies unless it gets a consent signal (Microsoft enforces this since 31 Oct 2025); we send none.
 - The embeddable games under `/embed/` deliberately load no analytics, because the embed page promises site owners none.

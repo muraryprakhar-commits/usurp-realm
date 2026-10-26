@@ -7,8 +7,8 @@ Pick the angle a real searcher has; keep every claim checkable (see the rules in
 - [x] Irish and Scottish family crest makers (built 20 Oct: irish-family-crest, scottish-family-crest)
 - [x] Bear coat of arms (built 26 Oct as bear-coat-of-arms.html) (keyword: bear coat of arms): strength, Berlin and Bern, bear rampant vs passant; emblem id bear
 - [x] Stag / deer coat of arms (built 26 Oct as stag-coat-of-arms.html) (keyword: stag coat of arms, deer crest): caboshed heads, Highland and Irish deer; emblem id stag
-- [ ] Griffin coat of arms (keyword: griffin heraldry): eagle plus lion, segreant; emblem id griffin
-- [ ] Unicorn coat of arms (keyword: unicorn coat of arms): Scotland, purity; emblem id unicorn
+- [x] Griffin coat of arms (built 26 Oct as griffin-coat-of-arms.html) (keyword: griffin heraldry): eagle plus lion, segreant; emblem id griffin
+- [x] Unicorn coat of arms (built 26 Oct as unicorn-coat-of-arms.html) (keyword: unicorn coat of arms): Scotland, purity; emblem id unicorn
 - [ ] Phoenix crest (keyword: phoenix crest / phoenix emblem): renewal, gaming clans and comeback stories; emblem id phoenix
 - [ ] Owl coat of arms (keyword: owl crest): wisdom, schools and libraries; emblem id owl
 - [ ] Welsh family crest maker (keyword: welsh family crest): red dragon, daffodil and leek are national emblems, honest note on Welsh arms

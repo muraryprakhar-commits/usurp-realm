@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "exa": {
+      "type": "http",
+      "url": "https://mcp.exa.ai/mcp"
+    },
+    "firecrawl": {
+      "type": "http",
+      "url": "https://mcp.firecrawl.dev/v2/mcp-oauth"
+    },
+    "context": {
+      "type": "http",
+      "url": "https://mcp.context.dev/mcp"
+    },
+    "apify": {
+      "type": "http",
+      "url": "https://mcp.apify.com"
+    }
+  }
+}

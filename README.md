@@ -115,3 +115,13 @@ python3 tools/indexnow.py  # after deploy: tell Bing, Yandex and others about ev
 - Opt-out: "Privacy choices" in the footer links to `/privacy.html#analytics`. Turning off takes a confirm step; turning back on is one click. The choice is `localStorage['ug-analytics'] = 'off'` in that browser: the snippet then loads neither tag, sets `window.UG_NOTRACK`, and `UG.track` in games/engine.js sends nothing (no Clarity events, no play counter). Turning off also deletes Clarity's first-party cookies (_clck, _clsk).
 - In the UK, EEA and Switzerland, Clarity itself runs without cookies unless it gets a consent signal (Microsoft enforces this since 31 Oct 2025); we send none.
 - The embeddable games under `/embed/` deliberately load no analytics, because the embed page promises site owners none.
+
+## Daily content system (27 Oct 2026)
+
+- `.agents/product-marketing.md`: product, audience, competitors and brand voice. Every marketing skill reads it first.
+- `.claude/skills/`: the marketingskills pack (MIT, Corey Haines) plus `dailypublish`.
+- `content/10-day-plan.md`: what goes out each day, per channel. `/dailypublish <day>` researches, drafts and audits
+  that day's pieces into `content/day<N>/` (copy, images, reels, research with sources, audit checklist). Nothing is posted automatically.
+- `tools/social_media.py`: renders on-brand images (grid, single crest) and 9:16 crest-reveal MP4s with the site's own crest engine.
+- `.mcp.json`: research connectors for Claude Code (Exa, Firecrawl, Context.dev, Apify). Each signs in with OAuth on first use (`/mcp`).
+- `content/` is in `.vercelignore`, so content work never changes the live site.

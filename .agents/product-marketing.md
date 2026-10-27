@@ -1,6 +1,6 @@
 # Product Marketing Context: Crest Studio by Usurp
 
-**Document version:** v1
+**Document version:** v2
 **Last updated:** 2026-10-27
 
 Drafted from the site's own pages and the owner's stated goals. Lines marked "Not known yet" need real data
@@ -35,7 +35,18 @@ Usurp itself (the medieval rank-ladder game at /realm.html) is a free prototype.
 **Emotional tension:** Wanting a sense of heritage, belonging or identity, and a gift that feels personal.
 
 ## Competitive Landscape
-Not researched yet. Use the competitors and competitor-profiling skills before writing comparison content.
+Checked 27 Oct 2026. Re-check prices before quoting any of them in content.
+- **Surname arms sellers (e.g. House of Names):** sell a print of the arms "most commonly associated" with a surname
+  (an 8.5 x 11 print listed at $16.56, marked down from $19.49, on 27 Oct 2026). Gap: the arms are not the buyer's own;
+  Crest Studio makes an original design that is honestly theirs.
+- **Free generators (e.g. Armoria, azgaar.github.io/Armoria):** free, open source (MIT code), aimed at fantasy maps and
+  worldbuilding. Some complex charges are licensed non-commercial only. Gap: no gift certificate, meaning text or
+  ready-made print, profile and logo files.
+- **AI crest makers (e.g. coatofarmsmaker.net):** freemium credits, AI-generated images in 1K or 4K. Gap: AI output is not
+  vector, and results vary; Crest Studio's art is drawn in code, so SVG files are exact and every design opens again from a link.
+- **Hire a designer (e.g. Fiverr):** one listing checked started at $310 with 14-day delivery. Gap: price and wait time;
+  Crest Studio is $9 and instant.
+Comparison content must name competitors fairly, use only checked facts and date them.
 
 ## Differentiation
 - Free to design and preview, no signup; pay only for the files
@@ -54,6 +65,13 @@ Not known yet. Collect real phrases from search queries (Search Console), Clarit
 Plain, warm, a little medieval flavor without parody. Rules used across the site:
 - US spelling; no em dashes; verified facts only; no invented history or statistics
 - Clear prices stated up front; no dark patterns
+- Never call a design someone's historical or official family coat of arms
+- No trademarked or fictional-franchise names (no Hogwarts houses, no Game of Thrones houses, no real club badges)
+- Social posts read like Prakhar talking: first person, short sentences, no hype words, no AI tells
+  ("it's not X, it's Y", "no X, no Y, no Z" lists, "in today's world", rocket emojis)
+- Images: real crests rendered by the site's own engine (tools/social_media.py), the usurp.games footer, never AI-generated
+  product shots that show something the Studio cannot make
+- Every link to the site carries UTM tags so attr.js credits the post (utm_source=<channel>&utm_medium=social&utm_campaign=<dayN-slug>)
 
 ## Proof Points
 None yet. No customer counts, reviews or testimonials may be claimed until they exist.
@@ -73,4 +91,5 @@ None yet. No customer counts, reviews or testimonials may be claimed until they 
 - Dodo Payments rejected anything tied to an online game or virtual goods, which is why Crest Studio is a separate artwork product.
 
 ## Changelog
+- v2, 2026-10-27: competitor landscape (checked with live pages), voice rules for social, image and UTM rules for /dailypublish.
 - v1, 2026-10-27: first draft from the site's pages and the owner's stated goals.

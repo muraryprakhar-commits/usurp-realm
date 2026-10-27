@@ -864,10 +864,12 @@ async function handleReturn() {
     const r = await fetch(`/api/verify?payment_id=${encodeURIComponent(pid)}`);
     const j = await r.json().catch(() => ({}));
     if (r.ok && j.ok) { verified = true; design = j.design ? dec(j.design) : null; plan = ['kit', 'heirloom'].includes(j.plan) ? j.plan : 'crest'; }
-    else if (r.status === 503 && status === 'succeeded') { verified = true; }  // verification not configured yet: trust the checkout redirect
     else { title.textContent = 'We could not confirm this payment'; msg.innerHTML = `If you were charged, email <a href="mailto:${CONTACT}?subject=Crest%20order%20${encodeURIComponent(pid)}">${CONTACT}</a> with your payment reference and we will send your files.`; return; }
   } catch (e) {
-    if (status === 'succeeded') verified = true;
+    // Never unlock on a network error: the URL alone is not proof of payment. Offer a retry instead.
+    title.textContent = 'We could not reach the payment check';
+    msg.innerHTML = `Check your connection and <a href="${location.href.replace(/"/g, '%22')}">reload this page</a>. If you were charged and it still fails, email <a href="mailto:${CONTACT}?subject=Crest%20order%20${encodeURIComponent(pid)}">${CONTACT}</a>.`;
+    return;
   }
   if (!verified) return;
   if (design) { D = design; save(); syncControls(); preview(); }

@@ -26,9 +26,9 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end();   // POST only, so links and crawlers never count
   const g = String((req.query && req.query.g) || ''), e = String((req.query && req.query.e) || 'play');
   if (!GAMES.includes(g) || !EVENTS.includes(e)) return res.status(400).json({ ok: false, error: 'bad_game_or_event' });
-  // Only count pings sent from our own pages (browsers attach Origin or Referer to these requests).
+  // Only count pings sent from our own pages (browsers attach Origin or Referer to these requests; scripts that send neither are refused).
   const from = String(req.headers.origin || req.headers.referer || '');
-  if (from && !/^https:\/\/(www\.)?usurp\.games(\/|$)/.test(from) && !/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?(\/|$)/.test(from)) {
+  if (!/^https:\/\/(www\.)?usurp\.games(\/|$)/.test(from) && !/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?(\/|$)/.test(from)) {
     return res.status(403).json({ ok: false, error: 'not_our_page' });
   }
   const { url, token } = creds();

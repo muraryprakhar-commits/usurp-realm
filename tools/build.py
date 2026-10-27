@@ -110,7 +110,7 @@ def og_image(key):
 
 
 # Analytics (Microsoft Clarity and Vercel Web Analytics) load unless this browser turned them off on the privacy page.
-TRACK = '<script>/* analytics: on unless this browser turned it off at /privacy.html#analytics */(function(w,d){var off=false;try{off=localStorage.getItem(\'ug-analytics\')===\'off\'}catch(e){}w.UG_NOTRACK=off;if(off)return;(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(w,d,"clarity","script","yzjmha008x");var v=d.createElement(\'script\');v.defer=true;v.src=\'/_vercel/insights/script.js\';d.head.appendChild(v);})(window,document);</script>'
+TRACK = '<script>/* analytics: on unless this browser turned it off at /privacy.html#analytics */(function(w,d){var off=false;try{off=localStorage.getItem(\'ug-analytics\')===\'off\'}catch(e){}w.UG_NOTRACK=off;if(off)return;(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(w,d,"clarity","script","yzjmha008x");var v=d.createElement(\'script\');v.defer=true;v.src=\'/_vercel/insights/script.js\';d.head.appendChild(v);})(window,document);</script><script src="/attr.js" defer></script>'
 
 
 def head(p):

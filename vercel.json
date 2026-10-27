@@ -9,6 +9,41 @@
       "source": "/studio",
       "destination": "/crest.html",
       "permanent": false
+    },
+    {
+      "source": "/qr/campus",
+      "destination": "/crest.html?utm_source=masters_union&utm_medium=qr&utm_campaign=campus_poster",
+      "permanent": false
+    },
+    {
+      "source": "/qr/class",
+      "destination": "/crest.html?utm_source=masters_union&utm_medium=qr&utm_campaign=class_screen",
+      "permanent": false
+    },
+    {
+      "source": "/qr/card",
+      "destination": "/crest.html?utm_source=business_card&utm_medium=qr&utm_campaign=card",
+      "permanent": false
+    },
+    {
+      "source": "/qr/sticker",
+      "destination": "/crest.html?utm_source=sticker&utm_medium=qr&utm_campaign=sticker",
+      "permanent": false
+    },
+    {
+      "source": "/qr/games",
+      "destination": "/games/?utm_source=games_poster&utm_medium=qr&utm_campaign=games_poster",
+      "permanent": false
+    },
+    {
+      "source": "/qr/gift",
+      "destination": "/family-crest-gift.html?utm_source=gift_flyer&utm_medium=qr&utm_campaign=gift",
+      "permanent": false
+    },
+    {
+      "source": "/qr",
+      "destination": "/crest.html?utm_source=qr&utm_medium=qr&utm_campaign=general",
+      "permanent": false
     }
   ],
   "rewrites": [

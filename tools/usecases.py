@@ -200,7 +200,7 @@ SPECS = [
 <p>National and civic emblems belong to their owners, so treat them as inspiration and give your dragon its own colors and motto.</p></section>
 <section class="sec"><h2 class="gilt">Designing your dragon crest</h2>
 <h3>Colors</h3><p>A red dragon on silver nods to Wales. A gold dragon on black or red feels like a great fantasy house. Keep to the rule of tincture: a metal (gold or silver) against a color.</p>
-<h3>For campaigns, guilds and clubs</h3><p>Dragons are the classic sigil for a D&amp;D noble house or an online guild. See the <a href="/dnd-coat-of-arms-generator.html">D&amp;D coat of arms generator</a> and the <a href="/fantasy-house-name-generator.html">fantasy house name generator</a> for names and mottos to go with it.</p>
+<h3>For campaigns, guilds and clubs</h3><p>Dragons are the classic sigil for a D&amp;D noble house or an online guild, with the <a href="/phoenix-crest.html">phoenix</a> a close second for groups with a comeback story. See the <a href="/dnd-coat-of-arms-generator.html">D&amp;D coat of arms generator</a> and the <a href="/fantasy-house-name-generator.html">fantasy house name generator</a> for names and mottos to go with it.</p>
 <h3>Mottos</h3><p>Try the Welsh <i>Cymru am Byth</i> (Wales forever), the Latin <i>Custos Fidelis</i> (faithful guardian), or plain English such as "Guard What You Love".</p>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=dragon">Design a dragon crest</a></p></section>''',
         faqs=[('What does a dragon mean on a coat of arms?', 'A valiant defender: a fierce protector of something precious, from a homeland to a family. In legend dragons guard treasure, and heraldry kept that idea.'),
@@ -429,7 +429,7 @@ SPECS = [
 <h3>Colors</h3><p>A red griffin on silver is the Pomeranian classic and very bold. A gold griffin on blue or black looks regal, and a silver griffin on green feels fresh and calm. Each follows the rule of tincture: a metal (gold or silver) against a color, so the beast stands out at any size.</p>
 <h3>Griffin supporters</h3><p>Griffins are also popular as supporters, the animals that stand on either side of the shield. In Crest Studio you can add a pair of griffin supporters to any design, so even a crest with a key, a book or an initial on the shield can have griffins guarding it.</p>
 <h3>Names with a griffin in them</h3><p>Griffith, Griffin and the German Greif all echo the creature in sound, and a griffin crest for a family with one of those names is a classic heraldic pun, known as canting arms.</p>
-<h3>For teams, schools and guilds</h3><p>The griffin is a favorite mascot because it combines two strong animals in one bold silhouette. See <a href="/school-house-crests.html">school house crests</a> and <a href="/clan-logo-maker.html">clan and guild logos</a>. Comparing beasts? The <a href="/eagle-coat-of-arms.html">eagle</a> and <a href="/lion-coat-of-arms.html">lion</a> guides cover its two halves.</p>
+<h3>For teams, schools and guilds</h3><p>The griffin is a favorite mascot because it combines two strong animals in one bold silhouette. See <a href="/school-house-crests.html">school house crests</a> and <a href="/clan-logo-maker.html">clan and guild logos</a>. Comparing beasts? The <a href="/eagle-coat-of-arms.html">eagle</a> and <a href="/lion-coat-of-arms.html">lion</a> guides cover its two halves, and the <a href="/phoenix-crest.html">phoenix crest guide</a> covers the other great fiery bird of heraldry.</p>
 <h3>Mottos</h3><p>Try <i>Semper Vigilans</i> (always watchful), <i>Fortis et Fidelis</i> (strong and faithful) or plain English such as "Guard What Matters". The <a href="/latin-motto-generator.html">Latin motto generator</a> has more with translations.</p>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=griffin">Design a griffin crest</a></p></section>''',
         faqs=[('What does a griffin mean on a coat of arms?', 'Courage, strength and leadership combined with vigilance. As half eagle and half lion, it joins the qualities of both, and in older stories griffins guarded treasure, so it also suggests protection.'),
@@ -471,5 +471,49 @@ SPECS = [
               ('Why are there a lion and a unicorn on the royal coat of arms?', 'When James VI of Scotland also became King of England and Ireland in 1603, his arms paired the English lion with the Scottish unicorn as supporters. The pairing remains on the royal arms of the United Kingdom.'),
               ('Is the unicorn the national animal of Scotland?', 'Yes. The unicorn has been a Scottish royal emblem for centuries and is widely recognized as Scotland\'s national animal.'),
               ('Can I put a unicorn on my family crest?', 'Yes. The unicorn is a traditional heraldic creature open to anyone in an original design, either on the shield or as a pair of supporters. Just avoid copying the royal arms exactly.')],
+    ),
+    dict(
+        slug='phoenix-crest.html', cta_href='/crest.html?ch=phoenix', short='Phoenix crest', blurb='Renewal, comebacks and rising from flames', og='phoenix',
+        h1='Phoenix Crest', h1_html='The Phoenix Crest: Meaning and Design',
+        title='Phoenix Crest: Meaning in Heraldry, Famous Phoenix Emblems and Design Ideas | Crest Studio',
+        og_title='Phoenix crest: what it means and how to design a phoenix emblem',
+        desc='What a phoenix means on a coat of arms, how heralds draw it rising from flames, famous phoenix emblems from Tudor England to San Francisco, and how to design your own phoenix crest free.',
+        eyebrow='Renewal, resilience and the comeback',
+        lede='The phoenix is the emblem of starting again: a bird that burns and rises from its own ashes. Here is what it means in heraldry, where it has flown before, and how to design a phoenix crest for a family, a team or a clan with a comeback story.',
+        cta='Design a phoenix crest',
+        examples=[crest('The Okonkwo Family', 'Resurgam', GULES, OR, GOLD_LIGHT, 'plain', 'phoenix'),
+                  crest('House Ashcombe', 'From Ashes, Higher', SABLE, OR, GOLD_LIGHT, 'plain', 'phoenix'),
+                  crest('The Delgado Family', 'Post Tenebras Lux', AZURE, OR, GOLD_LIGHT, 'plain', 'phoenix'),
+                  crest('Emberfall Gaming', 'We Respawn Stronger', PURPURE, ARGENT, ARGENT, 'plain', 'phoenix'),
+                  crest('Emberton Rovers', 'Up From the Ashes', VERT, OR, GOLD_LIGHT, 'plain', 'phoenix'),
+                  crest('The Halvorsen Family', 'Per Ardua', MURREY, OR, GOLD_LIGHT, 'plain', 'phoenix')],
+        body='''<section class="sec"><h2 class="gilt">What a phoenix means on a coat of arms</h2>
+<p>Renewal, resurrection and the strength to begin again. The legend is ancient: Herodotus, writing in the 400s BC, described a sacred bird said to visit Egypt only once every 500 years. Later writers added the version everyone knows, a bird that burns and rises young from its own ashes. Christian writers in the Middle Ages read it as a symbol of resurrection, and heraldry took it up as a badge of hope and endurance.</p>
+<p>That makes the phoenix different from most heraldic beasts. A lion or a bear says "we are strong". A phoenix says "we have been through fire and we are still here". It suits families who rebuilt after hard years, people marking a new chapter, and teams that came back from a losing season.</p></section>
+<section class="sec"><h2 class="gilt">How heralds draw the phoenix</h2>
+<p>The heraldic phoenix looks much like an eagle, with wings raised, and it is almost always shown rising from a bed of flames. A blazon will usually say so directly, for example "a phoenix in flames" or "a phoenix rising from the flames". Old reference books also give examples of the phoenix in plain colors, such as a silver phoenix on black.</p>
+<ul><li><b>The bird:</b> eagle-like, with its wings spread or raised.</li>
+<li><b>The flames:</b> usually drawn in natural colors, which heralds call "proper", so they stay red and gold whatever the field.</li>
+<li><b>Close relatives:</b> the salamander, a creature shown living in fire, is the phoenix's nearest cousin in heraldry, and the <a href="/eagle-coat-of-arms.html">heraldic eagle</a> shares its outline.</li></ul>
+<p>The phoenix in Crest Studio follows that tradition: an eagle-like bird with spread wings, rising from flames at the base.</p></section>
+<section class="sec"><h2 class="gilt">Famous phoenix emblems</h2><ul>
+<li><b>Jane Seymour:</b> the third wife of Henry VIII used a badge of a crowned phoenix rising from flames. The Seymour family crest, as recorded for the later Dukes of Somerset, is a phoenix rising from flames out of a ducal coronet.</li>
+<li><b>Fenwick of that Ilk, Scotland:</b> listed in Parker's classic glossary of heraldry as bearing a silver phoenix in flames on red.</li>
+<li><b>Coventry, England:</b> the city's arms gained a pair of supporters in 1959, the eagle of Leofric and a phoenix. The city explains the phoenix as the new Coventry reborn from the ashes of the old, after the destruction of the Second World War.</li>
+<li><b>San Francisco:</b> the city seal, adopted in 1859, has a phoenix rising from flames above the shield, linked to the city recovering from the great fires of its early years. The motto reads <i>Oro en Paz, Fierro en Guerra</i> (gold in peace, iron in war).</li>
+<li><b>Atlanta:</b> the city seal shows a phoenix rising from fire with the Latin motto <i>Resurgens</i> (rising again), for the city's rebuilding after the Civil War.</li></ul>
+<p>These belong to their families and cities, so use them as inspiration and give your phoenix its own colors, name and motto.</p></section>
+<section class="sec"><h2 class="gilt">Designing your phoenix crest</h2>
+<h3>Colors</h3><p>Gold on red is the most fiery choice and looks right at home with the flames. Gold on black reads like embers in the dark, and gold on blue calms the whole design down. A silver phoenix on purple or green is less expected and very striking. Each pair keeps the rule of tincture: a metal (gold or silver) against a color.</p>
+<h3>Keep the field plain</h3><p>A phoenix with spread wings and flames fills the shield, so it looks best without a division behind it. Put the story into the name and motto instead.</p>
+<h3>For gaming clans, teams and comebacks</h3><p>The phoenix is a natural sigil for a clan that rebuilt its roster, a guild relaunching on a new server, or a club that came back up after relegation. See <a href="/clan-logo-maker.html">clan and guild logos</a> for sizing tips, and the <a href="/crest-logo-maker.html">Crest Logo Kit</a> if you need favicons, a Discord icon and banners.</p>
+<h3>For families and new chapters</h3><p>A phoenix crest makes a thoughtful gift for someone starting over: a new home after a hard year, recovery, a business reopening. The <a href="/family-crest-gift.html">family crest gift guide</a> explains how to add a "presented to" line to the certificate.</p>
+<h3>Mottos</h3><p>Try <i>Resurgam</i> (I shall rise again), <i>Post Tenebras Lux</i> (after darkness, light), <i>Per Ardua</i> (through difficulties) or plain English such as "From Ashes, Higher". The <a href="/latin-motto-generator.html">Latin motto generator</a> has more, each with a translation.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=phoenix">Design a phoenix crest</a></p></section>''',
+        faqs=[('What does a phoenix mean on a coat of arms?', 'Renewal, resurrection and resilience. In legend the phoenix burns and rises again from its own ashes, so in heraldry it stands for surviving hardship and starting again stronger.'),
+              ('How is a phoenix shown in heraldry?', 'As an eagle-like bird with raised or spread wings, rising from a bed of flames. A blazon will usually describe it as "a phoenix in flames" or "rising from the flames", with the flames in natural colors.'),
+              ('Which cities have a phoenix on their emblem?', 'Among others, Coventry in England has a phoenix as one of the supporters of its arms, and the city seals of San Francisco and Atlanta both show a phoenix rising from flames.'),
+              ('Is a phoenix a good emblem for a gaming clan or team?', 'Yes. It is one of the most popular choices for groups with a comeback story, and its bold silhouette reads well at small sizes such as a Discord icon or a team avatar.'),
+              ('Can I put a phoenix on my family crest?', 'Yes. The phoenix is a traditional heraldic creature anyone can use in an original design. Just avoid copying a real family or civic coat of arms exactly, and treat a Crest Studio design as decorative art rather than official arms.')],
     ),
 ]

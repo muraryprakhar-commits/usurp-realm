@@ -143,7 +143,10 @@ function syncControls() {
   document.querySelectorAll('.sw').forEach(b => b.setAttribute('aria-pressed', String(D[b.dataset.k] === b.dataset.v)));
 }
 function buyUrl(pid = PRODUCT_ID) {
-  const p = new URLSearchParams({ quantity:'1', redirect_url:RETURN_URL, metadata_design:enc(D), showDiscounts:'false' });
+  // Campaign attribution (attr.js): which source, campaign and channel brought this buyer, stored on the Dodo payment.
+  let attr = {};
+  try { attr = (window.UG_ATTR && window.UG_ATTR.checkout()) || {}; } catch (e) {}
+  const p = new URLSearchParams({ quantity:'1', redirect_url:RETURN_URL, metadata_design:enc(D), showDiscounts:'false', ...attr });
   return `${CHECKOUT}${pid}?${p}`;
 }
 function wire() {

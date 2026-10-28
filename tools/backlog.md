@@ -10,7 +10,7 @@ Pick the angle a real searcher has; keep every claim checkable (see the rules in
 - [x] Griffin coat of arms (built 26 Oct as griffin-coat-of-arms.html) (keyword: griffin heraldry): eagle plus lion, segreant; emblem id griffin
 - [x] Unicorn coat of arms (built 26 Oct as unicorn-coat-of-arms.html) (keyword: unicorn coat of arms): Scotland, purity; emblem id unicorn
 - [x] Phoenix crest (built 27 Oct as phoenix-crest.html) (keyword: phoenix crest / phoenix emblem): renewal, gaming clans and comeback stories; emblem id phoenix
-- [ ] Owl coat of arms (keyword: owl crest): wisdom, schools and libraries; emblem id owl
+- [x] Owl coat of arms (built 28 Oct as owl-coat-of-arms.html) (keyword: owl crest): wisdom, schools and libraries; emblem id owl
 - [ ] Welsh family crest maker (keyword: welsh family crest): red dragon, daffodil and leek are national emblems, honest note on Welsh arms
 - [ ] German family crest maker (keyword: german family crest / familienwappen): black eagle colors, honest note on surname arms
 - [ ] Polish coat of arms (keyword: polish coat of arms / herb): clan arms (herb) shared by many families is a real Polish tradition, explain it carefully

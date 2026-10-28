@@ -463,7 +463,7 @@ SPECS = [
 <h3>Colors</h3><p>A silver unicorn on blue is the most Scottish look, echoing the saltire flag's white on blue. Silver on red is bright and dramatic, gold on green feels like an old forest tale, and silver on purple or black looks elegant and a little mysterious. All keep the rule of tincture: a metal against a color.</p>
 <h3>Unicorn supporters</h3><p>Crest Studio lets you add a pair of unicorns as supporters on either side of any shield, so you can keep a family emblem on the shield and still have unicorns standing guard.</p>
 <h3>Scottish families</h3><p>If your family has Scottish roots, the unicorn is a natural choice. Pair it with a thistle or a saltire division for a design that clearly says Scotland. The <a href="/scottish-family-crest.html">Scottish family crest guide</a> explains clan crest badges and how they differ from personal arms.</p>
-<h3>For schools, houses and storytellers</h3><p>The unicorn suits school houses, book clubs and fantasy settings that want an emblem of wonder rather than war. See <a href="/school-house-crests.html">school house crests</a> and the <a href="/dnd-coat-of-arms-generator.html">D&amp;D coat of arms generator</a>.</p>
+<h3>For schools, houses and storytellers</h3><p>The unicorn suits school houses, book clubs and fantasy settings that want an emblem of wonder rather than war. See <a href="/school-house-crests.html">school house crests</a> and the <a href="/dnd-coat-of-arms-generator.html">D&amp;D coat of arms generator</a>. For a house of wisdom instead, the <a href="/owl-coat-of-arms.html">owl coat of arms guide</a> covers heraldry's great emblem of learning.</p>
 <h3>Mottos</h3><p>Try <i>Lux et Veritas</i> (light and truth), <i>Nemo Me Impune Lacessit</i> (no one provokes me with impunity, the motto long associated with Scotland and the Order of the Thistle) or plain English such as "Gentle, Never Tame". The <a href="/latin-motto-generator.html">Latin motto generator</a> has more with translations.</p>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=unicorn">Design a unicorn crest</a></p></section>''',
         faqs=[('What does a unicorn mean on a coat of arms?', 'Purity, courage and a strength that cannot be tamed. In medieval stories the unicorn could not be captured by force, so it became a symbol of nobility and freedom.'),
@@ -515,5 +515,43 @@ SPECS = [
               ('Which cities have a phoenix on their emblem?', 'Among others, Coventry in England has a phoenix as one of the supporters of its arms, and the city seals of San Francisco and Atlanta both show a phoenix rising from flames.'),
               ('Is a phoenix a good emblem for a gaming clan or team?', 'Yes. It is one of the most popular choices for groups with a comeback story, and its bold silhouette reads well at small sizes such as a Discord icon or a team avatar.'),
               ('Can I put a phoenix on my family crest?', 'Yes. The phoenix is a traditional heraldic creature anyone can use in an original design. Just avoid copying a real family or civic coat of arms exactly, and treat a Crest Studio design as decorative art rather than official arms.')],
+    ),
+    dict(
+        slug='owl-coat-of-arms.html', cta_href='/crest.html?ch=owl', short='Owl coat of arms', blurb='Wisdom, Athena and the owls of Leeds and Oldham', og='owl',
+        h1='Owl Coat of Arms', h1_html='The Owl Coat of Arms: Meaning and Design',
+        title='Owl Coat of Arms: Meaning, Famous Owl Crests and Design Ideas | Crest Studio',
+        og_title='Owl coat of arms: what it means and how to design an owl crest',
+        desc='What an owl means on a coat of arms, why owls guard the arms of Leeds and Oldham, how heralds draw them, and how to design an owl crest for a family, school or library, free.',
+        eyebrow='Wisdom, vigilance and learning',
+        lede='The owl is the emblem of wisdom and of keeping watch. It has stood for learning since the coins of ancient Athens, and it still guards the arms of English towns and schools. Here is what it means and how to put one on a crest of your own.',
+        cta='Design an owl crest',
+        examples=[crest('The Whitlock Family', 'Sapere Aude', SABLE, ARGENT, ARGENT, 'plain', 'owl'),
+                  crest('Ravenscroft Library', 'Lux et Veritas', AZURE, OR, GOLD_LIGHT, 'plain', 'owl'),
+                  crest('House Sapientia', 'Scientia Potentia Est', PURPURE, ARGENT, ARGENT, 'plain', 'owl'),
+                  crest('The Achebe Family', 'Wise and Watchful', VERT, OR, GOLD_LIGHT, 'plain', 'owl'),
+                  crest('Night Owls Quiz Team', 'We Know Things', GULES, OR, GOLD_LIGHT, 'plain', 'owl')],
+        body='''<section class="sec"><h2 class="gilt">What an owl means on a coat of arms</h2>
+<p>Wisdom, learning and vigilance. The link is very old: the owl was the bird of Athena, the Greek goddess of wisdom, and from around 500 BC the silver coins of Athens showed her head on one side and an owl with an olive sprig on the other. The Romans gave the same owl to Minerva, their goddess of wisdom, and the idea has never really gone away. When people today want an emblem that says "we think before we act", they still reach for the owl.</p>
+<p>Heraldry added a second meaning. An owl sees in the dark and stays awake while others sleep, so it also stands for watchfulness: the guardian who keeps an eye on the house at night. That makes it a gentle but serious choice, wise rather than fierce.</p></section>
+<section class="sec"><h2 class="gilt">How heralds draw the owl</h2>
+<p>The heraldic owl is usually drawn standing, with its face turned toward the viewer, so its two large round eyes look straight out of the shield. That front-facing stare is what makes an owl easy to recognize even at a small size. Owls are often shown in silver or gold, and a blazon may also call for an owl "proper", meaning in its natural brown colors.</p>
+<p>The owl in Crest Studio follows that tradition: a front-facing owl perched on a branch, with its ear tufts up and its wings folded.</p></section>
+<section class="sec"><h2 class="gilt">Famous owls in heraldry</h2>
+<h3>Leeds</h3><p>The coat of arms of the city of Leeds has an owl as its crest and two crowned owls as supporters on either side of the shield. The owls come from the arms of Sir John Savile, the first Alderman of Leeds, and the owl has become a much-loved symbol of the city.</p>
+<h3>Oldham and Hugh Oldham</h3><p>The arms of Oldham in Lancashire show three silver owls on black with a gold chevron, and an owl as the crest. They were granted in 1894 and based on the arms of the Oldham family. The owls are a visual pun: the name was said locally as something like "Owdham". Heralds call this kind of pun canting arms, and it is one of the oldest jokes in heraldry. The borough's motto, <i>Sapere Aude</i> (dare to be wise), plays on the owl too.</p>
+<p>The family's best-known member was Hugh Oldham, Bishop of Exeter, who founded Manchester Grammar School in 1515. The school also uses the motto <i>Sapere Aude</i>, and his owls still appear in the arms of Corpus Christi College, Oxford, which he helped found.</p>
+<p>These arms belong to their cities, families and schools, so use them as inspiration and give your own owl its own colors, name and motto.</p></section>
+<section class="sec"><h2 class="gilt">Designing your owl crest</h2>
+<h3>Colors</h3><p>A silver owl on black is the night watch itself and looks especially sharp in print. Gold on blue feels scholarly, silver on purple looks like an old university, and gold on green or red is warm and friendly. Each pair keeps the rule of tincture: a metal (gold or silver) against a color. The <a href="/heraldry-symbols-and-meanings.html">heraldry meanings guide</a> explains what each color traditionally stands for.</p>
+<h3>Keep the field simple</h3><p>The owl's round face and big eyes are its whole character, so a plain field shows it best. If you want more on the shield, try a chevron or a fess behind it, and keep the owl in a metal so it stands out.</p>
+<h3>For schools, libraries and quiz teams</h3><p>The owl is a natural emblem for a school house of wisdom, a library, a tutoring business, a book club or a pub quiz team. See <a href="/school-house-crests.html">school house crests</a> for setting up a whole house system, and the <a href="/crest-logo-maker.html">Crest Logo Kit</a> if you need a logo, favicons and social banners for a small business.</p>
+<h3>For families</h3><p>An owl suits a family that values learning: parents who were the first to go to college, a long line of teachers, or grandparents who always had the answer. It also makes a thoughtful graduation or retirement gift for a teacher.</p>
+<h3>Mottos</h3><p>Try <i>Sapere Aude</i> (dare to be wise), <i>Lux et Veritas</i> (light and truth), <i>Scientia Potentia Est</i> (knowledge is power) or plain English such as "Wise and Watchful". The <a href="/latin-motto-generator.html">Latin motto generator</a> has more, each with a translation.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=owl">Design an owl crest</a></p></section>''',
+        faqs=[('What does an owl mean on a coat of arms?', 'Wisdom, learning and vigilance. The owl was the bird of Athena, the Greek goddess of wisdom, and because it watches through the night it also stands for keeping guard.'),
+              ('Why does Leeds have owls on its coat of arms?', 'The owls on the arms of Leeds, as the crest and as the two supporters, were taken from the arms of Sir John Savile, the first Alderman of Leeds.'),
+              ('Why are there owls on the Oldham coat of arms?', 'They are a pun on the name. The Oldham family name was pronounced something like "Owdham", so the family took owls for their arms, and the borough arms granted in 1894 were based on them. The motto Sapere Aude, dare to be wise, refers to the owls.'),
+              ('Is an owl a good emblem for a school or library?', 'Yes. It is one of the most popular emblems for schools, libraries and learning groups because its link to wisdom goes back to ancient Greece, and its front-facing face reads clearly at small sizes.'),
+              ('Can I put an owl on my family crest?', 'Yes. The owl is a traditional heraldic charge anyone can use in an original design. Just avoid copying a real city, school or family coat of arms exactly, and treat a Crest Studio design as decorative art rather than official arms.')],
     ),
 ]

@@ -428,6 +428,8 @@ def school():
 <p>Red, blue, green and purple are the usual four, each paired with gold or silver so the crest stays readable when printed in black and white.</p>
 <h3>A motto students can live up to</h3>
 <p>Pick from the <a href="/latin-motto-generator.html">Latin motto generator</a>, where every motto comes with its translation.</p>
+<h3>Choose an emblem with a meaning</h3>
+<p>An owl for a house of wisdom, a lion for courage, a tree or an oak for growth. The <a href="/owl-coat-of-arms.html">owl coat of arms guide</a> explains why the owl has stood for learning since ancient Athens and how schools such as Manchester Grammar School use it.</p>
 <h3>Turn it into a lesson</h3>
 <p>Before the reveal, have students design their own family crest on the <a href="/coat-of-arms-template.html">free printable worksheet</a>, then vote on the emblem for each house.</p>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html">Design your first house crest</a></p></section>'''

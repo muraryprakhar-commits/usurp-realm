@@ -1,0 +1,25 @@
+{
+  "id": "/games/",
+  "name": "Usurp: Medieval Games",
+  "short_name": "Usurp",
+  "description": "Free medieval games: The Usurper (online social deduction for 4 to 10), a trebuchet siege, Viking chess, Nine Men's Morris, archery, jousting, castle defense and sword duels.",
+  "start_url": "/games/?source=app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#14110e",
+  "theme_color": "#14110e",
+  "lang": "en",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    { "src": "/img/app/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/img/app/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/img/app/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/img/app/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "The Usurper", "short_name": "Usurper", "url": "/games/the-usurper.html?source=app", "icons": [{ "src": "/img/app/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Trebuchet siege", "short_name": "Siege", "url": "/games/trebuchet-game.html?source=app", "icons": [{ "src": "/img/app/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Design a coat of arms", "short_name": "Crest Studio", "url": "/crest.html?source=app", "icons": [{ "src": "/img/app/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

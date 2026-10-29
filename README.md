@@ -125,3 +125,26 @@ python3 tools/indexnow.py  # after deploy: tell Bing, Yandex and others about ev
 - `tools/social_media.py`: renders on-brand images (grid, single crest) and 9:16 crest-reveal MP4s with the site's own crest engine.
 - `.mcp.json`: research connectors for Claude Code (Exa, Firecrawl, Context.dev, Apify). Each signs in with OAuth on first use (`/mcp`).
 - `content/` is in `.vercelignore`, so content work never changes the live site.
+
+## The Usurper, accounts and the installable app (29 Oct 2026)
+
+- `games/the-usurper.html` (`games/usurper.js`): a medieval social deduction game for 4 to 10. Loyal knights do tasks;
+  heavy tasks need several knights heaving at once and their strengths add up; one or two hidden Usurpers strike,
+  sabotage (torches, postern gate) and can fake a heave. Councils (alarm or bell) talk with quick chat and vote.
+- Multiplayer with no game server: the host's browser runs the match (and the computer knights) and the others connect
+  peer to peer over WebRTC. `games/vendor/peerjs.min.js` (PeerJS 1.5.5, MIT) finds peers through the free PeerJS
+  cloud broker (0.peerjs.com) and its TURN relays. Room ids are `usurpgames-v1-<CODE>`; Quick match tries public rooms
+  `pub-1` to `pub-6` (join if open, host if free). Private rooms allow free text chat (filtered); public rooms are
+  quick chat only. "Play now" runs the same host code locally against bots with no network.
+  If the PeerJS cloud ever becomes unreliable, run our own PeerServer (npm `peer`) and pass host/port to `new Peer`.
+- Local test hooks (localhost only): `window.__us` (state, `ff(seconds)` fast-forwards the host simulation).
+- Accounts are optional (`games/account.js`, `api/save.js`): guest play by default; "Save my progress" makes a random
+  20-character save code in the browser, which is the login (no email or password). Progress (Usurper rank and stats,
+  best scores, player name, Crest Studio design) is stored under a SHA-256 of the code, in Upstash Redis when
+  connected, otherwise a private Vercel Blob store (`BLOB_READ_WRITE_TOKEN`). With neither, the UI says cloud save is
+  not on yet and everything keeps working on the device. Saves are throttled (Blob's free tier allows 2,000 writes a month).
+- Ads: `ADS['sponsor']['name']` also goes on the Great Hall banners in The Usurper, and the sponsor image shows in its
+  lobby. `ADS['meta']` is an optional Meta Pixel ID (for measuring Meta ad campaigns only; update privacy.html first).
+- Installable app: `manifest.webmanifest`, `sw.js` (network-first pages, cache-first versioned files), icons in
+  `img/app/` from `node tools/app_icons.js`. The games hub shows "Install the games as an app" when the browser offers it.
+  This is also the base for the Play Store build (Trusted Web Activity); see the launch kit in the project docs.

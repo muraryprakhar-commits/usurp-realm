@@ -202,6 +202,8 @@ def main():
     os.makedirs(out, exist_ok=True)
     built = []
     for G in build.GAMES:
+        if not G.get('portal', True):                # the online multiplayer game is not packaged for portals
+            continue
         d, z = package(G, out)
         built.append((G, d))
         print('packaged', G['id'], os.path.getsize(z) // 1024, 'KB')

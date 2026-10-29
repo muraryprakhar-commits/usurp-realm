@@ -21,6 +21,18 @@ if (PORTAL === 'crazygames') {
   if (sdk) sdk.init().then(() => { cgReady = true; }).catch(() => {});
 }
 
+// Installable app: the service worker (/sw.js) on usurp.games itself, never inside embeds or portal builds
+if (!EMBED && !PORTAL && 'serviceWorker' in navigator && /^(usurp\.games|www\.usurp\.games|localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js').catch(() => {}); });
+  // "Install the app" buttons (data-install) appear only when the browser offers installation
+  let deferred = null;
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e; document.querySelectorAll('[data-install]').forEach(b => { b.hidden = false; }); });
+  document.addEventListener('click', e => {
+    const b = e.target.closest && e.target.closest('[data-install]'); if (!b || !deferred) return;
+    deferred.prompt(); deferred.userChoice.then(c => { UG.track('install_' + (c && c.outcome)); deferred = null; document.querySelectorAll('[data-install]').forEach(x => { x.hidden = true; }); }).catch(() => {});
+  });
+}
+
 /* ---------- small helpers ---------- */
 UG.clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
 UG.lerp = (a, b, t) => a + (b - a) * t;
@@ -45,8 +57,14 @@ let GAME = 'games';
 // Our own play counter (/api/play, shown at usurp.games/stats.html): only starts and finished rounds, only on
 // usurp.games itself (never in embeds or portal builds), no cookies and nothing about the player.
 const COUNTED = ['play', 'finish'];
+// Meta Pixel, only when an ID is configured (to measure Meta ad campaigns that promote the games), never in embeds or portals
+if (ADS.meta && !EMBED && !PORTAL && !window.UG_NOTRACK && /^\d{6,20}$/.test(String(ADS.meta))) {
+  (function (f, b, e, v, n, t, s) { if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); }; if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = []; t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s); })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+  window.fbq('init', String(ADS.meta)); window.fbq('track', 'PageView');
+}
 UG.track = (ev, extra) => {
   if (window.UG_NOTRACK) return;   // this browser turned analytics off on the privacy page
+  try { if (window.fbq && ADS.meta && (ev === 'play' || ev === 'finish')) window.fbq('trackCustom', ev === 'play' ? 'PlayGame' : 'FinishGame', { game: GAME }); } catch (e) {}
   try { if (window.clarity) window.clarity('event', `${ev}_${GAME}`); } catch (e) {}
   try { if (window.gtag && ADS.ga) window.gtag('event', ev, Object.assign({ game: GAME }, extra || {})); } catch (e) {}
   const cev = GAME === 'siege' && ev === 'round' ? 'play' : ev;   // in Siege every castle started is a play

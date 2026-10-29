@@ -202,3 +202,68 @@ body.ug-embed .ug-bestl{display:inline!important}
 .rules-figs svg{width:100%;max-width:212px;height:auto;display:block;margin:0 auto}
 .rules-figs figcaption{font-size:15px;line-height:1.35;margin-top:8px;text-align:left}
 .rules-figs b{color:var(--gold-2)}
+/* The Usurper: lobby, council and result panels over the game */
+.us-pan{position:absolute;inset:0;z-index:4;display:flex;align-items:flex-start;justify-content:center;padding:12px;overflow:auto;overscroll-behavior:contain;background:radial-gradient(ellipse at center,rgba(12,10,8,.86),rgba(12,10,8,.96));animation:ugfade .2s ease}
+.us-pan[hidden]{display:none!important}
+.us-card{margin:auto;width:100%;max-width:420px;text-align:center;padding:16px 14px;background:linear-gradient(180deg,rgba(42,32,20,.95),rgba(20,16,12,.97));border:1px solid var(--gold-deep);box-shadow:0 10px 40px rgba(0,0,0,.6)}
+.us-lbl{display:block;text-align:left;font-family:var(--serif);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:12px 0 4px}
+.us-in{width:100%;box-sizing:border-box;font:inherit;font-size:16px;color:var(--text);background:#0e0b08;border:1px solid #5a4523;padding:10px 12px;border-radius:0}
+.us-in:focus{outline:2px solid var(--gold-2);outline-offset:1px}
+.us-codein{text-align:center;font-family:var(--serif-d);font-size:28px;letter-spacing:.3em;text-transform:uppercase;margin-top:12px}
+.us-share{margin-top:10px;padding:10px;border:1px dashed #6b5430;background:#120e0a}
+.us-share p{margin:0;font-family:var(--serif);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.us-code{display:block;font-family:var(--serif-d);font-size:40px;letter-spacing:.25em;color:#fff3cf;margin:2px 0 8px}
+.us-row{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap}
+.us-row .btn{min-width:0;padding:10px 14px;font-size:13px}
+.us-fill{margin-top:10px;font-size:15px;color:var(--muted)}
+.us-fill b{font-family:var(--serif-d);font-size:22px;color:#fff3cf;min-width:30px}
+.us-plist{list-style:none;margin:12px 0 0;padding:0;text-align:left;max-height:220px;overflow:auto}
+.us-plist li{display:flex;align-items:center;gap:8px;padding:6px 8px;border-bottom:1px solid #2c2318;font-size:16px}
+.us-plist li span{margin-left:auto;font-size:13px;color:var(--muted)}
+.us-dot{display:inline-block;flex:none;width:14px;height:14px;border-radius:50%;border:2px solid rgba(0,0,0,.5);vertical-align:-2px;margin-right:4px}
+.us-cd{margin:10px 0 0;color:var(--text);font-size:15px}
+.us-note{margin:10px 0 0;font-size:14px;color:var(--muted);line-height:1.4}
+.us-council{width:100%;max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:8px;min-height:100%}
+.us-ch{text-align:center;padding:4px 0}
+.us-why{margin:4px 0 0;font-size:16px;color:#fff3cf;line-height:1.35}
+.us-tm{margin:2px 0 0;font-size:13px;color:var(--gold)}
+.us-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.us-pc{display:flex;align-items:center;gap:4px;flex-wrap:wrap;text-align:left;font:inherit;font-size:14px;color:var(--text);background:#16110c;border:1px solid #3a2e1f;padding:8px;min-height:44px;cursor:pointer}
+.us-pc b{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:62%}
+.us-pc em{font-style:normal;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-left:auto}
+.us-pc.sel{border-color:var(--gold-2);background:#2a2014;box-shadow:0 0 0 1px var(--gold-2) inset}
+.us-pc.dead{opacity:.45;cursor:default;text-decoration:line-through}
+.us-pc.mate em{color:#ff7a6b}
+.us-acts,.us-quick{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center}
+.us-acts .btn{min-width:0;padding:10px 14px;font-size:13px}
+.us-acts .us-note{margin:0;width:100%;text-align:center}
+.us-q{font:inherit;font-size:13px;color:var(--text);background:#120e0a;border:1px solid #5a4523;padding:8px 10px;min-height:40px;cursor:pointer}
+.us-q:hover,.us-pc:hover{border-color:var(--gold)}
+.us-sel{font:inherit;font-size:13px;color:var(--text);background:#120e0a;border:1px solid #5a4523;padding:8px;min-height:40px}
+.us-log{flex:1;min-height:110px;max-height:200px;overflow:auto;background:#0e0b08;border:1px solid #2c2318;padding:6px 8px;text-align:left}
+.us-log p{margin:3px 0;font-size:14px;line-height:1.35}
+.us-log i{color:var(--gold)}
+.us-say{display:flex;gap:6px}
+.us-say .btn{min-width:0;padding:10px 14px}
+.us-res .us-big{font-family:var(--serif-d);font-weight:900;font-size:26px;color:#9fe0b4;margin:8px 0 0}
+.us-res .us-big.red{color:#ff7a6b}
+@media(max-width:420px){.us-grid{grid-template-columns:1fr 1fr}.us-pc{font-size:13px;padding:6px}}
+/* optional cloud save: the strip under each game and its dialog */
+.ua-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;max-width:760px;margin:14px auto 0;padding:10px 14px;border:1px solid #3a2e1f;background:#120e0a}
+.ua-t{display:flex;flex-direction:column;flex:1 1 260px;min-width:0}
+.ua-t b{font-family:var(--serif);color:var(--gold-2);font-size:15px}
+.ua-t span{font-size:14px;color:var(--muted);line-height:1.35}
+.ua-b{display:flex;flex-wrap:wrap;gap:8px}
+.ua-b .btn,.ua-row .btn{min-width:0;padding:10px 14px;font-size:13px}
+#games>.ua-bar,.ua-bar+section{margin-bottom:14px}
+.ua-dlg{position:fixed;inset:0;margin:auto;height:fit-content;max-height:calc(100vh - 32px);overflow:auto;border:1px solid var(--gold-deep);background:linear-gradient(180deg,#2a2014,#14100c);color:var(--text);padding:0;max-width:min(460px,calc(100vw - 32px));width:100%;box-shadow:0 20px 60px rgba(0,0,0,.7)}
+.ua-dlg::backdrop{background:rgba(6,5,4,.75)}
+.ua-in{position:relative;padding:22px 18px 18px;text-align:center}
+.ua-x{position:absolute;top:6px;right:8px;width:40px;height:40px;font-size:26px;line-height:1;background:none;border:0;color:var(--muted);cursor:pointer}
+.ua-code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:clamp(14px,4.3vw,22px);letter-spacing:.02em;white-space:nowrap;color:#fff3cf;background:#0e0b08;border:1px dashed #6b5430;padding:12px 8px;margin:10px 0;user-select:all;word-break:break-all}
+.ua-note{font-size:14px;color:var(--muted);line-height:1.45;margin:8px 0}
+.ua-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px}
+.ua-input{text-align:center;font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.05em;text-transform:uppercase;margin-top:6px}
+.ua-done{margin-top:14px;width:100%}
+.us-sp{display:block;margin-top:4px}.us-sp img{display:block;width:100%;height:auto}
+.us-note a{color:var(--gold-2)}

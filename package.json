@@ -1,8 +1,9 @@
 {
   "name": "usurp-realm",
   "private": true,
-  "description": "usurp.games: static site plus two small Vercel functions (payment check, share images)",
+  "description": "usurp.games: static site plus small Vercel functions (payment check, share images, play counter, optional cloud save)",
   "dependencies": {
-    "@resvg/resvg-js": "^2.6.2"
+    "@resvg/resvg-js": "^2.6.2",
+    "@vercel/blob": "^2.8.2"
   }
 }

@@ -15,8 +15,12 @@ SITE = 'https://usurp.games'
 # usurp.games; then set client to the publisher ID ('ca-pub-...') and slot to a responsive display ad unit ID.
 # Set h5 to True only once Google has approved the account for H5 Games Ads (between-round ads); test=True shows
 # Google's test ads while checking it. ga is an optional Google Analytics 4 measurement ID for play events.
-# sponsor: a directly sold banner, e.g. {'href': 'https://...', 'img': '/img/sponsors/x.png', 'alt': 'Sponsor name'}.
-ADS = {'client': '', 'slot': '', 'h5': False, 'test': False, 'ga': '', 'sponsor': None}
+# sponsor: a directly sold banner, e.g. {'href': 'https://...', 'img': '/img/sponsors/x.png', 'alt': 'Sponsor name', 'name': 'Sponsor'}.
+#   'name' (optional, up to 22 characters) is also woven into the banners of the Great Hall in The Usurper.
+# meta: optional Meta Pixel ID, only for measuring and retargeting Meta (Facebook/Instagram) ad campaigns that
+#   promote these games. Meta has not served ads onto mobile websites since 2020, so it is never an ad source here.
+#   Before setting it, update the Advertising section of privacy.html (it currently says the Pixel is not used).
+ADS = {'client': '', 'slot': '', 'h5': False, 'test': False, 'ga': '', 'meta': '', 'sponsor': None}
 TODAY = datetime.date.today().isoformat()
 E = html.escape
 
@@ -125,7 +129,7 @@ def head(p):
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{E(p['og_title'])}"><meta name="twitter:description" content="{E(p['desc'])}"><meta name="twitter:image" content="{img}"><meta name="twitter:image:alt" content="{alt}">
 <script type="application/ld+json">{ld}</script>
 {TRACK}
-<meta name="theme-color" content="#14110e"><link rel="icon" href="/icon.svg" type="image/svg+xml">{f'<meta name="google-adsense-account" content="{ADS["client"]}">' if ADS['client'] else ''}
+<meta name="theme-color" content="#14110e"><link rel="icon" href="/icon.svg" type="image/svg+xml"><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/img/app/apple-touch-icon.png">{f'<meta name="google-adsense-account" content="{ADS["client"]}">' if ADS['client'] else ''}
 <link rel="preload" href="/fonts/cinzel-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/cinzel-decorative-900-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/studio.css"><link rel="stylesheet" href="/pages.css">{p.get('head_extra', '')}
 </head>'''
@@ -956,6 +960,38 @@ for _sp in SPECS:
 # Short medieval games and board games. Each is one canvas drawn in code (no image files), with a shared engine in games/engine.js.
 # Thumbnails and share images come from tools/game_shots.py, which plays each game and photographs it.
 GAMES = [
+    dict(id='usurper', slug='games/the-usurper.html', js='usurper', short='The Usurper', name='The Usurper', play_mode=['MultiPlayer', 'SinglePlayer'], portal=False,
+         h1='The Usurper: Medieval Social Deduction Game', og_title='The Usurper: find the traitor in the keep before it falls',
+         title='The Usurper: Free Online Social Deduction Game (4 to 10)',
+         desc='Free medieval social deduction game for 4 to 10 players. Loyal knights heave together to secure the keep while a hidden Usurper strikes. Play friends or bots.',
+         tagline='Secure the keep. Find the traitor. Banish them before it falls.', genre=['Social deduction', 'Party', 'Multiplayer'],
+         card='Heave together, talk it out, banish the traitor.',
+         share_text='Play The Usurper with me: loyal knights vs a hidden traitor. Free in the browser:',
+         how=['Choose Play now for an instant match against computer knights, Quick match to join players online, or Private room to invite friends with a link or a 4-letter code.',
+              'Most players are loyal knights. Walk the keep and finish your tasks, shown top left and as gold rings. The bar at the top fills as the keep is secured.',
+              'Heavy tasks (raise the portcullis, hoist the great bell, lift the fallen cart) need several knights heaving at once. Every knight has a strength of 2 to 4, and the strengths of everyone heaving add up.',
+              'One or two players are secretly the Usurper. They strike knights down when nobody is watching, douse the torches, breach the postern gate, and can join a heave while adding nothing.',
+              'Find a fallen knight and raise the alarm, or ring the council bell in the Great Hall. The council talks, accuses and votes. Whoever gets the most votes is banished.',
+              'Loyal knights win by securing the keep or banishing every Usurper. The Usurpers win when they match the loyal knights in number, or when the postern stays open too long.'],
+         touch='Drag anywhere to walk. Hold the big round button to work or heave; it changes to Alarm near a fallen knight. Usurpers also get Strike and Sabotage buttons.',
+         keys='WASD or the arrow keys to walk. Hold Space or E to work or heave. Usurpers: Q to strike, F to sabotage, then 1 or 2.',
+         tips=['Watch the strength total on a heavy task. If three knights are heaving and the number is lower than their claims, someone is faking.',
+               'Tell the council your strength. The Usurper has to guess one, and a lie can be checked at the next heave.',
+               'Train once at the pell in the Armory for +1 strength. A knight of strength 4 makes the portcullis much easier.',
+               'Stay in pairs. The Usurper only strikes when nobody else can see.',
+               'When the postern is breached, run to the Gatehouse: holding it shut needs a combined strength of 5, so one knight cannot do it alone.'],
+         faqs=[('Is The Usurper free?', 'Yes. It runs in your browser on phones, tablets and computers, with no download, no account and nothing to buy.'),
+               ('How do I play with friends?', 'Choose Private room. You get a 4-letter code and an invite link to send by WhatsApp or anywhere else. Your friends open the link and join. Computer knights fill the empty seats, so even two or three friends get a full match.'),
+               ('Can I play alone?', 'Yes. Play now starts a match at once against computer knights who do tasks, heave, accuse and vote. Quick match puts you in a public room with other players, and computer knights fill the rest.'),
+               ('How many players?', 'From 4 to 10 in a match, counting computer knights. With 7 or more there are two Usurpers.'),
+               ('Is there chat?', 'In private rooms you can type freely. Public matches use quick chat only: preset lines such as where you were, who you suspect and your strength. That keeps games with strangers friendly.'),
+               ('Is it suitable for children?', 'Yes. There is no blood: a struck knight simply falls and comes back as a ghost who can still finish tasks. Public rooms have no free typing.'),
+               ('Do I need an account?', 'No. You play as a guest and your rank is kept on this device. Signing in is optional and only saves your rank and stats so they follow you to another device.'),
+               ('How does online play work?', 'One player hosts the match in their browser and the others connect to them directly. If the host leaves, the match ends, so the host should keep the page open.')],
+         about=('Where social deduction games come from', '<p>Hidden-traitor party games go back to Mafia, which Dmitry Davidoff created in Moscow in 1986 while studying psychology at Moscow State University. '
+                'A small, secret group tries to remove everyone else, and the rest must work out who they are by talking and voting.</p>'
+                '<p>In 1997 Andrew Plotkin gave the game a werewolf theme, and the idea spread to board games and video games. The Usurper adds a twist from the medieval keep: '
+                'strength you can measure. Heavy work only gets done when knights pull together, and a traitor who only pretends to pull shows up in the numbers.</p>')),
     dict(id='archery', slug='games/archery.html', js='archery', short='Archery', name="The King's Archery Contest",
          h1="Archery Game: The King's Archery Contest", og_title="Archery game: can you win the King's Archery Contest?",
          title="Free Archery Game Online: The King's Archery Contest",
@@ -1172,7 +1208,7 @@ def game_scripts(G, embed=False):
 
 def games_rail(G):
     """House content for the left rail beside a game on wide screens: the other games. A network ad replaces it when on."""
-    first = ['siege', 'tafl', 'morris', 'archery', 'joust', 'castle', 'duel']
+    first = ['usurper', 'siege', 'tafl', 'morris', 'archery', 'joust', 'castle', 'duel']
     others = sorted((g for g in GAMES if g['id'] != G['id']), key=lambda g: first.index(g['id']) if g['id'] in first else 99)
     return ('<div class="rail-games"><p class="ad-lbl">More games</p>' + ''.join(
         f'<a href="/{g["slug"]}"><img src="/img/games/{g["id"]}-400.webp" width="400" height="533" loading="lazy" decoding="async" alt=""><span>{E(g["short"])}</span></a>'
@@ -1181,7 +1217,7 @@ def games_rail(G):
 
 def games_promo():
     """House content for the slot low on every crest guide: our free games, so a reader who is done with crests stays."""
-    picks = [g for g in GAMES if g['id'] in ('siege', 'tafl', 'morris', 'archery')]
+    picks = [g for g in GAMES if g['id'] in ('usurper', 'siege', 'tafl', 'morris')]
     cells = ''.join(f'<a href="/{g["slug"]}"><img src="/img/games/{g["id"]}-400.webp" width="400" height="533" loading="lazy" decoding="async" alt=""><b>{E(g["short"])}</b></a>' for g in picks)
     return (f'<div class="hg"><p class="hg-k">Free to play, no download</p><h2 class="gilt">Medieval games</h2>'
             f'<p>Take a break from heraldry: {GN} free games, from a trebuchet siege to Viking chess. Your coat of arms rides with you in every one.</p>'
@@ -1213,7 +1249,7 @@ def game_cards(exclude=None, small=False, eager=False):
 
 
 def ads_json():
-    keys = ('client', 'slot', 'h5', 'test', 'ga', 'sponsor')
+    keys = ('client', 'slot', 'h5', 'test', 'ga', 'meta', 'sponsor')
     return json.dumps({k: ADS[k] for k in keys if ADS.get(k)}, separators=(',', ':'))
 
 
@@ -1285,7 +1321,7 @@ def game_page(G):
         {'@type': 'ListItem', 'position': 2, 'name': 'Medieval games', 'item': f'{SITE}/games/'},
         {'@type': 'ListItem', 'position': 3, 'name': G['name'], 'item': page_url(G['slug'])}]}
     p['ld'] = {'@context': 'https://schema.org', '@graph': [{'@type': 'WebPage', 'name': G['h1'], 'url': page_url(G['slug']), 'description': G['desc']}, crumbs3, vg, faq_ld(G['faqs'])]}
-    p['scripts'] = f'<script>window.USURP_ADS={ads_json()}</script>{game_scripts(G)}'
+    p['scripts'] = f'<script>window.USURP_ADS={ads_json()}</script>{game_scripts(G)}<script src="{ver("/games/account.js")}" defer></script>'
     how = ''.join(f'<li>{E(x)}</li>' for x in G['how'])
     tips = ''.join(f'<li>{E(x)}</li>' for x in G['tips'])
     body = (f'<div class="gm-top"><h1 class="gilt">{E(G["h1"])}</h1><p>{E(G["tagline"])}</p></div>'
@@ -1312,10 +1348,10 @@ def game_page(G):
 def games_hub():
     slug = 'games/index.html'
     faqs = [('Are the games free?', f'Yes. All {GN} games are free to play in your browser, with no download, no account and no purchase needed.'),
-            ('Can I play with a friend?', 'Yes. Viking chess and Nine Men\'s Morris have a two-player mode for one phone, tablet or computer, and every game has a share button to challenge a friend to beat your score.'),
+            ('Can I play with friends online?', 'Yes. <a href="/games/the-usurper.html">The Usurper</a> is an online social deduction game for 4 to 10 players: open a private room and send your friends the link. Viking chess and Nine Men\'s Morris also have a two-player mode on one device, and every game has a share button to challenge a friend to beat your score.'),
             ('Do they work on phones?', 'Yes. Every game is designed for touch first and also plays with a mouse and keyboard. Use the full-screen button under a game for the best view on a phone.'),
             ('Are the games suitable for children?', 'Yes. There is no blood or gore: arrows hit targets, lances shatter, knights yield and walls crumble.'),
-            ('Do you save anything about me?', 'Only your best scores and sound setting, kept in your own browser. There are no accounts. See the <a href="/privacy.html">privacy policy</a>.'),
+            ('Do I need an account?', 'No. You play as a guest and your best scores stay in your own browser. If you want your progress on another device, choose Save my progress: you get a save code, which is your login. No email or password is needed. See the <a href="/privacy.html">privacy policy</a>.'),
             ('What does my coat of arms have to do with it?', 'Design a coat of arms in <a href="/crest.html">Crest Studio</a> and every game uses it: on your shield in the duel and the joust, on the banners of your castle and beside your score in the archery contest.')]
     p = dict(slug=slug, h1='Medieval Games', og='games', og_title='Free medieval games: trebuchet siege, Viking chess, archery, jousting and more',
              title='Free Medieval Games Online: Trebuchet, Viking Chess and More',
@@ -1323,11 +1359,12 @@ def games_hub():
              no_related=True, head_extra=f'<link rel="stylesheet" href="{ver("/games/games.css")}">')
     items = {'@type': 'ItemList', 'name': 'Medieval games', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'url': page_url(g['slug']), 'name': g['name']} for i, g in enumerate(GAMES)]}
     p['ld'] = ld_base(p, [faq_ld(faqs), items])
-    p['scripts'] = f'<script>window.USURP_ADS={ads_json()}</script><script src="{ver("/games/engine.js")}" defer></script>'
+    p['scripts'] = f'<script>window.USURP_ADS={ads_json()}</script><script src="{ver("/games/engine.js")}" defer></script><script src="{ver("/games/account.js")}" defer></script>'
     body = hero('Free to play · no download', 'Medieval Games',
                 f'{GN.capitalize()} games of skill and strategy for your phone or computer, from a trebuchet siege to the board games of the Vikings. Each takes a minute to learn and a lot longer to master.',
                 cta_href='#games', cta='Play now', second=('/crest.html', 'Design your coat of arms'))
-    body += f'<section id="games"><div class="gm-grid">{game_cards(eager=True)}</div></section>'
+    body += ('<p class="center" style="margin:-6px 0 14px"><button type="button" class="btn ghost" data-install hidden>Install the games as an app</button></p>'
+             f'<section id="games"><div class="gm-grid">{game_cards(eager=True)}</div></section>')
     body += ('<section class="gm-info"><h2 class="gilt">Your coat of arms, in every game</h2>'
              '<p>These games are made by Crest Studio, the free coat of arms maker. Design your arms there and they ride with you: on your shield in the joust and the duel, '
              'on the banners of your castle, and beside your score at the archery butts. Your design is saved on your device, so there is nothing to sign up for.</p>'
@@ -1468,11 +1505,12 @@ def advertise():
              no_related=True)
     p['ld'] = ld_base(p)
     rows = [('Game banner', f'Under each of the {GN} games and on the games hub. Your 728 x 90 image and link, scaled to fit phones. It sits below the game, so it never catches a tap meant for the game.'),
+            ('The Usurper: lobby and Great Hall', 'In our multiplayer game, your banner shows in the lobby while players gather for the next match, and your name is woven into the banners that hang in the Great Hall, where every council meets.'),
             ('Round sponsor', 'Your image and link on the intermission card between rounds, titled as today\'s tournament sponsor. Shown only at natural breaks, never during play, and players continue with one tap.'),
             ('Custom sponsorship', 'For example a tournament named after your brand, or your arms carried by a challenger in the joust and the duel. Ask us.')]
     table = ''.join(f'<div><b>{E(a)}</b>{E(b)}</div>' for a, b in rows)
     body = hero('Advertising', 'Advertise on Usurp',
-                'Our free medieval games (archery, jousting, castle defense and sword duels) and Crest Studio, the coat of arms maker, reach fans of history, fantasy, tabletop games and family heritage.',
+                'Our free medieval games (The Usurper, a multiplayer social deduction game, plus a trebuchet siege, Viking chess, archery, jousting and more) and Crest Studio, the coat of arms maker, reach fans of history, fantasy, tabletop games and family heritage.',
                 cta_href='mailto:hello@usurp.games?subject=Advertising%20on%20Usurp', cta='Email us')
     body += f'''<section class="sec"><h2 class="gilt">Placements</h2><div class="gm-keys">{table}</div>
 <h2 class="gilt" style="margin-top:22px">What we accept</h2>

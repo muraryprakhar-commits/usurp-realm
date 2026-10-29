@@ -1,7 +1,7 @@
 // Counts game starts and finished games on usurp.games, per game and per week, for the stats page (/stats.html).
 // Stores only counters (no cookies, no IP address, nothing about the player) in the Upstash Redis database linked to
 // this Vercel project. Until that database is connected, this endpoint accepts the ping and does nothing.
-const GAMES = ['archery', 'joust', 'castle', 'duel', 'siege', 'tafl', 'morris'];
+const GAMES = ['archery', 'joust', 'castle', 'duel', 'siege', 'tafl', 'morris', 'usurper'];
 const EVENTS = ['play', 'finish'];
 
 function creds() {

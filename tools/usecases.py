@@ -194,7 +194,7 @@ SPECS = [
 <p>In English heraldry the difference is the legs. A <b>dragon</b> has four legs and bat-like wings. A <b>wyvern</b> has two legs, wings and a coiled tail. Both usually have a barbed tongue and a tail ending in an arrow-shaped point. Elsewhere in Europe the line is blurrier, and many continental "dragons" have only two legs.</p>
 <p>The dragon in Crest Studio is a four-legged dragon rampant, rearing with its wings raised, the classic heraldic pose.</p></section>
 <section class="sec"><h2 class="gilt">Famous heraldic dragons</h2><ul>
-<li><b>Wales:</b> the red dragon, <i>Y Ddraig Goch</i>. It was made a royal badge for Wales in 1807, and the Welsh flag was officially recognized in 1959.</li>
+<li><b>Wales:</b> the red dragon, <i>Y Ddraig Goch</i>. It was made a royal badge for Wales in 1807, and the Welsh flag was officially recognized in 1959. For a crest with Welsh roots, see the <a href="/welsh-family-crest.html">Welsh family crest guide</a>.</li>
 <li><b>The City of London:</b> two silver dragons hold up the city's shield, and dragon statues mark the old boundaries of the City.</li>
 <li><b>Ljubljana:</b> the arms of the Slovenian capital show a green dragon standing on a castle.</li></ul>
 <p>National and civic emblems belong to their owners, so treat them as inspiration and give your dragon its own colors and motto.</p></section>
@@ -307,6 +307,7 @@ SPECS = [
 <section class="sec"><h2 class="gilt">Colors with a Scottish feel</h2>
 <p>Blue and silver echo the saltire flag, and in heraldry blue (Azure) stands for truth and loyalty. Gold on red, green or purple feels royal and Highland. If your family has a clan tartan, you can pick crest colors that echo it.</p>
 <h3>Mottos</h3><p>Choose words your family lives by rather than copying a clan chief's motto, which belongs to the chief. Plain English works well, such as "Stand Fast and True" or "Courage and Kindness", or pick a Latin line from the <a href="/latin-motto-generator.html">Latin motto generator</a>.</p>
+<p>Celebrating more than one heritage? See the <a href="/welsh-family-crest.html">Welsh family crest guide</a> for red dragons, leeks and daffodils, or the <a href="/irish-family-crest.html">Irish family crest guide</a>.</p>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=thistle">Design a Scottish crest</a></p></section>''',
         faqs=[('Is there a coat of arms for my Scottish clan?', "The clan chief has arms, but they belong to the chief alone. Clan members can wear the crest badge: the chief's crest inside a strap and buckle with the chief's motto."),
               ('Is it legal to design my own coat of arms in Scotland?', "Designing decorative art is fine. Scottish law treats coats of arms as property regulated by the Court of the Lord Lyon, so do not copy anyone else's arms or present a design as official arms. You can petition the Lord Lyon for a real grant."),
@@ -553,5 +554,47 @@ SPECS = [
               ('Why are there owls on the Oldham coat of arms?', 'They are a pun on the name. The Oldham family name was pronounced something like "Owdham", so the family took owls for their arms, and the borough arms granted in 1894 were based on them. The motto Sapere Aude, dare to be wise, refers to the owls.'),
               ('Is an owl a good emblem for a school or library?', 'Yes. It is one of the most popular emblems for schools, libraries and learning groups because its link to wisdom goes back to ancient Greece, and its front-facing face reads clearly at small sizes.'),
               ('Can I put an owl on my family crest?', 'Yes. The owl is a traditional heraldic charge anyone can use in an original design. Just avoid copying a real city, school or family coat of arms exactly, and treat a Crest Studio design as decorative art rather than official arms.')],
+    ),
+    dict(
+        slug='welsh-family-crest.html', cta_href='/crest.html?ch=dragon', short='Welsh family crest', blurb='Red dragons, leeks and Welsh names', og='welsh',
+        h1='Welsh Family Crest Maker', h1_html='Design a Welsh Family Crest',
+        title='Welsh Family Crest Maker: Red Dragon, Leek and Daffodil Designs | Crest Studio',
+        og_title='Welsh family crest maker: design your own with Welsh symbols',
+        desc='Design a Welsh family crest with a red dragon, castle or mountain, learn what the leek and daffodil mean, and get the honest story of Welsh surnames and arms. Free to design.',
+        eyebrow='For Welsh families and the Welsh diaspora',
+        lede='The red dragon, the leek, the daffodil and the old lions of Gwynedd: design a crest that celebrates Welsh roots, with real heraldic colors and an honest note on how Welsh arms and surnames work.',
+        cta='Design a Welsh crest',
+        examples=[crest('The Powell Family', 'Cymru am Byth', ARGENT, ARGENT, GULES, 'plain', 'dragon'),
+                  crest('The Davies Family', 'Strong Walls, Open Doors', AZURE, OR, GOLD_LIGHT, 'plain', 'tower'),
+                  crest('The Price Family', 'Steady as the Hills', VERT, OR, GOLD_LIGHT, 'plain', 'mountain'),
+                  crest('The Bowen Family', 'Song and Story', PURPURE, ARGENT, ARGENT, 'plain', 'book')],
+        body='''<section class="sec"><h2 class="gilt">First, the honest part</h2>
+<p>You will find sites selling "the Jones coat of arms" or "the Davies family crest" as if everyone with the name shares one design. Heraldry does not work that way, in Wales or anywhere else in Britain. A coat of arms belongs to one person and passes to their descendants. Wales comes under the College of Arms in London, which also has an honorary officer for Wales, the Wales Herald Extraordinary, revived in 1963.</p>
+<p>Welsh heraldry has a twist of its own. From the late Middle Ages, Welsh genealogists gave coats of arms to the early kings, princes and founders of family lines, often long after those people had died and before heraldry even existed. The best known are the arms of the Fifteen Noble Tribes of North Wales, first listed in the 1490s. Many gentry families who traced their descent from one of those founders then used the founder's arms. So a design listed under a Welsh name may be the arms of one ancient lineage, with no link to your own family.</p>
+<p>That is why the honest and more personal choice is to design your own crest: one that describes your family as it is now, built from symbols that mean something to you.</p></section>
+<section class="sec"><h2 class="gilt">Why so many Welsh families share a surname</h2>
+<p>For centuries the Welsh did not use fixed surnames. A man was known as the son of his father: <i>ap</i> or <i>ab</i> means "son of" and <i>ferch</i> means "daughter of". When fixed surnames took hold, from the 15th century among the gentry and much later among ordinary families, many of them grew out of those patronymics:</p>
+<ul><li><b>Powell</b> from <i>ap Hywel</i>, son of Hywel</li>
+<li><b>Price</b> from <i>ap Rhys</i>, son of Rhys</li>
+<li><b>Pugh</b> from <i>ap Hugh</i>, son of Hugh</li>
+<li><b>Bowen</b> from <i>ab Owen</i>, son of Owen</li></ul>
+<p>Others came straight from a father's first name, which is why Jones (from John), Davies (from David), Williams, Evans and Thomas are so common. In some rural areas the old patronymic custom lasted until the early 1800s. With so few names spread across so many unrelated families, a single "surname crest" makes even less sense in Wales than elsewhere. Your own design does.</p></section>
+<section class="sec"><h2 class="gilt">Welsh symbols for your crest</h2><ul>
+<li><b>Red dragon:</b> <i>Y Ddraig Goch</i>, the dragon on the flag of Wales, officially recognized in 1959. In heraldry a dragon stands for a valiant defender. See the <a href="/dragon-coat-of-arms.html">dragon coat of arms guide</a> for its meaning and history.</li>
+<li><b>Leek:</b> the older national emblem. Legend says Saint David told Welsh soldiers to wear leeks on their helmets in a battle against the Saxons in the sixth century. In Shakespeare's <i>Henry V</i>, the king wears a leek and tells the Welsh captain Fluellen, "for I am Welsh, you know, good countryman."</li>
+<li><b>Daffodil:</b> a newer emblem that grew popular in the 19th century and was championed by the Welsh-born prime minister David Lloyd George. One Welsh name for it is <i>Cenhinen Bedr</i>, "Peter's leek".</li>
+<li><b>Castles and mountains:</b> Wales is famous for both. A tower suits a family that sees home as a stronghold, and a mountain suits one that is steady and hard to move.</li>
+<li><b>Books and harps:</b> a nod to the bards and to the poetry and music of the eisteddfod. Crest Studio has a book emblem; a harp is not in the Studio yet.</li></ul>
+<div class="callout"><b>Two honest notes.</b> Crest Studio does not have a leek or daffodil emblem yet, so pair the dragon or another emblem with a motto about them, or with green and gold colors. And the four lions of the princes of Gwynedd, gold and red quartered, are still used in royal arms for Wales, so do not copy them; a quartered field in your own colors carries the same feel.</div></section>
+<section class="sec"><h2 class="gilt">Colors with a Welsh feel</h2>
+<p>The flag puts a red dragon on white and green, but a flag is not a coat of arms, and red directly on green breaks heraldry's rule of tincture: a color should sit on a metal (gold or silver), not on another color. On a shield, a red dragon on a silver field keeps the flag's spirit and reads clearly from across a room. Green with a gold or silver emblem also feels Welsh, and green (Vert) stands for hope and joy. The <a href="/heraldry-symbols-and-meanings.html">heraldry meanings guide</a> explains every color.</p>
+<h3>Mottos</h3><p>The Welsh <i>Cymru am Byth</i> (Wales forever) is the obvious favorite. You can also write your own line in Welsh or English, or pick a Latin one from the <a href="/latin-motto-generator.html">Latin motto generator</a>. Mottos in the Studio can be up to 48 characters.</p>
+<h3>Making it a gift</h3><p>Saint David's Day, March 1, is a natural moment for a Welsh crest, and so is a wedding, a new home or a family reunion. The $9 set includes a certificate of arms that explains every symbol; see <a href="/family-crest-gift.html">family crest gifts</a>. Exploring other roots too? Try the <a href="/irish-family-crest.html">Irish</a> and <a href="/scottish-family-crest.html">Scottish</a> crest guides.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=dragon">Design a Welsh crest</a></p></section>''',
+        faqs=[('Is there an official coat of arms for my Welsh surname?', 'No. Arms belong to individuals and their descendants, not to everyone with a surname. Because so many Welsh surnames come from a few first names, such as Jones from John and Davies from David, people who share them are usually not related at all.'),
+              ('Who grants coats of arms in Wales?', 'The College of Arms in London, whose authority covers England, Wales and Northern Ireland. Wales also has an honorary herald, the Wales Herald Extraordinary, who takes part in ceremonial occasions.'),
+              ('What symbols are Welsh?', 'The red dragon, the leek and the daffodil are the best known. The arms of the medieval princes of Gwynedd, four lions in gold and red, are also strongly linked with Wales, but they are used in royal arms, so design your own instead of copying them.'),
+              ('Can I put the Welsh dragon on my crest?', 'You can design your own red dragon in the same spirit. Put it on a silver field so it follows the rule of tincture, and give the crest its own name and motto rather than copying the flag.'),
+              ('What does Cymru am Byth mean?', 'It is Welsh for "Wales forever", a popular motto for Welsh families, clubs and societies.')],
     ),
 ]

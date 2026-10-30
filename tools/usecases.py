@@ -231,7 +231,7 @@ SPECS = [
 <li><b>Double-headed:</b> one body with two heads looking both ways, used by the Byzantine and Holy Roman empires and today by Russia, Serbia and Albania.</li></ul>
 <p>A small eagle shown without beak or feet is an <i>alerion</i>, famous from the arms of Lorraine in France.</p></section>
 <section class="sec"><h2 class="gilt">Famous eagle arms</h2><ul>
-<li><b>Germany:</b> a black eagle on gold, descended from the eagle of the Holy Roman Empire.</li>
+<li><b>Germany:</b> a black eagle on gold, descended from the eagle of the Holy Roman Empire. Designing for a German family? See the <a href="/german-family-crest.html">German family crest guide</a>.</li>
 <li><b>Poland:</b> a crowned white eagle on red, in use since the late 1200s.</li>
 <li><b>Austria:</b> a black eagle holding a sickle and a hammer.</li>
 <li><b>The United States:</b> the bald eagle displayed on the Great Seal, adopted in 1782.</li>
@@ -330,7 +330,7 @@ SPECS = [
                   crest('The Marsh Family', 'Guard the Hearth', OR, OR, SABLE, 'plain', 'bear')],
         body='''<section class="sec"><h2 class="gilt">What a bear means in heraldry</h2>
 <p>Strength, and the protection of family. A bear is slow to anger and terrifying once roused, which is exactly what most people want an emblem to say about the people they look after. Heraldic meanings were written down by later authors rather than set by any rule, so treat them as tradition, not law, but this one has stuck for good reason.</p>
-<p>The bear is far less common in arms than the lion, which makes it a good choice if you want a strong beast that does not look like everyone else's. It was most at home in the heraldry of Germany, Switzerland and Spain, where real bears still roamed the forests when coats of arms were young.</p></section>
+<p>The bear is far less common in arms than the lion, which makes it a good choice if you want a strong beast that does not look like everyone else's. It was most at home in the heraldry of Germany, Switzerland and Spain, where real bears still roamed the forests when coats of arms were young. The <a href="/german-family-crest.html">German family crest guide</a> explains why Berlin's bear is a pun on the city's name.</p></section>
 <section class="sec"><h2 class="gilt">Famous bear arms</h2><ul>
 <li><b>Bern, Switzerland:</b> a black bear walking up a gold diagonal band on a red field. The bear appears on the city's seals as early as 1224, and the city legend says Duke Berthold V of Zähringen named the new town after the first animal his hunters caught: a bear.</li>
 <li><b>Berlin, Germany:</b> a black bear rearing up on a silver shield, with red tongue and claws, under a crown. The current design was adopted in 1954.</li>
@@ -596,5 +596,49 @@ SPECS = [
               ('What symbols are Welsh?', 'The red dragon, the leek and the daffodil are the best known. The arms of the medieval princes of Gwynedd, four lions in gold and red, are also strongly linked with Wales, but they are used in royal arms, so design your own instead of copying them.'),
               ('Can I put the Welsh dragon on my crest?', 'You can design your own red dragon in the same spirit. Put it on a silver field so it follows the rule of tincture, and give the crest its own name and motto rather than copying the flag.'),
               ('What does Cymru am Byth mean?', 'It is Welsh for "Wales forever", a popular motto for Welsh families, clubs and societies.')],
+    ),
+    dict(
+        slug='german-family-crest.html', cta_href='/crest.html?ch=eagle', short='German family crest', blurb='Familienwappen, black eagles and canting arms', og='german',
+        h1='German Family Crest Maker', h1_html='Design a German Family Crest',
+        title='German Family Crest Maker: Familienwappen, Black Eagle and Canting Arms | Crest Studio',
+        og_title='German family crest maker: design your own Familienwappen',
+        desc='Design a German family crest (Familienwappen) with a black eagle, bear, boar or a trade emblem, learn how German burgher arms and canting arms work, and get the honest story on surname crests. Free to design.',
+        eyebrow='For German families and the German diaspora',
+        lede='Black eagles on gold, bears, boars, millers and smiths: design a crest with a German feel, and learn why German heraldry has always belonged to ordinary families as much as to knights.',
+        cta='Design a German crest',
+        examples=[crest('The Adler Family', 'Treu und Fest', OR, OR, SABLE, 'plain', 'eagle'),
+                  crest('The Becker Family', 'Bread for All Who Knock', AZURE, OR, GOLD_LIGHT, 'plain', 'wheat'),
+                  crest('The Schmidt Family', 'Forged by Honest Work', GULES, ARGENT, ARGENT, 'plain', 'hammer'),
+                  crest('The Wolff Family', 'Wachsam und Treu', ARGENT, ARGENT, SABLE, 'plain', 'wolf'),
+                  crest('The Eberhardt Family', 'Strong and Steady', VERT, OR, GOLD_LIGHT, 'plain', 'boar')],
+        body='''<section class="sec"><h2 class="gilt">First, the honest part</h2>
+<p>Search for "the Schmidt coat of arms" and you will find shops selling one design as if it belonged to everyone with the name. German heraldry does not work that way. A <i>Familienwappen</i> (family coat of arms) belongs to one family line and passes to the descendants of the person who first took it, not to every stranger who happens to share the surname.</p>
+<p>Germany is also unusual in a way that works in your favor. The state never regulated the arms of ordinary citizens, so anyone in Germany has always been free to adopt a coat of arms of their own, as long as they do not take arms that already belong to someone else. These are called <b>burgher arms</b> (<i>Bürgerwappen</i>). Townspeople and craftsmen began using them in the 13th century, and some farming families followed in the 14th. The emperors of the Holy Roman Empire also granted arms to commoners, a privilege later handed to court officials known as Counts Palatine.</p>
+<p>The tradition is still alive. The HEROLD, a Berlin heraldry society founded in 1869, has kept a register called the <i>Deutsche Wappenrolle</i> since 1922. Families who design new arms can submit them for review and registration for a fee, and the society follows the principle "one family, one coat of arms". Registration is optional, but it shows how normal it is in Germany for a family simply to create its own arms. Designing yours is exactly that tradition.</p></section>
+<section class="sec"><h2 class="gilt">What your surname can tell you</h2>
+<p>The largest group of German family names comes from jobs. Müller (miller) is the most common surname in Germany, followed by Schmidt (smith), and the list goes on with Schneider (tailor), Fischer (fisherman), Weber (weaver), Becker (baker) and Wagner (wagon builder). That is good news for a crest, because burgher arms were famous for showing tools and everyday objects that knights never used. A smith's hammer, a baker's wheat sheaf or a key for a locksmith is as authentic a German charge as any eagle.</p>
+<h3>Canting arms: the German love of a visual pun</h3>
+<p>German heralds call them <i>redende Wappen</i>, "speaking arms": a picture that sounds out the family or town name. They are especially common in German civic heraldry:</p><ul>
+<li><b>Berlin:</b> a black bear, <i>Bär</i>, on silver. The city name actually has Slavic roots and nothing to do with bears, but the pun stuck. See the <a href="/bear-coat-of-arms.html">bear coat of arms guide</a>.</li>
+<li><b>Eberbach:</b> a boar, <i>Eber</i>, above a wavy band for the brook, <i>Bach</i>.</li>
+<li><b>Wolfsburg:</b> a wolf on a castle, "wolf's castle".</li>
+<li><b>Albrecht Dürer:</b> the painter's family arms show an open door. The family came from the Hungarian village of Ajtós, from <i>ajtó</i>, "door", and the German name Dürer echoes <i>Tür</i>.</li></ul>
+<p>If your name contains a beast or an object (Adler is eagle, Wolf, Fuchs is fox, Hirsch is deer, Baum is tree, Stein is stone), you have a ready-made canting crest.</p></section>
+<section class="sec"><h2 class="gilt">German symbols and colors</h2>
+<h3>The black eagle on gold</h3>
+<p>The federal arms of Germany, the <i>Bundeswappen</i>, show a black eagle with red beak, tongue and feet on a gold shield. It goes back to the medieval eagle of the Holy Roman Emperors, was used by the Weimar Republic from 1919, and was adopted again by the Federal Republic in 1950. Prussia used a black eagle on silver. Because the federal arms belong to the state, give your own eagle crest its own name and motto rather than copying them. The <a href="/eagle-coat-of-arms.html">eagle coat of arms guide</a> explains eagles from Rome to today.</p>
+<h3>Colors</h3>
+<p>The German names for heraldic colors are simple: <i>Gold</i>, <i>Silber</i>, <i>Rot</i>, <i>Blau</i>, <i>Grün</i> and <i>Schwarz</i>. Black on gold is the most German-looking pairing of all, and black on silver recalls Prussia and Berlin. Every example on this page keeps heraldry's rule of tincture: a metal (gold or silver) against a color, never color on color.</p>
+<h3>Crest, helmet and the word "crest"</h3>
+<p>In German arms the crest proper, the <i>Helmzier</i> sitting on top of the helmet, is unusually important, and it often repeats the shield's colors or figure. In everyday English "family crest" just means the whole design, which is how Crest Studio uses it: a shield with your emblem, your family name and a motto.</p>
+<h3>Mottos</h3>
+<p>A motto suits a modern crest. Simple German lines include <i>Treu und Fest</i> (loyal and steadfast) and <i>Wachsam und Treu</i> (watchful and loyal), or write your own in English. The <a href="/latin-motto-generator.html">Latin motto generator</a> has more ideas, and mottos in the Studio can be up to 48 characters.</p>
+<div class="callout"><b>A gift idea.</b> A German crest makes a thoughtful present for a family reunion, a wedding or a new home. The $9 set includes a certificate of arms that explains every color and emblem; see <a href="/family-crest-gift.html">family crest gifts</a>.</div>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=eagle">Design a German crest</a></p></section>''',
+        faqs=[('Is there an official coat of arms for my German surname?', 'No. A German family coat of arms belongs to one family line and its descendants, not to everyone with the same surname. Common names such as Müller and Schmidt are shared by many unrelated families.'),
+              ('Can I create my own family coat of arms in Germany?', 'Yes. The arms of ordinary citizens were never regulated by the German state, so families have always been free to adopt new arms as long as they do not copy arms that already belong to someone else. You can optionally register them with a heraldry society such as the HEROLD, which keeps the Deutsche Wappenrolle.'),
+              ('What is the German word for family crest?', '<i>Familienwappen</i>, or simply <i>Wappen</i> for a coat of arms. Arms of townspeople and craftsmen are called <i>Bürgerwappen</i>, burgher arms.'),
+              ('What are the German heraldic colors?', 'Gold, Silber (silver), Rot (red), Blau (blue), Grün (green) and Schwarz (black). The federal arms of Germany are a black eagle with red beak, tongue and feet on gold.'),
+              ('What are canting arms?', 'Arms that make a picture pun on a name, called <i>redende Wappen</i> in German. Berlin has a bear (<i>Bär</i>), Eberbach a boar (<i>Eber</i>), and a family named Adler might choose an eagle.')],
     ),
 ]

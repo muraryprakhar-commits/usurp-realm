@@ -14,7 +14,7 @@ Pick the angle a real searcher has; keep every claim checkable (see the rules in
 - [x] Welsh family crest maker (built 29 Oct as welsh-family-crest.html) (keyword: welsh family crest): red dragon, daffodil and leek are national emblems, honest note on Welsh arms
 - [x] German family crest maker (built 30 Oct as german-family-crest.html) (keyword: german family crest / familienwappen): black eagle colors, honest note on surname arms
 - [x] Polish coat of arms (built 31 Oct as polish-coat-of-arms.html) (keyword: polish coat of arms / herb): clan arms (herb) shared by many families is a real Polish tradition, explain it carefully
-- [ ] Italian family crest (keyword: italian family crest / stemma di famiglia)
+- [x] Italian family crest (built 1 Nov as italian-family-crest.html) (keyword: italian family crest / stemma di famiglia)
 - [ ] Family crest tattoo ideas (keyword: family crest tattoo): design a crest that works as line art, tips for tattoo artists (SVG), placement-neutral advice, no medical claims
 - [ ] Signet ring crest design (keyword: signet ring crest): simple bold emblem, why engravers want vector art, initial and single-charge designs
 - [ ] Wax seal crest design (keyword: wax seal design): stamp makers need vector art, keep it simple at small sizes

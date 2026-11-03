@@ -50,4 +50,34 @@ document.querySelectorAll('[data-style]').forEach(b => b.addEventListener('click
   show(design());
 }));
 $('[data-open]').addEventListener('click', () => { if (window.clarity) try { window.clarity('event', 'house_open_studio'); } catch (e) {} });
+// Tap-to-copy: recordings showed visitors tapping the generated name and sample names
+// expecting to take them (Clarity dead clicks). Give that tap a result.
+(() => {
+const st = document.createElement('style');
+st.textContent = '[data-name],[data-motto],.namelist li{cursor:pointer}.hg-copy-chip{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1d1915;color:#f3dc92;padding:8px 16px;border-radius:20px;font:600 14px/1.2 system-ui,sans-serif;z-index:99;opacity:0;transition:opacity .25s;pointer-events:none}';
+document.head.appendChild(st);
+let chip = null, chipTimer = 0;
+function showChip() {
+  if (!chip) { chip = document.createElement('div'); chip.className = 'hg-copy-chip'; chip.setAttribute('role', 'status'); document.body.appendChild(chip); }
+  chip.textContent = 'Copied to clipboard';
+  chip.style.opacity = '1';
+  clearTimeout(chipTimer); chipTimer = setTimeout(() => { chip.style.opacity = '0'; }, 1400);
+}
+function copyText(text) {
+  const fallback = () => {
+    const ta = document.createElement('textarea'); ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { if (document.execCommand('copy')) showChip(); } catch (e) {}
+    ta.remove();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(showChip).catch(fallback);
+  else fallback();
+}
+const nameEl = document.querySelector('[data-name]'), mottoEl = document.querySelector('[data-motto]');
+if (nameEl) { nameEl.title = 'Tap to copy'; nameEl.addEventListener('click', () => { copyText(nameEl.textContent); if (window.clarity) try { window.clarity('event', 'house_copy_name'); } catch (e) {} }); }
+if (mottoEl) { mottoEl.title = 'Tap to copy'; mottoEl.addEventListener('click', () => copyText(mottoEl.textContent.replace(/^\"|"$/g, ''))); }
+document.querySelectorAll('.namelist li').forEach(li => { li.title = 'Tap to copy'; li.addEventListener('click', () => copyText(li.textContent)); });
 })();
+})();
+

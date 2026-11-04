@@ -800,12 +800,55 @@ SPECS = [
 <li><b>Simplified versions.</b> The $19 Heirloom set adds line art (outlines only), a two-tone version in solid black and white, and the traditional hatched engraving. These are the closest thing to what the finished ring will look like.</li>
 <li><b>The meaning.</b> The certificate of arms describes your design in heraldic language (the blazon) and in plain English, which helps an engraver decide what to keep if something has to be simplified.</li>
 <li><b>Flexibility.</b> A good engraver may redraw your design to suit the metal and the size of the face. That is normal, and usually an improvement.</li></ol>
-<p>The same simple artwork works well beyond rings. See the <a href="/family-crest-tattoo.html">family crest tattoo guide</a> for line art that holds up at small sizes, <a href="/family-crest-gift.html">family crest gifts</a> for pairing the ring with a framed print and certificate, and the <a href="/heraldry-symbols-and-meanings.html">heraldry meanings guide</a> for what each emblem stands for.</p>
+<p>The same simple artwork works well beyond rings. See the <a href="/wax-seal-crest.html">wax seal crest guide</a> for a matching seal stamp, the <a href="/family-crest-tattoo.html">family crest tattoo guide</a> for line art that holds up at small sizes, <a href="/family-crest-gift.html">family crest gifts</a> for pairing the ring with a framed print and certificate, and the <a href="/heraldry-symbols-and-meanings.html">heraldry meanings guide</a> for what each emblem stands for.</p>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=initial">Design your signet crest</a></p></section>''',
         faqs=[('What should I put on a signet ring?', 'Something simple and bold: your initial on a plain shield, or a single emblem such as a stag, a tower, a key or a star. Fine detail and long text are hard to keep at ring size, so save the full crest with motto for a print.'),
               ('Should a signet ring be engraved in reverse?', 'Only if you want to use it as a seal. Seal engraving is cut in mirror image so the wax impression reads correctly. If the ring is just for wearing, engraving for sight reads the right way round on your finger and is usually cheaper.'),
               ('What file does a jeweler need to engrave a crest?', 'Ask your jeweler, but a vector SVG is a safe choice because it scales to the exact size of the ring face without blurring. Every paid set includes an SVG, and the $19 Heirloom set adds line art, two-tone and hatched versions.'),
               ('Can I use a crest from the studio on a ring I sell?', 'Yes. Once bought, the files can be used for any lawful purpose, personal or commercial. The design is original artwork in the style of heraldry, not an official grant of arms, and it is not exclusive.'),
               ('Is this my family\'s historical coat of arms?', 'No. It is a new design you create, not a claim about your ancestors. If your family has documented arms, research them properly before engraving them.')],
+    ),
+    dict(
+        slug='wax-seal-crest.html', cta_href='/crest.html?ch=initial', short='Wax seal crest', blurb='A crest a stamp maker can cut', og='seal',
+        h1='Wax Seal Crest', h1_html='Wax Seal Crest: Designing a Stamp That Presses Clean',
+        title='Wax Seal Crest Design: Simple Crests and Files for a Custom Wax Stamp | Crest Studio',
+        og_title='Wax seal crest design: simple crests and files for a custom stamp',
+        desc='How to design a crest for a custom wax seal stamp: one bold emblem, thick lines, short text, and the black and white vector file stamp makers ask for. Design it free.',
+        eyebrow='For wedding invitations, letters, gifts and branded packaging',
+        lede='A wax seal stamp face is usually about an inch across, so the crest on it has to be bold and simple to press clean. Here is how to design one, what stamp makers ask for, and which files to send them.',
+        cta='Design your seal crest',
+        examples=[crest('The Moreau Family', 'Keep Faith', GULES, OR, GOLD_LIGHT, 'plain', 'initial'),
+                  crest('Hannah and Diego', 'Two Hearts, One Home', AZURE, ARGENT, ARGENT, 'perpale', 'rose'),
+                  crest('The Ashby Family', 'Root and Branch', VERT, OR, GOLD_LIGHT, 'plain', 'tree'),
+                  crest('Honeyfield Apiary', 'Sweet Work', SABLE, OR, GOLD_LIGHT, 'plain', 'bee'),
+                  crest('The Lindqvist Family', 'Ever Upward', PURPURE, OR, GOLD_LIGHT, 'chevron', 'mullet')],
+        body='''<section class="sec"><h2 class="gilt">A short history of the wax seal</h2>
+<p>For centuries a seal pressed into wax did two jobs at once: it closed a letter so that anyone opening it would leave a mark, and it showed who had sent it. Families and officials had their arms or crests cut into a metal seal or a <a href="/signet-ring-crest.html">signet ring</a>, and that small picture stood in for a signature.</p>
+<p>The wax itself changed over time. In the Middle Ages it was usually beeswax mixed with a resin from the larch tree, often colored red with vermilion. From the 1500s, as European trade with the Indies grew, makers began adding shellac, which gave the hard, glossy red sticks most people picture today. Once postal systems took over the job of delivering mail safely, seals became more about ceremony than security. Modern sealing wax often comes as flexible sticks made for glue guns, so a seal can bend a little in the mail instead of cracking.</p></section>
+<section class="sec"><h2 class="gilt">Design rules for a crest that presses well</h2>
+<ul><li><b>Think small.</b> Custom wax stamp heads are commonly about 1 inch (25 mm) across, and some makers offer sizes from about three quarters of an inch up to an inch and a quarter. The finished seal spreads a little wider than the stamp. Design for the smallest size you might order.</li>
+<li><b>One emblem, or just your initial.</b> A single bold charge such as a rose, a tree, a bee, a star or your initial reads clearly in wax. A shield packed with symbols turns into a blur. In <a href="/crest.html?ch=initial">Crest Studio</a>, the "Your initial" emblem takes your first letter, or a monogram such as A&amp;J when you enter two names.</li>
+<li><b>Thick lines and open space.</b> Wax fills fine gaps and softens thin lines. Stamp makers often ask for lines of at least about 1 point and say thicker lines engrave better. A plain field or a single split, such as a chevron or a line down the middle, holds up far better than quarterings.</li>
+<li><b>Few words.</b> A name around the edge and a short motto can work on a larger stamp. Keep the motto to two or three words, or drop it and use the year instead.</li>
+<li><b>Color does not carry.</b> A stamp has no colors, only raised and sunken areas, and the wax you choose sets the color. What matters is a clear shape, which is why heraldry's rule of tincture (a metal on a color) is still a useful test: a design with strong contrast on screen usually has a strong silhouette too.</li></ul></section>
+<section class="sec"><h2 class="gilt">What to send your stamp maker</h2>
+<ol><li><b>A black and white file.</b> Many custom stamp makers ask for artwork in black on white, where black marks the parts to engrave. The $19 Heirloom set includes a round seal in solid black as an SVG and a PNG: your shield inside a ring, with your name over the top and your motto or year underneath. It also has a color version of the same seal for stickers and labels.</li>
+<li><b>Vector if they take it.</b> Makers often ask for vector artwork, or a high-resolution image of around 600 dpi if not. The SVG files scale to the exact stamp size without blurring.</li>
+<li><b>The right way round.</b> Send your design as you want the wax to read. The engraver reverses it on the stamp, and some makers specifically ask customers not to mirror the artwork themselves. Check your maker's instructions to be sure.</li>
+<li><b>Room for a proof.</b> A good maker will send a proof and may thicken lines or drop small details so the stamp presses cleanly. That is normal and usually an improvement.</li></ol>
+<div class="callout"><b>Preview it first.</b> In the studio, "See it as" shows your design as a round seal, as line art and as a traditional engraving. If the seal view still reads at a glance on your phone, it will usually press well.</div></section>
+<section class="sec"><h2 class="gilt">Where a crest seal works</h2><ul>
+<li>Wedding invitations and save-the-dates, often with a joint crest split down the middle (see the <a href="/wedding-crest.html">wedding crest maker</a>)</li>
+<li>Holiday cards, thank-you notes and letters to family</li>
+<li>Gift wrap, bottle necks and jar lids for homemade gifts</li>
+<li>Packaging and thank-you cards for a small business, alongside a <a href="/crest-logo-maker.html">crest logo</a></li>
+<li>Bookplates, certificates and props for tabletop games</li></ul>
+<p>The same simple design rules apply to other small, single-color uses. The <a href="/signet-ring-crest.html">signet ring crest guide</a> covers engraving in metal, and the <a href="/heraldry-symbols-and-meanings.html">heraldry meanings guide</a> explains what each emblem traditionally stands for.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=initial">Design your seal crest</a></p></section>''',
+        faqs=[('What size should a wax seal stamp be?', 'Many custom stamps are about 1 inch (25 mm) across, which suits a single emblem or an initial. Choose a larger head if you want a name and motto around the edge, and ask your maker what sizes they offer.'),
+              ('What file do wax seal stamp makers need?', 'Usually black and white artwork, ideally a vector file such as SVG. The $19 Heirloom set includes a round seal in solid black as SVG and PNG, made for this purpose. Check your maker\'s guidelines before ordering.'),
+              ('Do I need to mirror my design for a wax stamp?', 'Usually not. Send the design the way you want the seal to read, and the maker reverses it on the stamp. Some makers ask you not to mirror it, so follow their instructions.'),
+              ('Can wax seals go through the mail?', 'Many people mail sealed envelopes using flexible sealing wax, which bends instead of cracking. Postal rules and fees for thick or rigid envelopes vary, so check with your post office before mailing a large batch.'),
+              ('Is the design my family\'s historical coat of arms?', 'No. It is original artwork you create in the style of heraldry, not an official grant of arms or a claim about your ancestors.')],
     ),
 ]

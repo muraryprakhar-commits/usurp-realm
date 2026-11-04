@@ -288,7 +288,7 @@ def family():
 <li>A framed print for your parents or grandparents, or for the wall of a new home</li>
 <li>Family reunion T-shirts, banners and name tags</li>
 <li>The cover of a family history or genealogy book</li>
-<li>Wedding stationery, wax seals and signage (see the <a href="/wedding-crest.html">wedding crest maker</a>)</li>
+<li>Wedding stationery and signage (see the <a href="/wedding-crest.html">wedding crest maker</a>), and wax seals (see the <a href="/wax-seal-crest.html">wax seal crest guide</a>)</li>
 <li>Bookplates, letterheads and a custom stamp</li>
 <li>A group chat icon for the whole family</li></ul>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html">Start your family crest</a></p></section>'''

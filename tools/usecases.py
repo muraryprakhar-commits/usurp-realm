@@ -40,6 +40,7 @@ SPECS = [
 <h3>Christmas and the holidays</h3><p>A framed crest for parents or in-laws, or the same crest on a set of mugs for every household in the family.</p>
 <h3>Weddings and anniversaries</h3><p>Join two family names on one shield with the Per pale division, the old heraldic way of uniting two families. See the <a href="/wedding-crest.html">wedding crest guide</a>.</p>
 <h3>A new home</h3><p>A tower or key emblem for a housewarming print above the door, with the family name and the year they moved in as the motto.</p>
+<h3>Pet lovers</h3><p>Give the dog, cat or horse a crest of their own, with a grand title and a motto that fits. See the <a href="/pet-coat-of-arms.html">pet coat of arms guide</a>.</p>
 <h3>Grandparents and family reunions</h3><p>A crest for the whole family tree, printed on the reunion banner and T-shirts, with a framed copy for the grandparents who started it all.</p>
 <h3>Father's Day, Mother's Day and birthdays</h3><p>A crest built around one person: their initial on the shield and a motto that is pure them. The same design can be engraved on a signet ring: see the <a href="/signet-ring-crest.html">signet ring crest guide</a>.</p></section>
 <section class="sec"><h2 class="gilt">How to give it</h2><ol>
@@ -164,7 +165,7 @@ SPECS = [
 <p>Whole wolves appear too: rampant (rearing), passant (walking) and salient (leaping).</p></section>
 <section class="sec"><h2 class="gilt">Wolves and family names</h2>
 <p>Heralds loved a pun. Arms that play on the owner's name are called <i>canting arms</i>, and wolves turn up in many of them: Spanish families named López (from the Latin <i>lupus</i>, wolf) often bear wolves, as do English families named Wolfe and Lovett (from the Old French <i>louvet</i>, a young wolf). The Bavarian city of Passau has shown a red wolf on silver for centuries.</p>
-<p>If your name has a wolf hidden in it, a wolf crest is a nod to a very old heraldic joke. If it does not, the wolf still works as a symbol of the people you call your pack.</p></section>
+<p>If your name has a wolf hidden in it, a wolf crest is a nod to a very old heraldic joke. If it does not, the wolf still works as a symbol of the people you call your pack. It is also the closest emblem to a dog, so it makes a good <a href="/pet-coat-of-arms.html">pet coat of arms</a>.</p></section>
 <section class="sec"><h2 class="gilt">Designing your wolf crest</h2>
 <h3>Silver on dark colors</h3><p>A silver wolf on black, blue or green looks the most like a real wolf and reads well at any size. Gold on red is warmer and more royal.</p>
 <h3>For clans, guilds and teams</h3><p>A wolf's head is one of the best emblems for a gaming clan or sports team because it stays recognizable as a small icon. See <a href="/clan-logo-maker.html">clan and guild logos</a>, and the <a href="/crest-logo-maker.html">Crest Logo Kit</a> for server icons and banners.</p>
@@ -850,5 +851,55 @@ SPECS = [
               ('Do I need to mirror my design for a wax stamp?', 'Usually not. Send the design the way you want the seal to read, and the maker reverses it on the stamp. Some makers ask you not to mirror it, so follow their instructions.'),
               ('Can wax seals go through the mail?', 'Many people mail sealed envelopes using flexible sealing wax, which bends instead of cracking. Postal rules and fees for thick or rigid envelopes vary, so check with your post office before mailing a large batch.'),
               ('Is the design my family\'s historical coat of arms?', 'No. It is original artwork you create in the style of heraldry, not an official grant of arms or a claim about your ancestors.')],
+    ),
+    dict(
+        slug='pet-coat-of-arms.html', cta_href='/crest.html?ch=wolf', short='Pet coat of arms', blurb='A crest for your dog, cat or horse', og='pet',
+        h1='Pet Coat of Arms', h1_html='Pet Coat of Arms: A Crest for Your Dog, Cat or Horse',
+        title='Pet Coat of Arms: Design a Crest for Your Dog, Cat or Horse | Crest Studio',
+        og_title='Pet coat of arms: design a crest for your dog, cat or horse',
+        desc='Design a coat of arms for your dog, cat, horse or bird: a grand name like House Biscuit, a motto, and an emblem that fits. Free to design, prints at any size.',
+        eyebrow='For dogs, cats, horses, birds and the people who love them',
+        lede='Every pet already behaves like nobility. Give yours a coat of arms to match: a grand title, a motto that sums them up, and an emblem chosen for their character. It takes a few minutes, and it makes a funny, heartfelt gift for any pet owner.',
+        cta='Design your pet crest',
+        examples=[crest('House Pepper', 'Loyal to the Last Treat', GULES, OR, GOLD_LIGHT, 'chevron', 'wolf'),
+                  crest('Lady Mittens', 'Sleeps Where She Pleases', PURPURE, ARGENT, ARGENT, 'plain', 'lion'),
+                  crest('Biscuit the Brave', 'Good Dog, Always', AZURE, OR, GOLD_LIGHT, 'plain', 'initial'),
+                  crest('Sir Clover of the Paddock', 'Steady On', VERT, OR, GOLD_LIGHT, 'fess', 'horse'),
+                  crest('House Mango', 'Sing at Dawn', SABLE, OR, GOLD_LIGHT, 'bend', 'sun'),
+                  crest('In Memory of Rufus', 'Forever Our Good Boy', AZURE, ARGENT, ARGENT, 'plain', 'heart')],
+        body='''<section class="sec"><h2 class="gilt">Dogs and cats in real heraldry</h2>
+<p>Animals have been on coats of arms for as long as there have been coats of arms, and pets' closest relatives turn up more often than you might think.</p>
+<h3>The talbot and the greyhound</h3><p>In English heraldry the two classic dogs are the greyhound and the <i>talbot</i>, a white hunting hound with long drooping ears. The talbot was the badge of the Talbot family, Earls of Shrewsbury, whose later arms are held up by two talbots as supporters. A royal letter from about 1449 even calls the first Earl "Talbott, oure good dogge". The breed itself died out, but it is thought to be among the ancestors of the beagle. The town of Sudbury in Suffolk still bears a silver talbot sitting upright on black.</p>
+<p>Heraldic dogs are drawn in the same poses as other beasts: <i>sejant</i> (sitting), <i>passant</i> (walking), <i>courant</i> (running flat out) and <i>rampant</i> (rearing up). They are often shown wearing a collar, which heralds call <i>collared</i> or <i>gorged</i>.</p>
+<h3>The cat-a-mountain</h3><p>Heraldry's cat is usually the wild one, called the <i>cat-a-mountain</i>. The best-known example is the crest of Clan Mackintosh in Scotland, a wildcat leaping and looking straight at you, with the motto "Touch not the cat bot a glove" (bot meaning without). Anyone who has tried to pick up an unwilling cat will understand it.</p></section>
+<section class="sec"><h2 class="gilt">Choosing an emblem for your pet</h2>
+<p>Crest Studio does not have a dog or cat emblem yet, so here is what works well instead, using heraldry's own logic of choosing a symbol for its meaning:</p>
+<ul><li><b>Dogs: the wolf.</b> Dogs and gray wolves share a common ancestry, and in heraldry the wolf stands for loyalty to the pack. A wolf's head is the closest thing to a hound on a shield. See the <a href="/wolf-coat-of-arms.html">wolf coat of arms guide</a>.</li>
+<li><b>Cats: the lion.</b> The lion and the house cat are both members of the cat family, and every cat owner already knows who rules the house. The <a href="/lion-coat-of-arms.html">lion coat of arms guide</a> explains the poses.</li>
+<li><b>Horses and ponies: the horse.</b> In heraldry the horse stands for readiness, speed and loyalty. Perfect for a stable, a riding club or a much-loved pony.</li>
+<li><b>Birds:</b> the owl for a wise or watchful bird, the raven for a clever one, or the sun for a bird that sings every morning.</li>
+<li><b>Any pet: their initial.</b> The "Your initial" emblem puts your pet's first letter on the shield, which is the surest way to make it theirs. Type the pet's name first (Biscuit the Brave gives a B), since a name starting with "of" would give you an O.</li>
+<li><b>The heart</b> stands for love and sincerity, and suits a crest made in memory of a pet.</li></ul>
+<div class="callout"><b>Keep the rule of tincture.</b> Put a metal (gold or silver) on a color (red, blue, green, purple or black), or the other way round. It keeps the design crisp on a mug, a collar tag or a phone screen.</div></section>
+<section class="sec"><h2 class="gilt">Names and mottos fit for a noble pet</h2>
+<p>The fun is in the title. A few patterns that work:</p>
+<ul><li><b>House plus name:</b> House Pepper, House Waffles, House Bean.</li>
+<li><b>A rank:</b> Sir Clover, Lady Mittens, Duke Barnaby, Baroness Fluff.</li>
+<li><b>An epithet:</b> Biscuit the Brave, Olive the Unbothered, Gus the Ever-Hungry.</li>
+<li><b>A territory:</b> Sir Clover of the Paddock, Mittens of the Sunny Windowsill.</li></ul>
+<p>For the motto, write what they actually live by: "Loyal to the Last Treat", "Sleeps Where She Pleases", "No Squirrel Unchased", "First to the Door". If you prefer the grand style, Latin works too: <i>Semper Fidelis</i> (always faithful) suits most dogs. The <a href="/latin-motto-generator.html">Latin motto generator</a> has more, with translations, and the <a href="/fantasy-house-name-generator.html">house name generator</a> can suggest a title if you are stuck.</p></section>
+<section class="sec"><h2 class="gilt">Ways to use a pet crest</h2>
+<ul><li>A framed print above the food bowl, the bed or the stable door</li>
+<li>A gift for a friend with a new puppy or kitten, or for the pet lover who has everything (see the <a href="/family-crest-gift.html">family crest gift guide</a>)</li>
+<li>A profile picture or phone wallpaper, both included in the $9 set</li>
+<li>Printed on a mug, T-shirt or tote bag by any print-on-demand shop</li>
+<li>A gentle keepsake in memory of a pet who has died, with their name and years as the motto</li></ul>
+<p>The $9 set includes a certificate of arms that describes the design in heraldic language and plain English, with an optional "presented to" line. It reads very well when the recipient has four legs.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=wolf">Design your pet crest</a></p></section>''',
+        faqs=[('Is there a dog or cat emblem?', 'Not yet. Most people use the wolf for a dog and the lion for a cat, which fits heraldry\'s habit of choosing an animal for what it stands for. The "Your initial" emblem, which puts your pet\'s first letter on the shield, works for any animal.'),
+              ('Can I give a pet crest as a gift?', 'Yes. Design it in the studio, add who it is presented to and who it is from under "Giving it as a gift?", and the files download as soon as you pay, so it works for a last-minute present too.'),
+              ('Can I make a crest in memory of a pet?', 'Yes. Many people use the heart emblem or their pet\'s initial, with the pet\'s name and years as the motto. It prints at any size for a frame.'),
+              ('Can I put the crest on a mug or a shirt?', 'Yes. The download includes a large print file and a scalable SVG that print-on-demand shops and local printers can use.'),
+              ('Is this a real heraldic grant of arms?', 'No. It is original artwork in the style of heraldry, made for fun and for keepsakes, not an official grant of arms.')],
     ),
 ]

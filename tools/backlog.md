@@ -18,7 +18,7 @@ Pick the angle a real searcher has; keep every claim checkable (see the rules in
 - [x] Family crest tattoo ideas (built 2 Nov as family-crest-tattoo.html) (keyword: family crest tattoo): design a crest that works as line art, tips for tattoo artists (SVG), placement-neutral advice, no medical claims
 - [x] Signet ring crest design (built 3 Nov as signet-ring-crest.html) (keyword: signet ring crest): simple bold emblem, why engravers want vector art, initial and single-charge designs
 - [x] Wax seal crest design (built 4 Nov as wax-seal-crest.html) (keyword: wax seal design): stamp makers need vector art, keep it simple at small sizes
-- [ ] Pet coat of arms (keyword: pet coat of arms / dog crest): playful, gift angle, "House of Biscuit" style names
+- [x] Pet coat of arms (built 5 Nov as pet-coat-of-arms.html) (keyword: pet coat of arms / dog crest): playful, gift angle, "House of Biscuit" style names
 - [x] Business crest logo maker (built 20 Oct as crest-logo-maker.html) (keyword: crest logo maker): heraldic logos for breweries, barbershops, coffee shops, schools; note trademark search advice
 - [ ] Sports club crest maker (keyword: soccer club crest maker / football club badge maker): amateur and Sunday league clubs, fantasy leagues; avoid real club names
 - [ ] Book club and society crest (keyword: club crest maker): societies, book clubs, alumni groups

@@ -87,7 +87,7 @@ SPECS = [
 <section class="sec"><h2 class="gilt">Who uses crest logos</h2><ul>
 <li>Breweries, distilleries, coffee roasters and bakeries that want a heritage feel</li>
 <li>Barbershops, tailors and leather workers</li>
-<li>Amateur and Sunday league sports clubs, fantasy leagues and esports teams (see <a href="/clan-logo-maker.html">clan and guild logos</a>)</li>
+<li>Amateur and Sunday league sports clubs and fantasy leagues (see the <a href="/soccer-club-crest-maker.html">soccer club crest guide</a>) and esports teams (see <a href="/clan-logo-maker.html">clan and guild logos</a>)</li>
 <li>Streamers, podcasters and tabletop creators building a recognizable channel</li>
 <li>Family businesses, societies and alumni groups</li></ul>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html">Design your crest logo</a></p></section>''',
@@ -349,7 +349,7 @@ SPECS = [
 <section class="sec"><h2 class="gilt">Designing your bear crest</h2>
 <h3>Black on silver or gold</h3><p>A black bear on silver or gold is the classic look of Berlin and Bern, and it reads clearly at any size. A silver bear on blue recalls the polar bear of the north. A gold bear on red or green feels warm and royal. All of these keep the heraldic rule of tincture: a metal against a color.</p>
 <h3>Names with a bear in them</h3><p>Some names already carry a bear. Björn is the Scandinavian word for bear, and Ursula comes from the Latin <i>ursa</i>, a she-bear. A bear crest for a family or a person with a name like that is a quiet heraldic pun, the kind heralds have always loved.</p>
-<h3>For teams and clubs</h3><p>A rearing bear is a natural badge for a rugby or hockey club, a scout troop or an online guild, because the silhouette stays bold even as a small icon. See <a href="/clan-logo-maker.html">clan and guild logos</a> and the <a href="/crest-logo-maker.html">Crest Logo Kit</a>.</p>
+<h3>For teams and clubs</h3><p>A rearing bear is a natural badge for a rugby or hockey club, a scout troop or an online guild, because the silhouette stays bold even as a small icon. See the <a href="/soccer-club-crest-maker.html">soccer club crest guide</a>, <a href="/clan-logo-maker.html">clan and guild logos</a> and the <a href="/crest-logo-maker.html">Crest Logo Kit</a>.</p>
 <h3>Mottos</h3><p>Try <i>Fortis et Fidelis</i> (strong and faithful), <i>Fortitudine</i> (by fortitude) or plain English such as "Guard the Hearth". The <a href="/latin-motto-generator.html">Latin motto generator</a> has 50 more with translations. Comparing beasts? The <a href="/lion-coat-of-arms.html">lion</a> and <a href="/wolf-coat-of-arms.html">wolf</a> guides cover the other two favorites.</p>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=bear">Design a bear crest</a></p></section>''',
         faqs=[('What does a bear mean on a coat of arms?', 'Strength and the protection of family. Heraldic meanings come from later tradition rather than strict rules, but the bear has long been read as a powerful protector.'),
@@ -901,5 +901,53 @@ SPECS = [
               ('Can I make a crest in memory of a pet?', 'Yes. Many people use the heart emblem or their pet\'s initial, with the pet\'s name and years as the motto. It prints at any size for a frame.'),
               ('Can I put the crest on a mug or a shirt?', 'Yes. The download includes a large print file and a scalable SVG that print-on-demand shops and local printers can use.'),
               ('Is this a real heraldic grant of arms?', 'No. It is original artwork in the style of heraldry, made for fun and for keepsakes, not an official grant of arms.')],
+    ),
+    dict(
+        slug='soccer-club-crest-maker.html', cta_href='/crest.html?ch=lion', short='Soccer club crest maker', blurb='Badges for Sunday league and fantasy teams', og='club',
+        h1='Soccer Club Crest Maker', h1_html='Soccer Club Crest Maker for Sunday League and Fantasy Teams',
+        title='Soccer Club Crest Maker: Design a Football Club Badge Free | Crest Studio',
+        og_title='Soccer club crest maker: a football badge for your team',
+        desc='Design a soccer or football club crest for your Sunday league side, youth team or fantasy league. Free to design, with files ready for shirt printers and embroiderers.',
+        eyebrow='For Sunday league sides, youth teams, five-a-side and fantasy leagues',
+        lede='A club badge turns a group of friends into a team. Design one for your Sunday league side, youth club or fantasy league in a few minutes, then hand the files to whoever prints your shirts.',
+        cta='Design your club crest',
+        examples=[crest('Riverside Rovers FC', 'Together We Rise', AZURE, OR, GOLD_LIGHT, 'chevron', 'lion'),
+                  crest('Old Mill Athletic', 'Never Beaten Twice', GULES, ARGENT, ARGENT, 'quarterly', 'tower'),
+                  crest('Northfield Wolves', 'Hunt as a Pack', SABLE, OR, GOLD_LIGHT, 'plain', 'wolf'),
+                  crest('Harbor Town United', 'Steady in Every Storm', AZURE, ARGENT, ARGENT, 'fess', 'anchor'),
+                  crest('Saturday Strikers', 'Ad Maiora', VERT, OR, GOLD_LIGHT, 'bend', 'lightning'),
+                  crest('The Dynasty League', 'Glory Is Earned', PURPURE, OR, GOLD_LIGHT, 'plain', 'crown')],
+        body='''<section class="sec"><h2 class="gilt">Why so many club badges look like coats of arms</h2>
+<p>Football badges and heraldry share a family tree. Coats of arms began as bold symbols that told friend from foe at a distance, and when clubs started putting badges on their shirts, many borrowed elements of their town's coat of arms to give fans a sense of place. A badge also had a practical job: before floodlights, it helped players pick out teammates on a dark winter afternoon.</p>
+<p>Many clubs did not adopt a badge at all until the 1950s, and the earliest ones were often simple shapes that could be stitched onto a jersey. The Maltese cross and its close cousin the cross pattee were popular in those early years because they stood for the knightly virtues clubs liked to claim. Crest Studio has a Maltese cross emblem if you want that old-school look.</p>
+<p>That history is good news for an amateur club: a shield, a strong animal or symbol, the club name across the top and a motto on a ribbon is a format everyone already reads as "football club".</p></section>
+<section class="sec"><h2 class="gilt">Designing a badge that works on a shirt</h2>
+<h3>Start with your club colors</h3><p>Your shirt color is the obvious field color. Then pair it with gold or silver for the emblem. That is heraldry's rule of tincture (a metal on a color), and it is also what keeps a badge readable from the far touchline. Blue and gold, red and white, green and gold and black and gold all follow it.</p>
+<h3>One emblem, chosen for a reason</h3><ul>
+<li><b>Lion or bear:</b> courage and strength, the classic choice. See the <a href="/lion-coat-of-arms.html">lion coat of arms guide</a>.</li>
+<li><b>Eagle or raven:</b> speed and sharp eyes. See the <a href="/eagle-coat-of-arms.html">eagle coat of arms guide</a>.</li>
+<li><b>Wolf:</b> a team that plays as a pack.</li>
+<li><b>Tower, anchor or ship:</b> a nod to your town, harbor or home ground.</li>
+<li><b>Lightning or a star:</b> a fast-attacking side, or a fantasy league that likes a bit of drama.</li>
+<li><b>Your initial:</b> the simplest badge of all, and very hard to confuse with anyone else's.</li></ul>
+<h3>Keep the name short</h3><p>Two or three words fit across the top of the crest at full size. "Riverside Rovers FC" works; a full legal name with "Amateur Football Club" does not. Put the founding year or a short battle cry in the motto ribbon instead.</p>
+<h3>Make your own, do not borrow</h3><p>Professional club badges are protected trademarks, so do not copy one, even with the colors changed. An original badge is also simply better: it belongs to your team and nobody else's.</p></section>
+<section class="sec"><h2 class="gilt">Files your printer or embroiderer will ask for</h2>
+<p>Shirt printers and embroiderers almost always ask for vector art, which is what the SVG in the $9 set is. Embroidery has a few limits worth knowing before you finalize the design:</p>
+<ul><li><b>Small text gets lost.</b> Custom Ink, for example, recommends embroidered text at least 0.25 inches tall and lines at least 0.05 inches thick. On a small chest badge, the club name and motto may need to be dropped or sized up.</li>
+<li><b>Thread cannot do gradients or metallic shine.</b> The embroiderer will pick the closest solid thread colors, so a gold emblem becomes a yellow or gold thread.</li>
+<li><b>Use the shield on its own for small spots.</b> The $29 <a href="/crest-logo-maker.html">Crest Logo Kit</a> includes a shield-only mark as a transparent PNG and SVG, which suits a chest badge, a cap or a sock tab better than the full crest with its ribbon.</li></ul>
+<div class="callout"><b>Ask for a proof.</b> Most printers send a digital proof or a sample stitch-out before running a full set of shirts. It is the cheapest moment to catch a badge that is too detailed.</div></section>
+<section class="sec"><h2 class="gilt">Beyond the shirts</h2>
+<ul><li><b>Fantasy leagues:</b> a crest for the whole league, plus one per manager. The 1080 px profile picture in the $9 set is square, which suits most apps and group chats.</li>
+<li><b>Club socials:</b> the Logo Kit's banners are sized for X, LinkedIn and YouTube, and its icons work for a club website.</li>
+<li><b>Trophies and awards:</b> print the crest on end-of-season certificates or engrave it on a plaque. The SVG scales to any size.</li>
+<li><b>Let the squad vote:</b> click "Copy link to my design" in the studio and share it in the team chat. Everyone who opens it sees the same design and can suggest a version of their own. The same trick works for <a href="/clan-logo-maker.html">gaming clans and guilds</a>.</li></ul>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=lion">Design your club crest</a></p></section>''',
+        faqs=[('Can we print our club crest on team shirts?', 'Yes. Once bought, you can use the files for any lawful purpose, including kits, training tops, scarves and banners. The SVG is the file most printers and embroiderers want.'),
+              ('Will the badge work for embroidery?', 'Usually, with some simplifying. Embroidery cannot reproduce very small text or gradients, so for a small chest badge use the shield without the ribbon, or ask your embroiderer to drop the motto. Always ask for a proof first.'),
+              ('Can I copy a professional club badge?', 'No. Professional club badges are trademarks. Design an original crest with your own name, colors and emblem instead.'),
+              ('Is the design exclusive to our club?', 'No. Other people can make similar designs with the same free tool, so we cannot grant exclusivity. If your club wants to register its badge as a trademark, check for conflicts first and take local advice.'),
+              ('How much does it cost?', 'Designing is free with no account. The $9 set has print files, an SVG and a certificate of arms. The $29 Crest Logo Kit adds transparent logos, a shield-only mark, icons and social banners.')],
     ),
 ]

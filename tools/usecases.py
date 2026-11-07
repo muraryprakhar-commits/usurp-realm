@@ -89,7 +89,7 @@ SPECS = [
 <li>Barbershops, tailors and leather workers</li>
 <li>Amateur and Sunday league sports clubs and fantasy leagues (see the <a href="/soccer-club-crest-maker.html">soccer club crest guide</a>) and esports teams (see <a href="/clan-logo-maker.html">clan and guild logos</a>)</li>
 <li>Streamers, podcasters and tabletop creators building a recognizable channel</li>
-<li>Family businesses, societies and alumni groups</li></ul>
+<li>Family businesses, societies and alumni groups (see the <a href="/club-crest-maker.html">club crest guide</a>)</li></ul>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html">Design your crest logo</a></p></section>''',
         faqs=[('Can I use the logo commercially?', 'Yes. Once bought, you can use the files for any lawful purpose, including your business logo, signage, packaging and merchandise.'),
               ('Is the design exclusive to my business?', 'No. Other people can make similar designs with the same free tool, so we cannot grant exclusivity. If you need a registrable trademark, check for conflicts first and take local advice.'),
@@ -548,7 +548,7 @@ SPECS = [
 <section class="sec"><h2 class="gilt">Designing your owl crest</h2>
 <h3>Colors</h3><p>A silver owl on black is the night watch itself and looks especially sharp in print. Gold on blue feels scholarly, silver on purple looks like an old university, and gold on green or red is warm and friendly. Each pair keeps the rule of tincture: a metal (gold or silver) against a color. The <a href="/heraldry-symbols-and-meanings.html">heraldry meanings guide</a> explains what each color traditionally stands for.</p>
 <h3>Keep the field simple</h3><p>The owl's round face and big eyes are its whole character, so a plain field shows it best. If you want more on the shield, try a chevron or a fess behind it, and keep the owl in a metal so it stands out.</p>
-<h3>For schools, libraries and quiz teams</h3><p>The owl is a natural emblem for a school house of wisdom, a library, a tutoring business, a book club or a pub quiz team. See <a href="/school-house-crests.html">school house crests</a> for setting up a whole house system, and the <a href="/crest-logo-maker.html">Crest Logo Kit</a> if you need a logo, favicons and social banners for a small business.</p>
+<h3>For schools, libraries and quiz teams</h3><p>The owl is a natural emblem for a school house of wisdom, a library, a tutoring business, a book club or a pub quiz team. See <a href="/club-crest-maker.html">crests for book clubs and societies</a>, <a href="/school-house-crests.html">school house crests</a> for setting up a whole house system, and the <a href="/crest-logo-maker.html">Crest Logo Kit</a> if you need a logo, favicons and social banners for a small business.</p>
 <h3>For families</h3><p>An owl suits a family that values learning: parents who were the first to go to college, a long line of teachers, or grandparents who always had the answer. It also makes a thoughtful graduation or retirement gift for a teacher.</p>
 <h3>Mottos</h3><p>Try <i>Sapere Aude</i> (dare to be wise), <i>Lux et Veritas</i> (light and truth), <i>Scientia Potentia Est</i> (knowledge is power) or plain English such as "Wise and Watchful". The <a href="/latin-motto-generator.html">Latin motto generator</a> has more, each with a translation.</p>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=owl">Design an owl crest</a></p></section>''',
@@ -949,5 +949,50 @@ SPECS = [
               ('Can I copy a professional club badge?', 'No. Professional club badges are trademarks. Design an original crest with your own name, colors and emblem instead.'),
               ('Is the design exclusive to our club?', 'No. Other people can make similar designs with the same free tool, so we cannot grant exclusivity. If your club wants to register its badge as a trademark, check for conflicts first and take local advice.'),
               ('How much does it cost?', 'Designing is free with no account. The $9 set has print files, an SVG and a certificate of arms. The $29 Crest Logo Kit adds transparent logos, a shield-only mark, icons and social banners.')],
+    ),
+    dict(
+        slug='club-crest-maker.html', cta_href='/crest.html?ch=book', short='Club crest maker', blurb='Crests for book clubs, societies and alumni groups', og='society',
+        h1='Club Crest Maker', h1_html='Club Crest Maker for Book Clubs, Societies and Alumni Groups',
+        title='Club Crest Maker: Design a Crest for Your Book Club or Society Free | Crest Studio',
+        og_title='Club crest maker: a crest for your book club, society or alumni group',
+        desc='Design a crest for your book club, society, alumni group or hobby club. Free to design, with a Latin or English motto, bookplate-size files and a certificate of arms.',
+        eyebrow='For book clubs, societies, alumni groups and hobby clubs',
+        lede='Every club that has met for long enough has in-jokes, traditions and a name it is proud of. A crest gathers those into one emblem for the invitations, the tote bags and the bookplates. Design one together in a few minutes.',
+        cta='Design your club crest',
+        examples=[crest('The Tuesday Night Readers', 'Tolle Lege', PURPURE, OR, GOLD_LIGHT, 'plain', 'book'),
+                  crest('Hollow Oak Literary Society', 'Sapere Aude', VERT, OR, GOLD_LIGHT, 'chevron', 'owl'),
+                  crest('Westbrook Alumni Association', 'Friends for Life', AZURE, ARGENT, ARGENT, 'fess', 'key'),
+                  crest('The Lantern Debating Society', 'Fiat Lux', SABLE, OR, GOLD_LIGHT, 'bend', 'flame'),
+                  crest('Maple Street Garden Club', 'We Grow Together', VERT, ARGENT, ARGENT, 'quarterly', 'rose'),
+                  crest('Old Quarry Walking Society', 'One More Mile', GULES, OR, GOLD_LIGHT, 'pale', 'mountain')],
+        body='''<section class="sec"><h2 class="gilt">Why clubs and societies use crests</h2>
+<p>Learned societies, colleges and guilds have used arms for centuries, because a shared emblem tells members they belong to something with a story. The Royal Society in London, founded in 1660, still carries the motto <i>Nullius in verba</i>, which it translates as "take nobody's word for it". That one line sums up what the society is for, and that is the job a motto does for any club.</p>
+<p>A crest does the same for a book club that has met every month since the kids were small, a walking group, a debating society or a circle of friends from the same class. It is a little formal and a little playful, which is exactly the tone most clubs like.</p></section>
+<section class="sec"><h2 class="gilt">Designing a crest your members will like</h2>
+<h3>Pick an emblem with a reason behind it</h3><ul>
+<li><b>Book:</b> the obvious choice for a book club or reading group, and it reads clearly even when small.</li>
+<li><b>Owl:</b> wisdom and late nights, good for literary societies, quiz teams and study groups. See the <a href="/owl-coat-of-arms.html">owl coat of arms guide</a>.</li>
+<li><b>Key:</b> a society that opens doors, or an alumni group that holds the keys to old memories.</li>
+<li><b>Flame or sun:</b> ideas and debate, for a society that likes to argue well.</li>
+<li><b>Rose, tree or acorn:</b> garden clubs, allotment societies and groups that have grown from a small start.</li>
+<li><b>Mountain or compass:</b> walking, hiking and travel clubs.</li>
+<li><b>Your initial:</b> simple and hard to confuse with anyone else's. The <a href="/heraldry-symbols-and-meanings.html">symbols and meanings guide</a> covers every emblem and color in the studio.</li></ul>
+<h3>Colors that print well</h3><p>Pair a color (red, blue, green, purple or black) with gold or silver for the emblem. That is heraldry's rule of tincture, a metal on a color, and it also keeps the crest readable on a tote bag or a dark mug. Purple and gold suit a book club well; green and silver suit a garden or walking society.</p>
+<h3>A motto with an in-joke or a classic</h3><p>Latin mottos give a club an old-world feel. <i>Tolle lege</i> ("take up and read") comes from the scene in Augustine's <i>Confessions</i> where he hears a child's voice repeating those words and opens a book; it is a favorite of reading groups. <i>Sapere aude</i> ("dare to be wise") is from the Roman poet Horace. The <a href="/latin-motto-generator.html">Latin motto generator</a> has more, each with its translation. An English motto works just as well, and a gentle in-joke ("One More Chapter", "Wine Was Also Discussed") is often the one members remember.</p>
+<h3>Make your own, do not borrow</h3><p>University, college and fraternity or sorority crests usually belong to those institutions and many are registered trademarks, so an alumni group should not copy one. Design an original crest with your own name, colors and emblem instead, and if your group is officially part of a school, check its brand rules before you print anything.</p></section>
+<section class="sec"><h2 class="gilt">Where clubs use their crest</h2>
+<ul><li><b>Bookplates:</b> printed labels pasted inside a book's cover to show who owns it have carried coats of arms for centuries. The $19 Heirloom set includes six ready-made bookplates of your crest, plus line art and two-tone files for a rubber stamp. With the $9 set, the 1200 by 1500 px PNG prints about 4 by 5 inches at full photo quality (300 pixels per inch), a good size for a bookplate sticker or a lending-library label.</li>
+<li><b>Tote bags, mugs and shirts:</b> the SVG in the $9 set is the vector file print-on-demand shops and local printers ask for.</li>
+<li><b>Invitations and reading lists:</b> drop the crest at the top of the year's schedule or the newsletter.</li>
+<li><b>Anniversary certificates:</b> the certificate of arms prints the crest with its heraldic description and meaning, and you can add a "presented to" line, which suits a founding member or a club's tenth year.</li>
+<li><b>A club website or group chat:</b> the square 1080 px profile picture fits most group apps, and the $29 <a href="/crest-logo-maker.html">Crest Logo Kit</a> adds favicons, a shield-only mark and social banners.</li></ul>
+<div class="callout"><b>Let the members vote.</b> Click "Copy link to my design" in the studio and share it in the group chat. Anyone who opens it sees the same crest and can make a version of their own to compare.</div>
+<p>Running something with several groups inside it, like a school or a summer camp? See <a href="/school-house-crests.html">school house crests</a> for designing a matching set.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=book">Design your club crest</a></p></section>''',
+        faqs=[('Can we use our club crest on tote bags, mugs or shirts?', 'Yes. Once bought, you can use the files for any lawful purpose, including club merchandise. The SVG is the file most printers want.'),
+              ('Can I make bookplates with it?', 'Yes. The $19 Heirloom set includes six bookplates of your crest. With the $9 set, the 1200 by 1500 px PNG prints about 4 by 5 inches at 300 pixels per inch, and the SVG scales to any size for a sticker or stamp.'),
+              ('Can our alumni group use our old university crest?', 'Usually not without permission, because university, college and fraternity crests generally belong to the institution and many are trademarks. Design an original crest instead, or ask the school about its brand rules.'),
+              ('What is a good motto for a book club?', 'Classic choices are <i>Tolle lege</i> ("take up and read") and <i>Sapere aude</i> ("dare to be wise"). An English line with a club in-joke works just as well.'),
+              ('How much does it cost?', 'Designing is free with no account. The $9 set has print files, an SVG and a certificate of arms. The $19 Heirloom set adds bookplates, stamp and seal designs and a house banner. The $29 Crest Logo Kit adds transparent logos, a shield-only mark, icons and social banners.')],
     ),
 ]

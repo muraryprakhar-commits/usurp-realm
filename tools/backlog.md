@@ -21,7 +21,7 @@ Pick the angle a real searcher has; keep every claim checkable (see the rules in
 - [x] Pet coat of arms (built 5 Nov as pet-coat-of-arms.html) (keyword: pet coat of arms / dog crest): playful, gift angle, "House of Biscuit" style names
 - [x] Business crest logo maker (built 20 Oct as crest-logo-maker.html) (keyword: crest logo maker): heraldic logos for breweries, barbershops, coffee shops, schools; note trademark search advice
 - [x] Sports club crest maker (built 6 Nov as soccer-club-crest-maker.html) (keyword: soccer club crest maker / football club badge maker): amateur and Sunday league clubs, fantasy leagues; avoid real club names
-- [ ] Book club and society crest (keyword: club crest maker): societies, book clubs, alumni groups
+- [x] Book club and society crest (built 7 Nov as club-crest-maker.html) (keyword: club crest maker): societies, book clubs, alumni groups
 - [ ] Graduation and class crest (keyword: class crest): class of 2027 crests for yearbooks and shirts
 - [ ] Family reunion shirts with a crest (keyword: family reunion t-shirt design): crest plus family name and year
 - [ ] Housewarming gift crest (keyword: housewarming gift personalized): tower or key, year moved in as motto

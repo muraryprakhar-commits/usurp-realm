@@ -22,7 +22,7 @@ Pick the angle a real searcher has; keep every claim checkable (see the rules in
 - [x] Business crest logo maker (built 20 Oct as crest-logo-maker.html) (keyword: crest logo maker): heraldic logos for breweries, barbershops, coffee shops, schools; note trademark search advice
 - [x] Sports club crest maker (built 6 Nov as soccer-club-crest-maker.html) (keyword: soccer club crest maker / football club badge maker): amateur and Sunday league clubs, fantasy leagues; avoid real club names
 - [x] Book club and society crest (built 7 Nov as club-crest-maker.html) (keyword: club crest maker): societies, book clubs, alumni groups
-- [ ] Graduation and class crest (keyword: class crest): class of 2027 crests for yearbooks and shirts
+- [x] Graduation and class crest (built 8 Nov as class-crest.html) (keyword: class crest): class of 2027 crests for yearbooks and shirts
 - [ ] Family reunion shirts with a crest (keyword: family reunion t-shirt design): crest plus family name and year
 - [ ] Housewarming gift crest (keyword: housewarming gift personalized): tower or key, year moved in as motto
 - [ ] New baby family crest (keyword: new baby gift personalized): a crest for a new family, initial emblem

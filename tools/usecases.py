@@ -801,7 +801,7 @@ SPECS = [
 <li><b>Simplified versions.</b> The $19 Heirloom set adds line art (outlines only), a two-tone version in solid black and white, and the traditional hatched engraving. These are the closest thing to what the finished ring will look like.</li>
 <li><b>The meaning.</b> The certificate of arms describes your design in heraldic language (the blazon) and in plain English, which helps an engraver decide what to keep if something has to be simplified.</li>
 <li><b>Flexibility.</b> A good engraver may redraw your design to suit the metal and the size of the face. That is normal, and usually an improvement.</li></ol>
-<p>The same simple artwork works well beyond rings. See the <a href="/wax-seal-crest.html">wax seal crest guide</a> for a matching seal stamp, the <a href="/family-crest-tattoo.html">family crest tattoo guide</a> for line art that holds up at small sizes, <a href="/family-crest-gift.html">family crest gifts</a> for pairing the ring with a framed print and certificate, and the <a href="/heraldry-symbols-and-meanings.html">heraldry meanings guide</a> for what each emblem stands for.</p>
+<p>The same simple artwork works well beyond rings. See the <a href="/wax-seal-crest.html">wax seal crest guide</a> for a matching seal stamp, the <a href="/family-crest-tattoo.html">family crest tattoo guide</a> for line art that holds up at small sizes, <a href="/family-crest-gift.html">family crest gifts</a> for pairing the ring with a framed print and certificate, the <a href="/heraldry-symbols-and-meanings.html">heraldry meanings guide</a> for what each emblem stands for, and the <a href="/class-crest.html">class crest guide</a> if you are designing a crest for a graduating class ring.</p>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=initial">Design your signet crest</a></p></section>''',
         faqs=[('What should I put on a signet ring?', 'Something simple and bold: your initial on a plain shield, or a single emblem such as a stag, a tower, a key or a star. Fine detail and long text are hard to keep at ring size, so save the full crest with motto for a print.'),
               ('Should a signet ring be engraved in reverse?', 'Only if you want to use it as a seal. Seal engraving is cut in mirror image so the wax impression reads correctly. If the ring is just for wearing, engraving for sight reads the right way round on your finger and is usually cheaper.'),
@@ -987,12 +987,62 @@ SPECS = [
 <li><b>Anniversary certificates:</b> the certificate of arms prints the crest with its heraldic description and meaning, and you can add a "presented to" line, which suits a founding member or a club's tenth year.</li>
 <li><b>A club website or group chat:</b> the square 1080 px profile picture fits most group apps, and the $29 <a href="/crest-logo-maker.html">Crest Logo Kit</a> adds favicons, a shield-only mark and social banners.</li></ul>
 <div class="callout"><b>Let the members vote.</b> Click "Copy link to my design" in the studio and share it in the group chat. Anyone who opens it sees the same crest and can make a version of their own to compare.</div>
-<p>Running something with several groups inside it, like a school or a summer camp? See <a href="/school-house-crests.html">school house crests</a> for designing a matching set.</p>
+<p>Running something with several groups inside it, like a school or a summer camp? See <a href="/school-house-crests.html">school house crests</a> for designing a matching set. Organizing a graduating class or a class reunion? The <a href="/class-crest.html">class crest guide</a> covers class years, yearbooks and shirts.</p>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=book">Design your club crest</a></p></section>''',
         faqs=[('Can we use our club crest on tote bags, mugs or shirts?', 'Yes. Once bought, you can use the files for any lawful purpose, including club merchandise. The SVG is the file most printers want.'),
               ('Can I make bookplates with it?', 'Yes. The $19 Heirloom set includes six bookplates of your crest. With the $9 set, the 1200 by 1500 px PNG prints about 4 by 5 inches at 300 pixels per inch, and the SVG scales to any size for a sticker or stamp.'),
               ('Can our alumni group use our old university crest?', 'Usually not without permission, because university, college and fraternity crests generally belong to the institution and many are trademarks. Design an original crest instead, or ask the school about its brand rules.'),
               ('What is a good motto for a book club?', 'Classic choices are <i>Tolle lege</i> ("take up and read") and <i>Sapere aude</i> ("dare to be wise"). An English line with a club in-joke works just as well.'),
               ('How much does it cost?', 'Designing is free with no account. The $9 set has print files, an SVG and a certificate of arms. The $19 Heirloom set adds bookplates, stamp and seal designs and a house banner. The $29 Crest Logo Kit adds transparent logos, a shield-only mark, icons and social banners.')],
+    ),
+    dict(
+        slug='class-crest.html', cta_href='/crest.html?ch=laurel', short='Class crest', blurb='A crest for your graduating class', og='classcrest',
+        h1='Class Crest Maker', h1_html='Class Crest Maker for Yearbooks, Shirts and Reunions',
+        title='Class Crest Maker: Design a Class of 2027 Crest Free | Crest Studio',
+        og_title='Class crest maker: a crest for your graduating class',
+        desc='Design a class crest for your graduating class: the class year as a motto, colors that print well, and files ready for the yearbook, class shirts and reunion banners. Free to design.',
+        eyebrow='For senior classes, yearbook teams, class councils and reunion committees',
+        lede='A graduating class shares four years of inside jokes, late nights and one number: the year. A class crest puts all of it on a single shield for the yearbook, the senior shirts and every reunion banner after that. Design it together in a few minutes.',
+        cta='Design your class crest',
+        examples=[crest('Class of 2027', 'We Made It Together', AZURE, OR, GOLD_LIGHT, 'chevron', 'laurel'),
+                  crest('Hillcrest Seniors 2027', 'Per Aspera ad Astra', SABLE, OR, GOLD_LIGHT, 'plain', 'mullet'),
+                  crest('The Class of 2026', 'Onward and Upward', GULES, ARGENT, ARGENT, 'bend', 'mountain'),
+                  crest('Riverbend Graduates', 'Fiat Lux', PURPURE, OR, GOLD_LIGHT, 'fess', 'flame'),
+                  crest('Class of 2016 Reunion', 'Ten Years, Same Friends', VERT, ARGENT, ARGENT, 'quarterly', 'key'),
+                  crest('Nursing Class of 2027', 'Care With Courage', AZURE, ARGENT, ARGENT, 'pale', 'heart')],
+        body='''<section class="sec"><h2 class="gilt">Where the class crest comes from</h2>
+<p>The idea of a crest that belongs to one graduating class, rather than to the whole school, has a long history in the United States. According to the U.S. Military Academy at West Point, it was the first school to use rings as a class symbol, starting with the Class of 1835. Since the Class of 1917, each West Point ring has carried the academy's crest on one side and the class's own crest on the other, and every class since 1835 has chosen its own motto to be part of that crest. The first class picked "Danger Brings Forth Friendship".</p>
+<p>That split is a useful way to think about any class crest. The school already has its emblem. The class crest is about the people who went through it together: the year, the friendships and a line that sums up how it felt.</p></section>
+<section class="sec"><h2 class="gilt">Designing a crest your whole class will wear</h2>
+<h3>Put the year where everyone sees it</h3><p>The class year is the one thing every member shares, so make it the name or the motto. "Class of 2027" across the top is clear and lasts; a school name plus "Seniors 2027" works too. Names in Crest Studio can be up to 40 characters, and mottos up to 48.</p>
+<h3>Choose an emblem for what the class is about</h3><ul>
+<li><b>Laurel:</b> the old symbol of victory and achievement, a natural fit for finishing school.</li>
+<li><b>Star:</b> heralds call it a <i>mullet</i>. It suits a class that aims high, and pairs well with the Latin motto <i>Per aspera ad astra</i> ("through hardships to the stars").</li>
+<li><b>Flame or book:</b> learning and ideas, good for a whole graduating class or an honor society.</li>
+<li><b>Mountain or compass:</b> the road ahead, for a class heading off in every direction.</li>
+<li><b>Key:</b> a class that is opening the next door, and a nice choice for a reunion crest.</li>
+<li><b>Your mascot's cousin:</b> if the school team is the Lions, Eagles, Wolves or Bears, the matching beast gives the crest an instant connection. See the <a href="/lion-coat-of-arms.html">lion coat of arms guide</a> for poses.</li></ul>
+<h3>Colors that print well</h3><p>Start from the school colors and pair a color (red, blue, green, purple or black) with gold or silver for the emblem. That is heraldry's rule of tincture, a metal on a color, and it also keeps the crest readable on a dark hoodie or a yearbook page. If the school colors are two colors with no metal, use one as the field and gold or silver for the emblem.</p>
+<h3>A motto that sounds like your class</h3><p>Latin gives a crest a formal ring: <i>Fiat lux</i> ("let there be light") and <i>Per aspera ad astra</i> are both long-used Latin mottos, and the <a href="/latin-motto-generator.html">Latin motto generator</a> has more with translations. An English motto with a class in-joke is often the one people remember at the ten-year reunion.</p>
+<h3>Make your own, do not borrow</h3><p>School and university crests and mascots usually belong to the school, and many are trademarks. Design an original class crest with your own year, colors and emblem, and if the crest will go on official school merchandise or in the yearbook, check with your adviser about the school's brand rules first.</p></section>
+<section class="sec"><h2 class="gilt">Getting everyone to agree</h2>
+<p>Choosing one design for a whole class is the hard part. A simple way to run it:</p>
+<ol><li><b>Collect a few designs.</b> Ask the class council or yearbook team to each make one in the studio. It is free and takes no account.</li>
+<li><b>Share the links.</b> Click "Copy link to my design" and paste it into the class group chat. Anyone who opens it sees the exact crest, and can change it to suggest a version of their own.</li>
+<li><b>Vote, then buy once.</b> Only the final design needs to be downloaded.</li></ol>
+<div class="callout"><b>Running a set of crests, not one?</b> If your school has houses or teams, see <a href="/school-house-crests.html">school house crests</a> for designing a matching set.</div></section>
+<section class="sec"><h2 class="gilt">Files for the yearbook, shirts and reunions</h2>
+<ul><li><b>Yearbook pages:</b> yearbook printers generally ask for images at 300 dots per inch at the size they will print. The $9 set's 4000 by 5000 px print file is about 13 by 16 inches at that resolution, far more than any yearbook page needs, and the SVG scales to any size.</li>
+<li><b>Class shirts and hoodies:</b> screen printers and embroiderers almost always want vector art, which is the SVG in the $9 set. For a small chest print, the $29 <a href="/crest-logo-maker.html">Crest Logo Kit</a> adds a shield-only mark without the ribbon, which stays readable at small sizes.</li>
+<li><b>Banners and graduation signs:</b> the SVG prints sharp at banner size.</li>
+<li><b>Group chats and socials:</b> the square 1080 px profile picture in the $9 set fits most apps.</li>
+<li><b>Rings and seals:</b> if you want the crest engraved, a single bold emblem works best. The <a href="/signet-ring-crest.html">signet ring crest guide</a> explains what engravers need.</li>
+<li><b>Reunions:</b> keep the files. The same crest on the five, ten and twenty-year reunion invitations is a small thing people notice. An alumni group that wants its own crest can follow the <a href="/club-crest-maker.html">club crest guide</a>.</li></ul>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=laurel">Design your class crest</a></p></section>''',
+        faqs=[('What is a class crest?', 'A crest that belongs to one graduating class rather than the whole school, usually with the class year and a motto chosen by the class. West Point has paired a class crest with the academy crest on its class rings since the Class of 1917.'),
+              ('Can we use our school logo or mascot on the class crest?', 'Only with the school\'s permission, because school crests and mascots usually belong to the school and many are trademarks. An original crest with your class year, school colors and a related emblem avoids the problem.'),
+              ('Will the crest print well in the yearbook?', 'Yes. Yearbook printers generally ask for 300 dots per inch at print size. The 4000 by 5000 px print file is about 13 by 16 inches at 300 dpi, and the SVG scales to any size.'),
+              ('Can we print it on class shirts?', 'Yes. Once bought, you can use the files for any lawful purpose, including shirts, hoodies and banners. The SVG is the file most printers want.'),
+              ('How much does it cost?', 'Designing is free with no account. The $9 set has print files, an SVG, a certificate of arms and a profile picture. The $29 Crest Logo Kit adds transparent logos, a shield-only mark, icons and social banners.')],
     ),
 ]

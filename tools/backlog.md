@@ -23,7 +23,7 @@ Pick the angle a real searcher has; keep every claim checkable (see the rules in
 - [x] Sports club crest maker (built 6 Nov as soccer-club-crest-maker.html) (keyword: soccer club crest maker / football club badge maker): amateur and Sunday league clubs, fantasy leagues; avoid real club names
 - [x] Book club and society crest (built 7 Nov as club-crest-maker.html) (keyword: club crest maker): societies, book clubs, alumni groups
 - [x] Graduation and class crest (built 8 Nov as class-crest.html) (keyword: class crest): class of 2027 crests for yearbooks and shirts
-- [ ] Family reunion shirts with a crest (keyword: family reunion t-shirt design): crest plus family name and year
+- [x] Family reunion shirts with a crest (built 9 Nov as family-reunion-shirt-design.html) (keyword: family reunion t-shirt design): crest plus family name and year
 - [ ] Housewarming gift crest (keyword: housewarming gift personalized): tower or key, year moved in as motto
 - [ ] New baby family crest (keyword: new baby gift personalized): a crest for a new family, initial emblem
 - [ ] Anniversary crest gift (keyword: anniversary gift personalized): per pale union of two names, year as motto

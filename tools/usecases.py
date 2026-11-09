@@ -41,7 +41,7 @@ SPECS = [
 <h3>Weddings and anniversaries</h3><p>Join two family names on one shield with the Per pale division, the old heraldic way of uniting two families. See the <a href="/wedding-crest.html">wedding crest guide</a>.</p>
 <h3>A new home</h3><p>A tower or key emblem for a housewarming print above the door, with the family name and the year they moved in as the motto.</p>
 <h3>Pet lovers</h3><p>Give the dog, cat or horse a crest of their own, with a grand title and a motto that fits. See the <a href="/pet-coat-of-arms.html">pet coat of arms guide</a>.</p>
-<h3>Grandparents and family reunions</h3><p>A crest for the whole family tree, printed on the reunion banner and T-shirts, with a framed copy for the grandparents who started it all.</p>
+<h3>Grandparents and family reunions</h3><p>A crest for the whole family tree, printed on the reunion banner and T-shirts, with a framed copy for the grandparents who started it all. The <a href="/family-reunion-shirt-design.html">family reunion T-shirt guide</a> explains what to ask the printer.</p>
 <h3>Father's Day, Mother's Day and birthdays</h3><p>A crest built around one person: their initial on the shield and a motto that is pure them. The same design can be engraved on a signet ring: see the <a href="/signet-ring-crest.html">signet ring crest guide</a>.</p></section>
 <section class="sec"><h2 class="gilt">How to give it</h2><ol>
 <li><b>Design it</b> in <a href="/crest.html">Crest Studio</a>. Need words? The <a href="/latin-motto-generator.html">Latin motto generator</a> has 50+ mottos with translations, and the <a href="/heraldry-symbols-and-meanings.html">meanings guide</a> explains every color and emblem.</li>
@@ -1044,5 +1044,59 @@ SPECS = [
               ('Will the crest print well in the yearbook?', 'Yes. Yearbook printers generally ask for 300 dots per inch at print size. The 4000 by 5000 px print file is about 13 by 16 inches at 300 dpi, and the SVG scales to any size.'),
               ('Can we print it on class shirts?', 'Yes. Once bought, you can use the files for any lawful purpose, including shirts, hoodies and banners. The SVG is the file most printers want.'),
               ('How much does it cost?', 'Designing is free with no account. The $9 set has print files, an SVG, a certificate of arms and a profile picture. The $29 Crest Logo Kit adds transparent logos, a shield-only mark, icons and social banners.')],
+    ),
+    dict(
+        slug='family-reunion-shirt-design.html', cta_href='/crest.html?ch=tree', short='Family reunion shirts', blurb='A crest for the reunion T-shirt', og='reunion',
+        h1='Family Reunion T-Shirt Design', h1_html='Family Reunion T-Shirt Design With a Family Crest',
+        title='Family Reunion T-Shirt Design: Make a Family Crest for Your Shirts | Crest Studio',
+        og_title='Family reunion T-shirt design: a crest with your family name and year',
+        desc='Design a family reunion T-shirt around a family crest: your name, the reunion year and a motto on one shield, plus what to ask your printer. Free to design.',
+        eyebrow='For reunion committees, family historians and whoever got stuck ordering the shirts',
+        lede='Every reunion shirt needs the same three things: the family name, the year, and something that looks like it belongs to you. A family crest holds all three on one shield, and the design can come back year after year while only the date changes.',
+        cta='Design your reunion crest',
+        examples=[crest('The Hayes Family Reunion', 'Rooted in Love', VERT, OR, GOLD_LIGHT, 'chevron', 'tree'),
+                  crest('Okonkwo Family 2027', 'Together Again', AZURE, OR, GOLD_LIGHT, 'plain', 'heart'),
+                  crest('The Delgados', 'Many Branches, One Root', GULES, OR, GOLD_LIGHT, 'chevron', 'acorn'),
+                  crest('Nguyen Family Gathering', 'Home Is Each Other', PURPURE, ARGENT, ARGENT, 'chevron', 'tower'),
+                  crest('The Murphy Clan Reunion', 'Still Here, Still Loud', SABLE, ARGENT, ARGENT, 'plain', 'shamrock'),
+                  crest('Kowalski Reunion 2027', 'Ever Onward', AZURE, ARGENT, ARGENT, 'plain', 'compass')],
+        body='''<section class="sec"><h2 class="gilt">Why a crest works on a reunion shirt</h2>
+<p>Reunions magazine gives simple design advice for these shirts: keep the type large, keep the phrases to a few words, and include the family name, the year and perhaps a motto. A crest is built to do exactly that. The name sits at the top, the motto runs along the ribbon, and the shield carries one strong picture you can recognize from across a picnic ground.</p>
+<p>It also solves a problem shirts with a date on them have: this year's design goes out of date the moment the reunion ends. A family crest does not. Keep the shield for every reunion and change only the year, and over time you end up with a family emblem, not a pile of unrelated shirts.</p></section>
+<section class="sec"><h2 class="gilt">Designing the crest</h2>
+<h3>Put the name and year where people can read them</h3><p>Use the family name, with the year if you like: "The Hayes Family Reunion" or "Kowalski Reunion 2027". Names in Crest Studio can be up to 40 characters and mottos up to 48, so there is room, but shorter reads better on a chest.</p>
+<h3>Choose one emblem that means something to your family</h3><ul>
+<li><b>Tree or acorn:</b> the family tree and the small beginning it grew from. The obvious choice for a reunion, and a good one.</li>
+<li><b>Heart:</b> simple and warm, and it holds up at any size.</li>
+<li><b>Tower or key:</b> the old home place, or a family that keeps the door open.</li>
+<li><b>Ship, anchor or compass:</b> a family that crossed an ocean or scattered across the country.</li>
+<li><b>Shamrock, thistle or fleur-de-lis:</b> where the family came from. The <a href="/irish-family-crest.html">Irish family crest</a> and <a href="/scottish-family-crest.html">Scottish family crest</a> guides go further.</li>
+<li><b>Your initial:</b> the plainest option and one nobody else's reunion will share.</li></ul>
+<p>The <a href="/heraldry-symbols-and-meanings.html">symbols and meanings guide</a> explains every emblem and color in the studio.</p>
+<h3>Pick colors with contrast</h3><p>Heraldry's rule of tincture puts a metal (gold or silver) against a color (red, blue, green, purple or black), and it was made so a shield could be read from far away. Print shops give almost the same advice: Michael Waite of Hollopoint Design told Reunions magazine that colors too close in value blend together and lose detail, and that light against dark is best. Follow the rule and you get both.</p>
+<h3>Write a motto that sounds like your family</h3><p>This is where a reunion shirt can be funny. "Still Here, Still Loud" will get more laughs at the buffet than anything in Latin, though the <a href="/latin-motto-generator.html">Latin motto generator</a> has plenty with translations if your family prefers the formal look.</p>
+<div class="callout"><b>Let the family vote.</b> Click "Copy link to my design" in the studio and paste it in the family group chat. Anyone who opens it sees the exact crest and can try a version of their own. You only pay once, for the one you choose.</div></section>
+<section class="sec"><h2 class="gilt">What to tell the printer</h2>
+<p>Two printing methods cover most reunion orders, and the choice affects which file you need.</p>
+<ul><li><b>Direct-to-film (DTF) or digital transfers:</b> the design is printed onto film and heat-pressed onto the shirt. There are no screens to set up and no extra charge per color, so a full-color crest with its gold and shading prints as you see it. Printers commonly suggest this for small runs and full-color art.</li>
+<li><b>Screen printing:</b> ink goes through one screen per color, so each color adds setup cost, and shops often start at around a dozen shirts. It tends to be cheapest per shirt for big orders with few colors. A full-color crest is more work to separate, so ask the shop to quote it, or use a simpler one-color version.</li></ul>
+<h3>Which Crest Studio file to send</h3><ul>
+<li><b>The $9 set</b> has the SVG vector, the file printers usually ask for, and a 4000 by 5000 px PNG. At 300 pixels per inch that PNG prints about 13 by 16 inches, larger than most shirt prints.</li>
+<li><b>The $19 Heirloom set</b> adds line art and two-tone files that were made for stamps and can also suit a one-color print. Show them to your printer first.</li>
+<li><b>The $29 <a href="/crest-logo-maker.html">Crest Logo Kit</a></b> adds a transparent PNG, which is useful on colored shirts, and a shield-only mark for a small chest print or a child's shirt.</li></ul>
+<p>Ask for a proof before the whole order runs. Printers differ, and what one wants another may not.</p></section>
+<section class="sec"><h2 class="gilt">Ordering without the last-minute panic</h2>
+<ol><li><b>Order early.</b> Reunions magazine says most printers need at least three weeks, and warns that shirts arriving late mean paying to post them to everyone afterward.</li>
+<li><b>Set the family's deadline before the printer's.</b> Someone will send their sizes late, so build in time for it.</li>
+<li><b>Plan for small shirts.</b> A print sized for a large adult will not fit a toddler. Either ask for a second, smaller print, or size one print to fit the smallest shirt.</li>
+<li><b>Order a few extras.</b> Relatives who said no often want one when they see everybody else in theirs.</li>
+<li><b>Use color for branches.</b> Some large families give each branch or generation its own shirt color. The same crest in gold and white reads well across most of them.</li></ol>
+<p>The shirt is only the beginning. The same crest works on the reunion banner, the invitations, a framed print for the oldest relative at the table, and a certificate of arms that explains the design. See <a href="/family-crest-gift.html">family crest gifts</a> for ideas, and if the committee wants tote bags or mugs as well, the <a href="/club-crest-maker.html">club crest guide</a> covers those files.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=tree">Design your reunion crest</a></p></section>''',
+        faqs=[('What should go on a family reunion T-shirt?', 'The usual ingredients are the family name, the year and a short motto or message. Reunions magazine advises keeping the type large and the wording to a few words, so it can be read at a distance.'),
+              ('Can we print the crest on as many shirts as we want?', 'Yes. Once bought, you can use the files for any lawful purpose, including shirts, banners and mugs for your family, in any quantity.'),
+              ('Which file does the T-shirt printer need?', 'Most printers ask for vector art, which is the SVG in the $9 set. A 4000 by 5000 px PNG is included too. The $29 Crest Logo Kit adds a transparent PNG and a shield-only mark. Ask your printer which they prefer before ordering.'),
+              ('How far ahead should we order reunion shirts?', 'Reunions magazine says most printers need at least three weeks, and turnaround varies by shop and season, so ask yours and leave time for late sizes.'),
+              ('Is this our real family coat of arms?', 'No. It is an original design in the style of heraldry that you create for your family, not a historical coat of arms or a claim about your ancestors.')],
     ),
 ]

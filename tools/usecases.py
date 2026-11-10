@@ -39,7 +39,7 @@ SPECS = [
 <section class="sec"><h2 class="gilt">Gift ideas by occasion</h2>
 <h3>Christmas and the holidays</h3><p>A framed crest for parents or in-laws, or the same crest on a set of mugs for every household in the family.</p>
 <h3>Weddings and anniversaries</h3><p>Join two family names on one shield with the Per pale division, the old heraldic way of uniting two families. See the <a href="/wedding-crest.html">wedding crest guide</a>.</p>
-<h3>A new home</h3><p>A tower or key emblem for a housewarming print above the door, with the family name and the year they moved in as the motto.</p>
+<h3>A new home</h3><p>A tower or key emblem for a housewarming print above the door, with the family name and the year they moved in as the motto. The <a href="/housewarming-gift-crest.html">housewarming crest guide</a> has emblem and motto ideas.</p>
 <h3>Pet lovers</h3><p>Give the dog, cat or horse a crest of their own, with a grand title and a motto that fits. See the <a href="/pet-coat-of-arms.html">pet coat of arms guide</a>.</p>
 <h3>Grandparents and family reunions</h3><p>A crest for the whole family tree, printed on the reunion banner and T-shirts, with a framed copy for the grandparents who started it all. The <a href="/family-reunion-shirt-design.html">family reunion T-shirt guide</a> explains what to ask the printer.</p>
 <h3>Father's Day, Mother's Day and birthdays</h3><p>A crest built around one person: their initial on the shield and a motto that is pure them. The same design can be engraved on a signet ring: see the <a href="/signet-ring-crest.html">signet ring crest guide</a>.</p></section>
@@ -1098,5 +1098,47 @@ SPECS = [
               ('Which file does the T-shirt printer need?', 'Most printers ask for vector art, which is the SVG in the $9 set. A 4000 by 5000 px PNG is included too. The $29 Crest Logo Kit adds a transparent PNG and a shield-only mark. Ask your printer which they prefer before ordering.'),
               ('How far ahead should we order reunion shirts?', 'Reunions magazine says most printers need at least three weeks, and turnaround varies by shop and season, so ask yours and leave time for late sizes.'),
               ('Is this our real family coat of arms?', 'No. It is an original design in the style of heraldry that you create for your family, not a historical coat of arms or a claim about your ancestors.')],
+    ),
+    dict(
+        slug='housewarming-gift-crest.html', cta_href='/crest.html?ch=key', short='Housewarming gift crest', blurb='A crest for a new home', og='newhome',
+        h1='Personalized Housewarming Gift', h1_html='A Personalized Housewarming Gift: A Crest for Their New Home',
+        title='Personalized Housewarming Gift: A Family Crest for a New Home | Crest Studio',
+        og_title='Personalized housewarming gift: a family crest for their new home',
+        desc='Design a family crest for a new home: their name, a key or tower emblem and the year they moved in as the motto. Print and frame it, or hang it as a house banner. Free to design.',
+        eyebrow='For new homeowners, first apartments and the friends who help them move',
+        lede='A new home is the start of a new chapter, and a crest marks it the way old houses were marked: a shield over the door with the family name and a motto. Put the year they moved in on the ribbon and the gift stays true for as long as they live there.',
+        cta='Design a housewarming crest',
+        examples=[crest('The Bennetts', 'Home Since 2026', AZURE, ARGENT, ARGENT, 'bend', 'key'),
+                  crest('House Moreno', 'Our Door Is Open', GULES, OR, GOLD_LIGHT, 'plain', 'tower'),
+                  crest('The Patels of Maple Street', 'Rooted Here', VERT, OR, GOLD_LIGHT, 'chevron', 'tree'),
+                  crest('Sam and Alex', 'Two Names, One Door', PURPURE, OR, ARGENT, 'perpale', 'key'),
+                  crest('The Johansson Household', 'Warm Hearth, Full Table', SABLE, OR, GOLD_LIGHT, 'fess', 'flame'),
+                  crest('The Rivera Family', 'All Are Welcome Here', MURREY, OR, GOLD_LIGHT, 'chevron', 'heart')],
+        body='''<section class="sec"><h2 class="gilt">Why a crest suits a new home</h2>
+<p>Housewarming gifts tend to fall into two piles: useful things (a good knife, a plant, a bottle of something) and things with a wish attached. In Germany, bread and salt are a traditional gift for a new home, meant as a wish that the household will always have enough. A crest belongs to the second pile. It says who lives here now, and it gives the house a little ceremony on the day it stops being an empty building.</p>
+<p>It also avoids the usual housewarming problem of guessing someone's taste in decor. You are not choosing a vase. You are choosing their name, their colors and a motto, and the result is clearly made for them.</p></section>
+<section class="sec"><h2 class="gilt">Emblems that fit a new home</h2>
+<ul><li><b>Key:</b> the most literal housewarming emblem, and an old one in heraldry. The arms of the city of Bremen in Germany are a single silver key on a red shield, the key of Saint Peter, patron of its cathedral. For a couple, a key on a shield divided down the middle (Per pale), one half for each of you, reads as "two of us, one door."</li>
+<li><b>Tower:</b> in heraldry a tower stands for defense and the safety of a home. The arms of the old kingdom of Castile are a gold castle on red, which is why "castle" and "Castile" sound alike. A tower on a family crest says "this is our stronghold" without any of the swagger of a lion.</li>
+<li><b>Tree or acorn:</b> for a family putting down roots, or a first home bought after years of renting.</li>
+<li><b>Flame or heart:</b> the hearth and the people around it. A flame suits a house known for its kitchen.</li>
+<li><b>Anchor or compass:</b> for people who moved a long way to get here, or who have finally stopped moving.</li></ul>
+<p>The <a href="/heraldry-symbols-and-meanings.html">symbols and meanings guide</a> explains every emblem and color in the studio, and each crest's certificate of arms spells out the meaning in plain English.</p></section>
+<section class="sec"><h2 class="gilt">The name and the motto</h2>
+<h3>Name the household, not just the surname</h3><p>Households are more varied than a single family name: a couple with two surnames, roommates, a first solo apartment. The name line takes up to 40 characters, so "Sam and Alex", "The Patels of Maple Street" or "House Moreno" all fit. A street name is a nice touch for people who expect to stay.</p>
+<h3>Put the year on the ribbon</h3><p>"Home Since 2026" or "Established 2026" is the simplest housewarming motto and the one that ages best. Mottos can be up to 48 characters, so there is room for something warmer, like "Our Door Is Open" or "Warm Hearth, Full Table." If they like Latin, the <a href="/latin-motto-generator.html">Latin motto generator</a> has phrases with their standard translations.</p>
+<h3>Keep the colors readable</h3><p>The rule of tincture puts a metal (gold or silver) against a color (red, blue, green, purple or black). It exists so a shield can be read from a distance, which is exactly what you want from a print hung across a room. The studio follows it for you.</p></section>
+<section class="sec"><h2 class="gilt">Ways to give it</h2>
+<ol><li><b>A framed print.</b> The $9 set includes a 4000 by 5000 px image, about 13 by 16 inches at photo quality (300 pixels per inch), plus a certificate of arms sized for US Letter. Add a "presented to" and "from" line under "Giving it as a gift?" and it prints on the certificate.</li>
+<li><b>A house banner.</b> The $19 Heirloom set adds a tall swallowtail house banner, 2400 by 4800 px (8 by 16 inches at 300 pixels per inch), for printing on fabric or poster stock and hanging in a hallway. It also has bookplates for their shelves and line art for engraving.</li>
+<li><b>A door sign or doormat.</b> Many sign makers and laser engravers work from vector files. The $9 set includes an SVG; ask your maker which format they want before you order.</li>
+<li><b>A wax seal for the thank-you notes.</b> New homeowners write a lot of them. See the <a href="/wax-seal-crest.html">wax seal crest guide</a> for designs that a stamp maker can cut.</li></ol>
+<div class="callout"><b>Arriving empty-handed?</b> In the studio, open "Send it as a free e-card". They get a link where their crest appears with your message, and you can print the framed copy once they have a wall to hang it on.</div>
+<p>Giving a crest to newlyweds who bought their first place together? The <a href="/wedding-crest.html">wedding crest guide</a> shows how to join two family names on one shield, and <a href="/family-crest-gift.html">family crest gifts</a> covers other occasions.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=key">Design a housewarming crest</a></p></section>''',
+        faqs=[('What is a good personalized housewarming gift?', 'Something made for that household and that home. A family crest with their name, an emblem like a key or tower, and the year they moved in as the motto is personal without requiring you to guess their decor taste.'),
+              ('Can I make a crest for a couple with different last names, or for roommates?', 'Yes. The name line is free text up to 40 characters, so you can use both names, a street name or a household name. A shield divided down the middle (Per pale) is the traditional heraldic way to show two families joined.'),
+              ('How big can I print it?', 'The $9 set includes a 4000 by 5000 px image, which prints at about 13 by 16 inches at 300 pixels per inch and comfortably at 16 by 20. The $19 Heirloom set adds an 8 by 16 inch house banner.'),
+              ('Is it their real family coat of arms?', 'No. It is an original design in the style of heraldry that you create for them, not a historical coat of arms or an official grant. It describes the household as it is now.')],
     ),
 ]

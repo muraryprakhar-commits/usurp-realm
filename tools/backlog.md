@@ -24,7 +24,7 @@ Pick the angle a real searcher has; keep every claim checkable (see the rules in
 - [x] Book club and society crest (built 7 Nov as club-crest-maker.html) (keyword: club crest maker): societies, book clubs, alumni groups
 - [x] Graduation and class crest (built 8 Nov as class-crest.html) (keyword: class crest): class of 2027 crests for yearbooks and shirts
 - [x] Family reunion shirts with a crest (built 9 Nov as family-reunion-shirt-design.html) (keyword: family reunion t-shirt design): crest plus family name and year
-- [ ] Housewarming gift crest (keyword: housewarming gift personalized): tower or key, year moved in as motto
+- [x] Housewarming gift crest (built 10 Nov as housewarming-gift-crest.html) (keyword: housewarming gift personalized): tower or key, year moved in as motto
 - [ ] New baby family crest (keyword: new baby gift personalized): a crest for a new family, initial emblem
 - [ ] Anniversary crest gift (keyword: anniversary gift personalized): per pale union of two names, year as motto
 - [ ] Father's Day crest gift (seasonal: publish by mid May)

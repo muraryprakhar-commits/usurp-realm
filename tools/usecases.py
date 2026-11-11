@@ -40,6 +40,7 @@ SPECS = [
 <h3>Christmas and the holidays</h3><p>A framed crest for parents or in-laws, or the same crest on a set of mugs for every household in the family.</p>
 <h3>Weddings and anniversaries</h3><p>Join two family names on one shield with the Per pale division, the old heraldic way of uniting two families. See the <a href="/wedding-crest.html">wedding crest guide</a>.</p>
 <h3>A new home</h3><p>A tower or key emblem for a housewarming print above the door, with the family name and the year they moved in as the motto. The <a href="/housewarming-gift-crest.html">housewarming crest guide</a> has emblem and motto ideas.</p>
+<h3>A new baby</h3><p>The baby's initial on the shield and the birth date on the ribbon, printed for the nursery wall or the baby book. The <a href="/new-baby-family-crest.html">new baby crest guide</a> has emblem and motto ideas.</p>
 <h3>Pet lovers</h3><p>Give the dog, cat or horse a crest of their own, with a grand title and a motto that fits. See the <a href="/pet-coat-of-arms.html">pet coat of arms guide</a>.</p>
 <h3>Grandparents and family reunions</h3><p>A crest for the whole family tree, printed on the reunion banner and T-shirts, with a framed copy for the grandparents who started it all. The <a href="/family-reunion-shirt-design.html">family reunion T-shirt guide</a> explains what to ask the printer.</p>
 <h3>Father's Day, Mother's Day and birthdays</h3><p>A crest built around one person: their initial on the shield and a motto that is pure them. The same design can be engraved on a signet ring: see the <a href="/signet-ring-crest.html">signet ring crest guide</a>.</p></section>
@@ -1134,11 +1135,53 @@ SPECS = [
 <li><b>A door sign or doormat.</b> Many sign makers and laser engravers work from vector files. The $9 set includes an SVG; ask your maker which format they want before you order.</li>
 <li><b>A wax seal for the thank-you notes.</b> New homeowners write a lot of them. See the <a href="/wax-seal-crest.html">wax seal crest guide</a> for designs that a stamp maker can cut.</li></ol>
 <div class="callout"><b>Arriving empty-handed?</b> In the studio, open "Send it as a free e-card". They get a link where their crest appears with your message, and you can print the framed copy once they have a wall to hang it on.</div>
-<p>Giving a crest to newlyweds who bought their first place together? The <a href="/wedding-crest.html">wedding crest guide</a> shows how to join two family names on one shield, and <a href="/family-crest-gift.html">family crest gifts</a> covers other occasions.</p>
+<p>Giving a crest to newlyweds who bought their first place together? The <a href="/wedding-crest.html">wedding crest guide</a> shows how to join two family names on one shield, <a href="/new-baby-family-crest.html">new baby crests</a> suit a family that moved to make room for one, and <a href="/family-crest-gift.html">family crest gifts</a> covers other occasions.</p>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=key">Design a housewarming crest</a></p></section>''',
         faqs=[('What is a good personalized housewarming gift?', 'Something made for that household and that home. A family crest with their name, an emblem like a key or tower, and the year they moved in as the motto is personal without requiring you to guess their decor taste.'),
               ('Can I make a crest for a couple with different last names, or for roommates?', 'Yes. The name line is free text up to 40 characters, so you can use both names, a street name or a household name. A shield divided down the middle (Per pale) is the traditional heraldic way to show two families joined.'),
               ('How big can I print it?', 'The $9 set includes a 4000 by 5000 px image, which prints at about 13 by 16 inches at 300 pixels per inch and comfortably at 16 by 20. The $19 Heirloom set adds an 8 by 16 inch house banner.'),
               ('Is it their real family coat of arms?', 'No. It is an original design in the style of heraldry that you create for them, not a historical coat of arms or an official grant. It describes the household as it is now.')],
+    ),
+    dict(
+        slug='new-baby-family-crest.html', cta_href='/crest.html?ch=initial', short='New baby crest', blurb='A personalized crest for a new arrival', og='baby',
+        h1='New Baby Family Crest', h1_html='A New Baby Gift: A Family Crest for the Newest Member',
+        title='Personalized New Baby Gift: A Family Crest With Their Name and Birth Date | Crest Studio',
+        og_title='Personalized new baby gift: a family crest with their name and birth date',
+        desc='Design a crest for a new baby: their initial on the shield, the family colors and the birth date as the motto. Print it for the nursery or a baby book. Free to design, $9 to download.',
+        eyebrow='For new parents, grandparents, godparents and baby showers',
+        lede='Most baby gifts are outgrown in a few months. A crest with the baby\'s initial, the family\'s colors and the day they were born on the ribbon is one they can keep on the nursery wall now and in a drawer of keepsakes later.',
+        cta='Design a baby crest',
+        examples=[crest('Ava Rose Lindqvist', 'Born March 3, 2027', AZURE, ARGENT, ARGENT, 'plain', 'initial'),
+                  crest('Theo Okonkwo', 'Welcome, Little One', VERT, OR, GOLD_LIGHT, 'chevron', 'mullet'),
+                  crest('The Hartley Family', 'And Then There Were Four', GULES, OR, GOLD_LIGHT, 'quarterly', 'heart'),
+                  crest('Mila Santos-Reyes', 'Small Acorn, Mighty Oak', PURPURE, OR, GOLD_LIGHT, 'perpale', 'acorn'),
+                  crest('Baby Nakamura', 'Spero Meliora', SABLE, OR, GOLD_LIGHT, 'fess', 'crescent')],
+        body='''<section class="sec"><h2 class="gilt">Why a crest works as a baby gift</h2>
+<p>New parents are given a lot of things in the first weeks: tiny clothes, blankets, more stuffed animals than one child can hold. Most of it is useful for a season and then passed on. A crest made for the baby is different. It has their name on it, it says something about the family they were born into, and it is just as true when they are twelve as on the day it was printed.</p>
+<p>It is also a gift you can make before the baby arrives and finish once the name is known. Design the shield and colors in advance, then add the name and birth date on the day, and the files download as soon as you pay.</p></section>
+<section class="sec"><h2 class="gilt">A crest for one child, or for the whole family</h2>
+<h3>The baby's own crest</h3><p>Put their full name on the name line (up to 40 characters, so "Ava Rose Lindqvist" fits) and choose "Your initial" as the emblem. The shield then shows the first letter of the name you typed. It is the simplest design and the one that reads best on a small nursery print or the first page of a baby book.</p>
+<h3>The family crest, updated</h3><p>If the family already has a crest they designed, a new baby is a good reason to make a version for the new household: same colors and emblem, a new motto such as "And Then There Were Four." Families with two surnames can split the shield down the middle (Per pale), one half for each side, which is the traditional heraldic way of showing two families joined.</p>
+<h3>A nod to how heralds marked children</h3><p>Heraldry has long had ways to tell family members apart. In the English system of cadency marks, which dates from around 1500, sons added a small symbol to their father's arms: a label for the eldest, a crescent for the second, a mullet (a star) for the third, and so on. In practice the system was never applied very strictly, but it is a charming idea to borrow. A crescent or a star on a younger sibling's crest echoes it without claiming any official status.</p></section>
+<section class="sec"><h2 class="gilt">Emblems and mottos for a new baby</h2>
+<ul><li><b>Initial:</b> their first letter, monogram style. Timeless and easy to read.</li>
+<li><b>Star (mullet) or crescent:</b> hope and a bright future, and a gentle echo of the old cadency marks.</li>
+<li><b>Acorn or tree:</b> small beginnings and a family that grows. "Small Acorn, Mighty Oak" fits on the ribbon.</li>
+<li><b>Heart or rose:</b> love, for a crest that is all about the family welcoming them.</li>
+<li><b>An animal they will grow up with:</b> an owl, a bear or a lion can match the nursery theme. The <a href="/heraldry-symbols-and-meanings.html">symbols and meanings guide</a> explains each one.</li></ul>
+<p>For the motto, the birth date is the classic choice ("Born March 3, 2027"), and mottos can be up to 48 characters, so a place of birth fits too. "Welcome, Little One" works when you design before the date is known. If the family likes Latin, <i>Spero meliora</i> means "I hope for better things," and the <a href="/latin-motto-generator.html">Latin motto generator</a> has more phrases with their standard translations.</p>
+<div class="callout"><b>Keep the colors gentle but readable.</b> Pastels are not heraldic colors, but the rule of tincture (a metal, gold or silver, against a color) is what keeps a crest clear from across the room. Silver on blue or gold on green both feel soft in a nursery frame.</div></section>
+<section class="sec"><h2 class="gilt">Ways to give it</h2>
+<ol><li><b>A nursery print.</b> The $9 set includes a 4000 by 5000 px image, about 13 by 16 inches at photo quality (300 pixels per inch), so it prints sharply at the common 8 by 10 or 11 by 14 frame sizes.</li>
+<li><b>A certificate for the baby book.</b> The set also includes a certificate of arms sized for US Letter that explains the design in heraldic language and in plain English. Under "Giving it as a gift?" add who it is presented to and who it is from, and it prints on the certificate with the date.</li>
+<li><b>Something for older siblings.</b> The $19 Heirloom set adds a coloring page of the crest, which gives a big brother or sister their own part in the welcome, plus bookplates for the baby's first books.</li>
+<li><b>Birth announcements and thank-you cards.</b> The SVG file in the $9 set scales cleanly for printed cards. A wax seal of the crest is a lovely finish for the envelopes; see the <a href="/wax-seal-crest.html">wax seal crest guide</a>.</li></ol>
+<div class="callout"><b>Visiting the hospital or a baby shower?</b> In the studio, open "Send it as a free e-card". The parents get a link where the crest appears with your message, and you can order a framed print once the nursery is ready.</div>
+<p>Looking for other occasions? <a href="/family-crest-gift.html">Family crest gifts</a> covers Christmas, anniversaries and birthdays, and the <a href="/housewarming-gift-crest.html">housewarming crest guide</a> is for families moving into a bigger place to make room.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=initial">Design a baby crest</a></p></section>''',
+        faqs=[('What is a good personalized gift for a new baby?', 'Something with their name that lasts longer than the newborn stage. A crest with the baby\'s initial, the family colors and the birth date as the motto works as a nursery print now and a keepsake later.'),
+              ('Can I design it before the baby is born?', 'Yes. Designing is free and needs no account, so you can choose the shield, colors and emblem in advance, then add the name and date once you know them and download the files then.'),
+              ('What sizes can I print it at?', 'The $9 set includes a 4000 by 5000 px image, about 13 by 16 inches at 300 pixels per inch, so standard 8 by 10 and 11 by 14 nursery frames print sharply. The certificate of arms is sized for US Letter.'),
+              ('Is it the baby\'s real or official coat of arms?', 'No. It is an original design in the style of heraldry that you create for the family, not a historical coat of arms or an official grant of arms.')],
     ),
 ]

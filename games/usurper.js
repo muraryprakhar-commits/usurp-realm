@@ -726,8 +726,14 @@ function onEnd(m) {
   const show = () => G.screen({ kicker: m.win === 'loyal' ? 'The keep holds' : 'The keep has fallen', title: won ? 'Victory!' : 'Defeat',
     sub: m.why, lines: [`The Usurper${usurpers.includes(' and ') ? 's were' : ' was'} ${usurpers}.`, `Your rank: ${rankOf(p.xp)} (${p.xp} renown)`, `Games ${p.g} · wins ${p.w}`],
     primary: CL.host ? { label: CL.solo ? 'Play again' : 'Back to the lobby', on: () => { G.hide(); if (CL.solo) { hostStart(); } else clientSend({ t: 'lobby' }); } } : { label: 'Waiting for the host…', on: () => {} },
-    secondary: { label: CL.solo ? 'Main menu' : 'Leave', on: () => leave() }, cta: true });
-  UG.between(G, show);
+    secondary: { label: CL.solo ? 'Main menu' : 'Leave', on: () => leave() }, cta: true,
+    // after a game against bots, point at the friends mode (a private room with an invite link); portal builds skip it
+    html: CL.solo && !UG.portal ? '<p class="us-invite">Better with friends: open a private room and send them the link.<br><button type="button" class="btn" data-invite>Invite friends</button></p>' : '' });
+  UG.between(G, () => {
+    show();
+    const inv = G.root.querySelector('[data-invite]');
+    if (inv) { UG.track('invite_prompt'); inv.onclick = () => { UG.sfx.click(); UG.track('invite_from_solo'); G.hide(); privateRoom(); }; }
+  });
 }
 function leave(quiet) {
   try { if (CL.conn) CL.conn.close(); } catch (e) {}

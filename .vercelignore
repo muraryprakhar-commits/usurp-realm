@@ -6,3 +6,4 @@ content
 .gitignore
 .vercelignore
 README.md
+tests

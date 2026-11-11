@@ -6,7 +6,7 @@
 // store (BLOB_STORE_ID with the deployment's OIDC token, or BLOB_READ_WRITE_TOKEN). With neither, it answers { ok: false, error: 'not_connected' } and the games keep
 // working with progress on the device only.
 const crypto = require('crypto');
-const { creds } = require('./play.js');
+const storage = require('../lib/storage.js');
 
 const CODE = /^[0-9A-HJKMNP-TV-Z]{4}(-[0-9A-HJKMNP-TV-Z]{4}){4}$/;   // Crockford base32, 5 groups of 4
 const MAX = 12000;                                                    // bytes of progress JSON
@@ -31,38 +31,25 @@ function clean(d) {
   return JSON.stringify(o).length > MAX ? null : o;
 }
 
-async function redis(url, token, cmds) {
-  const r = await fetch(`${url}/pipeline`, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify(cmds) });
-  if (!r.ok) throw new Error('redis ' + r.status);
-  return r.json();
-}
-
 const store = {
-  // A Blob store connected through the Vercel dashboard now authenticates with the deployment's OIDC token and sets only
-  // BLOB_STORE_ID (older connections set BLOB_READ_WRITE_TOKEN); @vercel/blob handles both.
-  kind() { const c = creds(); if (c.url && c.token) return 'redis'; if (process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID) return 'blob'; return null; },
+  kind: () => storage.kind(),
   async load(id) {
     if (this.kind() === 'redis') {
-      const { url, token } = creds();
-      const out = await redis(url, token, [['GET', `save:${id}`]]);
+      const out = await storage.redis([['GET', `save:${id}`]]);
       const v = out[0] && out[0].result; return v ? JSON.parse(v) : null;
     }
-    const { get } = require('@vercel/blob');
-    const r = await get(`saves/${id}.json`, { access: 'private', useCache: false }).catch(e => { if (e && /not.?found/i.test(e.name + e.message)) return null; throw e; });
-    if (!r || r.statusCode !== 200) return null;
-    return JSON.parse(await new Response(r.stream).text());
+    const r = await storage.blobGetJson(`saves/${id}.json`);
+    return r ? r.data : null;
   },
   async save(id, rec) {
     if (this.kind() === 'redis') {
-      const { url, token } = creds();
       // at most 20 saves a minute per code, and kept for two years after the last save
-      const out = await redis(url, token, [['INCR', `saverate:${id}`], ['EXPIRE', `saverate:${id}`, 60]]);
+      const out = await storage.redis([['INCR', `saverate:${id}`], ['EXPIRE', `saverate:${id}`, 60]]);
       if (Number(out[0] && out[0].result) > 20) return 'slow';
-      await redis(url, token, [['SET', `save:${id}`, JSON.stringify(rec), 'EX', 60 * 60 * 24 * 730]]);
+      await storage.redis([['SET', `save:${id}`, JSON.stringify(rec), 'EX', 60 * 60 * 24 * 730]]);
       return 'ok';
     }
-    const { put } = require('@vercel/blob');
-    await put(`saves/${id}.json`, JSON.stringify(rec), { access: 'private', allowOverwrite: true, addRandomSuffix: false, contentType: 'application/json', cacheControlMaxAge: 60 });
+    await storage.blobPutJson(`saves/${id}.json`, rec);
     return 'ok';
   },
 };

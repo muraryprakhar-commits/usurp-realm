@@ -10,7 +10,8 @@ const ADS = window.USURP_ADS || {};   // { client, slot, h5, test, sponsor, ga }
 // and the game never scrolls the host page.
 const EMBED = UG.embed = !!window.USURP_EMBED;
 // Hosted on a game portal (a build from tools/portal.py): only the portal's own ad SDK, no links out, no house ads,
-// and ads only at natural breaks (a level won or lost), never on a button press.
+// and ads only at natural breaks (a level won or lost), never on a button press. 'crazygames' builds carry the CrazyGames
+// SDK; 'itch' and 'newgrounds' builds have no ads at all and one credit link under each result.
 const PORTAL = UG.portal = window.USURP_PORTAL || '';
 const BASE = window.USURP_BASE || '/';
 const SITE = 'https://usurp.games';
@@ -320,8 +321,11 @@ UG.start = function (spec) {
     // Overlay screens. o: { kicker, title, big, sub, lines[], html, primary:{label,on}, secondary:{label,on}, cta }
     screen(o) {
       if (PORTAL) {
+        const result = !!o.cta;
         o = Object.assign({}, o, { cta: false });
         if (o.secondary && /friend/i.test(o.secondary.label)) delete o.secondary;
+        // itch.io and Newgrounds let a game credit its maker's site: one quiet line under a result, nothing during play
+        if (result && PORTAL !== 'crazygames') o.html = (o.html || '') + `<p class="ug-more" style="margin:12px 0 0;font-size:14px;opacity:.85"><a href="${SITE}/games/?from=${PORTAL}" target="_blank" rel="noopener">More free medieval games at usurp.games</a></p>`;
         try { const sdk = CG(); if (sdk && cgReady) sdk.game.gameplayStop(); } catch (e) {}
         // A level won or lost is the natural break for the portal's ad. The card waits until the ad is over.
         if ((o.brk || (o.lines && o.title && o.primary)) && !o._adDone && CG() && cgReady && roundsDone++ > 0) {

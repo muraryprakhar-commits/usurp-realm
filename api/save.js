@@ -3,7 +3,7 @@
 // (100 bits, made in their browser); the server only ever sees that code, stores the progress under a SHA-256 hash
 // of it, and anyone holding the code can load it on another device. Nothing else about the player is kept.
 // Storage: the project's Upstash Redis when connected (KV_*/UPSTASH_* variables), otherwise a private Vercel Blob
-// store (BLOB_READ_WRITE_TOKEN). With neither, it answers { ok: false, error: 'not_connected' } and the games keep
+// store (BLOB_STORE_ID with the deployment's OIDC token, or BLOB_READ_WRITE_TOKEN). With neither, it answers { ok: false, error: 'not_connected' } and the games keep
 // working with progress on the device only.
 const crypto = require('crypto');
 const { creds } = require('./play.js');
@@ -38,7 +38,9 @@ async function redis(url, token, cmds) {
 }
 
 const store = {
-  kind() { const c = creds(); if (c.url && c.token) return 'redis'; if (process.env.BLOB_READ_WRITE_TOKEN) return 'blob'; return null; },
+  // A Blob store connected through the Vercel dashboard now authenticates with the deployment's OIDC token and sets only
+  // BLOB_STORE_ID (older connections set BLOB_READ_WRITE_TOKEN); @vercel/blob handles both.
+  kind() { const c = creds(); if (c.url && c.token) return 'redis'; if (process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID) return 'blob'; return null; },
   async load(id) {
     if (this.kind() === 'redis') {
       const { url, token } = creds();

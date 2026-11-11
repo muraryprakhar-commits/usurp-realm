@@ -1,18 +1,34 @@
 // Counts game starts and finished games on usurp.games, per game and per week, for the stats page (/stats.html).
 // Stores only counters (no cookies, no IP address, nothing about the player): in Upstash Redis when it is connected,
-// otherwise in the project's private Vercel Blob store as one small JSON file of totals per week (plays/2026-W46.json,
-// e.g. {"archery:play": 12, "archery:finish": 7}). With neither connected, it accepts the ping and does nothing.
+// otherwise - only when PLAY_COUNTER_BLOB=1 is set - in the project's private Vercel Blob store as one small JSON
+// file of totals per week (plays/2026-W46.json, e.g. {"archery:play": 12, "archery:finish": 7}).
+// With neither, it accepts the ping and does nothing.
 //
-// Blob budget: the Hobby plan includes 2,000 Blob writes a month for the whole project, shared with cloud saves, and
-// going over locks Blob (saves included) for 30 days. So each week's file allows at most BLOB_WEEKLY_WRITES writes
-// (default 200, under 1,000 in any 30 days). Past 60% of that it counts 1 play in 10 and adds 10, an unbiased estimate
-// the stats page marks as approximate; at the limit it stops counting until Monday. Redis has no such limit.
+// Why Blob counting is opt-in: the Hobby plan includes 2,000 Blob "advanced operations" (uploads, copies, lists) a
+// month for the whole project, shared with cloud saves, and Vercel says that when limits are exceeded Blob access
+// stops "until 30 days have passed" - saves included. A play counter is new traffic on that shared budget, so it
+// stays off until someone turns it on knowing that. With PLAY_COUNTER_BLOB=1, each week's file allows at most
+// BLOB_WEEKLY_WRITES successful writes (default 100). Past 60% of that it counts 1 play in 10 and adds 10, an
+// unbiased estimate the stats page marks as approximate; at the limit it stops counting until Monday. Every retry
+// after a lost race is another upload the cap cannot see, so retries stay few (BLOB_TRIES, default 2). These caps
+// are hygiene, not a security guarantee: failed writes also consume quota (Vercel's docs do not say otherwise), no
+// cap here bounds a deliberate flood of forged pings, and any reserve they leave for saves is an average-week
+// approximation, not a worst case over a rolling 30 days. Vercel emails you as the plan nears its limits, and
+// connecting Upstash Redis (free tier) makes every count exact with no Blob quota use at all.
 const storage = require('../lib/storage.js');
 const GAMES = ['archery', 'joust', 'castle', 'duel', 'siege', 'tafl', 'morris', 'usurper'];
 const EVENTS = ['play', 'finish'];
 
-const BLOB_WEEKLY_WRITES = Math.max(1, Number(process.env.PLAY_COUNTER_WEEKLY_WRITES) || 200);
+const BLOB_WEEKLY_WRITES = Math.max(1, Number(process.env.PLAY_COUNTER_WEEKLY_WRITES) || 100);
 const SAMPLE = 10;
+
+// Retries after a lost race. Each try is one Blob upload against the shared quota, so keep this small; a play lost
+// to heavy concurrency is acceptable (busy weeks are sampled and marked approximate anyway).
+const BLOB_TRIES = () => Math.max(1, Number(process.env.PLAY_COUNTER_TRIES) || 2);
+
+// Blob counting stays off unless explicitly enabled (see the header comment). Redis counting needs no opt-in:
+// its increments are atomic and use no Blob quota.
+const BLOB_COUNTER_ON = () => /^(1|true|on|yes)$/i.test(String(process.env.PLAY_COUNTER_BLOB || ''));
 
 // One play or finish into a week's totals, within the write budget. Returns the new totals, or null for "do not write".
 function bump(data, field, rnd = Math.random, limit = BLOB_WEEKLY_WRITES) {
@@ -56,8 +72,8 @@ module.exports = async (req, res) => {
     if (kind === 'redis') {
       const wk = `plays:${week}`;
       await storage.redis([['HINCRBY', wk, field, 1], ['HINCRBY', 'plays:all', field, 1], ['EXPIRE', wk, 60 * 60 * 24 * 420]]);
-    } else {
-      await storage.blobUpdate(`plays/${week}.json`, d => bump(d, field));
+    } else if (BLOB_COUNTER_ON()) {
+      await storage.blobUpdate(`plays/${week}.json`, d => bump(d, field), BLOB_TRIES());
     }
   } catch (err) { /* a lost count is better than a slow game */ }
   return res.status(204).end();
@@ -67,4 +83,5 @@ module.exports.isoWeek = isoWeek;
 module.exports.GAMES = GAMES;
 module.exports.bump = bump;
 module.exports.BLOB_WEEKLY_WRITES = BLOB_WEEKLY_WRITES;
+module.exports.BLOB_COUNTER_ON = BLOB_COUNTER_ON;
 module.exports.creds = storage.creds;   // kept for older callers

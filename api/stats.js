@@ -1,6 +1,6 @@
 // Weekly play counts per game for /stats.html (and the Monday growth report): the last 12 weeks plus all time.
 // Reads the same store the play counter writes: Upstash Redis when connected, otherwise the Vercel Blob week files.
-const { isoWeek, GAMES, BLOB_WEEKLY_WRITES } = require('./play.js');
+const { isoWeek, GAMES, BLOB_WEEKLY_WRITES, BLOB_COUNTER_ON } = require('./play.js');
 const storage = require('../lib/storage.js');
 
 // { archery: { play, finish }, ... } from flat 'game:event' -> count pairs (Redis HGETALL arrays or Blob JSON objects).
@@ -53,9 +53,10 @@ async function readBlob(weeks) {
 
 module.exports = async (req, res) => {
   const kind = storage.kind();
-  if (!kind) {
+  if (!kind || (kind === 'blob' && !BLOB_COUNTER_ON())) {
+    // The Blob counter is opt-in (see api/play.js), so Blob storage alone does not mean there are counts to show.
     res.setHeader('Cache-Control', 'no-store');
-    return res.status(200).json({ ok: true, connected: false, games: GAMES, weeks: [], all: {} });
+    return res.status(200).json({ ok: true, connected: false, reason: kind ? 'blob_counter_off' : 'no_store', games: GAMES, weeks: [], all: {} });
   }
   const now = new Date(), weeks = lastWeeks(now);
   try {

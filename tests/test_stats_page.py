@@ -22,6 +22,7 @@ CASES = {
     'estimated': {'ok': True, 'connected': True, 'store': 'blob', 'games': GAMES, 'updated': '2026-11-11T10:00:00Z',
                   'budget': {'weeklyWrites': 200, 'sampleFrom': 120, 'sample': 10}, 'all': {'joust': {'play': 300, 'finish': 0}},
                   'weeks': [dict(w, approx=(i == 0), capped=(i == 1)) for i, w in enumerate(weeks({0: {'joust': {'play': 150, 'finish': 0}}, 1: {'joust': {'play': 150, 'finish': 0}}}))]},
+    'blob_off': {'ok': True, 'connected': False, 'reason': 'blob_counter_off', 'games': GAMES, 'weeks': [], 'all': {}},
     'off': {'ok': True, 'connected': False, 'games': GAMES, 'weeks': [], 'all': {}},
     'down': {'ok': False, 'connected': True, 'error': 'counter_unreachable'},
 }
@@ -77,6 +78,11 @@ class StatsPage(unittest.TestCase):
         page = self.open('off')
         self.assertIn('no storage is connected', page.text_content('[data-sub]'))
         self.assertIn('Vercel Blob', page.text_content('[data-out]'))
+
+    def test_blob_counter_off_explains_opt_in(self):
+        page = self.open('blob_off')
+        self.assertIn('off on the Vercel Blob store', page.text_content('[data-sub]'))
+        self.assertIn('PLAY_COUNTER_BLOB=1', page.text_content('[data-out]'))
 
     def test_unreachable(self):
         page = self.open('down')

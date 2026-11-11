@@ -8,7 +8,7 @@ const play = require('../api/play.js');
 const stats = require('../api/stats.js');
 const save = require('../api/save.js');
 
-const ENV = ['KV_REST_API_URL', 'KV_REST_API_TOKEN', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN', 'BLOB_STORE_ID', 'BLOB_READ_WRITE_TOKEN'];
+const ENV = ['KV_REST_API_URL', 'KV_REST_API_TOKEN', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN', 'BLOB_STORE_ID', 'BLOB_READ_WRITE_TOKEN', 'PLAY_COUNTER_BLOB', 'PLAY_COUNTER_TRIES'];
 function env(vars) { for (const k of ENV) delete process.env[k]; Object.assign(process.env, vars); }
 
 function fakeBlob() {
@@ -64,8 +64,18 @@ test('play with nothing connected answers 204 and stores nothing', async () => {
   assert.deepStrictEqual([s.body.connected, s.body.weeks.length], [false, 0]);
 });
 
-test('play counts into one Blob file of totals per ISO week, and keeps nothing else', async () => {
+test('Blob counting is opt-in: without PLAY_COUNTER_BLOB a ping stores nothing and stats says why', async () => {
   const b = fakeBlob(); storage.setBlobSdk(b); env({ BLOB_STORE_ID: 'store_x' });
+  assert.strictEqual((await call(play, { query: { g: 'joust' } })).status, 204);
+  assert.strictEqual(b.files.size, 0);
+  assert.deepStrictEqual([b.ops.get, b.ops.put, b.ops.list], [0, 0, 0]);   // not one Blob operation without the opt-in
+  const s = await call(stats, { method: 'GET' });
+  assert.deepStrictEqual([s.body.connected, s.body.reason], [false, 'blob_counter_off']);
+  assert.strictEqual(b.ops.list, 0);   // stats does not even list when the counter is off
+});
+
+test('play counts into one Blob file of totals per ISO week, and keeps nothing else', async () => {
+  const b = fakeBlob(); storage.setBlobSdk(b); env({ BLOB_STORE_ID: 'store_x', PLAY_COUNTER_BLOB: '1' });
   await call(play, { query: { g: 'archery' } });
   await call(play, { query: { g: 'archery' } });
   await call(play, { query: { g: 'archery', e: 'finish' } });
@@ -78,7 +88,9 @@ test('play counts into one Blob file of totals per ISO week, and keeps nothing e
 });
 
 test('simultaneous plays are all counted (no lost updates)', async () => {
-  const b = fakeBlob(); storage.setBlobSdk(b); env({ BLOB_STORE_ID: 'store_x' });
+  const b = fakeBlob(); storage.setBlobSdk(b);
+  // more retries than the live default of 2, so the no-lost-update property is exercised
+  env({ BLOB_STORE_ID: 'store_x', PLAY_COUNTER_BLOB: '1', PLAY_COUNTER_TRIES: '40' });
   await Promise.all(Array.from({ length: 4 }, () => call(play, { query: { g: 'duel' } })));
   const wk = `plays/${play.isoWeek(new Date())}.json`;
   assert.strictEqual(JSON.parse(b.files.get(wk).body)['duel:play'], 4);
@@ -89,12 +101,12 @@ test('simultaneous plays are all counted (no lost updates)', async () => {
 
 test('a Blob failure never breaks the game: the ping still answers 204', async () => {
   storage.setBlobSdk({ get: async () => { throw new Error('network'); }, put: async () => { throw new Error('network'); } });
-  env({ BLOB_STORE_ID: 'store_x' });
+  env({ BLOB_STORE_ID: 'store_x', PLAY_COUNTER_BLOB: '1' });
   assert.strictEqual((await call(play, { query: { g: 'joust' } })).status, 204);
 });
 
 test('stats reads the Blob week files: this week, earlier weeks and all time', async () => {
-  const b = fakeBlob(); storage.setBlobSdk(b); env({ BLOB_STORE_ID: 'store_x' }); stats._past.clear();
+  const b = fakeBlob(); storage.setBlobSdk(b); env({ BLOB_STORE_ID: 'store_x', PLAY_COUNTER_BLOB: '1' }); stats._past.clear();
   const weeks = stats.lastWeeks(new Date());
   await storage.blobPutJson(`plays/${weeks[0].week}.json`, { 'joust:play': 3, 'joust:finish': 1 });
   await storage.blobPutJson(`plays/${weeks[1].week}.json`, { 'joust:play': 2, 'tafl:play': 5 });
@@ -114,7 +126,7 @@ test('stats reads the Blob week files: this week, earlier weeks and all time', a
 });
 
 test('stats reports an unreachable store as 502, not as zero plays', async () => {
-  storage.setBlobSdk({ list: async () => { throw new Error('down'); } }); env({ BLOB_STORE_ID: 'store_x' });
+  storage.setBlobSdk({ list: async () => { throw new Error('down'); } }); env({ BLOB_STORE_ID: 'store_x', PLAY_COUNTER_BLOB: '1' });
   const r = await call(stats, { method: 'GET' });
   assert.deepStrictEqual([r.status, r.body.error], [502, 'counter_unreachable']);
 });
@@ -149,9 +161,23 @@ test('cloud save still round-trips through the shared Blob storage', async () =>
   assert.ok([...b.files.keys()].every(k => /^saves\/[0-9a-f]{64}\.json$/.test(k)), 'saves are stored under a hash, never the code');
 });
 
+test('SECURITY NOTE (pre-existing): Blob cloud saves have no rate limit - each save spends one shared-quota write', async () => {
+  // The Redis save path limits each code to 20 saves/minute; the Blob path does not, and every Blob save is one
+  // "advanced operation" against the Hobby plan's 2,000/month, shared with the play counter. This test documents
+  // the current behavior so the gap is visible. Safe options: connect Upstash Redis (the 20/min limit then
+  // applies), or add a Blob-side per-code interval. The Origin check is not a barrier: scripts can forge it.
+  const b = fakeBlob(); storage.setBlobSdk(b); env({ BLOB_STORE_ID: 'store_x' });
+  const code = 'ABCD-EFGH-JKMN-PQRS-TVWX';
+  for (let i = 0; i < 25; i++) {
+    const r = await call(save, { body: { op: 'save', code, data: { name: 'Ser Test' } } });
+    assert.strictEqual(r.status, 200);   // no 429 on the Blob path, unlike the Redis path
+  }
+  assert.strictEqual(b.ops.put, 25);   // 25 shared-quota writes within seconds
+});
+
 test('weekly Blob write budget: exact, then 1-in-10 sampling, then stop', () => {
   const L = 20;   // small limit for the test; live default is play.BLOB_WEEKLY_WRITES
-  assert.strictEqual(play.BLOB_WEEKLY_WRITES, 200);
+  assert.strictEqual(play.BLOB_WEEKLY_WRITES, 100);
   let d = {};
   for (let i = 0; i < 12; i++) d = play.bump(d, 'joust:play', () => 0.99, L);   // first 60% are exact
   assert.deepStrictEqual(d, { 'joust:play': 12, _writes: 12 });
@@ -162,15 +188,15 @@ test('weekly Blob write budget: exact, then 1-in-10 sampling, then stop', () => 
 });
 
 test('stats flags estimated and capped weeks', async () => {
-  const b = fakeBlob(); storage.setBlobSdk(b); env({ BLOB_STORE_ID: 'store_x' }); stats._past.clear();
+  const b = fakeBlob(); storage.setBlobSdk(b); env({ BLOB_STORE_ID: 'store_x', PLAY_COUNTER_BLOB: '1' }); stats._past.clear();
   const weeks = stats.lastWeeks(new Date());
-  await storage.blobPutJson(`plays/${weeks[0].week}.json`, { 'joust:play': 150, _writes: 125, _sampled: 5 });
+  await storage.blobPutJson(`plays/${weeks[0].week}.json`, { 'joust:play': 150, _writes: 95, _sampled: 5 });
   await storage.blobPutJson(`plays/${weeks[1].week}.json`, { 'joust:play': 900, _writes: 200, _sampled: 80 });
   const r = await call(stats, { method: 'GET' });
   assert.deepStrictEqual([r.body.weeks[0].approx, r.body.weeks[0].capped], [true, false]);
   assert.deepStrictEqual([r.body.weeks[1].approx, r.body.weeks[1].capped], [true, true]);
   assert.deepStrictEqual([r.body.weeks[2].approx, r.body.weeks[2].capped], [false, false]);
-  assert.deepStrictEqual(r.body.budget, { weeklyWrites: 200, sampleFrom: 120, sample: 10 });
+  assert.deepStrictEqual(r.body.budget, { weeklyWrites: 100, sampleFrom: 60, sample: 10 });
   assert.deepStrictEqual(r.body.all, { joust: { play: 1050, finish: 0 } });   // bookkeeping fields never show as games
 });
 

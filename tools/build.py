@@ -20,6 +20,15 @@ SITE = 'https://usurp.games'
 # meta: optional Meta Pixel ID, only for measuring and retargeting Meta (Facebook/Instagram) ad campaigns that
 #   promote these games. Meta has not served ads onto mobile websites since 2020, so it is never an ad source here.
 #   Before setting it, update the Advertising section of privacy.html (it currently says the Pixel is not used).
+# AdSense account (registered 11 Nov 2026, NOT activated): publisher ID ca-pub-4810815179945600,
+# ads.txt line: google.com, pub-4810815179945600, DIRECT, f08c47fec0942fa0
+# 'client' stays empty in committed code; Prakhar activates by hand when he chooses:
+#   1. set ADS['client'] = 'ca-pub-4810815179945600' below (leave 'slot' empty for now)
+#   2. rebuild: python3 tools/build.py  (writes ads.txt with the line above and the google-adsense-account meta tag)
+#   3. commit and deploy (push to main; Vercel deploys usurp.games)
+#   4. confirm https://usurp.games/ads.txt serves exactly the line above
+#   5. in AdSense, request the site review for usurp.games
+#   6. after approval: create a display ad unit, set ADS['slot'] to its ID, rebuild, deploy (ads then show)
 ADS = {'client': '', 'slot': '', 'h5': False, 'test': False, 'ga': '', 'meta': '', 'sponsor': None}
 TODAY = datetime.date.today().isoformat()
 E = html.escape
@@ -1475,7 +1484,7 @@ function n(x){{return (x||0).toLocaleString('en-US')}}
 function esc(s){{return String(s).replace(/[&<>"]/g,function(c){{return{{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}}[c]}})}}
 function day(s){{var d=new Date(s+'T00:00:00Z');return d.toLocaleDateString('en-GB',{{day:'numeric',month:'short',timeZone:'UTC'}})}}
 fetch('/api/stats',{{cache:'no-store'}}).then(function(r){{return r.json()}}).then(function(j){{
-  if(!j.connected){{sub.textContent='The play counter is built but no storage is connected, so there are no counts to show.';out.innerHTML='<div class="box">The counter uses the Vercel Blob store connected to the usurp-realm project (or Upstash Redis, if one is connected). Connect either one in Vercel under Storage and redeploy. Counting starts from that moment.</div>';return}}
+  if(!j.connected){{sub.textContent=j.reason==='blob_counter_off'?'The play counter is off on the Vercel Blob store, to protect the free plan quota that cloud saves share.':'The play counter is built but no storage is connected, so there are no counts to show.';out.innerHTML=j.reason==='blob_counter_off'?'<div class="box">The free Blob plan allows 2,000 writes a month for the whole site, cloud saves included, and going over locks Blob for 30 days. Counting plays on Blob stays off until you set PLAY_COUNTER_BLOB=1 in Vercel and redeploy. Connecting Upstash Redis (free tier) instead makes every count exact with no Blob quota use.</div>':'<div class="box">The counter uses the Vercel Blob store connected to the usurp-realm project (or Upstash Redis, if one is connected). Connect either one in Vercel under Storage and redeploy. Counting starts from that moment.</div>';return}}
   if(!j.ok){{sub.textContent='The counter could not be reached just now. Try again in a minute.';return}}
   var G=j.games,W=j.weeks,cur=W[0],prev=W[1],sum=function(w,g,e){{return (w&&w.counts[g]&&w.counts[g][e])||0}};
   var four=function(g,e){{var t=0;for(var i=0;i<4&&i<W.length;i++)t+=sum(W[i],g,e);return t}};
@@ -1491,7 +1500,7 @@ fetch('/api/stats',{{cache:'no-store'}}).then(function(r){{return r.json()}}).th
   var any=function(w){{return G.some(function(g){{return sum(w,g,'play')}})}},last=3;W.forEach(function(w,i){{if(any(w))last=Math.max(last,i)}});
   W.slice(0,last+1).forEach(function(w){{var t=0;h+='<tr><td>'+day(w.start)+(w.capped?' *':w.approx?' ≈':'')+'</td>'+G.map(function(g){{var v=sum(w,g,'play');t+=v;return '<td>'+n(v)+'</td>'}}).join('')+'<td>'+n(t)+'</td></tr>'}});
   h+='</tbody></table></div>';
-  if(j.budget&&W.some(function(w){{return w.approx||w.capped}}))h+='<div class="box muted" data-budget><b style="color:var(--gold-2)">Estimated weeks.</b> The counter is saving to the free Vercel Blob plan, which allows 2,000 writes a month for the whole site, cloud saves included. To stay inside it, after '+n(j.budget.sampleFrom)+' writes in a week it counts 1 play in '+j.budget.sample+' and adds '+j.budget.sample+' (marked ≈), and after '+n(j.budget.weeklyWrites)+' it stops until Monday (marked *). Connecting Upstash Redis in Vercel makes every count exact.</div>';
+  if(j.budget&&W.some(function(w){{return w.approx||w.capped}}))h+='<div class="box muted" data-budget><b style="color:var(--gold-2)">Estimated weeks.</b> The counter is saving to the free Vercel Blob plan, which allows 2,000 writes a month for the whole site, cloud saves included. To limit its share (a rough guard, not a guarantee), after '+n(j.budget.sampleFrom)+' writes in a week it counts 1 play in '+j.budget.sample+' and adds '+j.budget.sample+' (marked ≈), and after '+n(j.budget.weeklyWrites)+' it stops until Monday (marked *). Connecting Upstash Redis in Vercel makes every count exact.</div>';
   out.innerHTML=h;
 }}).catch(function(){{sub.textContent='The counter could not be reached just now. Try again in a minute.'}});
 }})();

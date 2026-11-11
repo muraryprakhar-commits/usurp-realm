@@ -3,7 +3,7 @@
   "private": true,
   "description": "usurp.games: static site plus small Vercel functions (payment check, share images, play counter, optional cloud save)",
   "scripts": {
-    "test": "node --test tests/*.test.js && python3 tests/test_build_ads.py && python3 tests/test_stats_page.py && python3 tests/test_usurper_invite.py"
+    "test": "node --test tests/*.test.js && python3 tests/test_build_ads.py && python3 tests/test_stats_page.py && python3 tests/test_usurper_invite.py && python3 tests/test_friends.py && python3 tests/test_site.py"
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",

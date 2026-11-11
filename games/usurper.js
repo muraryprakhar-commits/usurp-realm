@@ -863,9 +863,12 @@ function showLobby() {
     pan.querySelectorAll('[data-fill]').forEach(b => { b.onclick = () => { UG.sfx.click(); clientSend({ t: 'fill', n: fill + +b.dataset.fill }); }; });
     return;
   }
+  // On phones the invite button opens the share sheet (as Challenge a friend does in every game); elsewhere it copies.
+  const native = !!(navigator.share && matchMedia('(pointer:coarse)').matches), inviteLbl = native ? 'Share invite link' : 'Copy invite link';
   const share = L.pub ? '' : `<div class="us-share"><p>Room code</p><b class="us-code">${esc(L.code)}</b>
-    <div class="us-row"><button type="button" class="btn" data-copy-room>Copy invite link</button>
-    <a class="btn ghost" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent('Join my game of The Usurper, a medieval social deduction game. Room ' + L.code + ': ' + link)}">WhatsApp</a></div></div>`;
+    <div class="us-inv"><div class="us-row"><button type="button" class="btn" data-copy-room>${inviteLbl}</button>
+    <a class="btn ghost" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(INVITE_TEXT + ' Room ' + L.code + ': ' + link)}">WhatsApp</a></div>
+    <figure class="us-qr" data-qr hidden><figcaption>Friends in the room: scan to join</figcaption></figure></div></div>`;
   panel(`<div class="us-card"><p class="ug-k">${L.pub ? 'Public match' : 'Private room'}</p><h2 class="ug-t">The Keep</h2>
     ${share}
     <label class="us-lbl" for="us-name">Your name</label><input id="us-name" class="us-in" maxlength="16" value="${esc(myName())}" autocomplete="off">
@@ -883,7 +886,30 @@ function showLobby() {
   const go = pan.querySelector('[data-go]'); if (go) go.onclick = () => { UG.sfx.click(); const n = cleanName(inp.value); if (n) UG.store.set('us-name', n); if (HS) { const me = HS.P.find(p => p.id === 'h'); if (me && n) me.name = n; } clientSend({ t: 'start' }); };
   pan.querySelector('[data-leave]').onclick = () => { UG.sfx.click(); leave(); };
   const cp = pan.querySelector('[data-copy-room]');
-  if (cp) cp.onclick = () => { UG.track('invite_copy'); (navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject()).then(() => { cp.textContent = 'Link copied!'; setTimeout(() => { cp.textContent = 'Copy invite link'; }, 1600); }).catch(() => { try { window.prompt('Copy this link:', link); } catch (e) {} }); };
+  const copy = () => (navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject()).then(() => { cp.textContent = 'Link copied!'; setTimeout(() => { cp.textContent = inviteLbl; }, 1600); }).catch(() => { try { window.prompt('Copy this link:', link); } catch (e) {} });
+  if (cp) cp.onclick = () => {
+    UG.track('invite_copy');
+    if (native) navigator.share({ title: 'The Usurper', text: `${INVITE_TEXT} Room ${L.code}.`, url: link }).catch(e => { if (!e || e.name !== 'AbortError') copy(); });
+    else copy();
+  };
+  // A QR code of the invite link, drawn here in the browser, for friends sitting with the host: scan and you are in.
+  const qr = pan.querySelector('[data-qr]');
+  if (qr) qrSvg(link).then(svg => { if (svg && qr.isConnected) { qr.insertAdjacentHTML('afterbegin', svg); qr.hidden = false; } });
+}
+const INVITE_TEXT = 'Join my game of The Usurper, a medieval social deduction game.';
+// The QR library (games/vendor/qrcode.js, MIT) loads only when a private room's lobby opens. Returns '' if it cannot load.
+let qrLib = null;
+function qrSvg(text) {
+  qrLib = qrLib || new Promise(res => {
+    if (window.qrcode) return res(window.qrcode);
+    const s = document.createElement('script'); s.src = (window.USURP_BASE || '/') + 'games/vendor/qrcode.js'; s.async = true;
+    s.onload = () => res(window.qrcode || null); s.onerror = () => { qrLib = null; res(null); };
+    document.head.appendChild(s);
+  });
+  return qrLib.then(q => {
+    if (!q) return '';
+    try { const c = q(0, 'M'); c.addData(text); c.make(); return c.createSvgTag({ cellSize: 4, margin: 3, scalable: true, alt: 'QR code: scan to join this room' }); } catch (e) { return ''; }
+  });
 }
 // a directly sold sponsor (set in tools/build.py) gets the lobby, the best-watched spot in the game; otherwise an offer to buy it
 function sponsorHtml() {
@@ -1379,7 +1405,7 @@ G = UG.start({
         primary: { label: 'Join the room', on: () => { const n = cleanName(g.root.querySelector('#us-n0').value); if (n) UG.store.set('us-name', n); joinCode(m[1]); } },
         secondary: { label: 'Main menu', on: () => leave() } });
     } else menu();
-    if (LOCAL) window.__us = { CL, get HS() { return HS; }, ST, SID, press, keys, btnHeld, hostStart, playSolo, context, los, path, WW, WH, CFG,
+    if (LOCAL) window.__us = { CL, get HS() { return HS; }, ST, SID, press, keys, btnHeld, hostStart, playSolo, showLobby, context, los, path, WW, WH, CFG,
       ff(sec) { for (let i = 0; i < sec * 20 && HS && HS.ph !== 'end'; i++) hostTick(0.05); return HS && HS.ph; } };
   },
   update(g, dt) { if (HS) { hostTick(Math.min(dt, 0.05)); lastHost = now(); } clientUpdate(g, dt); },

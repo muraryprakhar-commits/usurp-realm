@@ -158,6 +158,12 @@ python3 tools/indexnow.py  # after deploy: tell Bing, Yandex and others about ev
   quick chat only. "Play now" runs the same host code locally against bots with no network.
   If the PeerJS cloud ever becomes unreliable, run our own PeerServer (npm `peer`) and pass host/port to `new Peer`.
 - Local test hooks (localhost only): `window.__us` (state, `ff(seconds)` fast-forwards the host simulation).
+- Private-room lobby: a QR code of the invite link sits next to the invite buttons, drawn in the browser by the vendored
+  `games/vendor/qrcode.js` (qrcode-generator, MIT, loaded only when a private lobby opens; no outside service). On phones
+  the invite button opens the share sheet; elsewhere it copies the link.
+- Undo and Hint (Nine Men's Morris and Viking chess, against the computer only): buttons in the bar under the game, from
+  the engine's optional `spec.tools`. Undo returns to the start of your previous turn; a win that used either is not
+  added to your best score or win count. Test hook on localhost: `window.__ug.tap(i)` plays a tap on point/square i.
 - Accounts are optional (`games/account.js`, `api/save.js`): guest play by default; "Save my progress" makes a random
   20-character save code in the browser, which is the login (no email or password). Progress (Usurper rank and stats,
   best scores, player name, Crest Studio design) is stored under a SHA-256 of the code, in Upstash Redis when

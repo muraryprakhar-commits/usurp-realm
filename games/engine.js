@@ -288,7 +288,7 @@ UG.start = function (spec) {
     on: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
     off: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16.5 9.5l5 5m0-5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
     fs: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="2"/></svg>' };
-  wrap.insertAdjacentHTML('beforeend', `<div class="ug-bar"><span class="ug-bestl" data-bestl></span><span class="ug-rot">Hold your phone upright for a bigger game</span><span class="ug-bar-r">${spec.help ? '<button type="button" class="ug-tb ug-help" data-help aria-label="How to play">?</button>' : ''}<button type="button" class="ug-tb" data-mute aria-pressed="${AU.muted}" aria-label="Sound off">${AU.muted ? ICON.off : ICON.on}</button><button type="button" class="ug-tb" data-fs aria-label="Full screen">${ICON.fs}</button></span></div>`);
+  wrap.insertAdjacentHTML('beforeend', `<div class="ug-bar"><span class="ug-bestl" data-bestl></span><span class="ug-rot">Hold your phone upright for a bigger game</span><span class="ug-bar-r">${(spec.tools || []).map(t => `<button type="button" class="ug-tb ug-tool" data-tool="${t.id}" hidden>${t.label}</button>`).join('')}${spec.help ? '<button type="button" class="ug-tb ug-help" data-help aria-label="How to play">?</button>' : ''}<button type="button" class="ug-tb" data-mute aria-pressed="${AU.muted}" aria-label="Sound off">${AU.muted ? ICON.off : ICON.on}</button><button type="button" class="ug-tb" data-fs aria-label="Full screen">${ICON.fs}</button></span></div>`);
   const ov = root.querySelector('[data-ov]'), card = root.querySelector('[data-card]'), live = root.querySelector('[data-live]'), bestl = wrap.querySelector('[data-bestl]');
   const showBest = () => { bestl.textContent = UG.store.get(`ug-best-${spec.id}`, 0) ? `Your best: ${UG.store.get(`ug-best-${spec.id}`, 0)}${spec.bestUnit || ''}` : ''; };
   showBest();
@@ -409,6 +409,10 @@ UG.start = function (spec) {
   });
   window.addEventListener('keyup', e => { if (ov.hidden && GAME_KEYS.includes(e.key) && spec.key) spec.key(g, e.key, false); });
 
+  // Optional game buttons in the bar (Undo, Hint): the game decides each frame whether each one shows.
+  const toolB = {};
+  wrap.querySelectorAll('[data-tool]').forEach(b => { toolB[b.dataset.tool] = b; b.onclick = () => { ac(); if (spec.tool) spec.tool(g, b.dataset.tool); }; });
+  g.tools = on => { for (const id in toolB) { const v = !!(on && on[id]); if (toolB[id].hidden === v) toolB[id].hidden = !v; } };
   // "?" under the game: the rules, any time. The game is paused (state 'help') until the card is closed.
   const helpB = wrap.querySelector('[data-help]');
   if (helpB) helpB.onclick = () => {

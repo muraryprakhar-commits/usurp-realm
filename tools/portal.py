@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-"""Builds upload-ready copies of the games for a web game portal (CrazyGames), outside the website:
-    python3 tools/portal.py [out_dir]
-For each game it writes <out>/crazygames/<id>/ (index.html and every file the game needs, all relative paths) and
-<out>/crazygames/<id>.zip, the three cover images CrazyGames asks for (landscape 1920x1080, portrait 800x1200,
-square 800x800, title only), and UPLOAD-KIT.md with the listing text.
+"""Builds upload-ready copies of the games for web game portals, outside the website:
+    python3 tools/portal.py [out_dir] [--target crazygames|itch|all]      (default: crazygames)
+For each game it writes <out>/<target>/<id>/ (index.html and every file the game needs, all relative paths) and
+<out>/<target>/<id>.zip, the cover images that portal asks for, and UPLOAD-KIT.md with the listing text.
 
-Portal builds run with window.USURP_PORTAL = 'crazygames': ads come only from the CrazyGames SDK at natural breaks
+crazygames: built with window.USURP_PORTAL = 'crazygames': ads come only from the CrazyGames SDK at natural breaks
 (a level won or lost, never on a button), there are no links out, no house ads and no analytics, and the SDK is told
-when gameplay starts and stops. See games/engine.js."""
+when gameplay starts and stops. The online multiplayer game (The Usurper) is left out of these builds.
+itch: no SDK, no ads, no analytics; one credit link to usurp.games under each result, and The Usurper is included
+(its rooms are shared with usurp.games, and its invite links open the game there). See games/engine.js.
+Newgrounds is left out on purpose: its game guidelines do not allow games generated from AI prompts."""
 import io, os, re, shutil, sys, zipfile, http.server, socketserver, threading
 from functools import partial
 
@@ -33,25 +35,29 @@ LISTING = {
 }
 
 
-def page(G):
+def page(G, target='crazygames'):
+    sdk = f'<script src="{SDK}"></script>\n' if target == 'crazygames' else ''
     pre = ''.join(f'<link data-matter href="{x.lstrip("/").replace("games/", "")}">' for x in G.get('pre', []))
     return f'''<!doctype html><html lang="en" class="ue"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>{G["name"]}</title>
 <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="games.css">
 <style>.ug-portal [data-fs]{{display:none!important}}body.ug-portal{{background:#0c0a08}}</style>
-<script src="{SDK}"></script>
-</head><body class="ug-embed ug-portal"><main class="ue-main"><div class="ug-wrap"><div class="ug" data-game="{G["id"]}"></div></div></main>
-<script>window.USURP_ADS={{}};window.USURP_PORTAL='crazygames';window.USURP_BASE='./'</script>
+{sdk}</head><body class="ug-embed ug-portal"><main class="ue-main"><div class="ug-wrap"><div class="ug" data-game="{G["id"]}"></div></div></main>
+<script>window.USURP_ADS={{}};window.USURP_PORTAL='{target}';window.USURP_BASE='./'</script>
 {pre}<script src="engine.js"></script><script src="{G["js"]}.js"></script>
 </body></html>'''
 
 
-def package(G, out):
+def package(G, out, target='crazygames'):
     d = os.path.join(out, G['id'])
     shutil.rmtree(d, ignore_errors=True)
     os.makedirs(os.path.join(d, 'fonts'))
     with open(os.path.join(d, 'index.html'), 'w', encoding='utf-8') as f:
-        f.write(page(G))
+        f.write(page(G, target))
+    if G['id'] == 'usurper':                      # peer to peer rooms: usurper.js loads PeerJS from games/vendor/
+        os.makedirs(os.path.join(d, 'games', 'vendor'), exist_ok=True)
+        for fn in ('peerjs.min.js', 'LICENSE-peerjs.txt'):
+            shutil.copy(os.path.join(ROOT, 'games', 'vendor', fn), os.path.join(d, 'games', 'vendor', fn))
     for src, dst in [('games/engine.js', 'engine.js'), (f'games/{G["js"]}.js', f'{G["js"]}.js'), ('crest-core.js', 'crest-core.js'), ('games/games.css', 'games.css')]:
         shutil.copy(os.path.join(ROOT, src), os.path.join(d, dst))
     for x in G.get('pre', []):
@@ -152,6 +158,23 @@ def covers(scene, title, out, gid):
     bg.convert('RGB').save(os.path.join(out, f'{gid}-landscape-1920x1080.png'), optimize=True)
 
 
+def itch_art(scene, title, out, gid):
+    """itch.io: a 1260x1000 cover (its 315:250 ratio, twice the suggested 630x500) and one real screenshot."""
+    W, H = scene.size
+    top = 150 if gid == 'usurper' else 62          # The Usurper's task list sits at the top: keep it out from under the title
+    play = scene.crop((0, round(H * top / 720), W, round(H * 640 / 720)))
+    w, h = play.size; k = max(1260 / w, 1000 / h)
+    im = play.resize((round(w * k), round(h * k)), Image.LANCZOS)
+    x, y = (im.size[0] - 1260) // 2, (im.size[1] - 1000) // 3
+    c = im.crop((x, y, x + 1260, y + 1000)).convert('RGBA')
+    g = Image.new('RGBA', c.size, (0, 0, 0, 0)); gd = ImageDraw.Draw(g)
+    for yy in range(300): gd.line([(0, yy), (1260, yy)], fill=(12, 10, 8, int(205 * (1 - yy / 300))))
+    c.alpha_composite(g); d = ImageDraw.Draw(c)
+    text_shadow(c, (630, 130), title, fit_title(d, title, 1140, 120), 'mm')
+    c.convert('RGB').save(os.path.join(out, f'{gid}-itch-cover-1260x1000.png'), optimize=True)
+    scene.save(os.path.join(out, f'{gid}-screenshot.png'), optimize=True)
+
+
 def capture(out):
     from playwright.sync_api import sync_playwright
     httpd = game_shots.serve(); port = httpd.server_address[1]
@@ -197,22 +220,88 @@ def kit(out, built):
         f.write('\n'.join(lines))
 
 
+ITCH = {
+    'usurper': dict(genre='Strategy', tags='medieval, social-deduction, multiplayer, party-game, deduction, werewolf, online, knights, browser, free',
+                    short='Find the hidden traitor in a medieval keep. 4 to 10 players, online or with bots.'),
+    'siege': dict(genre='Puzzle', tags='trebuchet, physics, siege, castle, medieval, destruction, catapult, browser, free, casual',
+                  short='Fling stones with a trebuchet and topple ten castles with real physics.'),
+    'tafl': dict(genre='Strategy', tags='hnefatafl, tafl, viking, board-game, chess, strategy, two-player, abstract, medieval, browser',
+                 short='Viking chess: defend the king or lead the raiders. Learn it in five short puzzles.'),
+    'morris': dict(genre='Strategy', tags="nine-mens-morris, board-game, mills, strategy, two-player, abstract, medieval, classic, browser, free",
+                   short="The medieval game of mills, against three computer levels or a friend."),
+    'duel': dict(genre='Action', tags='sword, duel, knight, reflex, fighting, timing, medieval, browser, free, mobile',
+                 short='Read the blade, parry, riposte. Five knight styles to beat, with a training yard.'),
+    'archery': dict(genre='Sports', tags='archery, bow, medieval, skill, wind, target, daily, browser, free, casual',
+                    short="Draw, aim into the wind and win the king's archery contest. A new contest every day."),
+    'joust': dict(genre='Sports', tags='jousting, knight, horse, tournament, timing, medieval, browser, free, casual, mobile',
+                  short='Spur, aim the lance and strike. Unhorse five challengers.'),
+    'castle': dict(genre='Strategy', tags='castle-defense, tower-defense, archers, waves, medieval, browser, free, casual, mobile, siege',
+                   short='Hold the walls against waves of attackers with archers and boiling oil.'),
+}
+ITCH_ORDER = ['usurper', 'siege', 'tafl', 'morris', 'duel', 'archery', 'joust', 'castle']
+AI_NOTE = ('Made with an AI coding assistant (Claude): the code, the in-game text, and the code that draws the graphics and '
+           'synthesizes the sounds. Design, testing and direction by Prakhar Murary (Murary Studios).')
+
+
+def itch_kit(out, built):
+    by = {G['id']: G for G, _ in built}
+    lines = ['# itch.io upload kit', '',
+             'One zip per game (for example `usurper.zip`), a cover (`<id>-itch-cover-1260x1000.png`, itch\'s 315:250 ratio) and a screenshot per game, and the text below.',
+             'Upload in this order and stop after the first four if time is short: ' + ', '.join(by[g]['name'] for g in ITCH_ORDER[:4] if g in by) + '.', '',
+             '## Once per game (about 5 minutes)',
+             '1. itch.io > Upload new project.',
+             '2. Title and short description from below. Classification: Games. Kind of project: HTML.',
+             '3. Uploads: the zip, then tick "This file will be played in the browser".',
+             '4. Embed options: viewport 600 x 800, tick "Mobile friendly" (orientation: default) and "Fullscreen button".',
+             '5. Details: Genre and Tags from below. Pricing: No payments.',
+             '6. AI disclosure: say yes, and tick code, text, graphics and sound (the graphics and sounds are drawn and synthesized by AI-written code). Paste the line below into the description too.',
+             '7. Cover image: the `-itch-cover-` file. Screenshots: the `-screenshot` file.',
+             '8. Visibility: Public. Save.', '',
+             f'AI line for every description: {AI_NOTE}', '']
+    for gid in ITCH_ORDER:
+        if gid not in by: continue
+        G, L = by[gid], ITCH[gid]
+        desc = re.sub('<[^>]+>', '', G['desc']).replace(' No download.', '').replace(' (Free, No Download)', '')
+        extra = (' Rooms are shared with usurp.games, so you can also send friends the invite link from the lobby.'
+                 if gid == 'usurper' else '')
+        lines += [f'## {G["name"]}', f'- Zip: `{gid}.zip`', f'- Short description: {L["short"]}', f'- Genre: {L["genre"]}', f'- Tags: {L["tags"]}',
+                  f'- Description: {desc}{extra} How to play: {" ".join(G["how"])} Controls: {LISTING.get(gid, {}).get("controls", "Tap or click.")} More free medieval games: https://usurp.games/games/ . {AI_NOTE}', '']
+    with open(os.path.join(out, 'UPLOAD-KIT.md'), 'w', encoding='utf-8') as f:
+        f.write('\n'.join(lines))
+
+
 def main():
-    out = os.path.join(sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, 'dist'), 'crazygames')
-    os.makedirs(out, exist_ok=True)
-    built = []
-    for G in build.GAMES:
-        if not G.get('portal', True):                # the online multiplayer game is not packaged for portals
-            continue
-        d, z = package(G, out)
-        built.append((G, d))
-        print('packaged', G['id'], os.path.getsize(z) // 1024, 'KB')
-    shots = capture(out)
-    for G in build.GAMES:
-        if G['id'] in shots:
-            covers(shots[G['id']], G['name'].split(':')[0] if G['id'] != 'siege' else 'Siege', out, G['id'])
-    kit(out, built)
-    print('done:', out)
+    args = [a for a in sys.argv[1:] if not a.startswith('--')]
+    target = 'crazygames'
+    for a in sys.argv[1:]:
+        if a.startswith('--target='): target = a.split('=', 1)[1]
+    if '--target' in sys.argv:
+        target = sys.argv[sys.argv.index('--target') + 1]; args = [a for a in args if a != target]
+    targets = ['crazygames', 'itch'] if target == 'all' else [target]
+    assert all(x in ('crazygames', 'itch') for x in targets), 'target must be crazygames, itch or all'
+    base = args[0] if args else os.path.join(ROOT, 'dist')
+    shots = None
+    for tg in targets:
+        out = os.path.join(base, tg)
+        os.makedirs(out, exist_ok=True)
+        built = []
+        for G in build.GAMES:
+            if tg == 'crazygames' and not G.get('portal', True):   # CrazyGames multiplayer needs its own SDK: not packaged
+                continue
+            d, z = package(G, out, tg)
+            built.append((G, d))
+            print('packaged', tg, G['id'], os.path.getsize(z) // 1024, 'KB')
+        if shots is None:
+            shots = capture(out)
+        for G, _ in built:
+            if G['id'] not in shots: continue
+            title = G['name'].split(':')[0] if G['id'] != 'siege' else 'Siege'
+            if tg == 'crazygames':
+                covers(shots[G['id']], title, out, G['id'])
+            else:
+                itch_art(shots[G['id']], title, out, G['id'])
+        (kit if tg == 'crazygames' else itch_kit)(out, built)
+        print('done:', out)
 
 
 if __name__ == '__main__':

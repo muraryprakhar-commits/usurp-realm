@@ -846,7 +846,9 @@ function hidePanel() { if (pan) { pan.hidden = true; pan.innerHTML = ''; pan.dat
 function dot(col) { return `<i class="us-dot" style="background:${PAL[col] ? PAL[col][1] : '#888'}"></i>`; }
 function showLobby() {
   const L = CL.lobby; if (!L) return;
-  const link = `${location.origin}${location.pathname}#room=${L.code}`;
+  // Inside a portal build (itch.io, Newgrounds) the page address is the portal's frame, so invites go to the game on
+  // usurp.games: rooms are shared, so friends who open it join the same match.
+  const link = `${UG.portal ? 'https://usurp.games/games/the-usurper.html' : location.origin + location.pathname}#room=${L.code}`;
   const host = CL.host, humans = L.P.length, fill = Math.max(L.fill, humans);
   if (pan && !pan.hidden && pan.dataset.kind === 'lobby' + L.code) {   // already showing: refresh in place (keeps typing and focus)
     const list = pan.querySelector('[data-plist]'); if (list) list.innerHTML = lobbyList(L);
@@ -879,6 +881,7 @@ function showLobby() {
 }
 // a directly sold sponsor (set in tools/build.py) gets the lobby, the best-watched spot in the game; otherwise an offer to buy it
 function sponsorHtml() {
+  if (UG.portal) return '';
   const sp = (window.USURP_ADS || {}).sponsor;
   if (sp && sp.href && sp.img) return `<p class="ad-lbl" style="margin-top:12px">Sponsor</p><a class="us-sp" href="${esc(sp.href)}" rel="sponsored noopener" target="_blank" data-sp><img src="${esc(sp.img)}" alt="${esc(sp.alt || 'Sponsor')}" width="728" height="90" loading="lazy"></a>`;
   return '<p class="us-note">Want your brand on the Great Hall banners? <a href="/advertise.html" target="_blank" rel="noopener">Sponsor The Usurper</a></p>';

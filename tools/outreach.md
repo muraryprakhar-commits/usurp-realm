@@ -23,3 +23,24 @@ Rules for the weekly autopilot:
 Checked and skipped on 2026-10-26 (rules not met): Love Tabitha 2026 guide (page says submissions closed), She Scribes (needs $50 physical product or fee), First Time Mums UK (paid listing), Frugal Ginger and This Mama Loves (only old years), Toy Insider, Coolmath Games and FastPlayGames (web forms, not email), Chaotican Writer, TTRPG Kids, Tools and Taverns, Mr Donn, Wart Games (no email invitation).
 
 Checked and skipped on 2026-11-09 (rules not met or poor fit): Love Tabitha (closed again), She Scribes and Bacon Magazine (paid placement), Ohayo Okasan ($40 minimum retail value), Callista's Ramblings (physical samples to Canada, nearly closed), Eventnoire and Night Helper (forms, not email), My Unentitled Life (rate card, likely paid), Kids Classroom Games (suggestions for its own tools, not a resource list).
+
+## Game directories and curators (players push, 11 Nov 2026)
+
+Free browser-game directories that invite developer submissions with no account, and curators that ask for games by
+email. Listings link to the game pages on usurp.games, so players land (and are counted) on the site. Claude's
+submission script is ready but its run was held for Prakhar's explicit OK (an automated safety check stops Claude from
+publishing to outside sites on its own); the two curator emails are Gmail drafts.
+
+| Date | Target | How they invite submissions | Status |
+|---|---|---|---|
+| 2026-11-11 | ArcadeIndex (arcadeindex.io) | /submit form and a documented POST /api/v1/submissions, no account, 5 a day | Ready: The Usurper, Viking Chess, Siege, Nine Men's Morris; waiting for OK |
+| 2026-11-11 | PlayNewt (playnewt.com) | /submit form, no account | Ready: The Usurper, Viking Chess, Siege; waiting for OK |
+| 2026-11-11 | SlowDen (slowden.com) | /submit form, no account, live at once | Ready: The Usurper, Viking Chess; waiting for OK |
+| 2026-11-11 | AI Browser Games (contact@aibrowsergames.net) | /submit page asks for games by email, subject "[Game Submission] <title>", AI workflow disclosed | Draft created 2026-11-11 (The Usurper), not sent |
+| 2026-11-11 | OttersPlay (gx03410@gmail.com) | /submit page offers free review by email with a template | Draft created 2026-11-11 (The Usurper), not sent |
+
+Checked and skipped on 2026-11-11: Newgrounds (game guidelines do not allow games generated from AI prompts), GameHub
+(form has a human check), browsergame.online (form only accepts posts from its own page), NoAdsGames (no advertising of
+any kind; the embeds carry a Crest Studio card), Jay is Games (domain now mixed with unrelated router pages), Hacker News
+Show HN (restricted for new accounts and asks for human-written posts), the "unblocked games" sites that rehost games
+(plays would not reach usurp.games).

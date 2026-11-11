@@ -150,12 +150,48 @@ function newGame(g) {
         thinking: 0, over: false, plies: 0, quiet: 0, seen: new Map(), cur: 0, kb: false, col: colours(), msg: '', msgT: 0, hint: games <= 1 };
   g.state = 'play';
   if (S.turn === 2 && mode.ai) S.thinking = 0.6;
+  S.hist = mode.ai ? [] : null; S.helped = false; S.hintM = null;
+  if (mode.ai && S.turn === 1) S.hist.push(snap());
   S.msg = S.turn === 1 ? (mode.ai ? 'You place first' : 'Player 1 places first') : (mode.ai ? `${name(2)} places first` : 'Player 2 places first'); S.msgT = 2;
   UG.track('play', { level: mode.ai ? mode.level.id : 0 });
   g.say(S.msg);
 }
 const human = p => !mode.ai || p === 1;
 function phaseOf(p) { return S.h[p] > 0 ? 'place' : canFly(S.b, S.h, p) ? 'fly' : 'move'; }
+
+let testG = null;   // the game object, for the localhost test hook's tap()
+/* ---------- undo and hint, against the computer only ---------- */
+// A snapshot is taken at the start of each of your turns. Undo goes back to the start of your previous turn (taking back
+// your move and the computer's reply), or, while you are choosing a piece to take, to the start of this turn.
+// A game won with undo or a hint is not counted towards your best score and wins.
+function snap() {
+  return { b: Int8Array.from(S.b), h: S.h.slice(), plies: S.plies, quiet: S.quiet, seen: new Map(S.seen),
+           flew: S.flew ? Object.assign({}, S.flew) : undefined, movedTold: S.movedTold, last: S.last };
+}
+function restore(z) {
+  Object.assign(S, { b: Int8Array.from(z.b), h: z.h.slice(), plies: z.plies, quiet: z.quiet, seen: new Map(z.seen),
+                     flew: z.flew ? Object.assign({}, z.flew) : undefined, movedTold: z.movedTold, last: z.last, turn: 1 });
+}
+const myTurn = g => mode.ai && g.state === 'play' && S && !S.over && !S.anim && !S.wait && S.turn === 1 && S.hist;
+const canUndo = g => myTurn(g) && (S.removing || S.hist.length >= 2);
+function undo(g) {
+  if (!canUndo(g)) return;
+  if (!S.removing) S.hist.pop();
+  restore(S.hist[S.hist.length - 1]);
+  S.removing = false; S.sel = -1; S.mill = null; S.hintM = null; S.helped = true;
+  S.msg = 'Move taken back'; S.msgT = 1.4; UG.sfx.click(); g.say('Move taken back'); UG.track('undo');
+}
+function hint(g) {
+  if (!myTurn(g)) return;
+  S.helped = true; S.sel = -1; UG.track('hint');
+  if (S.removing) {                                  // which of their pieces hurts them most to lose
+    let best = -Infinity, pick = -1;
+    for (const r of removable(S.b, 2)) { S.b[r] = 0; const v = evaluate(S.b, S.h, 1); S.b[r] = 2; if (v > best) { best = v; pick = r; } }
+    S.hintM = { f: -1, t: -1, r: pick };
+  } else S.hintM = think(S.b, S.h, 1, { depth: 5, ms: 250, slip: 0 });
+  S.msg = S.removing ? 'Hint: take the piece circled in blue' : S.hintM && S.hintM.f >= 0 ? 'Hint: move the circled piece to the blue point' : 'Hint: place on the blue point';
+  S.msgT = 2.4; g.say(S.msg);
+}
 function targets(f) {
   if (f < 0) return [];
   const out = [];
@@ -216,6 +252,7 @@ function endTurn(g, captured) {
   if (phaseOf(p) === 'fly' && !(S.flew && S.flew[p])) { S.flew = S.flew || {}; S.flew[p] = 1; S.msg = `${name(p)} is down to three: flying!`; S.msgT = 2.4; }
   else if (!placing && S.plies === 18 && !S.movedTold) { S.movedTold = 1; S.msg = 'All placed. Now slide along the lines'; S.msgT = 2.6; }
   if (mode.ai && p === 2) S.thinking = 0.45;
+  else if (mode.ai && S.hist) S.hist.push(snap());
   else if (!mode.ai) g.say(`${name(p)} to play`);
 }
 function finish(g, winner, why) {
@@ -234,13 +271,13 @@ function finish(g, winner, why) {
     let score = 0, nb = 0;
     if (mine) {
       score = L.base + left * 20 + Math.max(0, 60 - Math.ceil(S.plies / 2)) * 2;
-      wins[L.id] = (wins[L.id] || 0) + 1; UG.store.set('ug-morris-wins', wins);
-      nb = g.setBest(score); UG.sfx.fanfare(); UG.sfx.cheer(0.14);
+      if (!S.helped) { wins[L.id] = (wins[L.id] || 0) + 1; UG.store.set('ug-morris-wins', wins); nb = g.setBest(score); }
+      UG.sfx.fanfare(); UG.sfx.cheer(0.14);
     } else if (winner) { UG.sfx.fail(); } else UG.sfx.groan();
     UG.track('finish', { level: L.id, result: mine ? 'win' : winner ? 'loss' : 'draw' });
     const title = mine ? `You beat the ${L.name}!` : winner ? `The ${L.name} wins` : 'A draw';
     g.screen({ kicker: mine ? `${name(2)} is ${whyTxt}` : winner ? `You are ${whyTxt}` : `Drawn ${whyTxt}`, title, big: mine ? score : undefined, sub: mine ? 'points' : undefined,
-      lines: [mine ? `Pieces left: ${left} · moves: ${Math.ceil(S.plies / 2)}` : `Moves played: ${Math.ceil(S.plies / 2)}`, `Wins against the ${L.name}: ${wins[L.id] || 0}`, mine ? g.bestLine(nb) : (L.id > 1 ? 'Tip: build two mills that share a point, then open and close one.' : 'Tip: block their two-in-a-row before it becomes a mill.')],
+      lines: [mine ? `Pieces left: ${left} · moves: ${Math.ceil(S.plies / 2)}` : `Moves played: ${Math.ceil(S.plies / 2)}`, `Wins against the ${L.name}: ${wins[L.id] || 0}`, mine && S.helped ? 'Won with undo or hints, so it does not count towards your record.' : mine ? g.bestLine(nb) : (L.id > 1 ? 'Tip: build two mills that share a point, then open and close one.' : 'Tip: block their two-in-a-row before it becomes a mill.')],
       primary: { label: mine && L.id < 3 ? `Face the ${LEVELS[L.id].name}` : 'Play again', on: () => { if (mine && L.id < 3) mode.level = LEVELS[L.id]; g.hide(); UG.between(g, () => newGame(g)); } },
       secondary: mine ? { label: 'Challenge a friend', on: () => g.share(`I beat the ${L.name} at Nine Men's Morris with ${left} pieces left. Can you?`) } : { label: 'Change opponent', on: () => menu(g) },
       cta: true });
@@ -264,6 +301,7 @@ function nearest(x, y, max = 40) {
 function act(g, i) {
   if (g.state !== 'play' || S.over || S.anim || S.wait || !human(S.turn) || (mode.ai && S.turn === 2)) return;
   const p = S.turn, o = 3 - p;
+  S.hintM = null;
   if (i < 0) { S.sel = -1; return; }
   if (S.removing) {
     if (S.b[i] === o && removable(S.b, o).includes(i)) return take(g, i);
@@ -364,7 +402,10 @@ function status(ctx, g) {
 
 UG.start({
   id: 'morris', title: "Nine Men's Morris", label: "Nine Men's Morris board game", W, H,
+  tools: [{ id: 'undo', label: 'Undo' }, { id: 'hint', label: 'Hint' }],
+  tool(g, id) { if (id === 'undo') undo(g); else if (id === 'hint') hint(g); },
   init(g) {
+    testG = g;
     me = UG.player(); myShield = UG.shield(me.design);
     opp = UG.randomKnight(); oppShield = UG.shield(opp.design);
     S = { b: new Int8Array(24), h: [0, 9, 9], turn: 1, sel: -1, fades: [], col: colours(), over: false, plies: 0, msgT: 0 };
@@ -373,6 +414,7 @@ UG.start({
     menu(g);
   },
   update(g, dt) {
+    g.tools({ undo: canUndo(g), hint: myTurn(g) });
     if (S.msgT > 0 && S.msgT < 90) S.msgT -= dt;
     if (S.mill) { S.mill.t += dt; if (S.mill.t > 1.1) S.mill = null; }
     for (const f of S.fades) f.k += dt / 0.45; S.fades = S.fades.filter(f => f.k < 1);
@@ -411,6 +453,10 @@ UG.start({
         const [x, y] = PTS[i]; ctx.strokeStyle = `rgba(255,215,106,${place ? 0.25 + 0.2 * pulse : 0.55 + 0.4 * pulse})`; ctx.lineWidth = 3;
         ctx.beginPath(); ctx.arc(x, y, place ? 16 : 18 + pulse * 3, 0, 6.283); ctx.stroke();
       }
+    }
+    if (S.hintM && g.state === 'play' && !S.over) {
+      ctx.strokeStyle = `rgba(126,200,255,${0.6 + 0.4 * pulse})`; ctx.lineWidth = 4;
+      for (const i of [S.hintM.f, S.hintM.t, S.hintM.r]) if (i >= 0) { const [x, y] = PTS[i]; ctx.beginPath(); ctx.arc(x, y, 31 + pulse * 2, 0, 6.283); ctx.stroke(); }
     }
     for (let i = 0; i < 24; i++) {
       const p = S.b[i]; if (!p) continue;
@@ -461,5 +507,5 @@ UG.start({
   },
 });
 // test hook, only on a local server
-if (['localhost', '127.0.0.1'].includes(location.hostname)) window.__ug = { st: () => S, think, gen, LEVELS, mode: () => mode };
+if (['localhost', '127.0.0.1'].includes(location.hostname)) window.__ug = { tap: i => act(testG, i), st: () => S, think, gen, LEVELS, mode: () => mode };
 })();

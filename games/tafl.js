@@ -274,10 +274,35 @@ function newGame(g) {
   g.state = 'play';
   S.msg = mode.ai ? (mode.me === 2 ? 'Raiders move first. Get the king to a corner' : 'You move first. Trap the king') : 'Raiders (dark) move first'; S.msgT = 2.6;
   if (mode.ai && mode.me !== 1) S.think = 0.7;
+  S.hist = mode.ai ? [] : null; S.helped = false; S.hintM = -1;
+  if (mode.ai && mode.me === 1) S.hist.push(snap());
   UG.track('play', { n: mode.n, level: mode.ai ? mode.level.id : 0, side: mode.me });
   g.say(S.msg);
 }
 const isHuman = side => !mode.ai || side === mode.me;
+
+let testG = null;   // the game object, for the localhost test hook's tap()
+/* ---------- undo and hint, against the computer only (not in the lessons) ---------- */
+// A snapshot is taken at the start of each of your turns; Undo returns to the start of your previous turn, taking back
+// your move and the computer's reply. A game won with undo or a hint is not counted towards your best score and wins.
+function snap() { return { B: Int8Array.from(S.B), plies: S.plies, quiet: S.quiet, seen: new Map(S.seen), taken: Object.assign({}, S.taken), last: S.last }; }
+const myTurn = g => mode.ai && !S.lesson && S.hist && g.state === 'play' && !S.over && !S.anim && !S.wait && S.think <= 0 && S.turn === mode.me;
+const canUndo = g => myTurn(g) && S.hist.length >= 2;
+function undo(g) {
+  if (!canUndo(g)) return;
+  S.hist.pop();
+  const z = S.hist[S.hist.length - 1];
+  Object.assign(S, { B: Int8Array.from(z.B), plies: z.plies, quiet: z.quiet, seen: new Map(z.seen), taken: Object.assign({}, z.taken), last: z.last,
+                     turn: mode.me, sel: -1, hintM: -1, helped: true, msg: 'Move taken back', msgT: 1.4 });
+  UG.sfx.click(); g.say('Move taken back'); UG.track('undo');
+}
+function hint(g) {
+  if (!myTurn(g)) return;
+  const m = think(S.B, S.turn, { depth: 4, ms: 300, slip: 0 });
+  if (m < 0) return;
+  S.hintM = m; S.helped = true; S.sel = -1;
+  S.msg = 'Hint: move the circled piece to the blue square'; S.msgT = 2.4; g.say(S.msg); UG.track('hint');
+}
 function cellXY(i) { const [x, y] = xy(i); return [BX + (x + 0.5) * CS, BY + (y + 0.5) * CS]; }
 function dests(f) { return gen(S.B, S.turn).filter(m => (m >> 7) === f).map(m => m & 127); }
 function play(g, m, animate) {
@@ -316,6 +341,7 @@ function endTurn(g, captured) {
   if (S.turn === 1 && cornersInOne(S.B, k) && isHuman(1)) { S.msg = 'Block the king: a corner is open!'; S.msgT = 2.2; }
   if (mode.ai && S.turn !== mode.me) S.think = 0.35;
   else g.say(`${who(S.turn)} to move`);
+  if (mode.ai && S.turn === mode.me && S.hist) S.hist.push(snap());
 }
 function finish(g, winner, why) {
   S.over = true; g.state = 'over';
@@ -335,15 +361,15 @@ function finish(g, winner, why) {
     if (mine) {
       const kept = mode.me === 2 ? countSide(2) : countSide(1);
       score = Math.round(L.base * (mode.n === 9 ? 1.5 : 1) + kept * 15 + Math.max(0, 50 - Math.ceil(S.plies / 2)) * 3);
-      wins[key] = (wins[key] || 0) + 1; UG.store.set('ug-tafl-wins', wins);
-      nb = g.setBest(score); UG.sfx.fanfare(); UG.sfx.cheer(0.14);
+      if (!S.helped) { wins[key] = (wins[key] || 0) + 1; UG.store.set('ug-tafl-wins', wins); nb = g.setBest(score); }
+      UG.sfx.fanfare(); UG.sfx.cheer(0.14);
     } else if (winner) UG.sfx.fail(); else UG.sfx.groan();
     UG.track('finish', { n: mode.n, level: L.id, side: mode.me, result: mine ? 'win' : winner ? 'loss' : 'draw' });
     const role = mode.me === 2 ? 'defending the king' : 'leading the raiders';
     const next = L.id < 3 ? LEVELS[L.id] : null;
     g.screen({ kicker: whyTxt, title: mine ? 'Victory!' : winner ? 'Defeat' : 'A draw', big: mine ? score : undefined, sub: mine ? 'points' : undefined,
       lines: [`${V.name}, ${role}, ${L.name.toLowerCase()} · ${Math.ceil(S.plies / 2)} moves`, `Your wins here: ${wins[key] || 0}`,
-        mine ? g.bestLine(nb) : (mode.me === 2 ? 'Tip: open two routes at once. The raiders can only block one.' : 'Tip: guard the squares next to the corners first.')],
+        mine && S.helped ? 'Won with undo or hints, so it does not count towards your record.' : mine ? g.bestLine(nb) : (mode.me === 2 ? 'Tip: open two routes at once. The raiders can only block one.' : 'Tip: guard the squares next to the corners first.')],
       primary: { label: mine && next ? `Try ${next.name.toLowerCase()}` : 'Play again', on: () => { if (mine && next) mode.level = next; g.hide(); UG.between(g, () => newGame(g)); } },
       secondary: mine ? { label: 'Challenge a friend', on: () => g.share(`I won a game of Viking chess (${V.name}, ${L.name.toLowerCase()}) ${role}. Can you?`) } : { label: 'Change game', on: () => menu(g) },
       cta: true });
@@ -372,6 +398,7 @@ function menu(g) {
 function cellAt(x, y) { const cx = Math.floor((x - BX) / CS), cy = Math.floor((y - BY) / CS); return at(cx, cy); }
 function act(g, i) {
   if (g.state !== 'play' || S.over || S.anim || S.wait || !isHuman(S.turn) || S.think > 0 || (S.lesson && S.lesson.done)) return;
+  S.hintM = -1;
   if (i < 0) { S.sel = -1; return; }
   const v = S.B[i];
   if (v && own(v, S.turn)) {
@@ -502,13 +529,17 @@ function status(ctx) {
 UG.start({
   id: 'tafl', title: 'Viking Chess', label: 'Viking chess (hnefatafl) board game', W, H,
   help(g, resume) { rules(g, resume); },
+  tools: [{ id: 'undo', label: 'Undo' }, { id: 'hint', label: 'Hint' }],
+  tool(g, id) { if (id === 'undo') undo(g); else if (id === 'hint') hint(g); },
   init(g) {
+    testG = g;
     me = UG.player(); myShield = UG.shield(me.design);
     opp = UG.randomKnight(); oppShield = UG.shield(opp.design);
     S = { B: start(7), turn: 1, sel: -1, fades: [], col: colours(), over: false, plies: 0, msgT: 0, taken: { 1: 0, 2: 0 } };
     menu(g);
   },
   update(g, dt) {
+    g.tools({ undo: canUndo(g), hint: myTurn(g) });
     if (S.msgT > 0) S.msgT -= dt;
     for (const f of S.fades) f.k += dt / 0.45; S.fades = S.fades.filter(f => f.k < 1);
     if (S.anim) { S.anim.k += dt / S.anim.dur; if (S.anim.k >= 1) S.anim.done(); return; }
@@ -542,6 +573,10 @@ UG.start({
     if (S.lesson && S.lesson.L.target && !S.lesson.done) {
       const [tx, ty] = S.lesson.L.target, [x, y] = cellXY(at(tx, ty));
       ctx.strokeStyle = `rgba(255,215,106,${0.6 + 0.4 * pulse})`; ctx.lineWidth = 4; ctx.strokeRect(x - CS / 2 + 4, y - CS / 2 + 4, CS - 8, CS - 8);
+    }
+    if (S.hintM >= 0 && g.state === 'play' && !S.over) {
+      ctx.strokeStyle = `rgba(126,200,255,${0.6 + 0.4 * pulse})`; ctx.lineWidth = 4;
+      for (const i of [S.hintM >> 7, S.hintM & 127]) { const [x, y] = cellXY(i); ctx.beginPath(); ctx.arc(x, y, CS * 0.42, 0, 6.283); ctx.stroke(); }
     }
     // where the selected piece can go: a red ring marks a move that takes a piece, a green star a winning move
     if (S.sel >= 0 && g.state === 'play') for (const t of dests(S.sel)) {
@@ -582,5 +617,5 @@ UG.start({
   },
 });
 // test hook, only on a local server
-if (['localhost', '127.0.0.1'].includes(location.hostname)) window.__ug = { st: () => S, think, gen, make, unmake, start, LEVELS, LESSONS, setMode: m => { mode = Object.assign(mode, m); }, mode: () => mode };
+if (['localhost', '127.0.0.1'].includes(location.hostname)) window.__ug = { tap: i => act(testG, i), st: () => S, think, gen, make, unmake, start, LEVELS, LESSONS, setMode: m => { mode = Object.assign(mode, m); }, mode: () => mode };
 })();

@@ -38,7 +38,7 @@ SPECS = [
 <li><b>Prints anywhere.</b> Any local print shop, office store photo counter or online printer can print the files. No shipping from us.</li></ul></section>
 <section class="sec"><h2 class="gilt">Gift ideas by occasion</h2>
 <h3>Christmas and the holidays</h3><p>A framed crest for parents or in-laws, or the same crest on a set of mugs for every household in the family.</p>
-<h3>Weddings and anniversaries</h3><p>Join two family names on one shield with the Per pale division, the old heraldic way of uniting two families. See the <a href="/wedding-crest.html">wedding crest guide</a>.</p>
+<h3>Weddings and anniversaries</h3><p>Join two family names on one shield with the Per pale division, the old heraldic way of uniting two families. See the <a href="/wedding-crest.html">wedding crest guide</a>, or the <a href="/anniversary-crest-gift.html">anniversary crest guide</a> for ideas that match the paper, silver and gold years.</p>
 <h3>A new home</h3><p>A tower or key emblem for a housewarming print above the door, with the family name and the year they moved in as the motto. The <a href="/housewarming-gift-crest.html">housewarming crest guide</a> has emblem and motto ideas.</p>
 <h3>A new baby</h3><p>The baby's initial on the shield and the birth date on the ribbon, printed for the nursery wall or the baby book. The <a href="/new-baby-family-crest.html">new baby crest guide</a> has emblem and motto ideas.</p>
 <h3>Pet lovers</h3><p>Give the dog, cat or horse a crest of their own, with a grand title and a motto that fits. See the <a href="/pet-coat-of-arms.html">pet coat of arms guide</a>.</p>
@@ -1183,5 +1183,52 @@ SPECS = [
               ('Can I design it before the baby is born?', 'Yes. Designing is free and needs no account, so you can choose the shield, colors and emblem in advance, then add the name and date once you know them and download the files then.'),
               ('What sizes can I print it at?', 'The $9 set includes a 4000 by 5000 px image, about 13 by 16 inches at 300 pixels per inch, so standard 8 by 10 and 11 by 14 nursery frames print sharply. The certificate of arms is sized for US Letter.'),
               ('Is it the baby\'s real or official coat of arms?', 'No. It is an original design in the style of heraldry that you create for the family, not a historical coat of arms or an official grant of arms.')],
+    ),
+    dict(
+        slug='anniversary-crest-gift.html', cta_href='/crest.html?ch=heart', short='Anniversary crest gift', blurb='Two names on one shield, the year on the ribbon', og='anniv',
+        h1='Anniversary Crest Gift', h1_html='An Anniversary Gift: Two Names, One Crest',
+        title='Personalized Anniversary Gift: A Crest With Both Your Names and Your Year | Crest Studio',
+        og_title='Personalized anniversary gift: a crest with both your names and your year',
+        desc='Design an anniversary crest: both names on a shield split per pale, your colors, and the year you married on the motto ribbon. Print it on paper for a first anniversary. Free to design, $9 to download.',
+        eyebrow='For first anniversaries, milestone years and vow renewals',
+        lede='An anniversary gift works best when it could only be for the two of you. A crest with both your names, a shield split down the middle the way heralds joined two families, and the year it all began on the ribbon does exactly that.',
+        cta='Design an anniversary crest',
+        examples=[crest('Daniel & Priya', 'Since 2019', GULES, OR, GOLD_LIGHT, 'perpale', 'heart'),
+                  crest('The Whitakers', 'Ten Years, Still Us', AZURE, ARGENT, ARGENT, 'perpale', 'key'),
+                  crest('Mara & Joseph Delgado', 'Omnia Vincit Amor', VERT, OR, GOLD_LIGHT, 'perpale', 'tree'),
+                  crest('Hollis & Grace', 'Twenty-Five Years Together', PURPURE, ARGENT, ARGENT, 'chevron', 'rose'),
+                  crest('The Achterbergs', 'Fifty Golden Years', SABLE, OR, GOLD_LIGHT, 'quarterly', 'laurel')],
+        body='''<section class="sec"><h2 class="gilt">Why a crest suits an anniversary</h2>
+<p>A wedding is about two people becoming one household. Heraldry had its own picture for that long before anyone printed a wedding album. When a married couple displayed their arms together, heralds placed the two coats side by side on a single shield divided down the middle. The practice is called impalement, and in the traditional arrangement the husband's arms took the dexter half (the viewer's left, the side of honor) and the wife's family arms the sinister half. An older method, dimidiation, cut each coat in half before joining them, which could produce some strange half-lions; impalement keeps both designs whole.</p>
+<p>You do not need inherited arms to borrow the idea. In Crest Studio the Per pale division splits the shield into two halves, so each of you can have a color, and the emblem sits across the join. Put both names across the top and the year you married on the motto ribbon, and you have a design that tells your story at a glance.</p></section>
+<section class="sec"><h2 class="gilt">Designing a crest for two</h2>
+<h3>Colors: one each, or one shared</h3><p>Choose a color for each of you, or the colors from your wedding day. Heraldry's rule of tincture keeps it readable: pair a metal (gold or silver) with a color (red, blue, green, purple or black), and avoid putting color directly on color. Red and gold, blue and silver, and green and gold all print cleanly, even in one ink.</p>
+<h3>Names: whatever you call yourselves</h3><p>Both first names ("Daniel &amp; Priya"), a shared surname ("The Whitakers"), or a joined double name all work. The name line holds up to 40 characters. If you choose "Your initial" as the emblem, the shield shows the first letter of the name you type, so put the letter you want first.</p>
+<h3>Emblems with a meaning for couples</h3><ul>
+<li><b>Heart:</b> love and devotion, the clearest choice for a romantic gift.</li>
+<li><b>Rose:</b> love and beauty, and a soft look on a framed print.</li>
+<li><b>Key:</b> trust, and the home you share. Good for a couple who has just bought a house together.</li>
+<li><b>Tree:</b> a family that has grown roots, ideal for a milestone year with children and grandchildren.</li>
+<li><b>Laurel:</b> an achievement worth celebrating. A fitting choice for a 25th or 50th.</li></ul>
+<p>The <a href="/heraldry-symbols-and-meanings.html">symbols and meanings guide</a> covers every color and emblem in the studio, with the traditional meanings for each.</p>
+<h3>Mottos: the year, a promise, or a line from your vows</h3><p>The year you married is the simplest motto ("Since 2019"), and the ribbon holds up to 48 characters, so the full date fits too. A phrase the two of you always say works just as well. For Latin, <i>Omnia vincit amor</i> means "love conquers all" (from Virgil's <i>Eclogues</i>), and <i>Ubi concordia, ibi victoria</i> means "where there is unity, there is victory." The <a href="/latin-motto-generator.html">Latin motto generator</a> lists more with their standard translations.</p></section>
+<section class="sec"><h2 class="gilt">Matching the traditional anniversary themes</h2>
+<p>Anniversary gift themes are older than most people think, but the full year-by-year lists are fairly modern. Material for milestone years such as silver for the 25th and gold for the 50th goes back to at least the 1800s, and paper for the first year appears in lists from the same period. The long lists with a material for nearly every year were standardized in the twentieth century, partly by American jewelers. So treat the themes as a fun starting point rather than a rule. A crest fits the best known of them neatly:</p>
+<ul><li><b>First anniversary (paper):</b> a framed print of your crest, or the certificate of arms, which explains your design in heraldic language and in plain English. Under "Giving it as a gift?" in the studio you can add who it is presented to and who it is from, and it prints on the certificate with the date.</li>
+<li><b>Tenth anniversary (tin):</b> the SVG file in every paid set is vector art, the kind an engraver or sign maker can use on a metal plaque or a tin sign.</li>
+<li><b>Twenty-fifth anniversary (silver):</b> use Argent (silver) as the metal in the design, and frame the print in silver.</li>
+<li><b>Fiftieth anniversary (gold):</b> use Or (gold) on a deep color such as black or purple, and add the laurel for a crest that looks like a medal of honor. It makes a fine centerpiece for the party, printed on the cake card, the welcome sign and the invitations.</li></ul>
+<div class="callout"><b>Want it engraved on a ring or pressed in wax?</b> The <a href="/signet-ring-crest.html">signet ring crest guide</a> explains what a jeweler needs, and the $19 Heirloom set adds line art, a two-tone version and a round wax seal design as well as everything in the $9 set.</div></section>
+<section class="sec"><h2 class="gilt">How to give it</h2>
+<ol><li><b>Design it together, or as a surprise.</b> Designing is free and needs no account, and your design is saved in your browser so you can come back to it.</li>
+<li><b>Download the set for $9:</b> a 4000 by 5000 px print file (about 13 by 16 inches at 300 pixels per inch, so 8 by 10 and 11 by 14 frames print sharply), an SVG, the certificate of arms sized for US Letter, a profile picture and a phone wallpaper.</li>
+<li><b>Print and frame it,</b> at any local print shop or online printer. The files arrive instantly, which helps if the date has crept up on you.</li></ol>
+<div class="callout"><b>Short on time?</b> In the studio, open "Send it as a free e-card." Your partner gets a link where the crest appears with your message, and you can order the framed print afterward.</div>
+<p>Still planning the wedding itself? The <a href="/wedding-crest.html">wedding crest maker</a> covers invitations, signage and wax seals. For other occasions, see <a href="/family-crest-gift.html">family crest gifts</a>.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=heart">Design an anniversary crest</a></p></section>''',
+        faqs=[('What is a good personalized anniversary gift?', 'Something only the two of you could have. A crest with both your names, your colors and the year you married on the motto ribbon is personal, prints at any size and can be framed, engraved or turned into a wax seal.'),
+              ('What is the traditional first anniversary gift?', 'Paper is the traditional theme for the first year. A printed and framed crest, together with its certificate of arms, fits that theme well.'),
+              ('How do you put two family names on one coat of arms?', 'The traditional way is impalement: the shield is split down the middle (per pale) with one family on each half. In Crest Studio, choose the Per pale division, give each half a color, and put both names on the name line.'),
+              ('Is this our official or inherited coat of arms?', 'No. It is an original design in the style of heraldry that you create, not a historical coat of arms or an official grant of arms. Many couples like that it describes their own marriage rather than a distant ancestor.')],
     ),
 ]

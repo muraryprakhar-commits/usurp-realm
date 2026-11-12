@@ -372,6 +372,7 @@ def wedding():
 <li>Custom wax seal stamps and embossers (they need vector art: the SVG)</li>
 <li>Cocktail napkins, coasters and favors</li>
 <li>The wedding website and your new family's letterhead afterward</li>
+<li>Anniversary gifts later on, with the year you married as the motto (see the <a href="/anniversary-crest-gift.html">anniversary crest guide</a>)</li>
 <li>A framed print or house banner for your first home together (see the <a href="/housewarming-gift-crest.html">housewarming crest guide</a>)</li></ul>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html">Design your wedding crest</a></p></section>'''
     body += faq_html(faqs)

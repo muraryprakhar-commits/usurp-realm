@@ -61,7 +61,11 @@ python3 tools/indexnow.py  # after deploy: tell Bing, Yandex and others about ev
   Crest Studio arms, ad slots, play tracking) and one script per game.
 - Thumbnails and share images: `python3 tools/game_shots.py` after the build (plays each game and photographs it).
 - Ads are off until configured: set `ADS` at the top of `tools/build.py` (AdSense publisher ID and a display ad
-  unit ID), rebuild, deploy. That also writes `ads.txt` and the `google-adsense-account` meta tag. Set `h5: True`
+  unit ID), rebuild, deploy. The publisher ID alone writes `ads.txt` and the `google-adsense-account` meta tag (enough
+  for AdSense to verify the site); the ad slots switch on once the display ad unit ID (`slot`) is set too.
+  The AdSense account exists (publisher ID `ca-pub-4810815179945600`, ads.txt line
+  `google.com, pub-4810815179945600, DIRECT, f08c47fec0942fa0`) but is NOT activated: `ADS['client']` stays empty in
+  committed code. Prakhar activates it himself with the steps in the comment above `ADS` in `tools/build.py`. Set `h5: True`
   only after Google approves the account for H5 Games Ads (between-round interstitials via `adBreak`).
   Until then the banner slot shows a Crest Studio house ad, and every third round break (at most every two
   minutes) shows a skippable Crest Studio card. A directly sold banner goes in `ADS['sponsor']`.
@@ -101,13 +105,29 @@ python3 tools/indexnow.py  # after deploy: tell Bing, Yandex and others about ev
 ## Play counter and stats page (21 Oct 2026)
 - `games/engine.js` sends a tiny POST to `/api/play?g=<game>&e=play|finish` when a game starts or ends on usurp.games
   (never in embeds or portal builds). In Siege every castle started counts as a play.
-- `api/play.js` adds 1 to two Redis hashes: `plays:<ISO week>` and `plays:all` (fields like `tafl:play`). It stores
-  nothing about the player. POST only, our own pages only (Origin/Referer check), known games only.
-- `api/stats.js` returns the last 12 weeks and all-time totals as JSON (cached 5 minutes);
+- `api/play.js` stores counts only, nothing about the player. POST only, our own pages only (Origin/Referer check,
+  which scripts can forge), known games only. With Upstash Redis it adds 1 to two hashes, `plays:<ISO week>` and
+  `plays:all` (fields like `tafl:play`); this needs no opt-in and uses no Blob quota.
+- Blob counting is OFF by default. Only with `PLAY_COUNTER_BLOB=1` set in Vercel does it use the project's private Blob
+  store (`BLOB_STORE_ID` plus the deployment's OIDC token): one JSON file of totals per ISO week,
+  `plays/2026-W46.json`, updated with ETag-checked writes. Why opt-in: Hobby includes 2,000 Blob advanced operations
+  (uploads, copies, lists) a month for the whole project, shared with cloud saves, and going over stops Blob access,
+  saves included, for 30 days. When on, a week's file takes at most `PLAY_COUNTER_WEEKLY_WRITES` successful writes
+  (default 100); after 60% of that it counts 1 play in 10 and adds 10 (marked ≈ on the stats page); at the limit it
+  stops until Monday (marked *). Retries after a lost race are capped by `PLAY_COUNTER_TRIES` (default 2) and are
+  uploads the weekly cap cannot see. These caps are hygiene, not a guarantee: they do not bound a deliberate flood of
+  forged pings, and any reserve left for saves is an average-week approximation, not a rolling 30-day worst case.
+  Vercel's emails as the plan nears its limits are the real backstop.
+- Known gap (pre-existing): on Blob, cloud saves have no rate limit (Redis limits each code to 20 saves a minute).
+  `tests/api.test.js` documents it in the SECURITY NOTE test. Options: connect Upstash Redis, or add a Blob-side
+  per-code interval.
+- `api/stats.js` returns the last 12 weeks and all-time totals as JSON (edge-cached 5 minutes on Redis, 15 on Blob);
   `stats.html` (built by `stats_page()` in tools/build.py, noindex, disallowed in robots.txt) shows them as tables.
-- Storage: the free Upstash Redis database from the Vercel Marketplace, connected to this project. The functions read
-  `KV_REST_API_URL`/`KV_REST_API_TOKEN` or `UPSTASH_REDIS_REST_URL`/`UPSTASH_REDIS_REST_TOKEN`. Until one is connected,
-  pings are accepted and dropped, and the stats page says it is not connected.
+- Storage selection lives in `lib/storage.js`, shared with `api/save.js`: Redis (`KV_REST_API_URL`/`KV_REST_API_TOKEN`
+  or `UPSTASH_REDIS_REST_URL`/`UPSTASH_REDIS_REST_TOKEN`) first, then Blob (`BLOB_STORE_ID` or `BLOB_READ_WRITE_TOKEN`).
+  With neither, pings are accepted and dropped, and the stats page says no storage is connected.
+- Tests: `npm test` (API functions against an in-memory Blob with real ETag rules, the AdSense build switch, the stats
+  page in headless Chromium, the solo Usurper invite). Needs Playwright with Chromium for the browser tests.
 
 ## Analytics (26 Oct 2026)
 
@@ -141,7 +161,7 @@ python3 tools/indexnow.py  # after deploy: tell Bing, Yandex and others about ev
 - Accounts are optional (`games/account.js`, `api/save.js`): guest play by default; "Save my progress" makes a random
   20-character save code in the browser, which is the login (no email or password). Progress (Usurper rank and stats,
   best scores, player name, Crest Studio design) is stored under a SHA-256 of the code, in Upstash Redis when
-  connected, otherwise a private Vercel Blob store (`BLOB_READ_WRITE_TOKEN`). With neither, the UI says cloud save is
+  connected, otherwise the private Vercel Blob store (`BLOB_STORE_ID` with the OIDC token, or `BLOB_READ_WRITE_TOKEN`). With neither, the UI says cloud save is
   not on yet and everything keeps working on the device. Saves are throttled (Blob's free tier allows 2,000 writes a month).
 - Ads: `ADS['sponsor']['name']` also goes on the Great Hall banners in The Usurper, and the sponsor image shows in its
   lobby. `ADS['meta']` is an optional Meta Pixel ID (for measuring Meta ad campaigns only; update privacy.html first).

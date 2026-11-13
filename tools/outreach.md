@@ -26,21 +26,29 @@ Checked and skipped on 2026-11-09 (rules not met or poor fit): Love Tabitha (clo
 
 ## Game directories and curators (players push, 11 Nov 2026)
 
-Free browser-game directories that invite developer submissions with no account, and curators that ask for games by
-email. Listings link to the game pages on usurp.games, so players land (and are counted) on the site. Claude's
-submission script is ready but its run was held for Prakhar's explicit OK (an automated safety check stops Claude from
-publishing to outside sites on its own); the two curator emails are Gmail drafts.
+Free browser-game directories and AI-made game showcases that invite developer submissions with no account, curated
+portals, and curators that ask for games by email. Directory listings link to the game pages on usurp.games, so players
+land (and are counted) on the site. Prakhar approved each target on 11 Nov 2026 before anything was sent. Contact on the
+directory forms: hello@usurp.games. Coolmath's form uses muraryprakhar@gmail.com (his choice, so a licence reply
+can't get lost).
 
-| Date | Target | How they invite submissions | Status |
-|---|---|---|---|
-| 2026-11-11 | ArcadeIndex (arcadeindex.io) | /submit form and a documented POST /api/v1/submissions, no account, 5 a day | Ready: The Usurper, Viking Chess, Siege, Nine Men's Morris; waiting for OK |
-| 2026-11-11 | PlayNewt (playnewt.com) | /submit form, no account | Ready: The Usurper, Viking Chess, Siege; waiting for OK |
-| 2026-11-11 | SlowDen (slowden.com) | /submit form, no account, live at once | Ready: The Usurper, Viking Chess; waiting for OK |
-| 2026-11-11 | AI Browser Games (contact@aibrowsergames.net) | /submit page asks for games by email, subject "[Game Submission] <title>", AI workflow disclosed | Draft created 2026-11-11 (The Usurper), not sent |
-| 2026-11-11 | OttersPlay (gx03410@gmail.com) | /submit page offers free review by email with a template | Draft created 2026-11-11 (The Usurper), not sent |
+| Date | Target | How they invite submissions | What went | Status |
+|---|---|---|---|---|
+| 2026-11-11 | ArcadeIndex (arcadeindex.io) | documented POST /api/v1/submissions, no account | The Usurper, Viking Chess, Siege, Nine Men's Morris | Usurper and Viking Chess live within minutes (arcadeindex.io/games/the-usurper-hcypkk, /games/viking-chess-cqwmyd); Siege and Morris in their load check |
+| 2026-11-11 | PlayNewt (playnewt.com) | /submit form, no account | The Usurper, Viking Chess, Siege | Received (thanks page); they review daily |
+| 2026-11-11 | SlowDen (slowden.com) | /submit form, no account, live at once | The Usurper, Viking Chess | Received (thanks page) |
+| 2026-11-11 | VibeBoard (vibeboardgames.com) | AI-built games, form, hand review | The Usurper, Siege | Received (thanks page) |
+| 2026-11-11 | Claudeslop (claudeslop.bryanhu.com) | AI-made games, form, live at once | The Usurper (#17), Siege (#18) | Live |
+| 2026-11-11 | Coolmath Games | developer Google Form (buys non-exclusive licences for thinking games) | Viking Chess, Nine Men's Morris | Confirmation shown; they reply only if interested. If yes: clean build with no ads, links or stats, plus their SDK |
+| 2026-11-11 | Armor Games (mygame@armorgames.com) | developer docs ask for games by email with AI use disclosed | The Usurper, Siege | Sent from Gmail |
+| 2026-11-11 | AI Browser Games (contact@aibrowsergames.net) | /submit asks for games by email, "[Game Submission] <title>" | The Usurper | Sent from Gmail |
+| 2026-11-11 | OttersPlay (gx03410@gmail.com) | /submit offers free review by email with a template | The Usurper | Sent from Gmail |
+| 2026-11-11 | TryAIgame (hello@tryaigame.com) | /submit asks for AI-made games by email with a template | The Usurper | Sent from Gmail |
 
 Checked and skipped on 2026-11-11: Newgrounds (game guidelines do not allow games generated from AI prompts), GameHub
-(form has a human check), browsergame.online (form only accepts posts from its own page), NoAdsGames (no advertising of
-any kind; the embeds carry a Crest Studio card), Jay is Games (domain now mixed with unrelated router pages), Hacker News
-Show HN (restricted for new accounts and asks for human-written posts), the "unblocked games" sites that rehost games
-(plays would not reach usurp.games).
+(form has a human check), AI Vibe Coded Games (Cloudflare Turnstile check), browsergame.online (form only accepts posts
+from its own page), NoAdsGames (no advertising of any kind; the embeds carry a Crest Studio card), Jay is Games (domain now
+mixed with unrelated router pages), IndieRadar (submit page 404), Hacker News Show HN (restricted for new accounts and asks
+for human-written posts), the "unblocked games" sites that rehost games (plays would not reach usurp.games).
+Do not resubmit to any target above; follow up once, after 10 days, only where a reply is still missing and the site
+says follow-ups are welcome.

@@ -8,6 +8,7 @@ from urllib.parse import quote
 sys.path.insert(0, os.path.dirname(__file__))
 from data import *  # noqa
 from usecases import SPECS
+import blog as BLOG
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = 'https://usurp.games'
@@ -167,7 +168,7 @@ def footer():
     links = ''.join(f'<a href="{h}">{t}</a>' for h, t in allp)
     games = ''.join(f'<a href="/{g["slug"]}">{g["short"]}</a>' for g in GAMES)
     return f'''<footer class="site-foot"><nav class="foot-links" aria-label="Crest Studio pages">{links}</nav>
-<nav class="foot-links" aria-label="Games"><a href="/games/">Medieval games</a>{games}<a href="/games/embed.html">Games for your website</a></nav>
+<nav class="foot-links" aria-label="Games"><a href="/games/">Medieval games</a>{games}<a href="/games/embed.html">Games for your website</a><a href="/blog/">Blog</a></nav>
 <p><a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/privacy.html#analytics">Privacy choices</a> · <a href="/refunds.html">Refunds</a> · <a href="/advertise.html">Advertise</a> · <a href="mailto:hello@usurp.games">hello@usurp.games</a></p>
 <p>Crest Studio by Usurp · Operated by Prakhar Murary (Murary Studios), Jaipur, Rajasthan, India · <a href="/realm.html">Usurp, the game (prototype)</a></p></footer>'''
 
@@ -1194,6 +1195,62 @@ def tafl_figs():
     return f'<h2 class="gilt" style="margin-top:22px">The rules in pictures</h2><div class="rules-figs">{cells}</div>'
 
 
+def morris_svg(title, pieces, arrows=(), mill=(), taken=()):
+    """A Nine Men's Morris rules diagram. Points are (ring, k): ring 0 outer to 2 inner, k 0-7 clockwise from the top-left
+    corner, as in games/morris.js. pieces: {(ring, k): 'w'|'b'}; arrows: moves; mill: points to join with a gold line."""
+    C, M = 30, 18
+    sz = 6 * C + 2 * M
+    RING = [(0, 0), (3, 0), (6, 0), (6, 3), (6, 6), (3, 6), (0, 6), (0, 3)]
+    def xy(r, k):
+        gx, gy = RING[k]
+        ix = r if gx == 0 else 6 - r if gx == 6 else 3
+        iy = r if gy == 0 else 6 - r if gy == 6 else 3
+        return M + ix * C, M + iy * C
+    ln = 'stroke="#2a1a0e" stroke-width="3" fill="none"'
+    out = [f'<svg viewBox="0 0 {sz} {sz}" width="{sz}" height="{sz}" role="img" aria-label="{E(title)}">', f'<rect width="{sz}" height="{sz}" fill="#c69a60"/>']
+    for r in range(3):
+        a, b = M + r * C, M + (6 - r) * C
+        out.append(f'<rect x="{a}" y="{a}" width="{b - a}" height="{b - a}" {ln}/>')
+    out.append(f'<path d="M{M + 3 * C} {M}V{M + 2 * C}M{M + 3 * C} {M + 4 * C}V{M + 6 * C}M{M} {M + 3 * C}H{M + 2 * C}M{M + 4 * C} {M + 3 * C}H{M + 6 * C}" {ln}/>')
+    for r in range(3):
+        for k in range(8):
+            x, y = xy(r, k)
+            out.append(f'<circle cx="{x}" cy="{y}" r="4" fill="#2a1a0e"/>')
+    if mill:
+        (x0, y0), (x1, y1) = xy(*mill[0]), xy(*mill[-1])
+        out.append(f'<path d="M{x0} {y0}L{x1} {y1}" stroke="#ffd76a" stroke-width="12" stroke-linecap="round" opacity=".75"/>')
+    for (r, k), c in pieces.items():
+        x, y = xy(r, k)
+        fill, ring = {'w': ('#efe6d0', '#7a1020'), 'b': ('#1d1915', '#c9a84f')}[c]
+        op = ' opacity=".45"' if (r, k) in taken else ''
+        out.append(f'<g{op}><circle cx="{x}" cy="{y + 2}" r="11" fill="rgba(0,0,0,.35)"/><circle cx="{x}" cy="{y}" r="11" fill="{fill}" stroke="#2a1a0e" stroke-width="1.5"/>'
+                   f'<circle cx="{x}" cy="{y}" r="7" fill="none" stroke="{ring}" stroke-width="2"/></g>')
+        if (r, k) in taken:
+            out.append(f'<path d="M{x-10} {y-10}L{x+10} {y+10}M{x+10} {y-10}L{x-10} {y+10}" stroke="#c8312f" stroke-width="4" stroke-linecap="round"/>')
+    for a, b in arrows:
+        (x0, y0), (x1, y1) = xy(*a), xy(*b)
+        L = ((x1 - x0) ** 2 + (y1 - y0) ** 2) ** 0.5
+        ux, uy = (x1 - x0) / L, (y1 - y0) / L
+        sx, sy, ex, ey = x0 + ux * 13, y0 + uy * 13, x1 - ux * 9, y1 - uy * 9
+        out.append(f'<path d="M{sx:.1f} {sy:.1f}L{ex:.1f} {ey:.1f}" stroke="#1f4e8a" stroke-width="3.5" stroke-linecap="round"/>'
+                   f'<path d="M{ex + ux * 7:.1f} {ey + uy * 7:.1f}L{ex - uy * 6:.1f} {ey + ux * 6:.1f}L{ex + uy * 6:.1f} {ey - ux * 6:.1f}Z" fill="#1f4e8a"/>')
+    out.append('</svg>')
+    return ''.join(out)
+
+
+def blog_figs():
+    fig = lambda items: '<div class="rules-figs">' + ''.join(f'<figure>{svg}<figcaption><b>{E(t)}.</b> {E(c)}</figcaption></figure>' for t, c, svg in items) + '</div>'
+    return {
+        'mill': fig([('A mill', 'Light completes three in a row along the top line, so light takes one dark piece that is not in a mill.',
+                      morris_svg('A mill on the top line, and the dark piece it takes', {(0, 0): 'w', (0, 1): 'w', (0, 2): 'w', (1, 5): 'b', (2, 3): 'b'}, mill=[(0, 0), (0, 2)], taken={(1, 5)}))]),
+        'slide': fig([('Sliding', 'In the moving phase a piece slides along a line to the next empty point. This one on the middle square can go four ways.',
+                       morris_svg('A piece with four places to slide', {(1, 1): 'w', (0, 5): 'b', (2, 7): 'b'}, arrows=[((1, 1), (0, 1)), ((1, 1), (2, 1)), ((1, 1), (1, 0)), ((1, 1), (1, 2))]))]),
+        'fly': fig([('Flying', 'Down to three pieces, dark may move to any empty point. Here it flies across the board to close a mill.',
+                     morris_svg('A dark piece flying across the board to complete a mill', {(0, 4): 'b', (0, 5): 'b', (2, 1): 'b', (1, 1): 'w', (1, 3): 'w', (2, 5): 'w'}, arrows=[((2, 1), (0, 6))], mill=[(0, 4), (0, 6)]))]),
+        'tafl': tafl_figs().split('</h2>', 1)[1],   # the rules figures from the game page, without their heading
+    }
+
+
 GAMES_LD_PUB = {'@type': 'Organization', 'name': 'Usurp (Murary Studios)', 'url': f'{SITE}/'}
 for _G in GAMES:
     if _G['id'] == 'tafl':
@@ -1373,7 +1430,10 @@ def games_hub():
              '<p style="margin-top:14px"><a class="btn" href="/crest.html">Design my coat of arms</a></p>'
              '<h2 class="gilt" style="margin-top:26px">Put a game on your website</h2>'
              '<p>Run a blog, a class page or a club site? Every game can sit on your page for free with one line of code, and it works on phones. '
-             '<a href="/games/embed.html">Get the code</a>.</p></section>'
+             '<a href="/games/embed.html">Get the code</a>.</p>'
+             '<h2 class="gilt" style="margin-top:26px">From the blog</h2><ul>'
+             + ''.join(f'<li><a href="/{q["slug"]}">{E(q["h1"])}</a></li>' for q in BLOG.POSTS) +
+             '</ul><p style="margin-top:10px"><a href="/blog/">All posts</a></p></section>'
              '<div class="ad-slot" data-ad-slot></div>')
     body += faq_html(faqs)
     write_page(p, body)
@@ -1526,6 +1586,60 @@ def advertise():
     write_page(p, body)
 
 
+BLOG_PUB = {'@type': 'Organization', 'name': 'Usurp (Murary Studios)', 'url': f'{SITE}/', 'logo': {'@type': 'ImageObject', 'url': f'{SITE}/img/app/apple-touch-icon.png'}}
+
+
+def blog_crumbs(post=None):
+    items = [{'@type': 'ListItem', 'position': 1, 'name': 'Crest Studio', 'item': f'{SITE}/'},
+             {'@type': 'ListItem', 'position': 2, 'name': 'Blog', 'item': f'{SITE}/blog/'}]
+    if post:
+        items.append({'@type': 'ListItem', 'position': 3, 'name': post['h1'], 'item': page_url(post['slug'])})
+    return {'@type': 'BreadcrumbList', 'itemListElement': items}
+
+
+def blog_play(gid):
+    G = next(g for g in GAMES if g['id'] == gid)
+    return (f'<a class="blog-play" href="/{G["slug"]}"><img src="/img/games/{G["id"]}-400.webp" width="400" height="533" loading="lazy" decoding="async" alt="">'
+            f'<span><b>Play {E(G["name"])}</b><span>{E(G["card"])} Free in your browser, no download.</span><em class="btn">Play now</em></span></a>')
+
+
+def blog_post(post, figs):
+    G = next(g for g in GAMES if g['id'] == post['game'])
+    p = dict(slug=post['slug'], h1=post['h1'], og=post['og'], og_title=post['og_title'], title=post['title'], desc=post['desc'], no_related=True,
+             og_alt=f'{G["name"]}, a free medieval game', head_extra=f'<link rel="stylesheet" href="{ver("/games/games.css")}"><link rel="stylesheet" href="{ver("/blog.css")}">')
+    art = {'@type': 'Article', 'headline': post['h1'], 'description': post['desc'], 'datePublished': BLOG.DATE, 'dateModified': BLOG.DATE,
+           'author': GAMES_LD_PUB, 'publisher': BLOG_PUB, 'image': f'{SITE}/img/games/{G["id"]}.webp', 'mainEntityOfPage': page_url(post['slug']),
+           'inLanguage': 'en', 'about': {'@type': 'VideoGame', 'name': G['name'], 'url': page_url(G['slug'])}}
+    p['ld'] = {'@context': 'https://schema.org', '@graph': [art, blog_crumbs(post)]}
+    body = re.sub(r'\{\{fig:(\w+)\}\}', lambda m: figs[m.group(1)], post['body'])
+    body = re.sub(r'\{\{play:(\w+)\}\}', lambda m: blog_play(m.group(1)), body)
+    others = ''.join(f'<li><a href="/{q["slug"]}">{E(q["h1"])}</a></li>' for q in BLOG.POSTS if q is not post)
+    day = datetime.date.fromisoformat(BLOG.DATE).strftime('%-d %B %Y')
+    html_ = (f'<article class="sec blog-post"><p class="eyebrow"><a href="/blog/">Blog</a> · <time datetime="{BLOG.DATE}">{day}</time></p>'
+             f'<h1 class="gilt">{E(post["h1"])}</h1><p class="lede">{E(post["lede"])}</p>{body}</article>'
+             f'<section class="sec"><h2 class="gilt">More from the blog</h2><ul>{others}</ul>'
+             '<p style="margin-top:14px"><a href="/games/">All our free medieval games</a></p></section>')
+    write_page(p, html_)
+
+
+def blog_pages():
+    figs = blog_figs()
+    for post in BLOG.POSTS:
+        blog_post(post, figs)
+    p = dict(slug='blog/index.html', h1='Blog: Medieval Games, Rules and History', og='games', og_title='The Usurp blog: rules, history and game nights',
+             title='Blog: How to Play Medieval Board Games, and Game Night Ideas | Usurp',
+             desc="Rules guides for Nine Men's Morris and Viking chess, the history behind the games, and how to host a game night with The Usurper.",
+             no_related=True, head_extra=f'<link rel="stylesheet" href="{ver("/games/games.css")}"><link rel="stylesheet" href="{ver("/blog.css")}">')
+    items = {'@type': 'ItemList', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'url': page_url(q['slug']), 'name': q['h1']} for i, q in enumerate(BLOG.POSTS)]}
+    p['ld'] = {'@context': 'https://schema.org', '@graph': [{'@type': 'Blog', 'name': 'Usurp blog', 'url': f'{SITE}/blog/', 'description': p['desc'], 'publisher': BLOG_PUB}, blog_crumbs(), items]}
+    cards = ''.join(f'<a class="blog-card" href="/{q["slug"]}"><img src="/img/games/{q["game"]}-400.webp" width="400" height="533" loading="lazy" decoding="async" alt="">'
+                    f'<span><b>{E(q["h1"])}</b><span>{E(q["desc"])}</span></span></a>' for q in BLOG.POSTS)
+    body = hero('Rules, history and game nights', 'The Usurp Blog', 'How to play the old games on this site, where they come from, and how to get your friends playing.',
+                cta_href='/games/', cta='Play the games')
+    body += f'<section class="sec"><div class="blog-list">{cards}</div></section>'
+    write_page(p, body)
+
+
 def sitemap_and_llms():
     pages = [('index.html', '1.0'), ('crest.html', '0.9')] + [(s, '0.8') for s, _, _ in PAGES_INDEX if s != 'index.html'] + [('terms.html', '0.2'), ('privacy.html', '0.2'), ('refunds.html', '0.2')]
     def imgs(slug):
@@ -1553,7 +1667,7 @@ def sitemap_and_llms():
 
 
 if __name__ == '__main__':
-    for fn in (home, surname, quiz, ideas, family, dnd, wedding, clan, school, mottos, houses, meanings, templates, games_pages, advertise, stats_page):
+    for fn in (home, surname, quiz, ideas, family, dnd, wedding, clan, school, mottos, houses, meanings, templates, games_pages, blog_pages, advertise, stats_page):
         fn()
     for sp in SPECS:
         spec_page(sp)

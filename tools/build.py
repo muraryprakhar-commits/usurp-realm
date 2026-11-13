@@ -747,7 +747,8 @@ def home():
 <p class="lede">Type your last name and see six crests made for your family. Choose from 50 heraldic emblems, from lions and eagles to oak trees and Celtic crosses, and learn what every color and symbol means.</p>
 <form class="surname-form" data-form onsubmit="return false"><label class="fld"><span>Your last name</span><input type="text" maxlength="30" data-surname autocomplete="family-name" placeholder="Carter"></label>
 <button class="btn big" type="submit" data-go>Show my crests</button></form>
-<p class="hh-alt">or <a href="/crest.html">start from scratch in the studio</a> · <a href="/coat-of-arms-quiz.html">take the 2-minute quiz</a></p></div>
+<p class="hh-alt">or <a href="/crest.html">start from scratch in the studio</a> · <a href="/coat-of-arms-quiz.html">take the 2-minute quiz</a></p>
+<p class="hh-alt">Here for the games? <a href="/games/" data-home-games>Play free medieval games</a>. No account needed.</p></div>
 <div class="hh-art">{hero_svg}</div></section>
 <ul class="trust"><li>Free to design</li><li>No account</li><li>Instant download</li><li>Print anywhere</li><li>14-day refunds</li></ul>
 <section class="gen" aria-label="Crests for your last name"><p class="center muted-s" data-status>Six ideas for "Carter". Type your own last name above.</p></section>

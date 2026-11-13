@@ -84,6 +84,7 @@ SPECS = [
 <h3>Make it readable at 32 pixels</h3><p>A logo spends most of its life small: a browser tab, a map pin, a social avatar. Pick one bold emblem and two strongly contrasting colors. Heraldry's own rule helps here: put a metal (gold or silver) against a color (red, blue, green, purple or black). The kit's shield-only files exist for the smallest sizes.</p>
 <h3>Let the emblem hint at what you do</h3><p>A sheaf of wheat for a brewery or bakery, a key for an inn or a locksmith, a crescent or sun for a coffee shop that opens early, a lion, eagle or raven for a team, an open book for a bookshop, crossed swords for a barbershop, scales for a law firm. There are 50 emblems in the studio. Or use your initial, which never goes out of date. The <a href="/heraldry-symbols-and-meanings.html">heraldry meanings guide</a> explains the traditional symbolism of each.</p>
 <h3>Keep the name short</h3><p>Two or three words sit at full size across the top of the crest. Put a longer tagline in the motto ribbon instead.</p>
+<p>Wondering whether you need a coat of arms or a logo at all? The <a href="/coat-of-arms-vs-crest.html">coat of arms vs crest vs logo guide</a> explains the difference.</p>
 <div class="callout"><b>Before you print a thousand cups:</b> a tool-made design is not exclusive, because someone else can make something similar. If the logo matters to your business, search existing trademarks in your country and take local advice before you register it.</div></section>
 <section class="sec"><h2 class="gilt">Who uses crest logos</h2><ul>
 <li>Breweries, distilleries, coffee roasters and bakeries that want a heritage feel</li>
@@ -299,7 +300,7 @@ SPECS = [
                   crest('The Duncan Family', 'Ever Onward', VERT, OR, GOLD_LIGHT, 'plain', 'stag')],
         body='''<section class="sec"><h2 class="gilt">How Scottish heraldry really works</h2>
 <p>Scotland takes heraldry more seriously than anywhere else. Coats of arms there are regulated by the Court of the Lord Lyon, and each one belongs to a single person. A clan chief's arms belong to the chief alone.</p>
-<p>What clan members may wear is the <b>crest badge</b>: the chief's crest (the figure that sits above the shield) inside a strap and buckle bearing the chief's motto. The badge shows that you belong to the clan; it is not your own coat of arms.</p>
+<p>What clan members may wear is the <b>crest badge</b>: the chief's crest (the figure that sits above the shield) inside a strap and buckle bearing the chief's motto. The badge shows that you belong to the clan; it is not your own coat of arms. For how the crest, the shield and the rest of a coat of arms fit together, see <a href="/coat-of-arms-vs-crest.html">coat of arms vs crest</a>.</p>
 <p>So a Crest Studio design is decorative art for your home, gifts and gatherings, not a grant of arms, and it should not copy a chief's arms or crest. If you want official arms of your own, you can petition the Lord Lyon.</p></section>
 <section class="sec"><h2 class="gilt">Scottish symbols for your crest</h2><ul>
 <li><b>Thistle:</b> the national flower of Scotland, standing for courage and defiance. Legend says a barefoot Norse raider stepped on one and cried out, warning the Scots.</li>
@@ -1230,5 +1231,55 @@ SPECS = [
               ('What is the traditional first anniversary gift?', 'Paper is the traditional theme for the first year. A printed and framed crest, together with its certificate of arms, fits that theme well.'),
               ('How do you put two family names on one coat of arms?', 'The traditional way is impalement: the shield is split down the middle (per pale) with one family on each half. In Crest Studio, choose the Per pale division, give each half a color, and put both names on the name line.'),
               ('Is this our official or inherited coat of arms?', 'No. It is an original design in the style of heraldry that you create, not a historical coat of arms or an official grant of arms. Many couples like that it describes their own marriage rather than a distant ancestor.')],
+    ),
+    dict(
+        slug='coat-of-arms-vs-crest.html', cta_href='/crest.html', short='Coat of arms vs crest', blurb='Which word means what, and when a logo fits', og='versus',
+        h1='Coat of Arms vs Crest', h1_html='Coat of Arms vs Family Crest vs Logo: What Is the Difference?',
+        title='Coat of Arms vs Crest vs Logo: The Difference Explained | Crest Studio',
+        og_title='Coat of arms vs crest vs logo: the difference explained',
+        desc='A coat of arms is the design on the shield. A crest is the figure on top of the helmet. A logo is a brand mark. Here is how the words differ, why "family crest" stuck, and which one you need.',
+        eyebrow='A plain-English guide to heraldic words',
+        lede='People say "family crest" when they mean "coat of arms," and businesses call any shield-shaped logo a crest. Heralds use each word for something specific. Here is what each one means, and which one fits what you want to make.',
+        cta='Design your coat of arms',
+        examples=[crest('The Harlow Family', 'Steady and True', AZURE, OR, GOLD_LIGHT, 'chevron', 'stag'),
+                  crest('House Marchetti', 'Ad Maiora', GULES, ARGENT, ARGENT, 'quarterly', 'tower'),
+                  crest('The Osei Family', 'Ex Unitate Vires', VERT, OR, GOLD_LIGHT, 'plain', 'tree'),
+                  crest('Northgate Rowing Club', 'Together Forward', SABLE, ARGENT, ARGENT, 'bend', 'anchor'),
+                  crest('Hearthstone Bakery', 'Fresh Since Dawn', PURPURE, OR, GOLD_LIGHT, 'fess', 'wheat'),
+                  crest('The Lindqvist Family', 'Fidelis et Constans', MURREY, OR, GOLD_LIGHT, 'saltire', 'key')],
+        body='''<section class="sec"><h2 class="gilt">The short answer</h2>
+<ul><li><b>Coat of arms:</b> the design on the shield, with its colors, divisions and emblems. In heraldry this is "the arms."</li>
+<li><b>Crest:</b> strictly, only the figure that sits on top of the helmet above the shield, such as a lion's head or an arm holding a sword. It is one part of a full display, not the whole thing.</li>
+<li><b>Achievement:</b> the heralds' word for the complete picture: shield, helmet, crest, mantling, motto and, for some arms, supporters.</li>
+<li><b>Logo:</b> a mark that identifies a business, team or product. A logo can borrow the look of heraldry, but it follows trademark law and design taste rather than heraldic rules.</li></ul>
+<p>In everyday speech "family crest" and "coat of arms" are used as if they mean the same thing, and nobody will misunderstand you. If you are talking to a genealogist, an engraver or a heraldry enthusiast, though, the difference matters.</p></section>
+<section class="sec"><h2 class="gilt">Parts of a full coat of arms</h2>
+<p>These are the parts of a full achievement, and the name of each:</p>
+<ol><li><b>Shield (escutcheon):</b> the heart of it all. If a design has only one part, it is this one.</li>
+<li><b>Helm:</b> a helmet set above the shield. Its style often signaled rank in older traditions.</li>
+<li><b>Mantling:</b> the leafy, scalloped cloth that flows down from the helm on both sides, usually in the main color and metal of the arms.</li>
+<li><b>Torse (wreath):</b> a twisted roll of cloth around the base of the crest, where it meets the helm.</li>
+<li><b>Crest:</b> the figure on top of the torse. This is the part that gave the whole thing its popular name.</li>
+<li><b>Motto:</b> a short phrase on a scroll. English arms usually place it below the shield; Scottish arms usually place it on a scroll above the crest.</li>
+<li><b>Supporters:</b> a pair of figures, often animals, standing either side and holding the shield up. They are granted only in particular cases, which is why you see them on royal, civic and noble arms.</li></ol>
+<div class="callout"><b>In Crest Studio:</b> every design has a shield, a name and a motto ribbon. Open "Make it grand" to add a knight's helm, crown or coronet above the shield and a pair of supporters (lions, unicorns, griffins, dragons or bears).</div></section>
+<section class="sec"><h2 class="gilt">Where the crest came from, and why the word stuck</h2>
+<p>Crests began on real helmets. Knights of the 12th and 13th centuries wore metal fans on their helms that could be painted, and by the late 13th and early 14th centuries these had grown into three-dimensional figures, especially for tournaments. Because the crest sat on a helmet, it was tied to people who fought: traditionally women (other than reigning queens) and clergy did not use crests.</p>
+<p>Later, in the age of paper heraldry, people began using the crest on its own: on signet rings, silver, bookplates and writing paper. A small figure on a ring was easier to engrave than a full shield with all its colors. That habit of showing the crest alone is why "crest" drifted into meaning the whole coat of arms in everyday English. The Heraldry Society still says plainly that there is no such thing as a family crest: the crest is one part of a coat of arms.</p>
+<p>If you want your own design on a ring or a seal today, the same logic applies. A simple shield with one bold emblem cuts well at small sizes; see the <a href="/signet-ring-crest.html">signet ring crest guide</a>.</p></section>
+<section class="sec"><h2 class="gilt">Is there a coat of arms for my surname?</h2>
+<p>Usually not, and this is the most common misunderstanding of all. In the British tradition, arms are granted to one named person and passed to that person's heirs. They do not belong to everyone who shares a surname. A shop that sells "the Smith family coat of arms" is showing you arms that belonged to one Smith, who may not be related to you at all.</p>
+<p>Scotland has a related custom that causes confusion. Clan members may wear a <b>crest badge</b>: the chief's crest inside a strap and buckle bearing the chief's motto. It shows membership of the clan, but it is not the wearer's own coat of arms. The <a href="/scottish-family-crest.html">Scottish family crest guide</a> explains it in more detail.</p>
+<p>Who grants arms depends on the country. In England, Wales and Northern Ireland, the Crown's heraldic authority is exercised through the College of Arms; in Scotland, by the Court of the Lord Lyon. The United States has no government heraldic authority, and Americans are legally free to adopt arms of their own design. That is what an original design from a tool like Crest Studio is: new arms in the heraldic style, not an inherited grant.</p></section>
+<section class="sec"><h2 class="gilt">Coat of arms or logo: which do you need?</h2>
+<h3>Choose a coat of arms when the subject is a person or a family</h3><p>A coat of arms suits something meant to last and be passed on: a family, a couple, a new baby, a household. The traditional meanings of colors and emblems give it a story you can explain, which is why a certificate describing the design makes a good gift. The <a href="/heraldry-symbols-and-meanings.html">symbols and meanings guide</a> covers every color and emblem.</p>
+<h3>Choose a crest logo when the subject is a brand</h3><p>A business, club or team needs a mark that reads at the size of a browser tab and works in one color on a cup or a shirt. That is a logo job, even if the logo looks like heraldry. Keep it to one bold emblem and two contrasting colors, and check existing trademarks before you register it. The <a href="/crest-logo-maker.html">crest logo maker guide</a> explains what the $29 Logo Kit includes: transparent files, a shield-only mark, favicons and social banners.</p>
+<h3>Either way, the rule of tincture helps</h3><p>Heraldry's oldest design rule is to put a metal (gold or silver) against a color (red, blue, green, purple or black), never color on color or metal on metal. It is a contrast rule, and it is just as useful for a coffee shop logo as for a family shield. All the examples on this page follow it.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html">Design your coat of arms</a></p></section>''',
+        faqs=[('Is a family crest the same as a coat of arms?', 'Not strictly. The coat of arms is the design on the shield, and the crest is only the figure on top of the helmet above it. In everyday speech people use "family crest" for the whole coat of arms, and most people will understand you either way.'),
+              ('What is the difference between a crest and a logo?', 'A crest is a part of a heraldic coat of arms. A logo is a brand mark for a business, team or product. Many logos borrow the shape of a shield or crest, but they are judged by how well they identify the brand at small sizes, and protected through trademark law rather than heraldry.'),
+              ('Does every surname have a coat of arms?', 'No. In the British tradition arms are granted to an individual and pass to that person\'s heirs, not to everyone with the same surname. A coat of arms sold for a surname belonged to one particular family line, which may not be yours.'),
+              ('Can I make my own coat of arms?', 'Yes. In the United States there is no heraldic authority, and people are free to adopt arms of their own design. In countries that do regulate arms, an original design is still fine as art or a gift. Crest Studio designs are original, not historical or official grants of arms.'),
+              ('Where does the motto go on a coat of arms?', 'In English heraldry the motto usually sits on a scroll below the shield. In Scottish heraldry it usually sits on a scroll above the crest. In Crest Studio the motto goes on the ribbon below the shield.')],
     ),
 ]

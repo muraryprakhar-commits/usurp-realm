@@ -29,7 +29,7 @@ Pick the angle a real searcher has; keep every claim checkable (see the rules in
 - [x] Anniversary crest gift (built 12 Nov as anniversary-crest-gift.html) (keyword: anniversary gift personalized): per pale union of two names, year as motto
 - [ ] Father's Day crest gift (seasonal: publish by mid May)
 - [ ] Mother's Day crest gift (seasonal: publish by mid April)
-- [ ] Coat of arms vs family crest vs logo explainer (keyword: coat of arms vs crest)
+- [x] Coat of arms vs family crest vs logo explainer (built 13 Nov as coat-of-arms-vs-crest.html) (keyword: coat of arms vs crest)
 - [ ] How to read a blazon (keyword: how to blazon a coat of arms): explain tinctures, divisions, charges with examples from the Studio's own blazon output
 - [ ] Heraldic mottos in English (keyword: family motto ideas): 40 original English mottos by theme, each linking into the Studio
 - [ ] Coat of arms for writers and worldbuilders (keyword: fantasy heraldry for novels)

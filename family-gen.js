@@ -48,6 +48,11 @@ function go(n) {
 }
 $('[data-form]').addEventListener('submit', () => go($('[data-surname]').value));
 $('[data-more]').addEventListener('click', () => { page++; show(); $('[data-results]').scrollIntoView({ behavior:'smooth', block:'start' }); });
+// A static homepage link stays usable even if analytics is unavailable.
+const gamesLink = $('[data-home-games]');
+if (gamesLink) gamesLink.addEventListener('click', () => {
+  if (window.clarity) try { window.clarity('event', 'home_games_click'); } catch (e) {}
+});
 const q = new URLSearchParams(location.search).get('name');
 if (q) { $('[data-surname]').value = clean(q); go(q); }
 })();

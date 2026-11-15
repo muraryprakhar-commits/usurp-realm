@@ -33,7 +33,7 @@ SPECS = [
         body='''<section class="sec"><h2 class="gilt">Why a family crest makes a good gift</h2>
 <p>Most gifts are things. A crest is a little piece of identity: it takes what a family cares about and turns it into one emblem they can hang on the wall, print on mugs or pass down. Because you choose every part of it, it says "I thought about you" in a way a gift card never does.</p>
 <ul><li><b>Personal.</b> Their family name, colors with meaning, an emblem that fits them and a motto they actually say.</li>
-<li><b>Explained.</b> The certificate of arms spells out the design in heraldic language (the blazon) and in plain English, so it starts conversations.</li>
+<li><b>Explained.</b> The certificate of arms spells out the design in heraldic language (the <a href="/how-to-read-a-blazon.html">blazon</a>) and in plain English, so it starts conversations.</li>
 <li><b>Instant.</b> Files download the moment you pay, which makes it one of the few personalized gifts that works the night before.</li>
 <li><b>Prints anywhere.</b> Any local print shop, office store photo counter or online printer can print the files. No shipping from us.</li></ul></section>
 <section class="sec"><h2 class="gilt">Gift ideas by occasion</h2>
@@ -1274,12 +1274,89 @@ SPECS = [
 <section class="sec"><h2 class="gilt">Coat of arms or logo: which do you need?</h2>
 <h3>Choose a coat of arms when the subject is a person or a family</h3><p>A coat of arms suits something meant to last and be passed on: a family, a couple, a new baby, a household. The traditional meanings of colors and emblems give it a story you can explain, which is why a certificate describing the design makes a good gift. The <a href="/heraldry-symbols-and-meanings.html">symbols and meanings guide</a> covers every color and emblem.</p>
 <h3>Choose a crest logo when the subject is a brand</h3><p>A business, club or team needs a mark that reads at the size of a browser tab and works in one color on a cup or a shirt. That is a logo job, even if the logo looks like heraldry. Keep it to one bold emblem and two contrasting colors, and check existing trademarks before you register it. The <a href="/crest-logo-maker.html">crest logo maker guide</a> explains what the $29 Logo Kit includes: transparent files, a shield-only mark, favicons and social banners.</p>
-<h3>Either way, the rule of tincture helps</h3><p>Heraldry's oldest design rule is to put a metal (gold or silver) against a color (red, blue, green, purple or black), never color on color or metal on metal. It is a contrast rule, and it is just as useful for a coffee shop logo as for a family shield. All the examples on this page follow it.</p>
+<h3>Either way, the rule of tincture helps</h3><p>Heraldry's oldest design rule is to put a metal (gold or silver) against a color (red, blue, green, purple or black), never color on color or metal on metal. It is a contrast rule, and it is just as useful for a coffee shop logo as for a family shield. All the examples on this page follow it. To describe a design in heraldic words, see <a href="/how-to-read-a-blazon.html">how to read a blazon</a>.</p>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html">Design your coat of arms</a></p></section>''',
         faqs=[('Is a family crest the same as a coat of arms?', 'Not strictly. The coat of arms is the design on the shield, and the crest is only the figure on top of the helmet above it. In everyday speech people use "family crest" for the whole coat of arms, and most people will understand you either way.'),
               ('What is the difference between a crest and a logo?', 'A crest is a part of a heraldic coat of arms. A logo is a brand mark for a business, team or product. Many logos borrow the shape of a shield or crest, but they are judged by how well they identify the brand at small sizes, and protected through trademark law rather than heraldry.'),
               ('Does every surname have a coat of arms?', 'No. In the British tradition arms are granted to an individual and pass to that person\'s heirs, not to everyone with the same surname. A coat of arms sold for a surname belonged to one particular family line, which may not be yours.'),
               ('Can I make my own coat of arms?', 'Yes. In the United States there is no heraldic authority, and people are free to adopt arms of their own design. In countries that do regulate arms, an original design is still fine as art or a gift. Crest Studio designs are original, not historical or official grants of arms.'),
               ('Where does the motto go on a coat of arms?', 'In English heraldry the motto usually sits on a scroll below the shield. In Scottish heraldry it usually sits on a scroll above the crest. In Crest Studio the motto goes on the ribbon below the shield.')],
+    ),
+    dict(
+        slug='how-to-read-a-blazon.html', cta_href='/crest.html', short='How to read a blazon', blurb='The heraldic way to describe a shield in words', og='blazon',
+        h1='How to Read a Blazon', h1_html='How to Read (and Write) a Blazon',
+        title='How to Blazon a Coat of Arms: Reading Heraldic Descriptions | Crest Studio',
+        og_title='How to read and write a blazon, the heraldic description of a coat of arms',
+        desc='A blazon describes a coat of arms in a few words: field, ordinary, charge, tincture. Learn the order, the color names, the beast poses and the left-right rule, with worked examples.',
+        eyebrow='A plain-English guide to heraldic language',
+        lede='"Azure, a chevron Argent, overall a mullet Argent." That line is a blazon: a complete description of a coat of arms, short enough to fit in a sentence and precise enough that someone who has never seen the shield can draw it. Here is how to read one, word by word.',
+        cta='Design a crest and see its blazon',
+        examples=[crest('The Ashford Family', 'Fortis et Liber', GULES, OR, GOLD_LIGHT, 'plain', 'lion'),
+                  crest('The Brennan Family', 'Lux et Veritas', AZURE, ARGENT, ARGENT, 'chevron', 'mullet'),
+                  crest('The Hollis Family', 'Steady and True', VERT, OR, GOLD_LIGHT, 'fess', 'stag'),
+                  crest('The Nakamura Family', 'Facta Non Verba', SABLE, OR, GOLD_LIGHT, 'bend', 'key'),
+                  crest('The Whitlock Family', 'Home Is Our Hearth', PURPURE, ARGENT, ARGENT, 'quarterly', 'tower'),
+                  crest('The Moreau Family', 'Ad Maiora', MURREY, OR, GOLD_LIGHT, 'saltire', 'crown')],
+        body='''<section class="sec"><h2 class="gilt">What a blazon is</h2>
+<p>A blazon is the formal written description of a coat of arms. Heralds wrote arms down in words long before anyone could print a color picture, so the language had to be exact: anyone reading the blazon should be able to draw the shield correctly. Turning the words back into a picture is called <i>emblazoning</i>.</p>
+<p>The vocabulary looks strange because much of it is old French. English heralds of the Middle Ages wrote in Anglo-Norman French, and the word "blazon" itself comes from the French <i>blason</i>. The style aims to be as short as possible, to leave no room for doubt, and to avoid repeating itself. Once you know the handful of rules below, most blazons read like a simple recipe.</p>
+<p>Every design you make in <a href="/crest.html">Crest Studio</a> shows its own blazon under the shield, updated as you change it, and the certificate of arms prints it in full. The six example crests on this page are shown with the exact blazons the Studio writes for them.</p></section>
+<section class="sec"><h2 class="gilt">The order: field, then ordinary, then charge</h2>
+<p>A blazon almost always follows the same order:</p>
+<ol><li><b>The field.</b> The background of the shield comes first, by its color, or by how it is divided, such as "Per pale" or "Quarterly".</li>
+<li><b>The main ordinary or charge.</b> Next comes the most important thing placed on the field, with its color after it: "a chevron Argent", "a lion rampant Or".</li>
+<li><b>Anything else.</b> Smaller charges, or a charge set on top of the ordinary, come last.</li></ol>
+<p>Notice that in English blazon the color usually follows the thing it describes: "a lion rampant Or" means a gold lion, not "an Or lion". For animals, the pose comes before the color, so "rampant" sits between "lion" and "Or".</p>
+<p>Here is the opening example, taken apart:</p>
+<ul><li><b>Azure,</b> the field is blue.</li>
+<li><b>a chevron Argent,</b> a silver band shaped like an upside-down V crosses it.</li>
+<li><b>overall a mullet Argent.</b> A silver star is placed over everything, on top of the chevron.</li></ul>
+<p>Older blazons sometimes avoid naming a color twice with phrases like "of the field" (the same color as the background) or "of the first" (the first color mentioned). The College of Arms now avoids these conventions, and the Studio always names each color in full, which is easier to read.</p></section>
+<section class="sec"><h2 class="gilt">The colors: tinctures, metals and stains</h2>
+<p>Heraldic colors are called <b>tinctures</b>, and each has a name of its own:</p>
+<ul><li><b>Metals:</b> Or (gold or yellow) and Argent (silver or white).</li>
+<li><b>Colors:</b> Gules (red), Azure (blue), Vert (green), Purpure (purple) and Sable (black).</li>
+<li><b>Stains:</b> rarer shades such as Murrey (a mulberry red), Sanguine (blood red) and Tenn&eacute; (orange-brown). They behave like colors.</li>
+<li><b>Proper:</b> a charge shown in its natural colors, like a brown owl or a green tree.</li></ul>
+<p>The <b>rule of tincture</b> says a metal should go on a color, or a color on a metal, never color on color or metal on metal. It is a contrast rule, so arms can be read from a distance. You can check it straight from a blazon: in "Sable, a bend Or" the gold bend sits on black, which passes.</p>
+<div class="callout"><b>Colors in black and white.</b> Engravers needed a way to show tinctures without paint. The system most used today was published in 1638 by Silvester Petra Sancta, an Italian Jesuit, using patterns of lines and dots: vertical lines for Gules, horizontal lines for Azure and crossed lines for Sable, for example. You will still see it on old bookplates, seals and coins.</div></section>
+<section class="sec"><h2 class="gilt">Divisions and ordinaries: "per fess" is not "a fess"</h2>
+<p>This is the distinction that trips up most beginners. A word with <b>"per"</b> in front of it describes how the field is <i>split</i>. The same word without "per" names a band <i>laid on top</i> of the field.</p>
+<ul><li><b>Per pale</b> splits the shield down the middle; <b>a pale</b> is a vertical stripe down the center.</li>
+<li><b>Per fess</b> splits the shield across the middle; <b>a fess</b> is a horizontal band across it.</li>
+<li><b>Per bend</b> splits it on the diagonal; <b>a bend</b> is a diagonal band from the top left (as you look at it) to the bottom right.</li>
+<li><b>A chevron</b> is an upside-down V, and <b>a saltire</b> is an X-shaped cross.</li>
+<li><b>Quarterly</b> divides the shield into four parts.</li></ul>
+<p>Those bands (fess, pale, bend, chevron, saltire, cross and a few others) are called <b>ordinaries</b>, and they are among the oldest elements in heraldry. When the Studio places an emblem on top of one, the blazon says "overall", as in "Vert, a fess Or, overall a stag's head caboshed Or".</p></section>
+<section class="sec"><h2 class="gilt">Left and right: dexter and sinister</h2>
+<p>Heraldry describes sides from the point of view of the person holding the shield, not the person looking at it. <b>Dexter</b> is the bearer's right, which is the viewer's left. <b>Sinister</b> is the bearer's left, the viewer's right. So "Per bend sinister" runs the other way from "Per bend", and a lion facing dexter looks toward your left as you view it, which is the usual direction.</p></section>
+<section class="sec"><h2 class="gilt">Poses and special words for charges</h2>
+<p>Charges, the emblems on the shield, come with their own words for position and shape. These are the ones you will meet most often, including every one the Studio uses:</p>
+<ul><li><b>Rampant:</b> standing on one hind leg, forepaws raised, as in "a lion rampant". A griffin in the same pose is <b>segreant</b>.</li>
+<li><b>Passant:</b> walking, with one forepaw raised.</li>
+<li><b>Displayed:</b> a bird facing out with wings spread, as in "an eagle displayed".</li>
+<li><b>Volant:</b> flying, as in "a bee volant".</li>
+<li><b>Caboshed:</b> an animal's head facing straight out, cut off with no neck showing, the usual way to show a stag's head.</li>
+<li><b>Couped</b> and <b>erased:</b> a head cut off cleanly, or torn off with a jagged edge.</li>
+<li><b>Erect:</b> upright, as in "a sword erect".</li>
+<li><b>Eradicated:</b> a tree shown torn up with its roots. <b>Slipped and leaved:</b> a plant with its stalk and leaves.</li>
+<li><b>Mullet:</b> a star. <b>Garb:</b> a sheaf of wheat. <b>Lymphad:</b> an old oared galley with a sail. <b>Decrescent:</b> a crescent moon, named for which way its horns point.</li></ul>
+<p>Numbers come before the charge, so a shield with three gold anchors on blue is "Azure, three anchors Or". The <a href="/heraldry-symbols-and-meanings.html">symbols and meanings guide</a> explains what each tincture and emblem has traditionally been said to stand for.</p></section>
+<section class="sec"><h2 class="gilt">Practice: read these six</h2>
+<p>Cover the pictures above and try to draw each shield from its blazon, then check:</p>
+<ol><li><b>Gules, a lion rampant Or.</b> A gold rearing lion on red.</li>
+<li><b>Azure, a chevron Argent, overall a mullet Argent.</b> A silver chevron on blue, with a silver star over it.</li>
+<li><b>Vert, a fess Or, overall a stag's head caboshed Or.</b> A gold band across green, with a front-facing gold stag's head over it.</li>
+<li><b>Sable, a bend Or, overall a key Or.</b> A gold diagonal band on black, with a gold key.</li>
+<li><b>Quarterly Purpure and Argent, a tower Argent.</b> A shield in four quarters of purple and silver, with a silver tower.</li>
+<li><b>Murrey, a saltire Or, overall a crown Or.</b> A gold X-shaped cross on mulberry red, with a gold crown.</li></ol>
+<p>A blazon describes only the arms. The motto, the helm and the name are not part of it, which is why two families can use the same motto on different shields. If you are unsure what to call your design in the first place, the <a href="/coat-of-arms-vs-crest.html">coat of arms vs crest guide</a> sorts out the words.</p>
+<div class="callout"><b>See your own blazon.</b> Open the Studio, choose a field color, a division and an emblem, and the blazon under the shield rewrites itself with every change. It is free to design, and the $9 set includes a certificate of arms with the blazon and its meaning in plain English.</div>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html">Design a crest and see its blazon</a></p></section>''',
+        faqs=[('What is a blazon in heraldry?', 'A blazon is the formal written description of a coat of arms, using heraldic terms for the colors, divisions and emblems. It is written so that someone who has never seen the arms could draw them correctly.'),
+              ('In what order is a coat of arms blazoned?', 'The field (background) comes first, then the main ordinary or charge with its color, then any other charges. For example, "Azure, a chevron Argent, overall a mullet Argent" names the blue field, then the silver chevron, then the silver star over it.'),
+              ('Why does the color come after the charge?', 'Blazon grew out of Anglo-Norman French, where an adjective usually follows its noun. So heralds write "a lion rampant Or" for a gold lion, with the pose before the color.'),
+              ('What do dexter and sinister mean?', 'Dexter is the right side of the shield from the point of view of the person holding it, which is the left side as you look at it. Sinister is the other side. Heraldic directions are always given from the bearer\'s point of view.'),
+              ('Does a blazon include the motto?', 'No. A blazon describes the arms on the shield. The motto, the helm, the crest and any supporters are described separately, if at all. Crest Studio adds a line about supporters when you choose them.')],
     ),
 ]

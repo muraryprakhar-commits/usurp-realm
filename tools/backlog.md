@@ -31,7 +31,7 @@ Pick the angle a real searcher has; keep every claim checkable (see the rules in
 - [ ] Mother's Day crest gift (seasonal: publish by mid April)
 - [x] Coat of arms vs family crest vs logo explainer (built 13 Nov as coat-of-arms-vs-crest.html) (keyword: coat of arms vs crest)
 - [x] How to read a blazon (built 15 Nov as how-to-read-a-blazon.html) (keyword: how to blazon a coat of arms): explain tinctures, divisions, charges with examples from the Studio's own blazon output
-- [ ] Heraldic mottos in English (keyword: family motto ideas): 40 original English mottos by theme, each linking into the Studio
+- [x] Heraldic mottos in English (built 16 Nov as family-motto-ideas.html) (keyword: family motto ideas): 40 original English mottos by theme, each linking into the Studio
 - [ ] Coat of arms for writers and worldbuilders (keyword: fantasy heraldry for novels)
 
 ## Spanish pages (new search market; write natively in neutral Latin American Spanish, not word-for-word translation)

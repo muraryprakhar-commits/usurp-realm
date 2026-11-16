@@ -45,7 +45,7 @@ SPECS = [
 <h3>Grandparents and family reunions</h3><p>A crest for the whole family tree, printed on the reunion banner and T-shirts, with a framed copy for the grandparents who started it all. The <a href="/family-reunion-shirt-design.html">family reunion T-shirt guide</a> explains what to ask the printer.</p>
 <h3>Father's Day, Mother's Day and birthdays</h3><p>A crest built around one person: their initial on the shield and a motto that is pure them. The same design can be engraved on a signet ring: see the <a href="/signet-ring-crest.html">signet ring crest guide</a>.</p></section>
 <section class="sec"><h2 class="gilt">How to give it</h2><ol>
-<li><b>Design it</b> in <a href="/crest.html">Crest Studio</a>. Need words? The <a href="/latin-motto-generator.html">Latin motto generator</a> has 50+ mottos with translations, and the <a href="/heraldry-symbols-and-meanings.html">meanings guide</a> explains every color and emblem.</li>
+<li><b>Design it</b> in <a href="/crest.html">Crest Studio</a>. Need words? The <a href="/latin-motto-generator.html">Latin motto generator</a> has 50+ mottos with translations, the <a href="/family-motto-ideas.html">family motto ideas page</a> has 40 in plain English, and the <a href="/heraldry-symbols-and-meanings.html">meanings guide</a> explains every color and emblem.</li>
 <li><b>Add the gift line.</b> Open "Giving it as a gift?" and type who it is for and who it is from. It prints on the certificate.</li>
 <li><b>Download the set</b> for $9: print art, certificate, profile picture and phone wallpaper.</li>
 <li><b>Print and frame.</b> The 4000 by 5000 px file prints at about 13 by 16 inches at full photo quality (300 pixels per inch), and comfortably at 16 by 20. The certificate is sized for US Letter.</li></ol>
@@ -1260,7 +1260,7 @@ SPECS = [
 <li><b>Mantling:</b> the leafy, scalloped cloth that flows down from the helm on both sides, usually in the main color and metal of the arms.</li>
 <li><b>Torse (wreath):</b> a twisted roll of cloth around the base of the crest, where it meets the helm.</li>
 <li><b>Crest:</b> the figure on top of the torse. This is the part that gave the whole thing its popular name.</li>
-<li><b>Motto:</b> a short phrase on a scroll. English arms usually place it below the shield; Scottish arms usually place it on a scroll above the crest.</li>
+<li><b>Motto:</b> a short phrase on a scroll. English arms usually place it below the shield; Scottish arms usually place it on a scroll above the crest. For ideas, see these <a href="/family-motto-ideas.html">40 English family mottos</a>.</li>
 <li><b>Supporters:</b> a pair of figures, often animals, standing either side and holding the shield up. They are granted only in particular cases, which is why you see them on royal, civic and noble arms.</li></ol>
 <div class="callout"><b>In Crest Studio:</b> every design has a shield, a name and a motto ribbon. Open "Make it grand" to add a knight's helm, crown or coronet above the shield and a pair of supporters (lions, unicorns, griffins, dragons or bears).</div></section>
 <section class="sec"><h2 class="gilt">Where the crest came from, and why the word stuck</h2>
@@ -1360,3 +1360,75 @@ SPECS = [
               ('Does a blazon include the motto?', 'No. A blazon describes the arms on the shield. The motto, the helm, the crest and any supporters are described separately, if at all. Crest Studio adds a line about supporters when you choose them.')],
     ),
 ]
+
+
+# Family motto ideas (built 16 Nov 2026). Each motto links into the Studio with ?motto= filled in.
+from urllib.parse import quote as _q
+
+_MOTTO_IDEAS = [
+    ('Courage and grit', 'For a family that faces hard things head on, or a team that never gives up a match.',
+     ['Bold in Heart, Kind in Hand', 'Stand Firm', 'Brave the Storm', 'Courage Before Comfort', 'We Do Not Turn Back']),
+    ('Family and togetherness', 'For reunions, grandparents, blended families and anyone whose motto is really about each other.',
+     ['Together We Rise', 'Many Branches, One Root', 'Home Is Who We Are', 'Always a Seat at Our Table', 'Love Holds Us Fast']),
+    ('Perseverance', 'For a family that built something slowly, or a couple who came through a hard year.',
+     ['Step by Step', 'Slow Roots, Strong Oaks', 'Rise Again', 'Endure and Grow', 'Keep the Fire Lit']),
+    ('Honesty and integrity', 'For a family business, a law office or a household that prizes keeping its word.',
+     ['Say It, Mean It, Do It', 'True to Our Word', 'Plain Speech, Honest Hands', 'Do Right Quietly', 'Truth Before Comfort']),
+    ('Hospitality and kindness', 'For the house where everyone ends up, an inn, a cafe or a housewarming gift.',
+     ['The Door Is Always Open', 'Bread for All Who Knock', 'Leave It Better', 'Light in the Window', 'Kindness Is Our Craft']),
+    ('Learning and curiosity', 'For teachers, book clubs, school houses and families of readers.',
+     ['Ask Better Questions', 'Always a Student', 'Read Widely, Think Freely', 'Wonder Is Our Compass', 'Learn, Then Teach']),
+    ('Faith and hope', 'For families whose faith is at the center, or who simply want a hopeful line.',
+     ['Hope Holds Fast', 'Grace Upon Grace', 'Morning Will Come', 'Faith Over Fear', 'Guided by Light']),
+    ('Just for fun', 'For pets, friend groups, game nights and gifts that are meant to make people laugh.',
+     ['Snacks Before Battle', 'Fashionably Late Since Forever', 'We Came, We Saw, We Napped', 'Coffee First, Glory Later', 'Loyal to the Last Biscuit']),
+]
+
+
+def _motto_sections():
+    out = []
+    for title, note, items in _MOTTO_IDEAS:
+        lis = ''.join(f'<li><a href="/crest.html?motto={_q(m)}">{m}</a></li>' for m in items)
+        out.append(f'<h3>{title}</h3><p>{note}</p><ul>{lis}</ul>')
+    return ''.join(out)
+
+
+SPECS.append(dict(
+    slug='family-motto-ideas.html', cta_href='/crest.html', short='Family motto ideas', blurb='40 English mottos by theme, one tap to try', og='motto',
+    h1='Family Motto Ideas', h1_html='Family Motto Ideas: 40 English Mottos for Your Crest',
+    title='Family Motto Ideas: 40 English Mottos for a Coat of Arms | Crest Studio',
+    og_title='Family motto ideas: 40 English mottos for your coat of arms',
+    desc='Forty short family motto ideas in plain English, grouped by theme, from courage to hospitality to just for fun. Tap any motto to try it on a crest, plus tips for writing your own.',
+    eyebrow='Plain English, no Latin dictionary needed',
+    lede='A motto is the line your family would say about itself if it only got one. Latin is traditional, but English mottos have a long history in heraldry too. Here are 40 to start from, grouped by theme. Tap any one to see it on a crest in the Studio.',
+    cta='Try a motto on your crest',
+    examples=[crest('The Abernathy Family', 'Many Branches, One Root', VERT, OR, GOLD_LIGHT, 'plain', 'tree'),
+              crest('The Delgado Family', 'The Door Is Always Open', GULES, OR, GOLD_LIGHT, 'chevron', 'key'),
+              crest('The Whitfield Family', 'Ask Better Questions', AZURE, ARGENT, ARGENT, 'fess', 'book'),
+              crest('The Kimura Family', 'Slow Roots, Strong Oaks', SABLE, OR, GOLD_LIGHT, 'bend', 'acorn'),
+              crest('House of Biscuit', 'Loyal to the Last Biscuit', PURPURE, OR, GOLD_LIGHT, 'plain', 'wolf')],
+    body="""<section class="sec"><h2 class="gilt">English mottos have a long history</h2>
+<p>Mottos are usually thought to have grown out of medieval war cries and rallying calls, the words a lord's followers shouted to find each other in battle. Over time they turned into short statements of what a family hoped for, believed in or wanted to be remembered for, written on a scroll with the coat of arms.</p>
+<p>Latin is the language most people picture, but it was never the only one. Mottos appear in French, English, Scots, Welsh, Irish and many other languages. In the large online catalog of heraldic mottos kept by Heraldry of the World, English is the second most common language after Latin. Modern institutions use English mottos too: the coat of arms of British Airways carries the motto <i>To Fly, To Serve</i>.</p>
+<p>English mottos have one big advantage: everyone who sees your crest knows what it says. Nobody has to ask for a translation at the family reunion.</p></section>
+<section class="sec"><h2 class="gilt">40 family motto ideas by theme</h2>
+<p>These are suggestions written as starting points, not historical mottos belonging to any family. Short phrases like these are bound to overlap with lines other people have used, and that is fine: a motto works because of what it means to you. Tap any motto to open the Studio with it already on the ribbon. Your other choices stay as they are.</p>
+""" + _motto_sections() + """</section>
+<section class="sec"><h2 class="gilt">How to write your own family motto</h2>
+<h3>Start with a sentence you already say</h3><p>The best mottos are often hiding in plain sight: the thing a grandparent always said, the line on the fridge, the words you use when someone in the family is having a hard week. Write down three or four of those, then cut each one to its core.</p>
+<h3>Keep it to two to six words</h3><p>A motto sits on a ribbon under the shield, so it has to read at the size of a framed print and of a profile picture. Short wins. Crest Studio allows up to 48 characters, but most of the mottos above are under 30, and they look better for it.</p>
+<h3>Use rhythm</h3><p>Pairs and contrasts stick in the memory: "Bold in Heart, Kind in Hand", "Slow Roots, Strong Oaks". Read it aloud. If it sounds like something you could say at a toast, it is working.</p>
+<h3>Decide how long it should last</h3><p>A crest for a wedding or a family tree will be looked at for decades, so a timeless line usually serves it best. A crest for a pet, a fantasy league or a group chat can be as silly as you like. The <a href="/pet-coat-of-arms.html">pet coat of arms guide</a> has more ideas in that spirit.</p>
+<h3>Match the emblem</h3><p>A motto and an emblem that echo each other make the whole design feel deliberate: a key with an open-door motto, an acorn or oak with a growth motto, a book with a learning motto. The <a href="/heraldry-symbols-and-meanings.html">symbols and meanings guide</a> explains what each color and emblem has traditionally stood for.</p></section>
+<section class="sec"><h2 class="gilt">English or Latin?</h2>
+<p>Choose Latin if you want the classic look and do not mind explaining it. Choose English if you want the words to land at once, or if the motto is a family saying that would lose its flavor in translation. Some families split the difference: a Latin motto on the crest and its English meaning on the certificate.</p>
+<p>If Latin appeals, the <a href="/latin-motto-generator.html">Latin motto generator</a> lists more than 50 established Latin phrases with their translations and sources, so you are not relying on a guessed translation.</p>
+<div class="callout"><b>Can you change it later?</b> In English heraldry a motto is not part of the grant of arms, and holders of arms may adopt or change it as they wish. Scottish heraldry is stricter: the motto is recorded with the arms and usually sits on a scroll above the crest. For an original design from the Studio, the motto is simply yours to choose and to change.</div>
+<p>When you have chosen, the motto prints on the ribbon of every file in the $9 set. If you are still unsure where the motto fits in a full coat of arms, the <a href="/coat-of-arms-vs-crest.html">coat of arms vs crest guide</a> names every part.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html">Try a motto on your crest</a></p></section>""",
+    faqs=[('What is a good family motto?', 'A good family motto is short (two to six words), sounds natural when read aloud and says something true about the family: a value, a habit or a hope. Phrases a family already says to each other often make the best mottos.'),
+          ('Does a family motto have to be in Latin?', 'No. Latin is the most common language for heraldic mottos, but English, French, Scots, Welsh, Irish and many other languages are used too. An English motto has the advantage that everyone can read it.'),
+          ('Can I change our family motto?', 'In English heraldry, mottos are not part of the grant of arms and can be adopted or changed at will. In Scotland the motto is recorded with the arms, so changing it means rematriculating the arms with the Lord Lyon. For an original design made in Crest Studio, you can change the motto whenever you like.'),
+          ('Where does the motto go on a coat of arms?', 'In English heraldry it usually sits on a scroll below the shield. In Scottish heraldry it usually sits on a scroll above the crest. In Crest Studio the motto goes on the ribbon below the shield.'),
+          ('Are these mottos historical family mottos?', 'No. They are suggestions written for this page as starting points, not copied from any family\'s arms. Short phrases like these may also have been used by others, which is normal for mottos.')],
+))

@@ -45,7 +45,7 @@ SPECS = [
 <h3>Grandparents and family reunions</h3><p>A crest for the whole family tree, printed on the reunion banner and T-shirts, with a framed copy for the grandparents who started it all. The <a href="/family-reunion-shirt-design.html">family reunion T-shirt guide</a> explains what to ask the printer.</p>
 <h3>Father's Day, Mother's Day and birthdays</h3><p>A crest built around one person: their initial on the shield and a motto that is pure them. The same design can be engraved on a signet ring: see the <a href="/signet-ring-crest.html">signet ring crest guide</a>.</p></section>
 <section class="sec"><h2 class="gilt">How to give it</h2><ol>
-<li><b>Design it</b> in <a href="/crest.html">Crest Studio</a>. Need words? The <a href="/latin-motto-generator.html">Latin motto generator</a> has 50+ mottos with translations, and the <a href="/heraldry-symbols-and-meanings.html">meanings guide</a> explains every color and emblem.</li>
+<li><b>Design it</b> in <a href="/crest.html">Crest Studio</a>. Need words? The <a href="/latin-motto-generator.html">Latin motto generator</a> has 50+ mottos with translations, the <a href="/family-motto-ideas.html">family motto ideas page</a> has 40 in plain English, and the <a href="/heraldry-symbols-and-meanings.html">meanings guide</a> explains every color and emblem.</li>
 <li><b>Add the gift line.</b> Open "Giving it as a gift?" and type who it is for and who it is from. It prints on the certificate.</li>
 <li><b>Download the set</b> for $9: print art, certificate, profile picture and phone wallpaper.</li>
 <li><b>Print and frame.</b> The 4000 by 5000 px file prints at about 13 by 16 inches at full photo quality (300 pixels per inch), and comfortably at 16 by 20. The certificate is sized for US Letter.</li></ol>
@@ -204,7 +204,7 @@ SPECS = [
 <p>National and civic emblems belong to their owners, so treat them as inspiration and give your dragon its own colors and motto.</p></section>
 <section class="sec"><h2 class="gilt">Designing your dragon crest</h2>
 <h3>Colors</h3><p>A red dragon on silver nods to Wales. A gold dragon on black or red feels like a great fantasy house. Keep to the rule of tincture: a metal (gold or silver) against a color.</p>
-<h3>For campaigns, guilds and clubs</h3><p>Dragons are the classic sigil for a D&amp;D noble house or an online guild, with the <a href="/phoenix-crest.html">phoenix</a> a close second for groups with a comeback story. See the <a href="/dnd-coat-of-arms-generator.html">D&amp;D coat of arms generator</a> and the <a href="/fantasy-house-name-generator.html">fantasy house name generator</a> for names and mottos to go with it.</p>
+<h3>For campaigns, guilds and clubs</h3><p>Dragons are the classic sigil for a D&amp;D noble house or an online guild, with the <a href="/phoenix-crest.html">phoenix</a> a close second for groups with a comeback story. See the <a href="/dnd-coat-of-arms-generator.html">D&amp;D coat of arms generator</a> and the <a href="/fantasy-house-name-generator.html">fantasy house name generator</a> for names and mottos to go with it. Writing a novel? The <a href="/fantasy-heraldry-for-writers.html">fantasy heraldry guide for writers</a> covers how to give every house in your world believable arms.</p>
 <h3>Mottos</h3><p>Try the Welsh <i>Cymru am Byth</i> (Wales forever), the Latin <i>Custos Fidelis</i> (faithful guardian), or plain English such as "Guard What You Love".</p>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=dragon">Design a dragon crest</a></p></section>''',
         faqs=[('What does a dragon mean on a coat of arms?', 'A valiant defender: a fierce protector of something precious, from a homeland to a family. In legend dragons guard treasure, and heraldry kept that idea.'),
@@ -1260,7 +1260,7 @@ SPECS = [
 <li><b>Mantling:</b> the leafy, scalloped cloth that flows down from the helm on both sides, usually in the main color and metal of the arms.</li>
 <li><b>Torse (wreath):</b> a twisted roll of cloth around the base of the crest, where it meets the helm.</li>
 <li><b>Crest:</b> the figure on top of the torse. This is the part that gave the whole thing its popular name.</li>
-<li><b>Motto:</b> a short phrase on a scroll. English arms usually place it below the shield; Scottish arms usually place it on a scroll above the crest.</li>
+<li><b>Motto:</b> a short phrase on a scroll. English arms usually place it below the shield; Scottish arms usually place it on a scroll above the crest. For ideas, see these <a href="/family-motto-ideas.html">40 English family mottos</a>.</li>
 <li><b>Supporters:</b> a pair of figures, often animals, standing either side and holding the shield up. They are granted only in particular cases, which is why you see them on royal, civic and noble arms.</li></ol>
 <div class="callout"><b>In Crest Studio:</b> every design has a shield, a name and a motto ribbon. Open "Make it grand" to add a knight's helm, crown or coronet above the shield and a pair of supporters (lions, unicorns, griffins, dragons or bears).</div></section>
 <section class="sec"><h2 class="gilt">Where the crest came from, and why the word stuck</h2>
@@ -1351,6 +1351,7 @@ SPECS = [
 <li><b>Quarterly Purpure and Argent, a tower Argent.</b> A shield in four quarters of purple and silver, with a silver tower.</li>
 <li><b>Murrey, a saltire Or, overall a crown Or.</b> A gold X-shaped cross on mulberry red, with a gold crown.</li></ol>
 <p>A blazon describes only the arms. The motto, the helm and the name are not part of it, which is why two families can use the same motto on different shields. If you are unsure what to call your design in the first place, the <a href="/coat-of-arms-vs-crest.html">coat of arms vs crest guide</a> sorts out the words.</p>
+<p>Writing a novel or building a game world? The <a href="/fantasy-heraldry-for-writers.html">fantasy heraldry guide for writers</a> shows how to use blazons, cadency marks and badges to make invented houses feel real.</p>
 <div class="callout"><b>See your own blazon.</b> Open the Studio, choose a field color, a division and an emblem, and the blazon under the shield rewrites itself with every change. It is free to design, and the $9 set includes a certificate of arms with the blazon and its meaning in plain English.</div>
 <p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html">Design a crest and see its blazon</a></p></section>''',
         faqs=[('What is a blazon in heraldry?', 'A blazon is the formal written description of a coat of arms, using heraldic terms for the colors, divisions and emblems. It is written so that someone who has never seen the arms could draw them correctly.'),
@@ -1360,3 +1361,125 @@ SPECS = [
               ('Does a blazon include the motto?', 'No. A blazon describes the arms on the shield. The motto, the helm, the crest and any supporters are described separately, if at all. Crest Studio adds a line about supporters when you choose them.')],
     ),
 ]
+
+
+# Family motto ideas (built 16 Nov 2026). Each motto links into the Studio with ?motto= filled in.
+from urllib.parse import quote as _q
+
+_MOTTO_IDEAS = [
+    ('Courage and grit', 'For a family that faces hard things head on, or a team that never gives up a match.',
+     ['Bold in Heart, Kind in Hand', 'Stand Firm', 'Brave the Storm', 'Courage Before Comfort', 'We Do Not Turn Back']),
+    ('Family and togetherness', 'For reunions, grandparents, blended families and anyone whose motto is really about each other.',
+     ['Together We Rise', 'Many Branches, One Root', 'Home Is Who We Are', 'Always a Seat at Our Table', 'Love Holds Us Fast']),
+    ('Perseverance', 'For a family that built something slowly, or a couple who came through a hard year.',
+     ['Step by Step', 'Slow Roots, Strong Oaks', 'Rise Again', 'Endure and Grow', 'Keep the Fire Lit']),
+    ('Honesty and integrity', 'For a family business, a law office or a household that prizes keeping its word.',
+     ['Say It, Mean It, Do It', 'True to Our Word', 'Plain Speech, Honest Hands', 'Do Right Quietly', 'Truth Before Comfort']),
+    ('Hospitality and kindness', 'For the house where everyone ends up, an inn, a cafe or a housewarming gift.',
+     ['The Door Is Always Open', 'Bread for All Who Knock', 'Leave It Better', 'Light in the Window', 'Kindness Is Our Craft']),
+    ('Learning and curiosity', 'For teachers, book clubs, school houses and families of readers.',
+     ['Ask Better Questions', 'Always a Student', 'Read Widely, Think Freely', 'Wonder Is Our Compass', 'Learn, Then Teach']),
+    ('Faith and hope', 'For families whose faith is at the center, or who simply want a hopeful line.',
+     ['Hope Holds Fast', 'Grace Upon Grace', 'Morning Will Come', 'Faith Over Fear', 'Guided by Light']),
+    ('Just for fun', 'For pets, friend groups, game nights and gifts that are meant to make people laugh.',
+     ['Snacks Before Battle', 'Fashionably Late Since Forever', 'We Came, We Saw, We Napped', 'Coffee First, Glory Later', 'Loyal to the Last Biscuit']),
+]
+
+
+def _motto_sections():
+    out = []
+    for title, note, items in _MOTTO_IDEAS:
+        lis = ''.join(f'<li><a href="/crest.html?motto={_q(m)}">{m}</a></li>' for m in items)
+        out.append(f'<h3>{title}</h3><p>{note}</p><ul>{lis}</ul>')
+    return ''.join(out)
+
+
+SPECS.append(dict(
+    slug='family-motto-ideas.html', cta_href='/crest.html', short='Family motto ideas', blurb='40 English mottos by theme, one tap to try', og='motto',
+    h1='Family Motto Ideas', h1_html='Family Motto Ideas: 40 English Mottos for Your Crest',
+    title='Family Motto Ideas: 40 English Mottos for a Coat of Arms | Crest Studio',
+    og_title='Family motto ideas: 40 English mottos for your coat of arms',
+    desc='Forty short family motto ideas in plain English, grouped by theme, from courage to hospitality to just for fun. Tap any motto to try it on a crest, plus tips for writing your own.',
+    eyebrow='Plain English, no Latin dictionary needed',
+    lede='A motto is the line your family would say about itself if it only got one. Latin is traditional, but English mottos have a long history in heraldry too. Here are 40 to start from, grouped by theme. Tap any one to see it on a crest in the Studio.',
+    cta='Try a motto on your crest',
+    examples=[crest('The Abernathy Family', 'Many Branches, One Root', VERT, OR, GOLD_LIGHT, 'plain', 'tree'),
+              crest('The Delgado Family', 'The Door Is Always Open', GULES, OR, GOLD_LIGHT, 'chevron', 'key'),
+              crest('The Whitfield Family', 'Ask Better Questions', AZURE, ARGENT, ARGENT, 'fess', 'book'),
+              crest('The Kimura Family', 'Slow Roots, Strong Oaks', SABLE, OR, GOLD_LIGHT, 'bend', 'acorn'),
+              crest('House of Biscuit', 'Loyal to the Last Biscuit', PURPURE, OR, GOLD_LIGHT, 'plain', 'wolf')],
+    body="""<section class="sec"><h2 class="gilt">English mottos have a long history</h2>
+<p>Mottos are usually thought to have grown out of medieval war cries and rallying calls, the words a lord's followers shouted to find each other in battle. Over time they turned into short statements of what a family hoped for, believed in or wanted to be remembered for, written on a scroll with the coat of arms.</p>
+<p>Latin is the language most people picture, but it was never the only one. Mottos appear in French, English, Scots, Welsh, Irish and many other languages. In the large online catalog of heraldic mottos kept by Heraldry of the World, English is the second most common language after Latin. Modern institutions use English mottos too: the coat of arms of British Airways carries the motto <i>To Fly, To Serve</i>.</p>
+<p>English mottos have one big advantage: everyone who sees your crest knows what it says. Nobody has to ask for a translation at the family reunion.</p></section>
+<section class="sec"><h2 class="gilt">40 family motto ideas by theme</h2>
+<p>These are suggestions written as starting points, not historical mottos belonging to any family. Short phrases like these are bound to overlap with lines other people have used, and that is fine: a motto works because of what it means to you. Tap any motto to open the Studio with it already on the ribbon. Your other choices stay as they are.</p>
+""" + _motto_sections() + """</section>
+<section class="sec"><h2 class="gilt">How to write your own family motto</h2>
+<h3>Start with a sentence you already say</h3><p>The best mottos are often hiding in plain sight: the thing a grandparent always said, the line on the fridge, the words you use when someone in the family is having a hard week. Write down three or four of those, then cut each one to its core.</p>
+<h3>Keep it to two to six words</h3><p>A motto sits on a ribbon under the shield, so it has to read at the size of a framed print and of a profile picture. Short wins. Crest Studio allows up to 48 characters, but most of the mottos above are under 30, and they look better for it.</p>
+<h3>Use rhythm</h3><p>Pairs and contrasts stick in the memory: "Bold in Heart, Kind in Hand", "Slow Roots, Strong Oaks". Read it aloud. If it sounds like something you could say at a toast, it is working.</p>
+<h3>Decide how long it should last</h3><p>A crest for a wedding or a family tree will be looked at for decades, so a timeless line usually serves it best. A crest for a pet, a fantasy league or a group chat can be as silly as you like. The <a href="/pet-coat-of-arms.html">pet coat of arms guide</a> has more ideas in that spirit.</p>
+<h3>Match the emblem</h3><p>A motto and an emblem that echo each other make the whole design feel deliberate: a key with an open-door motto, an acorn or oak with a growth motto, a book with a learning motto. The <a href="/heraldry-symbols-and-meanings.html">symbols and meanings guide</a> explains what each color and emblem has traditionally stood for.</p></section>
+<section class="sec"><h2 class="gilt">English or Latin?</h2>
+<p>Choose Latin if you want the classic look and do not mind explaining it. Choose English if you want the words to land at once, or if the motto is a family saying that would lose its flavor in translation. Some families split the difference: a Latin motto on the crest and its English meaning on the certificate.</p>
+<p>If Latin appeals, the <a href="/latin-motto-generator.html">Latin motto generator</a> lists more than 50 established Latin phrases with their translations and sources, so you are not relying on a guessed translation.</p>
+<div class="callout"><b>Can you change it later?</b> In English heraldry a motto is not part of the grant of arms, and holders of arms may adopt or change it as they wish. Scottish heraldry is stricter: the motto is recorded with the arms and usually sits on a scroll above the crest. For an original design from the Studio, the motto is simply yours to choose and to change.</div>
+<p>When you have chosen, the motto prints on the ribbon of every file in the $9 set. If you are still unsure where the motto fits in a full coat of arms, the <a href="/coat-of-arms-vs-crest.html">coat of arms vs crest guide</a> names every part.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html">Try a motto on your crest</a></p></section>""",
+    faqs=[('What is a good family motto?', 'A good family motto is short (two to six words), sounds natural when read aloud and says something true about the family: a value, a habit or a hope. Phrases a family already says to each other often make the best mottos.'),
+          ('Does a family motto have to be in Latin?', 'No. Latin is the most common language for heraldic mottos, but English, French, Scots, Welsh, Irish and many other languages are used too. An English motto has the advantage that everyone can read it.'),
+          ('Can I change our family motto?', 'In English heraldry, mottos are not part of the grant of arms and can be adopted or changed at will. In Scotland the motto is recorded with the arms, so changing it means rematriculating the arms with the Lord Lyon. For an original design made in Crest Studio, you can change the motto whenever you like.'),
+          ('Where does the motto go on a coat of arms?', 'In English heraldry it usually sits on a scroll below the shield. In Scottish heraldry it usually sits on a scroll above the crest. In Crest Studio the motto goes on the ribbon below the shield.'),
+          ('Are these mottos historical family mottos?', 'No. They are suggestions written for this page as starting points, not copied from any family\'s arms. Short phrases like these may also have been used by others, which is normal for mottos.')],
+))
+
+
+# Fantasy heraldry for writers and worldbuilders (built 17 Nov 2026).
+SPECS.append(dict(
+    slug='fantasy-heraldry-for-writers.html', cta_href='/crest.html?ch=tower', short='Fantasy heraldry for writers', blurb='Coats of arms for novels and invented worlds', og='writers',
+    h1='Fantasy Heraldry for Writers', h1_html='Fantasy Heraldry for Writers and Worldbuilders',
+    title='Fantasy Heraldry for Novels: Designing Coats of Arms for Your World | Crest Studio',
+    og_title='Fantasy heraldry for writers: designing coats of arms for your novel or world',
+    desc='How to design believable coats of arms for the noble houses, guilds and cities in your novel or setting: real heraldic rules, cadency, marriage arms, badges and how to describe arms in prose.',
+    eyebrow='For novelists, game masters and worldbuilders',
+    lede='A good coat of arms does real work in a story. It tells the reader who a stranger serves before anyone speaks, it carries a family\'s history in a few shapes, and it gives you a ready-made image for maps, chapter headers and covers. Here is how real heraldry worked, and how to borrow its logic for an invented world.',
+    cta='Design arms for your world',
+    examples=[crest('House Ravensworth', 'We Remember', SABLE, OR, GOLD_LIGHT, 'chevron', 'raven'),
+              crest('The Saltmere Compact', 'Fair Winds, Fair Trade', AZURE, ARGENT, ARGENT, 'fess', 'ship'),
+              crest('Order of the Ember Lamp', 'Keep the Flame', GULES, OR, GOLD_LIGHT, 'pale', 'flame'),
+              crest('House Thornwick', 'The Root Holds', VERT, OR, GOLD_LIGHT, 'bend', 'tree'),
+              crest('House Varrow', 'By Right and Steel', PURPURE, ARGENT, ARGENT, 'plain', 'crown')],
+    body="""<section class="sec"><h2 class="gilt">Why heraldry is a gift to worldbuilders</h2>
+<p>In medieval Europe, coats of arms appeared in the twelfth century, when they were painted on shields and banners and pressed into wax seals. One of the oldest surviving pictures of a coat of arms, the enamel memorial of Geoffrey Plantagenet made around 1151, shows him carrying a blue shield with small gold lions. Within a few generations arms were passed from parent to child, and a shield became a shorthand for a whole family.</p>
+<p>That is exactly what a writer needs. A banner on a hill, a badge on a messenger's sleeve or a seal on a letter can tell your reader who is involved without a paragraph of explanation. And because real heraldry followed rules, a world whose arms follow rules of their own feels older and more lived-in than one where every house simply picks a cool animal.</p></section>
+<section class="sec"><h2 class="gilt">Start with the world, not the shield</h2>
+<p>Before you draw anything, decide a few things about how arms work in your setting:</p>
+<ul><li><b>Who bears arms?</b> In real history it was never only knights. Towns, guilds, bishops, abbeys, universities and many ordinary townspeople used arms too. In your world, maybe only sworn houses may, and carrying arms you have no right to is a crime. Either choice creates story.</li>
+<li><b>Who controls them?</b> England has had a College of Arms since 1484, and Scotland has the Court of the Lord Lyon. An office of heralds who register arms, settle disputes and read shields across a battlefield can be a whole faction in your plot.</li>
+<li><b>Are they inherited?</b> If arms pass down a family, younger children and cousins need a way to show who is who. Real heraldry solved this, as the next section shows.</li>
+<li><b>What do they cost?</b> Some colors were expensive to produce as dyes. A house that can afford a deep purple banner is making a statement, and a house that cannot is making a different one.</li></ul></section>
+<section class="sec"><h2 class="gilt">Borrow the rules that make arms feel real</h2>
+<h3>Keep the rule of tincture</h3><p>Heralds put a metal (gold or silver) on a color (red, blue, green, purple or black), or a color on a metal, so a shield could be read from a distance. Arms that break the rule were rare and drew comment. If you break it in your world, make it mean something: a usurper's arms, a foreign house, or a deliberate insult to tradition.</p>
+<h3>Simple is old, busy is new</h3><p>The earliest arms were bold and spare: one beast, one band, two colors. Later centuries added more and more pieces as families married, merged and claimed honors. You can use that as a signal. An old house has a plain, confident shield. A newly ennobled merchant may have a crowded one.</p>
+<h3>Let the arms pun on the name</h3><p>Heralds loved visual puns, called <b>canting arms</b>. The Spanish kingdom of Castile bore a castle, and the kingdom of Le&oacute;n bore a lion. A house called Ashcombe might carry an ash tree, House Ravensworth a raven, the Brackwaters a ship. Readers enjoy noticing these, and they help them remember who is who.</p>
+<h3>Mark the younger branches</h3><p>English heralds developed small <b>marks of cadency</b> to tell sons apart: a label (a bar with hanging points) for the eldest son, a crescent for the second, a mullet (a star) for the third, a martlet (a little bird) for the fourth and an annulet (a ring) for the fifth. A bastard line might bear arms with a visible difference too. A sharp-eyed character who spots a crescent on a stranger's shield and says "a second son" is a lovely bit of world texture.</p>
+<h3>Show marriages and inheritance on the shield</h3><p>Real families recorded alliances in their arms. A married couple's arms could be <b>impaled</b>, set side by side on one shield split down the middle, with the husband's on the dexter side (the viewer's left). When a woman with no brothers inherited, her children could <b>quarter</b> her family's arms with their father's, so a quartered shield can hint at a merged inheritance and, sometimes, a disputed claim. The <a href="/wedding-crest.html">wedding crest guide</a> shows the per pale division in practice.</p></section>
+<section class="sec"><h2 class="gilt">Badges: what the servants and soldiers wear</h2>
+<p>A full coat of arms belonged to the lord and the family. Their followers often wore a simpler <b>badge</b> instead, a single emblem worn on clothing or banners. King Richard II of England used a white hart, and in the Wilton Diptych, a painted altarpiece from his reign, even the angels around the Virgin wear white hart badges. For fiction this is gold: a badge makes it easy to put a whole household, garrison or gang in the same scene and have readers tell them apart. Give each major house both arms and a badge, and use the badge for the people who serve them.</p></section>
+<section class="sec"><h2 class="gilt">Describing arms in prose</h2>
+<p>Heralds describe arms in a compact language called the <b>blazon</b>, such as "Sable, a chevron Or, overall a raven Or". It is precise but slows a scene down. A good habit is to use the formal blazon once, perhaps in a herald's mouth, an appendix or a map key, and plain words everywhere else: "the gold raven on black". The <a href="/how-to-read-a-blazon.html">how to read a blazon guide</a> explains the order and the words if you want your heralds to sound right.</p>
+<p>Name the colors consistently, too. If House Varrow is purple and silver on page ten, it should be purple and silver on page four hundred, on the map and on the cover.</p></section>
+<section class="sec"><h2 class="gilt">Your world does not have to be European</h2>
+<p>Shields with tinctures and beasts are one tradition among several. Japan developed its own family emblems, called <i>mon</i>: compact designs, often in a circle, worn on clothing and shown on banners and belongings. If your setting draws on a different culture, it may be more convincing to invent an emblem system that fits that culture than to give everyone a European shield. The same storytelling jobs still apply: identity, inheritance and loyalty you can see.</p></section>
+<section class="sec"><h2 class="gilt">Making the art for your houses</h2>
+<p>Crest Studio is a quick way to try ideas: pick a field color, a division and one of 50 emblems, type the house name and motto, and see the shield and its blazon update as you go. Designing is free with no account, so you can sketch every house in your world and keep the links. Each design opens again from its share link.</p>
+<p>When a design is final, the $9 set gives you print-size art, a scalable SVG and a certificate of arms with the blazon written out. Under the <a href="/terms.html">terms</a>, purchased designs can be used for any lawful purpose, personal or commercial, so they can go on your maps, chapter headers, website or merchandise. The designs are not exclusive, since other people use the same tool, so if a crest will be a central part of a published cover, talk to your designer or publisher about building on it.</p>
+<p>Need names and mottos to go with the shields? The <a href="/fantasy-house-name-generator.html">fantasy house name generator</a> invents original house names, and the <a href="/dnd-coat-of-arms-generator.html">D&amp;D coat of arms generator</a> has ideas for guilds, orders and adventuring companies. For a single iconic beast, the <a href="/dragon-coat-of-arms.html">dragon coat of arms guide</a> covers the classic fantasy sigil.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=tower">Design arms for your world</a></p></section>""",
+    faqs=[('How do I design a coat of arms for a fantasy novel?', 'Start with how arms work in your world: who may bear them, who registers them and whether they are inherited. Then design each shield with a strong metal-on-color contrast, one main emblem that suits the house (a pun on the name works well), a motto and a simpler badge for its followers.'),
+          ('What rules should fantasy heraldry follow?', 'The most useful real rule is the rule of tincture: put a metal (gold or silver) on a color, or a color on a metal, so the shield reads from a distance. Real heraldry also marked younger sons with small cadency marks and showed marriages by splitting the shield down the middle, which both translate well to fiction.'),
+          ('Can I use arms I design in Crest Studio in my published book?', 'Yes. Once purchased, designs can be used for any lawful purpose, personal or commercial, including maps, chapter headers, websites and merchandise. The designs are not exclusive, so if one will be central to your cover, discuss it with your designer or publisher.'),
+          ('How should I describe a coat of arms in my writing?', 'Use the formal blazon sparingly, for a herald, an appendix or a map key, and plain description in scenes: "the gold raven on black". Keep each house\'s colors and emblem consistent across text, maps and cover.'),
+          ('Do all fantasy cultures need European-style shields?', 'No. Heraldry is one tradition among several. Japan, for example, developed family emblems called mon. A setting based on another culture may feel more convincing with an emblem system of its own.')],
+))

@@ -31,8 +31,14 @@ Pick the angle a real searcher has; keep every claim checkable (see the rules in
 - [ ] Mother's Day crest gift (seasonal: publish by mid April)
 - [x] Coat of arms vs family crest vs logo explainer (built 13 Nov as coat-of-arms-vs-crest.html) (keyword: coat of arms vs crest)
 - [x] How to read a blazon (built 15 Nov as how-to-read-a-blazon.html) (keyword: how to blazon a coat of arms): explain tinctures, divisions, charges with examples from the Studio's own blazon output
-- [ ] Heraldic mottos in English (keyword: family motto ideas): 40 original English mottos by theme, each linking into the Studio
-- [ ] Coat of arms for writers and worldbuilders (keyword: fantasy heraldry for novels)
+- [x] Heraldic mottos in English (built 16 Nov as family-motto-ideas.html) (keyword: family motto ideas): 40 original English mottos by theme, each linking into the Studio
+- [x] Coat of arms for writers and worldbuilders (built 17 Nov as fantasy-heraldry-for-writers.html) (keyword: fantasy heraldry for novels)
+- [ ] Raven coat of arms (keyword: raven crest / raven heraldry): wisdom and memory, ravens in Norse and Scottish arms, canting arms for names like Ravenscroft; emblem id raven
+- [ ] Boar coat of arms (keyword: boar crest): courage and ferocity, boar's head couped and the Campbell and Gordon style heads, hunting halls; emblem id boar
+- [ ] Horse coat of arms (keyword: horse heraldry / horse crest): horse's head for equestrian families, riding clubs and stables, the white horse of Lower Saxony; emblem id horse
+- [ ] Fleur-de-lis meaning (keyword: fleur de lis meaning): France, Florence, Scouting, cadency mark for a sixth son; emblem id fleur
+- [ ] Coat of arms school project (keyword: coat of arms project for school): a step-by-step guide for students and parents, linking the free printable templates; no ads near the kids angle
+- [ ] Bee coat of arms (keyword: bee symbol heraldry): industry and community, Manchester's worker bee, beekeepers and honey brands; emblem id bee
 
 ## Spanish pages (new search market; write natively in neutral Latin American Spanish, not word-for-word translation)
 Add these as specs with slugs under es/ (for example es/escudo-de-armas-familiar.html), lang="es" content, and link each back to the Studio.

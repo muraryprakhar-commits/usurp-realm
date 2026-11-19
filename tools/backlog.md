@@ -34,7 +34,7 @@ Pick the angle a real searcher has; keep every claim checkable (see the rules in
 - [x] Heraldic mottos in English (built 16 Nov as family-motto-ideas.html) (keyword: family motto ideas): 40 original English mottos by theme, each linking into the Studio
 - [x] Coat of arms for writers and worldbuilders (built 17 Nov as fantasy-heraldry-for-writers.html) (keyword: fantasy heraldry for novels)
 - [x] Raven coat of arms (built 18 Nov as raven-coat-of-arms.html) (keyword: raven crest / raven heraldry): wisdom and memory, ravens in Norse and Scottish arms, canting arms for names like Ravenscroft; emblem id raven
-- [ ] Boar coat of arms (keyword: boar crest): courage and ferocity, boar's head couped and the Campbell and Gordon style heads, hunting halls; emblem id boar
+- [x] Boar coat of arms (built 19 Nov as boar-coat-of-arms.html) (keyword: boar crest): courage and ferocity, boar's head couped and the Campbell and Gordon style heads, hunting halls; emblem id boar
 - [ ] Horse coat of arms (keyword: horse heraldry / horse crest): horse's head for equestrian families, riding clubs and stables, the white horse of Lower Saxony; emblem id horse
 - [ ] Fleur-de-lis meaning (keyword: fleur de lis meaning): France, Florence, Scouting, cadency mark for a sixth son; emblem id fleur
 - [ ] Coat of arms school project (keyword: coat of arms project for school): a step-by-step guide for students and parents, linking the free printable templates; no ads near the kids angle

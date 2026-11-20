@@ -626,6 +626,7 @@ SPECS = [
 <h3>Canting arms: the German love of a visual pun</h3>
 <p>German heralds call them <i>redende Wappen</i>, "speaking arms": a picture that sounds out the family or town name. They are especially common in German civic heraldry:</p><ul>
 <li><b>Berlin:</b> a black bear, <i>Bär</i>, on silver. The city name actually has Slavic roots and nothing to do with bears, but the pun stuck. See the <a href="/bear-coat-of-arms.html">bear coat of arms guide</a>.</li>
+<li><b>Stuttgart:</b> a black horse on gold, because the city grew from a stud farm, <i>Stuotgarten</i>. More in the <a href="/horse-coat-of-arms.html">horse coat of arms guide</a>.</li>
 <li><b>Eberbach:</b> a boar, <i>Eber</i>, above a wavy band for the brook, <i>Bach</i>. More on boars in the <a href="/boar-coat-of-arms.html">boar coat of arms guide</a>.</li>
 <li><b>Wolfsburg:</b> a wolf on a castle, "wolf's castle".</li>
 <li><b>Albrecht Dürer:</b> the painter's family arms show an open door. The family came from the Hungarian village of Ajtós, from <i>ajtó</i>, "door", and the German name Dürer echoes <i>Tür</i>.</li></ul>
@@ -879,7 +880,7 @@ SPECS = [
 <p>Crest Studio does not have a dog or cat emblem yet, so here is what works well instead, using heraldry's own logic of choosing a symbol for its meaning:</p>
 <ul><li><b>Dogs: the wolf.</b> Dogs and gray wolves share a common ancestry, and in heraldry the wolf stands for loyalty to the pack. A wolf's head is the closest thing to a hound on a shield. See the <a href="/wolf-coat-of-arms.html">wolf coat of arms guide</a>.</li>
 <li><b>Cats: the lion.</b> The lion and the house cat are both members of the cat family, and every cat owner already knows who rules the house. The <a href="/lion-coat-of-arms.html">lion coat of arms guide</a> explains the poses.</li>
-<li><b>Horses and ponies: the horse.</b> In heraldry the horse stands for readiness, speed and loyalty. Perfect for a stable, a riding club or a much-loved pony.</li>
+<li><b>Horses and ponies: the horse.</b> In heraldry the horse stands for readiness, speed and loyalty. Perfect for a stable, a riding club or a much-loved pony. The <a href="/horse-coat-of-arms.html">horse coat of arms guide</a> explains the heraldic poses and famous horse arms.</li>
 <li><b>Birds:</b> the owl for a wise or watchful bird, the raven for a clever one, or the sun for a bird that sings every morning.</li>
 <li><b>Any pet: their initial.</b> The "Your initial" emblem puts your pet's first letter on the shield, which is the surest way to make it theirs. Type the pet's name first (Biscuit the Brave gives a B), since a name starting with "of" would give you an O.</li>
 <li><b>The heart</b> stands for love and sincerity, and suits a crest made in memory of a pet.</li></ul>
@@ -1564,4 +1565,50 @@ SPECS.append(dict(
           ('Which clans have a boar on their crest?', "The Campbell chief's crest is a gold boar's head, worn by clan members in the crest badge with the motto Ne Obliviscaris. The Gordon chiefs bear three gold boars' heads on blue with the motto Bydand. Both belong to the chiefs, so use your own design."),
           ("Why was the white boar Richard III's symbol?", 'Nobody knows for certain. It was his personal badge, given to his supporters in large numbers. One theory is that it was a pun on Ebor, short for Eboracum, the Latin name for York.'),
           ('Can I put a boar on my family crest?', 'Yes. The boar is a traditional heraldic charge anyone can use in an original design. Avoid copying a real family or clan coat of arms exactly, and treat a Crest Studio design as decorative art rather than official arms.')],
+))
+
+# Horse coat of arms (built 20 Nov 2026).
+SPECS.append(dict(
+    slug='horse-coat-of-arms.html', cta_href='/crest.html?ch=horse', short='Horse coat of arms', blurb='The Saxon steed, the Kent horse and crests for riders', og='horse',
+    h1='Horse Coat of Arms', h1_html='The Horse Coat of Arms: Meaning and Design',
+    title='Horse Coat of Arms: Meaning, Famous Horse Crests and Design Ideas | Crest Studio',
+    og_title="Horse coat of arms: what it means and how to design a horse's head crest",
+    desc="What a horse means on a coat of arms, from the white Saxon steed of Lower Saxony and the Invicta horse of Kent to Stuttgart's black horse, the heraldic terms for a horse, and how to design a horse crest for a family, stable or riding club, free.",
+    eyebrow='For riders, stables and families on the move',
+    lede="The horse carried knights, plowed fields and pulled the mail, so it is no surprise it turns up all over heraldry. It is the badge of whole German states, an English county and a city founded as a stud farm. Here is what a horse means on a coat of arms and how to design a horse crest of your own.",
+    cta='Design a horse crest',
+    examples=[crest('The Colton Family', 'Steadfast and True', GULES, ARGENT, ARGENT, 'plain', 'horse'),
+              crest('Willow Creek Stables', 'Heart Over Hurdles', VERT, OR, GOLD_LIGHT, 'plain', 'horse'),
+              crest('The Marlowe Family', 'Ever Ready', AZURE, OR, GOLD_LIGHT, 'plain', 'horse'),
+              crest('Blackthorn Riding Club', 'Ride On', ARGENT, ARGENT, SABLE, 'plain', 'horse'),
+              crest('Hollins Farm', 'Swift and Sure', PURPURE, ARGENT, ARGENT, 'plain', 'horse')],
+    body='''<section class="sec"><h2 class="gilt">What a horse means on a coat of arms</h2>
+<p>Readiness, above all. A horse saddled and waiting is a picture of someone prepared to serve the moment they are called, which is why heraldry links it with duty, speed and loyalty. Crest Studio's own meaning for it is "readiness to serve, speed and loyalty". For most of history the horse was also the clearest sign of rank: a knight was, almost by definition, a man who fought on horseback, and the French <i>chevalier</i> and Spanish <i>caballero</i> both come from words for horse.</p>
+<p>The horse was a powerful image long before heraldry. The Uffington White Horse, a 110 meter figure cut into the chalk of an Oxfordshire hillside, was made some time between 1380 and 550 BC, at the end of the Bronze Age or the start of the Iron Age, according to optically stimulated luminescence dating. The National Trust looks after it today, and it is far older than any coat of arms.</p>
+<p>That gives a horse crest a warm, practical feel. It suits a family that loves riding or comes from farming stock, a stable, riding school, pony club or polo team, a family that has moved a long way to make a new life, or anyone whose motto is about being ready when it counts.</p></section>
+<section class="sec"><h2 class="gilt">How heralds describe a horse</h2>
+<p>A horse in heraldry is described by its pose, and the words are worth knowing if you want to read old arms or write a <a href="/how-to-read-a-blazon.html">blazon</a> of your own:</p><ul>
+<li><b>Statant:</b> standing still with all four hooves on the ground.</li>
+<li><b>Passant:</b> walking, with one foreleg raised.</li>
+<li><b>Courant</b> or <b>in full career:</b> galloping.</li>
+<li><b>Salient:</b> leaping, with both hind legs on the ground.</li>
+<li><b>Forcen&eacute;:</b> rearing up on the hind legs. This is the heraldic word for the pose most people call rampant when they talk about a horse.</li></ul>
+<p>A horse may also be <b>bridled</b>, <b>saddled</b> or <b>caparisoned</b>, which means draped in a decorated cloth like a knight's war horse. Just as with lions and boars, heralds often show only the head. A horse's head <b>couped</b> is cut off with a clean straight line, and <b>erased</b> means torn off with a jagged edge. Older armorials sometimes call it a <i>nag's head</i>, which simply meant a horse. Crest Studio draws a horse's head couped, side-on with a flowing mane, and blazons it that way.</p></section>
+<section class="sec"><h2 class="gilt">Famous horses in heraldry</h2>
+<h3>The Saxon steed of Lower Saxony and Westphalia</h3><p>The best-known heraldic horse in Europe is the white horse on red called the Saxon steed (<i>Sachsenross</i> in German). It appears in the arms of the German state of Lower Saxony and in the arms of North Rhine-Westphalia, where it stands for Westphalia, and earlier it was used by the Kingdom of Hanover and the Duchy of Brunswick. In heraldry it first shows up in the late 14th century. A tradition first written down in 1492 claimed that Widukind, the Saxon leader who fought Charlemagne in the 8th century, rode under a horse banner, but historians treat that story as a later legend rather than a record.</p>
+<h3>Invicta: the white horse of Kent</h3><p>The English county of Kent has its own white horse, rearing on a red field. Its correct blazon is <i>Gules, a stallion forcen&eacute; argent</i>, and it goes with the county motto <i>Invicta</i>, Latin for "unconquered". Legend links it to Hengist and Horsa, the brothers said to have led the first Anglo-Saxon settlers into Kent in the 5th century; in Old English their names mean "stallion" and "horse". The earliest known picture of that story is an engraving in Richard Verstegan's book of 1605, which shows them landing under a white horse banner. Some historians think the Kent horse and the Saxon steed grew from the same late medieval legend.</p>
+<h3>Stuttgart: a city named after a stud farm</h3><p>Stuttgart's name comes from the Old High German <i>Stuotgarten</i>, a stud farm, because the city grew from a stud where Duke Liudolf of Swabia bred war horses around the year 950. Its arms are a black horse on gold, a perfect example of canting arms, a picture that puns on the name. The horse faced the other way in a version from 1591, and the city's modern drawing dates from 1938. The <a href="/german-family-crest.html">German family crest guide</a> has more German speaking arms like this one.</p>
+<h3>Horses that pun on a name</h3><p>English heralds loved the same joke. James Parker's <i>Glossary of Terms Used in Heraldry</i>, a Victorian reference that is still widely used, lists a Bishop Horsley who bore three silver horses' heads on red, a Colte family of Essex with three black colts running on silver, and a Scottish Trotter family whose arms show a horse trotting. They are the kind of pun you can borrow for your own crest without copying anyone's arms.</p></section>
+<section class="sec"><h2 class="gilt">Designing your horse crest</h2>
+<h3>Colors</h3><p>Silver on red is the Saxon and Kent look: bold, old and easy to read from a distance. Gold on green feels like paddocks and open country, which suits a stable or farm. Gold on blue is calm and dignified for a family crest, and black on silver is crisp enough to engrave, embroider on a saddle pad or print in one color. Each pairing keeps the rule of tincture, a metal (gold or silver) against a color. The <a href="/heraldry-symbols-and-meanings.html">heraldry meanings guide</a> explains what each color traditionally stands for.</p>
+<h3>Keep the head clear</h3><p>A horse's head has a long, elegant outline and a mane that adds detail. It reads best on a plain field, so the shape stays clean on a stable sign, a rosette or a phone screen.</p>
+<h3>Canting crests for horse names</h3><p>If your surname is Horsley, Colt, Trotter, Rider or Ross in its German sense (<i>Ross</i> is an old German word for a steed), a horse is the obvious choice.</p>
+<h3>Mottos</h3><p>Short and plain works well: "Ever Ready", "Steadfast and True" or "Heart Over Hurdles" for a jumping yard. For Latin, try <i>Semper paratus</i> (always ready) or <i>Fortis et fidelis</i> (strong and faithful). The <a href="/latin-motto-generator.html">Latin motto generator</a> has more, each with a translation.</p>
+<h3>Crests for the horse itself</h3><p>Want a crest for a much-loved pony rather than its owners? The <a href="/pet-coat-of-arms.html">pet coat of arms guide</a> has grand titles and funny mottos for animals. And if you would rather have a horn on that horse, see the <a href="/unicorn-coat-of-arms.html">unicorn coat of arms guide</a>.</p>
+<p class="center" style="margin-top:22px"><a class="btn big" href="/crest.html?ch=horse">Design a horse crest</a></p></section>''',
+    faqs=[('What does a horse mean on a coat of arms?', 'Readiness to serve, speed and loyalty. Because knights fought on horseback, the horse was also a sign of rank and of being prepared to answer a call to duty.'),
+          ('What is the white horse on the Lower Saxony flag?', 'It is the Saxon steed (Sachsenross), a white horse on red. It appears in the arms of Lower Saxony and of North Rhine-Westphalia, where it stands for Westphalia, and it first shows up in heraldry in the late 14th century.'),
+          ('What is the horse of Kent called?', 'The white horse of Kent, often just called Invicta after the county motto, Latin for "unconquered". Its blazon is Gules, a stallion forcen&eacute; argent: a silver horse rearing on red.'),
+          ('What is the difference between a horse rampant and forcen&eacute;?', 'Forcen&eacute; is the proper heraldic word for a horse rearing on its hind legs. Rampant is the word for a lion in that pose, and people often use it loosely for horses too.'),
+          ('Can I put a horse on my family crest?', 'Yes. The horse is a traditional heraldic charge anyone can use in an original design. Avoid copying a real family, city or state coat of arms exactly, and treat a Crest Studio design as decorative art rather than official arms.')],
 ))
